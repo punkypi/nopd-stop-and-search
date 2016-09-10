@@ -13,10 +13,11 @@ System.config({
     "npm:*": "jspm_packages/npm/*"
   },
   bundles: {
-    "bin/main_menu.js": [
+    "build.js": [
       "app/main_menu.js"
     ]
   },
+
   map: {
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
