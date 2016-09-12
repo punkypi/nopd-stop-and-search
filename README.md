@@ -1,3 +1,7 @@
+# Stop and Search Queries
+
+[![CircleCI](https://circleci.com/gh/punkypi/stop_and_search.svg?style=svg)](https://circleci.com/gh/punkypi/stop_and_search)
+
 ## Starting Local Development Server
 
 This actually isn't needed. Since the application is a static page,
