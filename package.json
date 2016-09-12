@@ -4,7 +4,7 @@
   "description": "My tinkering with the https://data.nola.gov/resource/nfft-hjwi data set.",
   "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "htmlhint index.html app && jshint app"
   },
   "keywords": [],
   "author": "punkypi",
