@@ -2,19 +2,16 @@
 
 [![CircleCI](https://circleci.com/gh/punkypi/stop_and_search.svg?style=svg)](https://circleci.com/gh/punkypi/stop_and_search)
 
-## Starting Local Development Server
+## Running the App
 
-This actually isn't needed. Since the application is a static page,
-it's suggested to compile as you develop and test via loading the static
-`/index.html`.
-
-To start the server, run `npm start .` and navigate to `localhost:8080`.
+Since the application is a static page, it's suggested to compile as you
+develop and test via loading the static `/index.html`.
 
 ### Adding Changes
 
-Be sure to compile your source files into `bin/` so it can be referenced when
+Be sure to compile your source files into `out/` so it can be referenced when
 the source file is imported via `System.import(...)`:
-`jspm bundle app/[file] bin/[file]`
+`jspm bundle app/[file] out/[file]`
 
 ### Testing Changes
 
