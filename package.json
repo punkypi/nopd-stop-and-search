@@ -20,7 +20,8 @@
   },
   "jspm": {
     "dependencies": {
-      "knockout": "npm:knockout@^3.4.0"
+      "knockout": "npm:knockout@^3.4.0",
+      "skeleton": "github:dhg/Skeleton@^2.0.4"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",

@@ -68,5 +68,13 @@
   "github:jspm/nodelibs-child_process@0.1.0": {},
   "npm:knockout@3.4.0": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
-  }
+  },
+  "github:dhg/Skeleton@2.0.4": {
+    "css": "jspm:css@0.1",
+    "normalize.css": "jspm:normalize.css@3.0.3"
+  },
+  "github:necolas/normalize.css@3.0.3": {
+    "css": "jspm:css"
+  },
+  "github:systemjs/plugin-css@0.1.27": {}
 }

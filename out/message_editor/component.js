@@ -4400,7 +4400,7 @@ System.registerDynamic("npm:knockout@3.4.0.js", ["npm:knockout@3.4.0/build/outpu
   return module.exports;
 });
 System.register('app/message_editor/view_model.js', ['npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:knockout@3.4.0.js'], function (_export) {
-  var _classCallCheck, Knockout, _default;
+  var _classCallCheck, Knockout, MessageEditorViewModel;
 
   return {
     setters: [function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
@@ -4411,14 +4411,14 @@ System.register('app/message_editor/view_model.js', ['npm:babel-runtime@5.8.38/h
     execute: function () {
       'use strict';
 
-      _default = function _default(params) {
-        _classCallCheck(this, _default);
+      MessageEditorViewModel = function MessageEditorViewModel(params) {
+        _classCallCheck(this, MessageEditorViewModel);
 
         console.log(params);
         this.text = Knockout.observable(params.initialText || '');
       };
 
-      _export('default', _default);
+      _export('default', MessageEditorViewModel);
     }
   };
 });
