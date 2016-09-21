@@ -77,5 +77,6 @@
     "css": "jspm:css"
   },
   "github:systemjs/plugin-css@0.1.27": {},
-  "github:medialize/URI.js@1.18.1": {}
+  "github:medialize/URI.js@1.18.1": {},
+  "npm:moment@2.15.0": {}
 }

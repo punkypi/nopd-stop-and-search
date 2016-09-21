@@ -18,6 +18,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.7",
     "knockout": "npm:knockout@3.4.0",
+    "moment": "npm:moment@2.15.0",
     "skeleton": "github:dhg/Skeleton@2.0.4",
     "uri": "github:medialize/URI.js@1.18.1",
     "github:dhg/Skeleton@2.0.4": {
