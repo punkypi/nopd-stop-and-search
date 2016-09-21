@@ -19,6 +19,7 @@ System.config({
     "core-js": "npm:core-js@1.2.7",
     "knockout": "npm:knockout@3.4.0",
     "skeleton": "github:dhg/Skeleton@2.0.4",
+    "uri": "github:medialize/URI.js@1.18.1",
     "github:dhg/Skeleton@2.0.4": {
       "css": "github:systemjs/plugin-css@0.1.27",
       "normalize.css": "github:necolas/normalize.css@3.0.3"
