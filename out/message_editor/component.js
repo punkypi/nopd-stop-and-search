@@ -4441,7 +4441,6 @@ System.register('app/message_editor/component.js', ['npm:knockout@3.4.0.js', 'ap
           viewModel: ViewModel,
           template: '\n      Message: <input data-bind="value: text" />\n      (length: <span data-bind="text: text().length"></span>)'
         });
-        Knockout.applyBindings();
       })();
     }
   };
