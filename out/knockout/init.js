@@ -4383,7 +4383,7 @@ System.registerDynamic("npm:knockout@3.4.0.js", ["npm:knockout@3.4.0/build/outpu
   module.exports = $__require("npm:knockout@3.4.0/build/output/knockout-latest.debug.js");
   return module.exports;
 });
-System.register('app/init_knockout.js', ['npm:knockout@3.4.0.js'], function (_export) {
+System.register('app/knockout/init.js', ['npm:knockout@3.4.0.js'], function (_export) {
   'use strict';
 
   var Knockout;
@@ -4396,4 +4396,4 @@ System.register('app/init_knockout.js', ['npm:knockout@3.4.0.js'], function (_ex
     }
   };
 });
-//# sourceMappingURL=init_knockout.js.map
+//# sourceMappingURL=init.js.map
