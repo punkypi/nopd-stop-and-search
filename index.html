@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <head>
   <title>Stop and Search Queries</title>
+  <link rel="stylesheet" type="text/css" href="app/stylesheets/normalize.css"/>
+  <link rel="stylesheet" type="text/css" href="app/stylesheets/skeleton.css"/>
   <script src="jspm_packages/system.js"></script>
   <script src="config.js"></script>
   <script src="out/current_month_range/component.js"></script>
@@ -8,11 +10,18 @@
   <script src="out/knockout/init.js"></script>
 </head>
 <body>
-  <h1>Welcome!</h1>
-  <current_month_range></current_month_range>
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h1>Welcome!</h1>
+      </div>
+    </div>
 
-  <h4>Second instance, passing parameters</h4>
-  <message_editor params="initialText: 'Hello, world!'"></message_editor>
+    <current_month_range></current_month_range>
+
+    <h4>Second instance, passing parameters</h4>
+    <message_editor params="initialText: 'Hello, world!'"></message_editor>
+  </div>
 </body>
 <script>
   System.import('app/current_month_range/component.js');
