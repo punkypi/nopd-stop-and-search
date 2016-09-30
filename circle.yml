@@ -1,0 +1,4 @@
+test:
+  override:
+    - htmlhint index.html app
+    - jshint app

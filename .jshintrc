@@ -187,13 +187,13 @@
   "jquery": false,
   // jQuery
 
-  "mocha": true,
+  "mocha": false,
   // Mocha
 
   "mootools": false,
   // MooTools
 
-  "node": false,
+  "node": true,
   // Node.js
 
   "nonstandard": false,
