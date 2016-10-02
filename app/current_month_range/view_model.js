@@ -1,14 +1,17 @@
-import Moment from 'moment'
+import CurrentMonthRange from './model'
 
 export default class CurrentMonthRangeViewModel {
+  currentMonthRange() {
+    return new CurrentMonthRange()
+  }
   startOfMonth() {
-    return new Moment().startOf('month')
+    return this.currentMonthRange().start()
   }
   startString() {
     return this.startOfMonth().format("YYYY-MM-DDTHH:mm:ss")
   }
   endOfMonth() {
-    return new Moment().endOf('month')
+    return this.currentMonthRange().end()
   }
   endString() {
     return this.endOfMonth().format("YYYY-MM-DDTHH:mm:ss")

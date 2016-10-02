@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <head>
   <title>Stop and Search Queries</title>
+  <link rel="stylesheet" type="text/css"
+        href="https://fonts.googleapis.com/css?family=Raleway"/>
   <link rel="stylesheet" type="text/css" href="app/stylesheets/normalize.css"/>
   <link rel="stylesheet" type="text/css" href="app/stylesheets/skeleton.css"/>
   <script src="jspm_packages/system.js"></script>
   <script src="config.js"></script>
-  <script src="out/current_month_range/component.js"></script>
-  <script src="out/message_editor/component.js"></script>
+  <script src="out/current_month_traffic_stop_count/component.js"></script>
   <script src="out/knockout/init.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="row">
       <div class="twelve columns">
-        <h1>Welcome!</h1>
+        <h1>NOLA Stop and Search Data</h1>
       </div>
     </div>
 
-    <current_month_range></current_month_range>
-
-    <h4>Second instance, passing parameters</h4>
-    <message_editor params="initialText: 'Hello, world!'"></message_editor>
+    <current_month_traffic_stop_count>
+    </current_month_traffic_stop_count>
   </div>
 </body>
 <script>
-  System.import('app/current_month_range/component.js');
-  System.import('app/message_editor/component.js');
+  System.import('app/current_month_traffic_stop_count/component.js');
   System.import('app/knockout/init.js');
 </script>

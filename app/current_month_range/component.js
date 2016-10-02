@@ -11,4 +11,4 @@ import ViewModel from './view_model'
       <br/>
       End: <span data-bind="text: endString()"></span>`
   })
-})();
+})()
