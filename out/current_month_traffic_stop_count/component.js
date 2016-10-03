@@ -4384,6 +4384,54 @@ System.registerDynamic("npm:knockout@3.4.0.js", ["npm:knockout@3.4.0/build/outpu
   module.exports = $__require("npm:knockout@3.4.0/build/output/knockout-latest.debug.js");
   return module.exports;
 });
+System.register('app/current_month_range/model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:moment@2.15.0.js'], function (_export) {
+  var _createClass, _classCallCheck, Moment, CurrentMonthRange;
+
+  return {
+    setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
+      _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
+    }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+      _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
+    }, function (_npmMoment2150Js) {
+      Moment = _npmMoment2150Js['default'];
+    }],
+    execute: function () {
+      'use strict';
+
+      CurrentMonthRange = (function () {
+        function CurrentMonthRange() {
+          _classCallCheck(this, CurrentMonthRange);
+        }
+
+        _createClass(CurrentMonthRange, [{
+          key: 'end',
+          value: function end() {
+            return new Moment().endOf('month');
+          }
+        }, {
+          key: 'start',
+          value: function start() {
+            return new Moment().startOf('month');
+          }
+        }, {
+          key: 'toInteger',
+          value: function toInteger() {
+            return new Moment().month();
+          }
+        }, {
+          key: 'toString',
+          value: function toString() {
+            return new Moment().format("MMMM");
+          }
+        }]);
+
+        return CurrentMonthRange;
+      })();
+
+      _export('default', CurrentMonthRange);
+    }
+  };
+});
 System.registerDynamic("npm:core-js@1.2.7/library/modules/$.js", [], true, function ($__require, exports, module) {
   var define,
       global = this || self,
@@ -7617,44 +7665,6 @@ define("npm:moment@2.15.0.js", ["npm:moment@2.15.0/moment.js"], function(main) {
 });
 
 })();
-System.register('app/current_month_range/model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:moment@2.15.0.js'], function (_export) {
-  var _createClass, _classCallCheck, Moment, CurrentMonthRange;
-
-  return {
-    setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
-      _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
-    }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
-      _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
-    }, function (_npmMoment2150Js) {
-      Moment = _npmMoment2150Js['default'];
-    }],
-    execute: function () {
-      'use strict';
-
-      CurrentMonthRange = (function () {
-        function CurrentMonthRange() {
-          _classCallCheck(this, CurrentMonthRange);
-        }
-
-        _createClass(CurrentMonthRange, [{
-          key: 'start',
-          value: function start() {
-            return new Moment().startOf('month');
-          }
-        }, {
-          key: 'end',
-          value: function end() {
-            return new Moment().endOf('month');
-          }
-        }]);
-
-        return CurrentMonthRange;
-      })();
-
-      _export('default', CurrentMonthRange);
-    }
-  };
-});
 (function() {
 var define = System.amdDefine;
 ;
@@ -9985,28 +9995,34 @@ define("github:medialize/URI.js@1.18.1.js", ["github:medialize/URI.js@1.18.1/src
 });
 
 })();
-System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'app/current_month_range/model.js', 'github:medialize/URI.js@1.18.1.js'], function (_export) {
-  var _createClass, _classCallCheck, CurrentMonthRange, URI, CurrentMonthTrafficStopCount;
+System.register('app/traffic_stop_count_by_month/request.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:moment@2.15.0.js', 'github:medialize/URI.js@1.18.1.js'], function (_export) {
+  var _createClass, _classCallCheck, Moment, URI, TrafficStopCountByMonthRequest;
 
   return {
     setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
       _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
     }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
       _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
-    }, function (_appCurrent_month_rangeModelJs) {
-      CurrentMonthRange = _appCurrent_month_rangeModelJs['default'];
+    }, function (_npmMoment2150Js) {
+      Moment = _npmMoment2150Js['default'];
     }, function (_githubMedializeURIJs1181Js) {
       URI = _githubMedializeURIJs1181Js['default'];
     }],
     execute: function () {
       'use strict';
 
-      CurrentMonthTrafficStopCount = (function () {
-        function CurrentMonthTrafficStopCount() {
-          _classCallCheck(this, CurrentMonthTrafficStopCount);
+      TrafficStopCountByMonthRequest = (function () {
+        function TrafficStopCountByMonthRequest() {
+          var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+          var index = _ref.index;
+
+          _classCallCheck(this, TrafficStopCountByMonthRequest);
+
+          this.month = new Moment().month(index);
         }
 
-        _createClass(CurrentMonthTrafficStopCount, [{
+        _createClass(TrafficStopCountByMonthRequest, [{
           key: 'count',
           value: function count() {
             var request = new XMLHttpRequest();
@@ -10017,11 +10033,6 @@ System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babe
             return JSON.parse(request.response)[0].count_stopdescription;
           }
         }, {
-          key: 'currentMonthRange',
-          value: function currentMonthRange() {
-            return new CurrentMonthRange();
-          }
-        }, {
           key: 'dbFormat',
           value: function dbFormat() {
             return 'YYYY-MM-DDTHH:mm:ss';
@@ -10029,7 +10040,12 @@ System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babe
         }, {
           key: 'endOfMonth',
           value: function endOfMonth() {
-            return new this.currentMonthRange().end();
+            return this.month.endOf('month');
+          }
+        }, {
+          key: 'month',
+          value: function month() {
+            return this.month;
           }
         }, {
           key: 'eventdateRangeBeginning',
@@ -10044,7 +10060,96 @@ System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babe
         }, {
           key: 'startOfMonth',
           value: function startOfMonth() {
-            return this.currentMonthRange().start();
+            return this.month.startOf('month');
+          }
+        }, {
+          key: 'uri',
+          value: function uri() {
+            return URI("https://data.nola.gov/resource/nfft-hjwi").addQuery({ $where: "stopdescription like '%TRAFFIC VIOLATION%' and " + "eventdate between " + ('\'' + this.eventdateRangeBeginning() + '\' and ') + ('\'' + this.eventdateRangeEnd() + '\'') }).addQuery({ $select: "count(stopdescription)" });
+          }
+        }]);
+
+        return TrafficStopCountByMonthRequest;
+      })();
+
+      _export('default', TrafficStopCountByMonthRequest);
+    }
+  };
+});
+System.register('app/traffic_stop_count_by_month.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'app/traffic_stop_count_by_month/request.js'], function (_export) {
+  var _createClass, _classCallCheck, Request, TrafficStopCountByMonth;
+
+  return {
+    setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
+      _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
+    }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+      _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
+    }, function (_appTraffic_stop_count_by_monthRequestJs) {
+      Request = _appTraffic_stop_count_by_monthRequestJs['default'];
+    }],
+    execute: function () {
+      'use strict';
+
+      TrafficStopCountByMonth = (function () {
+        function TrafficStopCountByMonth() {
+          var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+          var index = _ref.index;
+
+          _classCallCheck(this, TrafficStopCountByMonth);
+
+          this.request = new Request({ index: index });
+        }
+
+        _createClass(TrafficStopCountByMonth, [{
+          key: 'count',
+          value: function count() {
+            return this.request.count();
+          }
+        }, {
+          key: 'request',
+          value: function request() {
+            return this.request;
+          }
+        }]);
+
+        return TrafficStopCountByMonth;
+      })();
+
+      _export('default', TrafficStopCountByMonth);
+    }
+  };
+});
+System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'app/current_month_range/model.js', 'app/traffic_stop_count_by_month.js'], function (_export) {
+  var _createClass, _classCallCheck, CurrentMonthRange, TrafficStopCountByMonth, CurrentMonthTrafficStopCount;
+
+  return {
+    setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
+      _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
+    }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+      _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
+    }, function (_appCurrent_month_rangeModelJs) {
+      CurrentMonthRange = _appCurrent_month_rangeModelJs['default'];
+    }, function (_appTraffic_stop_count_by_monthJs) {
+      TrafficStopCountByMonth = _appTraffic_stop_count_by_monthJs['default'];
+    }],
+    execute: function () {
+      'use strict';
+
+      CurrentMonthTrafficStopCount = (function () {
+        function CurrentMonthTrafficStopCount() {
+          _classCallCheck(this, CurrentMonthTrafficStopCount);
+        }
+
+        _createClass(CurrentMonthTrafficStopCount, [{
+          key: 'count',
+          value: function count() {
+            return new TrafficStopCountByMonth({ index: this.currentMonthRange().toInteger() }).count();
+          }
+        }, {
+          key: 'currentMonthRange',
+          value: function currentMonthRange() {
+            return new CurrentMonthRange();
           }
         }, {
           key: 'title',
@@ -10055,11 +10160,6 @@ System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babe
           key: 'toString',
           value: function toString() {
             return this.title() + this.count();
-          }
-        }, {
-          key: 'uri',
-          value: function uri() {
-            return URI("https://data.nola.gov/resource/nfft-hjwi").addQuery({ $where: "stopdescription like '%TRAFFIC VIOLATION%' and " + "eventdate between " + ('\'' + this.eventdateRangeBeginning() + '\' and ') + ('\'' + this.eventdateRangeEnd() + '\'') }).addQuery({ $select: "count(stopdescription)" });
           }
         }]);
 
