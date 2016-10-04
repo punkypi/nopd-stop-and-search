@@ -1,19 +1,27 @@
-import Moment from 'moment'
+import Now from '../now'
 
 export default class CurrentMonthRange {
+  constructor() {
+    this.month = Now.month()
+  }
+
   end() {
-    return new Moment().endOf('month')
+    return this.month.end()
+  }
+
+  month() {
+    return this.month
   }
 
   start() {
-    return new Moment().startOf('month')
+    return this.month.start()
   }
 
   toInteger() {
-    return new Moment().month()
+    return this.month.toInteger()
   }
 
   toString() {
-    return new Moment().format("MMMM")
+    return this.month.toString()
   }
 }

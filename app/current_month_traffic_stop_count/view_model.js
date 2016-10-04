@@ -1,14 +1,14 @@
-import CurrentMonthRange from '../current_month_range/model'
 import TrafficStopCountByMonth from '../traffic_stop_count_by_month'
+import Now from '../now'
 
 export default class CurrentMonthTrafficStopCount {
   count() {
     return new TrafficStopCountByMonth(
-      { index: this.currentMonthRange().toInteger() }).count()
+      { index: this.currentMonth().toInteger() }).count()
   }
 
-  currentMonthRange() {
-    return new CurrentMonthRange()
+  currentMonth() {
+    return Now.month()
   }
 
   title() {
