@@ -23,6 +23,7 @@
     "dependencies": {
       "knockout": "npm:knockout@^3.4.0",
       "moment": "npm:moment@^2.15.0",
+      "normalize.css": "npm:normalize.css@^5.0.0",
       "skeleton": "github:dhg/Skeleton@^2.0.4",
       "uri": "github:medialize/URI.js@^1.18.1"
     },
