@@ -39,6 +39,10 @@ export default class TrafficStopCountByMonthRequest {
     return this.month.startOf('month')
   }
 
+  toString() {
+    return "GET " + this.uri()
+  }
+
   uri() {
     return URI("https://data.nola.gov/resource/nfft-hjwi")
       .addQuery({ $where: "stopdescription like '%TRAFFIC VIOLATION%' and " +

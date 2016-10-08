@@ -4384,61 +4384,6 @@ System.registerDynamic("npm:knockout@3.4.0.js", ["npm:knockout@3.4.0/build/outpu
   module.exports = $__require("npm:knockout@3.4.0/build/output/knockout-latest.debug.js");
   return module.exports;
 });
-System.register('app/current_month_range/model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'app/now.js'], function (_export) {
-  var _createClass, _classCallCheck, Now, CurrentMonthRange;
-
-  return {
-    setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
-      _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
-    }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
-      _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
-    }, function (_appNowJs) {
-      Now = _appNowJs['default'];
-    }],
-    execute: function () {
-      'use strict';
-
-      CurrentMonthRange = (function () {
-        function CurrentMonthRange() {
-          _classCallCheck(this, CurrentMonthRange);
-
-          this.month = Now.month();
-        }
-
-        _createClass(CurrentMonthRange, [{
-          key: 'end',
-          value: function end() {
-            return this.month.end();
-          }
-        }, {
-          key: 'month',
-          value: function month() {
-            return this.month;
-          }
-        }, {
-          key: 'start',
-          value: function start() {
-            return this.month.start();
-          }
-        }, {
-          key: 'toInteger',
-          value: function toInteger() {
-            return this.month.toInteger();
-          }
-        }, {
-          key: 'toString',
-          value: function toString() {
-            return this.month.toString();
-          }
-        }]);
-
-        return CurrentMonthRange;
-      })();
-
-      _export('default', CurrentMonthRange);
-    }
-  };
-});
 (function() {
 var define = System.amdDefine;
 ;
@@ -6793,6 +6738,7 @@ System.register('app/traffic_stop_count_by_month/request.js', ['npm:babel-runtim
 
           _classCallCheck(this, TrafficStopCountByMonthRequest);
 
+          console.log('Index: ' + index);
           this.month = new Moment().month(index);
         }
 
@@ -6835,6 +6781,11 @@ System.register('app/traffic_stop_count_by_month/request.js', ['npm:babel-runtim
           key: 'startOfMonth',
           value: function startOfMonth() {
             return this.month.startOf('month');
+          }
+        }, {
+          key: 'toString',
+          value: function toString() {
+            return "GET " + this.uri();
           }
         }, {
           key: 'uri',
@@ -10127,7 +10078,7 @@ define("npm:moment@2.15.0.js", ["npm:moment@2.15.0/moment.js"], function(main) {
 });
 
 })();
-System.register('app/now/month.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:moment@2.15.0.js'], function (_export) {
+System.register('app/month.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:moment@2.15.0.js'], function (_export) {
   var _createClass, _classCallCheck, Moment, Month;
 
   return {
@@ -10142,16 +10093,42 @@ System.register('app/now/month.js', ['npm:babel-runtime@5.8.38/helpers/create-cl
       'use strict';
 
       Month = (function () {
+        _createClass(Month, null, [{
+          key: 'named',
+          value: function named(name) {
+            return new Month({ index: name });
+          }
+        }, {
+          key: 'current',
+          value: function current() {
+            return new Month({ index: new Moment().month() });
+          }
+        }]);
+
         function Month() {
+          var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+          var index = _ref.index;
+
           _classCallCheck(this, Month);
 
-          this.moment = new Moment();
+          this.moment = new Moment().month(index);
         }
 
         _createClass(Month, [{
+          key: 'abbreviation',
+          value: function abbreviation() {
+            return this.moment.format("MMM");
+          }
+        }, {
           key: 'end',
           value: function end() {
             return this.moment.endOf('month');
+          }
+        }, {
+          key: 'name',
+          value: function name() {
+            return this.moment.format("MMMM");
           }
         }, {
           key: 'start',
@@ -10166,7 +10143,7 @@ System.register('app/now/month.js', ['npm:babel-runtime@5.8.38/helpers/create-cl
         }, {
           key: 'toString',
           value: function toString() {
-            return this.moment.format("MMMM");
+            return this.name();
           }
         }]);
 
@@ -10177,53 +10154,18 @@ System.register('app/now/month.js', ['npm:babel-runtime@5.8.38/helpers/create-cl
     }
   };
 });
-System.register('app/now.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'app/now/month.js'], function (_export) {
-  var _createClass, _classCallCheck, Month, Now;
+System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'app/traffic_stop_count_by_month.js', 'app/month.js'], function (_export) {
+  var _createClass, _classCallCheck, TrafficStopCountByMonth, Month, CurrentMonthTrafficStopCount;
 
   return {
     setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
       _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
     }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
       _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
-    }, function (_appNowMonthJs) {
-      Month = _appNowMonthJs['default'];
-    }],
-    execute: function () {
-      'use strict';
-
-      Now = (function () {
-        function Now() {
-          _classCallCheck(this, Now);
-        }
-
-        _createClass(Now, null, [{
-          key: 'month',
-          value: function month() {
-            return new Month();
-          }
-        }]);
-
-        return Now;
-      })();
-
-      _export('default', Now);
-    }
-  };
-});
-System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'app/current_month_range/model.js', 'app/traffic_stop_count_by_month.js', 'app/now.js'], function (_export) {
-  var _createClass, _classCallCheck, CurrentMonthRange, TrafficStopCountByMonth, Now, CurrentMonthTrafficStopCount;
-
-  return {
-    setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
-      _createClass = _npmBabelRuntime5838HelpersCreateClassJs['default'];
-    }, function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
-      _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
-    }, function (_appCurrent_month_rangeModelJs) {
-      CurrentMonthRange = _appCurrent_month_rangeModelJs['default'];
     }, function (_appTraffic_stop_count_by_monthJs) {
       TrafficStopCountByMonth = _appTraffic_stop_count_by_monthJs['default'];
-    }, function (_appNowJs) {
-      Now = _appNowJs['default'];
+    }, function (_appMonthJs) {
+      Month = _appMonthJs['default'];
     }],
     execute: function () {
       'use strict';
@@ -10241,7 +10183,7 @@ System.register('app/current_month_traffic_stop_count/view_model.js', ['npm:babe
         }, {
           key: 'currentMonth',
           value: function currentMonth() {
-            return Now.month();
+            return Month.current();
           }
         }, {
           key: 'title',

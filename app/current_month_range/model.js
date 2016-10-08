@@ -1,8 +1,8 @@
-import Now from '../now'
+import Month from '../month'
 
 export default class CurrentMonthRange {
   constructor() {
-    this.month = Now.month()
+    this.month = Month.current()
   }
 
   end() {

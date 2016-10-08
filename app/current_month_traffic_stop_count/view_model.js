@@ -1,5 +1,5 @@
 import TrafficStopCountByMonth from '../traffic_stop_count_by_month'
-import Now from '../now'
+import Month from '../month'
 
 export default class CurrentMonthTrafficStopCount {
   count() {
@@ -8,7 +8,7 @@ export default class CurrentMonthTrafficStopCount {
   }
 
   currentMonth() {
-    return Now.month()
+    return Month.current()
   }
 
   title() {
