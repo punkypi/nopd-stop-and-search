@@ -1,1 +1,0 @@
-module.exports = require("npm:normalize.css@5.0.0/normalize.css");

@@ -69,15 +69,12 @@
   "npm:knockout@3.4.0": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:dhg/Skeleton@2.0.4": {
-    "css": "jspm:css@0.1",
-    "normalize.css": "jspm:normalize.css@3.0.3"
-  },
-  "github:necolas/normalize.css@3.0.3": {
-    "css": "jspm:css"
-  },
-  "github:systemjs/plugin-css@0.1.27": {},
   "github:medialize/URI.js@1.18.1": {},
   "npm:moment@2.15.0": {},
-  "npm:normalize.css@5.0.0": {}
+  "github:Semantic-Org/Semantic-UI@2.2.4": {
+    "jquery": "jspm:jquery@^2.1.4",
+    "css": "jspm:css"
+  },
+  "npm:jquery@2.2.4": {},
+  "github:systemjs/plugin-css@0.1.31": {}
 }

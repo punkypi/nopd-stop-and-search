@@ -7,19 +7,35 @@ import ViewModel from './view_model'
   Knockout.components.register('traffic_stop_count_by_month', {
     viewModel: ViewModel,
     template: `
-      <div class="row">
-        <div class="five columns">
-          <h2 data-bind="text: title()"></h2>
+      <div class="ui">
+        <div class="title">
+          <h2 class="ui header">
+            <i class="car icon"></i>
+            <div class="content" data-bind="text: title()">
+            </div>
+          </h2>
         </div>
-        <div class="two columns">
-          <select data-bind="
-            options: selectableMonths(),
-            value: selectedMonth">
-          </select>
+        <div class="content">
+          <div class="ui form">
+            <div class="field">
+              <label>In</label>
+              <select
+                id="month-select"
+                class="ui search selection dropdown"
+                data-bind="options: selectableMonths(), value: selectedMonth">
+              </select>
+            </div>
+          </div>
+          <div class="ui centered grid">
+            <div class="ui column centered row">
+              <div class="ui horizontal statistic">
+                <div class="value" data-bind="text: count"></div>
+                <div class="label">Total</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="five columns">
-          <h2 data-bind="text: count"></h2>
-        </div>
-      </div>`
+      </div>
+    `
   })
 })()

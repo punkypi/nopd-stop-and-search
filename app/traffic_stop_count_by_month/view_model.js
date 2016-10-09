@@ -30,6 +30,6 @@ export default class TrafficStopCountByMonthViewModel {
   }
 
   title() {
-    return "Traffic Stops Made "
+    return "Traffic Violations"
   }
 }

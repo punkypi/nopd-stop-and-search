@@ -19,12 +19,11 @@ System.config({
     "core-js": "npm:core-js@1.2.7",
     "knockout": "npm:knockout@3.4.0",
     "moment": "npm:moment@2.15.0",
-    "normalize.css": "npm:normalize.css@5.0.0",
-    "skeleton": "github:dhg/Skeleton@2.0.4",
+    "semantic-ui": "github:Semantic-Org/Semantic-UI@2.2.4",
     "uri": "github:medialize/URI.js@1.18.1",
-    "github:dhg/Skeleton@2.0.4": {
-      "css": "github:systemjs/plugin-css@0.1.27",
-      "normalize.css": "github:necolas/normalize.css@3.0.3"
+    "github:Semantic-Org/Semantic-UI@2.2.4": {
+      "css": "github:systemjs/plugin-css@0.1.31",
+      "jquery": "npm:jquery@2.2.4"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -43,9 +42,6 @@ System.config({
     },
     "github:jspm/nodelibs-vm@0.1.0": {
       "vm-browserify": "npm:vm-browserify@0.0.4"
-    },
-    "github:necolas/normalize.css@3.0.3": {
-      "css": "github:systemjs/plugin-css@0.1.27"
     },
     "npm:assert@1.4.1": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",

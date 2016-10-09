@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <head>
   <title>Stop and Search Queries</title>
-  <link rel="stylesheet" type="text/css"
-        href="https://fonts.googleapis.com/css?family=Raleway"/>
-  <link rel="stylesheet" type="text/css" href="app/stylesheets/normalize.css"/>
-  <link rel="stylesheet" type="text/css" href="app/stylesheets/skeleton.css"/>
   <script src="jspm_packages/system.js"></script>
   <script src="config.js"></script>
+  <script src="out/stylesheets.js"></script>
   <script src="out/traffic_stop_count_by_month/component.js"></script>
   <script src="out/knockout/init.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="twelve columns">
-        <h1>NOLA Stop and Search Data</h1>
+  <div class="ui two column centered grid">
+    <div id="content" class="column">
+      <div id="title" class="row">
+        <h1 class="ui header">NOLA Stop and Search Data</h1>
       </div>
-    </div>
 
-    <traffic_stop_count_by_month>
-    </traffic_stop_count_by_month>
+      <traffic_stop_count_by_month>
+      </traffic_stop_count_by_month>
+    </div>
   </div>
 </body>
 <script>
+  System.import('app/stylesheets.js');
   System.import('app/traffic_stop_count_by_month/component.js');
   System.import('app/knockout/init.js');
 </script>

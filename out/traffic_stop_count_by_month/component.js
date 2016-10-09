@@ -10149,7 +10149,7 @@ System.register('app/traffic_stop_count_by_month/view_model.js', ['npm:babel-run
         }, {
           key: 'title',
           value: function title() {
-            return "Traffic Stops Made ";
+            return "Traffic Violations";
           }
         }]);
 
@@ -10177,7 +10177,7 @@ System.register('app/traffic_stop_count_by_month/component.js', ['npm:knockout@3
 
         Knockout.components.register('traffic_stop_count_by_month', {
           viewModel: ViewModel,
-          template: '\n      <div class="row">\n        <div class="five columns">\n          <h2 data-bind="text: title()"></h2>\n        </div>\n        <div class="two columns">\n          <select data-bind="\n            options: selectableMonths(),\n            value: selectedMonth">\n          </select>\n        </div>\n        <div class="five columns">\n          <h2 data-bind="text: count"></h2>\n        </div>\n      </div>'
+          template: '\n      <div class="ui">\n        <div class="title">\n          <h2 class="ui header">\n            <i class="car icon"></i>\n            <div class="content" data-bind="text: title()">\n            </div>\n          </h2>\n        </div>\n        <div class="content">\n          <div class="ui form">\n            <div class="field">\n              <label>In</label>\n              <select\n                id="month-select"\n                class="ui search selection dropdown"\n                data-bind="options: selectableMonths(), value: selectedMonth">\n              </select>\n            </div>\n          </div>\n          <div class="ui centered grid">\n            <div class="ui column centered row">\n              <div class="ui horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
         });
       })();
     }
