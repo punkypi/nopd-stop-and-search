@@ -11,8 +11,7 @@ import ViewModel from './view_model'
         <div class="title">
           <h2 class="ui header">
             <i class="car icon"></i>
-            <div class="content" data-bind="text: title()">
-            </div>
+            <div class="content" data-bind="text: title()"></div>
           </h2>
         </div>
         <div class="content">
