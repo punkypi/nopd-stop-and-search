@@ -17,9 +17,13 @@ System.config({
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.7",
+    "jquery": "npm:jquery@3.1.1",
     "knockout": "npm:knockout@3.4.0",
     "moment": "npm:moment@2.15.0",
     "semantic-ui": "github:Semantic-Org/Semantic-UI@2.2.4",
+    "semantic-ui-css": "npm:semantic-ui-css@2.2.4",
+    "semantic-ui-dropdown": "npm:semantic-ui-dropdown@2.2.3",
+    "semantic-ui-transition": "npm:semantic-ui-transition@2.2.3",
     "uri": "github:medialize/URI.js@1.18.1",
     "github:Semantic-Org/Semantic-UI@2.2.4": {
       "css": "github:systemjs/plugin-css@0.1.31",
@@ -79,6 +83,9 @@ System.config({
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
+    },
+    "npm:semantic-ui-css@2.2.4": {
+      "jquery": "npm:jquery@3.1.1"
     },
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",

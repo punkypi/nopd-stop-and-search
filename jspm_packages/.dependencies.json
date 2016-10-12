@@ -76,5 +76,11 @@
     "css": "jspm:css"
   },
   "npm:jquery@2.2.4": {},
-  "github:systemjs/plugin-css@0.1.31": {}
+  "github:systemjs/plugin-css@0.1.31": {},
+  "npm:jquery@3.1.1": {},
+  "npm:semantic-ui-dropdown@2.2.3": {},
+  "npm:semantic-ui-transition@2.2.3": {},
+  "npm:semantic-ui-css@2.2.4": {
+    "jquery": "npm:jquery"
+  }
 }

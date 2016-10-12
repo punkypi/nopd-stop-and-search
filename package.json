@@ -21,9 +21,13 @@
   },
   "jspm": {
     "dependencies": {
+      "jquery": "npm:jquery@^3.1.1",
       "knockout": "npm:knockout@^3.4.0",
       "moment": "npm:moment@^2.15.0",
       "semantic-ui": "github:Semantic-Org/Semantic-UI@^2.2.4",
+      "semantic-ui-css": "npm:semantic-ui-css@^2.2.4",
+      "semantic-ui-dropdown": "npm:semantic-ui-dropdown@^2.2.3",
+      "semantic-ui-transition": "npm:semantic-ui-transition@^2.2.3",
       "uri": "github:medialize/URI.js@^1.18.1"
     },
     "devDependencies": {

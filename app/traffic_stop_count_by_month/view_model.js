@@ -1,32 +1,23 @@
+import $ from 'jquery'
 import Knockout from 'knockout'
+import Dropdown from 'semantic-ui-dropdown'
+import Transition from 'semantic-ui-transition'
 import Request from './request'
 import Month from '../month'
 
+$.fn.dropdown = Dropdown
+$.fn.transition = Transition
+
 export default class TrafficStopCountByMonthViewModel {
   constructor() {
-    this.selectableMonths = Knockout.observableArray([
-      "Januaray",
-      "Feburary",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ])
-
-    this.selectedMonth = Knockout.observable(Month.current().toString())
+    this.selectedMonth = Knockout.observable(this.defaultMonth())
     this.count = Knockout.computed(() => {
-      return new Request({index: this.selectedMonth()}).count()
+      return new Request({ index: this.selectedMonth() }).count()
     })
   }
 
-  selectableMonths() {
-    return this.selectableMonths
+  defaultMonth() {
+    return Month.current().toString()
   }
 
   title() {

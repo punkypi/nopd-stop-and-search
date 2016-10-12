@@ -1,3 +1,4 @@
+import '../month_selector/component'
 import Knockout from 'knockout'
 import ViewModel from './view_model'
 
@@ -16,14 +17,8 @@ import ViewModel from './view_model'
         </div>
         <div class="content">
           <div class="ui form">
-            <div class="field">
-              <label>In</label>
-              <select
-                id="month-select"
-                class="ui search selection dropdown"
-                data-bind="options: selectableMonths(), value: selectedMonth">
-              </select>
-            </div>
+            <month_selector params="label: 'In', selectedMonth: selectedMonth">
+            </month_selector>
           </div>
           <div class="ui centered grid">
             <div class="ui column centered row">
