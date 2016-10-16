@@ -1,12 +1,6 @@
-import $ from 'jquery'
 import Knockout from 'knockout'
-import Dropdown from 'semantic-ui-dropdown'
-import Transition from 'semantic-ui-transition'
 import Request from './request'
 import Month from '../month'
-
-$.fn.dropdown = Dropdown
-$.fn.transition = Transition
 
 export default class TrafficStopCountByMonthViewModel {
   constructor() {
