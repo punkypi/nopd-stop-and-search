@@ -7,12 +7,17 @@ export default class TrafficStopCountByMonthRequest {
   }
 
   count() {
-    var request = new XMLHttpRequest()
-    request.open('get', this.uri().normalize(), false)
-    request.setRequestHeader("X-App-Token", "3QZx3OfxcculHVue3kYIPrrKZ")
-    request.setRequestHeader("Accept", "application/json")
-    request.send()
-    return JSON.parse(request.response)[0].count_stopdescription
+    try {
+      var request = new XMLHttpRequest()
+      request.open('get', this.uri().normalize(), false)
+      request.setRequestHeader("X-App-Token", "3QZx3OfxcculHVue3kYIPrrKZ")
+      request.setRequestHeader("Accept", "application/json")
+      request.send()
+      return JSON.parse(request.response)[0].count_stopdescription
+    }
+    catch (e) {
+      return 0
+    }
   }
 
   dbFormat() {
