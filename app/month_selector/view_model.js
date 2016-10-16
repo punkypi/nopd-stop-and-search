@@ -1,15 +1,12 @@
-import $ from 'jquery'
 import Knockout from 'knockout'
-import Dropdown from 'semantic-ui-dropdown'
-import Transition from 'semantic-ui-transition'
 import Month from '../month'
 
-$.fn.dropdown = Dropdown
-$.fn.transition = Transition
-
 export default class MonthSelectorViewModel {
-  constructor({ label, selectedMonth } = {}) {
-    this.selectableMonths = Knockout.observableArray([
+  constructor({ label, bindSelectedMonthTo } = {}) {
+    this.defaultMonth = Month.current().name()
+    this.selectedMonth = bindSelectedMonthTo || Knockout.observable()
+    this.label = Knockout.observable(Knockout.unwrap(label))
+    this.optionalMonths = Knockout.observableArray([
       "Januaray",
       "Feburary",
       "March",
@@ -23,23 +20,8 @@ export default class MonthSelectorViewModel {
       "November",
       "December"
     ].map(function(monthName) {
-      return new Month({ index: monthName })
+      let month = new Month({ index: monthName })
+      return { name: month.name(), value: month.name() }
     }));
-
-    this.selectedMonth = selectedMonth
-    this.label = Knockout.observable(Knockout.unwrap(label))
-    this.initSelect()
-  }
-
-  initSelect() {
-    $(".dropdown").dropdown()
-  }
-
-  label() {
-    return 'Label'
-  }
-
-  selectableMonths() {
-    return this.selectableMonths
   }
 }

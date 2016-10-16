@@ -17,7 +17,10 @@ import ViewModel from './view_model'
         </div>
         <div class="content">
           <div class="ui form">
-            <month_selector params="label: 'In', selectedMonth: selectedMonth">
+            <month_selector params="
+              bindSelectedMonthTo: selectedMonth,
+              label: 'In'
+            ">
             </month_selector>
           </div>
           <div class="ui centered grid">

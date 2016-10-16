@@ -61,8 +61,8 @@ System.register('app/optional_label/component.js', ['npm:knockout@3.4.0.js', 'ap
     }
   };
 });
-System.register('app/month_selector/view_model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:jquery@3.1.1.js', 'npm:knockout@3.4.0.js', 'npm:semantic-ui-dropdown@2.2.3.js', 'npm:semantic-ui-transition@2.2.3.js', 'app/month.js'], function (_export) {
-  var _createClass, _classCallCheck, $, Knockout, Dropdown, Transition, Month, MonthSelectorViewModel;
+System.register('app/searchable_dropdown_selector/view_model.js', ['npm:babel-runtime@5.8.38/helpers/create-class.js', 'npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:jquery@3.1.1.js', 'npm:knockout@3.4.0.js', 'npm:semantic-ui-dropdown@2.2.3.js', 'npm:semantic-ui-transition@2.2.3.js'], function (_export) {
+  var _createClass, _classCallCheck, $, Knockout, Dropdown, Transition, SearchableDropdownSelectorViewModel;
 
   return {
     setters: [function (_npmBabelRuntime5838HelpersCreateClassJs) {
@@ -77,8 +77,6 @@ System.register('app/month_selector/view_model.js', ['npm:babel-runtime@5.8.38/h
       Dropdown = _npmSemanticUiDropdown223Js['default'];
     }, function (_npmSemanticUiTransition223Js) {
       Transition = _npmSemanticUiTransition223Js['default'];
-    }, function (_appMonthJs) {
-      Month = _appMonthJs['default'];
     }],
     execute: function () {
       'use strict';
@@ -86,54 +84,102 @@ System.register('app/month_selector/view_model.js', ['npm:babel-runtime@5.8.38/h
       $.fn.dropdown = Dropdown;
       $.fn.transition = Transition;
 
-      MonthSelectorViewModel = (function () {
-        function MonthSelectorViewModel() {
+      SearchableDropdownSelectorViewModel = (function () {
+        function SearchableDropdownSelectorViewModel() {
           var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-          var label = _ref.label;
-          var selectedMonth = _ref.selectedMonth;
+          var bindLabelTo = _ref.bindLabelTo;
+          var bindSelectedOptionTo = _ref.bindSelectedOptionTo;
+          var bindOptionsTo = _ref.bindOptionsTo;
+          var defaultOption = _ref.defaultOption;
 
-          _classCallCheck(this, MonthSelectorViewModel);
+          _classCallCheck(this, SearchableDropdownSelectorViewModel);
 
-          this.selectableMonths = Knockout.observableArray(["Januaray", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map(function (monthName) {
-            return new Month({ index: monthName });
-          }));
-
-          this.selectedMonth = selectedMonth;
-          this.label = Knockout.observable(Knockout.unwrap(label));
+          this.label = bindLabelTo || Knockout.observable();
+          this.options = bindOptionsTo || Knockout.observable();
+          this.selectedOption = bindSelectedOptionTo || Knockout.observable();
+          this.selectedOption(defaultOption);
           this.initSelect();
         }
 
-        _createClass(MonthSelectorViewModel, [{
+        _createClass(SearchableDropdownSelectorViewModel, [{
           key: 'initSelect',
           value: function initSelect() {
             $(".dropdown").dropdown();
           }
-        }, {
-          key: 'label',
-          value: function label() {
-            return 'Label';
-          }
-        }, {
-          key: 'selectableMonths',
-          value: function selectableMonths() {
-            return this.selectableMonths;
-          }
         }]);
 
-        return MonthSelectorViewModel;
+        return SearchableDropdownSelectorViewModel;
       })();
 
-      _export('default', MonthSelectorViewModel);
+      _export('default', SearchableDropdownSelectorViewModel);
     }
   };
 });
-System.register('app/month_selector/component.js', ['app/optional_label/component.js', 'npm:knockout@3.4.0.js', 'app/month_selector/view_model.js'], function (_export) {
+System.register('app/searchable_dropdown_selector/component.js', ['app/optional_label/component.js', 'npm:knockout@3.4.0.js', 'app/searchable_dropdown_selector/view_model.js'], function (_export) {
   'use strict';
 
   var Knockout, ViewModel;
   return {
     setters: [function (_appOptional_labelComponentJs) {}, function (_npmKnockout340Js) {
+      Knockout = _npmKnockout340Js['default'];
+    }, function (_appSearchable_dropdown_selectorView_modelJs) {
+      ViewModel = _appSearchable_dropdown_selectorView_modelJs['default'];
+    }],
+    execute: function () {
+
+      (function () {
+        'use strict';
+
+        Knockout.components.register('searchable_dropdown_selector', {
+          viewModel: ViewModel,
+          template: '\n      <div class="ui field">\n        <optional_label params="text: label">\n        </optional_label>\n        <div class="ui search selection dropdown">\n          <input type="hidden" data-bind="textInput: selectedOption">\n          <i class="dropdown icon"/>\n          <div class="default text" data-bind="text: selectedOption">\n          </div>\n          <div class="menu" data-bind="foreach: options()">\n            <div class="item" data-bind="\n              attr: { \'data-value\': value }, text: name">\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+        });
+      })();
+    }
+  };
+});
+System.register('app/month_selector/view_model.js', ['npm:babel-runtime@5.8.38/helpers/class-call-check.js', 'npm:knockout@3.4.0.js', 'app/month.js'], function (_export) {
+  var _classCallCheck, Knockout, Month, MonthSelectorViewModel;
+
+  return {
+    setters: [function (_npmBabelRuntime5838HelpersClassCallCheckJs) {
+      _classCallCheck = _npmBabelRuntime5838HelpersClassCallCheckJs['default'];
+    }, function (_npmKnockout340Js) {
+      Knockout = _npmKnockout340Js['default'];
+    }, function (_appMonthJs) {
+      Month = _appMonthJs['default'];
+    }],
+    execute: function () {
+      'use strict';
+
+      MonthSelectorViewModel = function MonthSelectorViewModel() {
+        var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+        var label = _ref.label;
+        var bindSelectedMonthTo = _ref.bindSelectedMonthTo;
+
+        _classCallCheck(this, MonthSelectorViewModel);
+
+        this.defaultMonth = Month.current().name();
+        this.selectedMonth = bindSelectedMonthTo || Knockout.observable();
+        this.label = Knockout.observable(Knockout.unwrap(label));
+        this.optionalMonths = Knockout.observableArray(["Januaray", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map(function (monthName) {
+          var month = new Month({ index: monthName });
+          return { name: month.name(), value: month.name() };
+        }));
+      };
+
+      _export('default', MonthSelectorViewModel);
+    }
+  };
+});
+System.register('app/month_selector/component.js', ['app/optional_label/component.js', 'app/searchable_dropdown_selector/component.js', 'npm:knockout@3.4.0.js', 'app/month_selector/view_model.js'], function (_export) {
+  'use strict';
+
+  var Knockout, ViewModel;
+  return {
+    setters: [function (_appOptional_labelComponentJs) {}, function (_appSearchable_dropdown_selectorComponentJs) {}, function (_npmKnockout340Js) {
       Knockout = _npmKnockout340Js['default'];
     }, function (_appMonth_selectorView_modelJs) {
       ViewModel = _appMonth_selectorView_modelJs['default'];
@@ -145,7 +191,7 @@ System.register('app/month_selector/component.js', ['app/optional_label/componen
 
         Knockout.components.register('month_selector', {
           viewModel: ViewModel,
-          template: '\n      <div class="field">\n        <optional_label params="text: label">\n        </optional_label>\n        <div class="ui search selection dropdown">\n          <input type="hidden" data-bind="textInput: selectedMonth">\n          <i class="dropdown icon"/>\n          <div class="default text" data-bind="text: selectedMonth">\n          </div>\n          <div class="menu" data-bind="foreach: selectableMonths()">\n            <div class="item" data-bind="\n              attr: { \'data-value\': name() }, text: name()">\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <searchable_dropdown_selector params="\n        bindLabelTo: label,\n        bindSelectedOptionTo: selectedMonth,\n        bindOptionsTo: optionalMonths,\n        defaultOption: defaultMonth\n      ">\n      </searchable_dropdown_selector>\n    '
         });
       })();
     }
@@ -20498,7 +20544,7 @@ System.register('app/traffic_stop_count_by_month/component.js', ['app/month_sele
 
         Knockout.components.register('traffic_stop_count_by_month', {
           viewModel: ViewModel,
-          template: '\n      <div class="ui">\n        <div class="title">\n          <h2 class="ui header">\n            <i class="car icon"></i>\n            <div class="content" data-bind="text: title()"></div>\n          </h2>\n        </div>\n        <div class="content">\n          <div class="ui form">\n            <month_selector params="label: \'In\', selectedMonth: selectedMonth">\n            </month_selector>\n          </div>\n          <div class="ui centered grid">\n            <div class="ui column centered row">\n              <div class="ui horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <div class="ui">\n        <div class="title">\n          <h2 class="ui header">\n            <i class="car icon"></i>\n            <div class="content" data-bind="text: title()"></div>\n          </h2>\n        </div>\n        <div class="content">\n          <div class="ui form">\n            <month_selector params="\n              bindSelectedMonthTo: selectedMonth,\n              label: \'In\'\n            ">\n            </month_selector>\n          </div>\n          <div class="ui centered grid">\n            <div class="ui column centered row">\n              <div class="ui horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
         });
       })();
     }
