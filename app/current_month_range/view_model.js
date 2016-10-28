@@ -1,4 +1,4 @@
-import CurrentMonthRange from './model'
+import CurrentMonthRange from './model.js'
 
 export default class CurrentMonthRangeViewModel {
   currentMonthRange() {

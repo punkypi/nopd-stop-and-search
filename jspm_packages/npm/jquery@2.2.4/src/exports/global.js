@@ -1,5 +1,3 @@
-/* */ 
-"format amd";
 var
 
 	// Map over jQuery in case of overwrite

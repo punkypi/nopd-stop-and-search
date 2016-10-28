@@ -1,12 +1,10 @@
+import CoreArray from 'core-js/library/es6/array.js'
 import Knockout from 'knockout'
-import Month from '../month'
+import Month from '../month.js'
 
 export default class MonthSelectorViewModel {
-  constructor({ label, bindSelectedMonthTo } = {}) {
-    this.defaultMonth = Month.current().name()
-    this.selectedMonth = bindSelectedMonthTo || Knockout.observable()
-    this.label = Knockout.observable(Knockout.unwrap(label))
-    this.optionalMonths = Knockout.observableArray([
+  static monthNamesOfTheYear() {
+    return CoreArray.from([
       "Januaray",
       "Feburary",
       "March",
@@ -19,9 +17,19 @@ export default class MonthSelectorViewModel {
       "October",
       "November",
       "December"
-    ].map(function(monthName) {
-      let month = new Month({ index: monthName })
-      return { name: month.name(), value: month.name() }
+    ])
+  }
+
+  constructor({ label, bindSelectedMonthTo } = {}) {
+    this.selectedMonth = bindSelectedMonthTo || Knockout.observable()
+    this.label = Knockout.observable(Knockout.unwrap(label))
+    this.optionalMonths = Knockout.observableArray(
+      this.constructor.monthNamesOfTheYear().map(function(monthName) {
+      return { name: monthName, value: monthName }
     }));
+  }
+
+  get defaultMonth() {
+    return Month.current().name()
   }
 }

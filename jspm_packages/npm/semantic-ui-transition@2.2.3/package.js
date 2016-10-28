@@ -1,5 +1,3 @@
-/* */ 
-"format cjs";
 
 Package.describe({
   name    : 'semantic:ui-transition',

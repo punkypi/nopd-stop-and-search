@@ -1,5 +1,3 @@
-/* */ 
-"format cjs";
 /*!
  * # Semantic UI 2.2.3 - Dropdown
  * http://github.com/semantic-org/semantic-ui/

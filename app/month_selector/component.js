@@ -1,7 +1,7 @@
-import '../optional_label/component'
-import '../searchable_dropdown_selector/component'
+import '../optional_label/component.js'
+import '../searchable_dropdown_selector/component.js'
 import Knockout from 'knockout'
-import ViewModel from './view_model'
+import ViewModel from './view_model.js'
 
 (function() {
   'use strict'
@@ -18,4 +18,7 @@ import ViewModel from './view_model'
       </searchable_dropdown_selector>
     `
   })
+
+  Knockout.cleanNode(document)
+  Knockout.applyBindings()
 })()

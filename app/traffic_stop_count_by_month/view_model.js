@@ -1,6 +1,6 @@
 import Knockout from 'knockout'
-import Request from './request'
-import Month from '../month'
+import Request from './request.js'
+import Month from '../month.js'
 
 export default class TrafficStopCountByMonthViewModel {
   constructor() {

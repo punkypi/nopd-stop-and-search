@@ -1,5 +1,3 @@
-/* */ 
-"format amd";
 //! moment.js
 //! version : 2.15.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors

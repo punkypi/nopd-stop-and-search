@@ -1,5 +1,3 @@
-/* */ 
-"format cjs";
 /*!
  * # Semantic UI 2.0.0 - Video
  * http://github.com/semantic-org/semantic-ui/

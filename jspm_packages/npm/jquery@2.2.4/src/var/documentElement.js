@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"./document"
 ], function( document ) {

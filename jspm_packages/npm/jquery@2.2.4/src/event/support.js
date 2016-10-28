@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"../var/support"
 ], function( support ) {

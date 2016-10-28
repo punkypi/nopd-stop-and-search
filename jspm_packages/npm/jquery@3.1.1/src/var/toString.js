@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"./class2type"
 ], function( class2type ) {

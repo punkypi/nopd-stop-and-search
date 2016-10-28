@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"../var/rnothtmlwhite"
 ], function( rnothtmlwhite ) {

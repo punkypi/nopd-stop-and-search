@@ -1,4 +1,16 @@
 "bundle";
+System.registerDynamic("npm:jquery@2.2.4.json", [], false, function() {
+  return {
+    "main": "dist/jquery.js",
+    "format": "amd",
+    "meta": {
+      "*.json": {
+        "format": "json"
+      }
+    }
+  };
+});
+
 (function() {
 var define = System.amdDefine;
 (function(global, factory) {
@@ -6019,29 +6031,39 @@ var define = System.amdDefine;
 }));
 
 })();
-(function() {
-var define = System.amdDefine;
-define("npm:jquery@2.2.4.js", ["npm:jquery@2.2.4/dist/jquery.js"], function(main) {
-  return main;
+System.registerDynamic("github:systemjs/plugin-css@0.1.31.json", [], false, function() {
+  return {
+    "main": "css"
+  };
 });
 
-})();
-System.registerDynamic("github:Semantic-Org/Semantic-UI@2.2.4/semantic.css!github:systemjs/plugin-css@0.1.31.js", [], false, function ($__require, $__exports, $__module) {
+System.registerDynamic("github:Semantic-Org/Semantic-UI@2.2.4/semantic.css!github:systemjs/plugin-css@0.1.31/css.js", [], false, function ($__require, $__exports, $__module) {
   var _retrieveGlobal = System.get("@@global-helpers").prepareGlobal($__module.id, null, null);
 
   (function ($__global) {})(this);
 
   return _retrieveGlobal();
 });
-System.registerDynamic("github:Semantic-Org/Semantic-UI@2.2.4/semantic.js", ["npm:jquery@2.2.4.js", "github:Semantic-Org/Semantic-UI@2.2.4/semantic.css!github:systemjs/plugin-css@0.1.31.js"], false, function ($__require, $__exports, $__module) {
-  var _retrieveGlobal = System.get("@@global-helpers").prepareGlobal($__module.id, "$", null);
+System.registerDynamic("github:Semantic-Org/Semantic-UI@2.2.4.json", [], false, function() {
+  return {
+    "main": "semantic",
+    "meta": {
+      "semantic.js": {
+        "deps": [
+          "jquery",
+          "./semantic.css!"
+        ],
+        "exports": "$",
+        "format": "global"
+      }
+    }
+  };
+});
+
+System.registerDynamic('github:Semantic-Org/Semantic-UI@2.2.4/semantic.js', ['jquery', './semantic.css!'], false, function ($__require, $__exports, $__module) {
+  var _retrieveGlobal = System.get("@@global-helpers").prepareGlobal($__module.id, '$', null);
 
   (function ($__global) {
-    /* */
-    "format global";
-    "deps jquery";
-    "deps ./semantic.css!";
-    "exports $";
     /*
     * # Semantic UI - 2.2.4
     * https://github.com/Semantic-Org/Semantic-UI
@@ -24600,18 +24622,11 @@ System.registerDynamic("github:Semantic-Org/Semantic-UI@2.2.4/semantic.js", ["np
 
   return _retrieveGlobal();
 });
-System.registerDynamic("github:Semantic-Org/Semantic-UI@2.2.4.js", ["github:Semantic-Org/Semantic-UI@2.2.4/semantic.js"], true, function ($__require, exports, module) {
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = $__require("github:Semantic-Org/Semantic-UI@2.2.4/semantic.js");
-  return module.exports;
-});
-System.register('app/stylesheets.js', ['github:Semantic-Org/Semantic-UI@2.2.4.js'], function (_export) {
-  'use strict';
+System.register('app/stylesheets.js', ['semantic-ui'], function (_export, _context) {
+  "use strict";
 
   return {
-    setters: [function (_githubSemanticOrgSemanticUI224Js) {}],
+    setters: [function (_semanticUi) {}],
     execute: function () {}
   };
 });

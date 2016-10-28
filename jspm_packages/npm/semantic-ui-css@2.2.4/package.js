@@ -1,5 +1,3 @@
-/* */ 
-"format cjs";
 var
   where = 'client' // Adds files only to the client
 ;

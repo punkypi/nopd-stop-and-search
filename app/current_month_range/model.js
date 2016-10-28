@@ -1,4 +1,4 @@
-import Month from '../month'
+import Month from '../month.js'
 
 export default class CurrentMonthRange {
   constructor() {

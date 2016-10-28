@@ -1,5 +1,5 @@
 import Knockout from 'knockout'
-import ViewModel from './view_model'
+import ViewModel from './view_model.js'
 
 (function() {
   'use strict'
@@ -8,4 +8,7 @@ import ViewModel from './view_model'
     viewModel: ViewModel,
     template: `<h2 data-bind="text: toString()"></h2>`
   })
+
+  Knockout.cleanNode(document)
+  Knockout.applyBindings()
 })()

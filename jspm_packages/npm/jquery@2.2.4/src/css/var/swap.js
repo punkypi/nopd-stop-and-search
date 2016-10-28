@@ -1,4 +1,3 @@
-/* */ 
 define( function() {
 
 // A method for quickly swapping in/out CSS properties to get correct calculations.

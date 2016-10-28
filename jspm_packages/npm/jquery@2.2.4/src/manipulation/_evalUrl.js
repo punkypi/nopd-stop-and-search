@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"../ajax"
 ], function( jQuery ) {

@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"../Data"
 ], function( Data ) {

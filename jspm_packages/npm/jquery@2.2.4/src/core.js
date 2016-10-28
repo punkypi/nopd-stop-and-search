@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"./var/arr",
 	"./var/document",

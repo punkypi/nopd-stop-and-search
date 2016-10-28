@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"./arr"
 ], function( arr ) {

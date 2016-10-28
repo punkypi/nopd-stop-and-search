@@ -1,4 +1,3 @@
-/* */ 
 define( function() {
 
 function addGetHookIf( conditionFn, hookFn ) {

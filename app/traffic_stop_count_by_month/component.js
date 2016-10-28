@@ -1,6 +1,6 @@
-import '../month_selector/component'
+import '../month_selector/component.js'
 import Knockout from 'knockout'
-import ViewModel from './view_model'
+import ViewModel from './view_model.js'
 
 (function(){
   'use strict'
@@ -35,4 +35,7 @@ import ViewModel from './view_model'
       </div>
     `
   })
+
+  Knockout.cleanNode(document)
+  Knockout.applyBindings()
 })()

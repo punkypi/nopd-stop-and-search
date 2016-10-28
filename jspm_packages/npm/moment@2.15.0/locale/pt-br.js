@@ -1,5 +1,3 @@
-/* */ 
-"format amd";
 //! moment.js locale configuration
 //! locale : Portuguese (Brazil) [pt-br]
 //! author : Caio Ribeiro Pereira : https://github.com/caio-ribeiro-pereira
@@ -7,7 +5,7 @@
 ;(function (global, factory) {
    typeof exports === 'object' && typeof module !== 'undefined'
        && typeof require === 'function' ? factory(require('../moment')) :
-   typeof define === 'function' && define.amd ? define(["../moment"], factory) :
+   typeof define === 'function' && define.amd ? define(['../moment'], factory) :
    factory(global.moment)
 }(this, function (moment) { 'use strict';
 

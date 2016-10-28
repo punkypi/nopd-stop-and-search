@@ -1,5 +1,5 @@
 import Knockout from 'knockout'
-import ViewModel from './view_model'
+import ViewModel from './view_model.js'
 
 (function() {
   'use strict'
@@ -11,4 +11,7 @@ import ViewModel from './view_model'
       </label>
     `
   })
+
+  Knockout.cleanNode(document)
+  Knockout.applyBindings()
 })()

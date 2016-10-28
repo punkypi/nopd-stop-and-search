@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"../var/pnum"
 ], function( pnum ) {

@@ -1,4 +1,4 @@
-import Request from './traffic_stop_count_by_month/request'
+import Request from './traffic_stop_count_by_month/request.js'
 
 export default class TrafficStopCountByMonth {
   constructor({ index } = {}) {

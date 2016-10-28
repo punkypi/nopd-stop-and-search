@@ -1,5 +1,5 @@
-import TrafficStopCountByMonth from '../traffic_stop_count_by_month'
-import Month from '../month'
+import TrafficStopCountByMonth from '../traffic_stop_count_by_month.js'
+import Month from '../month.js'
 
 export default class CurrentMonthTrafficStopCount {
   count() {

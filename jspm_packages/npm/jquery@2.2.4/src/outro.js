@@ -1,4 +1,2 @@
-/* */ 
-"format amd";
 return jQuery;
 }));

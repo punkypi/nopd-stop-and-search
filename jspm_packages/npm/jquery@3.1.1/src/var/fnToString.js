@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"./hasOwn"
 ], function( hasOwn ) {

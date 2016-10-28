@@ -1,4 +1,3 @@
-/* */ 
 define( [
 	"./core"
 ], function( jQuery ) {
