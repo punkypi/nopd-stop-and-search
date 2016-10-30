@@ -55,7 +55,7 @@ System.register('app/optional_label/component.js', ['knockout', './view_model.js
 
         Knockout.components.register('optional_label', {
           viewModel: ViewModel,
-          template: '\n      <label data-bind="enable: textPresent(), text: text">\n      </label>\n    '
+          template: '\n      <label data-bind="visible: textPresent(), text: text">\n      </label>\n    '
         });
 
         Knockout.cleanNode(document);
@@ -10288,6 +10288,11 @@ System.register('app/searchable_dropdown_selector/view_model.js', ['npm:systemjs
           value: function initSelect() {
             $(".dropdown").dropdown();
           }
+        }, {
+          key: 'labelPresent',
+          value: function labelPresent() {
+            return typeof this.label() !== "undefined" && this.label() !== null;
+          }
         }]);
 
         return SearchableDropdownSelectorViewModel;
@@ -10314,7 +10319,7 @@ System.register('app/searchable_dropdown_selector/component.js', ['../optional_l
 
         Knockout.components.register('searchable_dropdown_selector', {
           viewModel: ViewModel,
-          template: '\n      <div class="ui field">\n        <optional_label params="text: label">\n        </optional_label>\n        <div class="ui search selection dropdown">\n          <input type="hidden" data-bind="textInput: selectedOption">\n          <i class="dropdown icon"/>\n          <div class="default text" data-bind="text: selectedOption">\n          </div>\n          <div class="menu" data-bind="foreach: options()">\n            <div class="item" data-bind="\n              attr: { \'data-value\': value }, text: name">\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <div class="ui field">\n        <optional_label data-bind="visible: labelPresent()"\n          params="text: label">\n        </optional_label>\n        <div class="ui search selection dropdown">\n          <input type="hidden" data-bind="textInput: selectedOption">\n          <i class="dropdown icon"/>\n          <div class="default text" data-bind="text: selectedOption">\n          </div>\n          <div class="menu" data-bind="foreach: options()">\n            <div class="item" data-bind="\n              attr: { \'data-value\': value }, text: name">\n            </div>\n          </div>\n        </div>\n      </div>\n    '
         });
 
         Knockout.cleanNode(document);

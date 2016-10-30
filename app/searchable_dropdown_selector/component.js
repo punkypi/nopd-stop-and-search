@@ -9,7 +9,8 @@ import ViewModel from './view_model.js'
     viewModel: ViewModel,
     template: `
       <div class="ui field">
-        <optional_label params="text: label">
+        <optional_label data-bind="visible: labelPresent()"
+          params="text: label">
         </optional_label>
         <div class="ui search selection dropdown">
           <input type="hidden" data-bind="textInput: selectedOption">

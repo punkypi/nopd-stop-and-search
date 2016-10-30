@@ -7,7 +7,7 @@ import ViewModel from './view_model.js'
   Knockout.components.register('optional_label', {
     viewModel: ViewModel,
     template: `
-      <label data-bind="enable: textPresent(), text: text">
+      <label data-bind="visible: textPresent(), text: text">
       </label>
     `
   })

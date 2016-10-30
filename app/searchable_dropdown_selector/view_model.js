@@ -19,4 +19,8 @@ export default class SearchableDropdownSelectorViewModel {
   initSelect() {
     $(".dropdown").dropdown()
   }
+
+  labelPresent() {
+    return typeof this.label() !== "undefined" && this.label() !== null
+  }
 }
