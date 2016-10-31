@@ -10,10 +10,14 @@ export default class Date {
     ))
   }
 
+  static endOfMonth() {
+    return this.now().endOfMonth()
+  }
+
   static monthNamesOfTheYear() {
     return CoreArray.from([
-      "Januaray",
-      "Feburary",
+      "January",
+      "February",
       "March",
       "April",
       "May",
@@ -33,7 +37,7 @@ export default class Date {
 
   static monthsAndNumbers() {
     return {
-      "Januaray": 1, "Feburary": 2, "March": 3, "April": 4, "May": 5, "June": 6,
+      "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
       "July": 7, "August": 8, "September": 9, "October": 10, "November": 11,
       "December": 12  }
   }
@@ -48,6 +52,10 @@ export default class Date {
     let now = new Moment()
     return new Date(
       { year: now.year(), month: now.month() + 1, day: now.date() })
+  }
+
+  static startOfMonth() {
+    return this.now().startOfMonth()
   }
 
   constructor({ year, month, day } = {}) {
@@ -83,6 +91,23 @@ export default class Date {
     this._day = newDay
   }
 
+  daysInMonth() {
+    return this.toMoment().daysInMonth()
+  }
+
+  endOfMonth() {
+    return new Date(
+      { year: this.year, month: this.month, day: this.daysInMonth() })
+  }
+
+  format(params) {
+    return this.toMoment().format(params)
+  }
+
+  isValid() {
+    return this.toMoment().isValid()
+  }
+
   get month() {
     return this._month
   }
@@ -93,6 +118,10 @@ export default class Date {
 
   monthName() {
     return this.toMoment().format("MMMM")
+  }
+
+  startOfMonth() {
+    return new Date({ year: this.year, month: this.month, day: 1 })
   }
 
   toMoment() {

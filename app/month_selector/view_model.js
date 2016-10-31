@@ -5,8 +5,8 @@ import Month from '../month.js'
 export default class MonthSelectorViewModel {
   static monthNamesOfTheYear() {
     return CoreArray.from([
-      "Januaray",
-      "Feburary",
+      "January",
+      "February",
       "March",
       "April",
       "May",
