@@ -10328,1959 +10328,120 @@ System.register('app/searchable_dropdown_selector/component.js', ['../optional_l
     }
   };
 });
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_string-at.js', ['./_to-integer', './_defined', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var toInteger = $__require('./_to-integer'),
-      defined = $__require('./_defined');
-  // true  -> String#at
-  // false -> String#codePointAt
-  module.exports = function (TO_STRING) {
-    return function (that, pos) {
-      var s = String(defined(that)),
-          i = toInteger(pos),
-          l = s.length,
-          a,
-          b;
-      if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
-      a = s.charCodeAt(i);
-      return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff ? TO_STRING ? s.charAt(i) : a : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
-    };
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.string.iterator.js', ['./_string-at', './_iter-define', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $at = $__require('./_string-at')(true);
-
-  // 21.1.3.27 String.prototype[@@iterator]()
-  $__require('./_iter-define')(String, 'String', function (iterated) {
-    this._t = String(iterated); // target
-    this._i = 0; // next index
-    // 21.1.5.2.1 %StringIteratorPrototype%.next()
-  }, function () {
-    var O = this._t,
-        index = this._i,
-        point;
-    if (index >= O.length) return { value: undefined, done: true };
-    point = $at(O, index);
-    this._i += point.length;
-    return { value: point, done: false };
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.is-array.js', ['./_export', './_is-array', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
-  var $export = $__require('./_export');
-
-  $export($export.S, 'Array', { isArray: $__require('./_is-array') });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-call.js', ['./_an-object', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // call something on iterator step with safe closing on error
-  var anObject = $__require('./_an-object');
-  module.exports = function (iterator, fn, value, entries) {
-    try {
-      return entries ? fn(anObject(value)[0], value[1]) : fn(value);
-      // 7.4.6 IteratorClose(iterator, completion)
-    } catch (e) {
-      var ret = iterator['return'];
-      if (ret !== undefined) anObject(ret.call(iterator));
-      throw e;
-    }
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_is-array-iter.js', ['./_iterators', './_wks', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // check on default Array iterator
-  var Iterators = $__require('./_iterators'),
-      ITERATOR = $__require('./_wks')('iterator'),
-      ArrayProto = Array.prototype;
-
-  module.exports = function (it) {
-    return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_classof.js', ['./_cof', './_wks', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // getting tag from 19.1.3.6 Object.prototype.toString()
-  var cof = $__require('./_cof'),
-      TAG = $__require('./_wks')('toStringTag')
-  // ES3 wrong here
-  ,
-      ARG = cof(function () {
-    return arguments;
-  }()) == 'Arguments';
-
-  // fallback for IE11 Script Access Denied error
-  var tryGet = function (it, key) {
-    try {
-      return it[key];
-    } catch (e) {/* empty */}
-  };
-
-  module.exports = function (it) {
-    var O, T, B;
-    return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
-    // builtinTag case
-    : ARG ? cof(O)
-    // ES3 arguments fallback
-    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/core.get-iterator-method.js', ['./_classof', './_wks', './_iterators', './_core', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var classof = $__require('./_classof'),
-      ITERATOR = $__require('./_wks')('iterator'),
-      Iterators = $__require('./_iterators');
-  module.exports = $__require('./_core').getIteratorMethod = function (it) {
-    if (it != undefined) return it[ITERATOR] || it['@@iterator'] || Iterators[classof(it)];
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-detect.js', ['./_wks', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var ITERATOR = $__require('./_wks')('iterator'),
-      SAFE_CLOSING = false;
-
-  try {
-    var riter = [7][ITERATOR]();
-    riter['return'] = function () {
-      SAFE_CLOSING = true;
-    };
-    Array.from(riter, function () {
-      throw 2;
-    });
-  } catch (e) {/* empty */}
-
-  module.exports = function (exec, skipClosing) {
-    if (!skipClosing && !SAFE_CLOSING) return false;
-    var safe = false;
-    try {
-      var arr = [7],
-          iter = arr[ITERATOR]();
-      iter.next = function () {
-        return { done: safe = true };
-      };
-      arr[ITERATOR] = function () {
-        return iter;
-      };
-      exec(arr);
-    } catch (e) {/* empty */}
-    return safe;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.from.js', ['./_ctx', './_export', './_to-object', './_iter-call', './_is-array-iter', './_to-length', './_create-property', './core.get-iterator-method', './_iter-detect', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var ctx = $__require('./_ctx'),
-      $export = $__require('./_export'),
-      toObject = $__require('./_to-object'),
-      call = $__require('./_iter-call'),
-      isArrayIter = $__require('./_is-array-iter'),
-      toLength = $__require('./_to-length'),
-      createProperty = $__require('./_create-property'),
-      getIterFn = $__require('./core.get-iterator-method');
-
-  $export($export.S + $export.F * !$__require('./_iter-detect')(function (iter) {
-    Array.from(iter);
-  }), 'Array', {
-    // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-    from: function from(arrayLike /*, mapfn = undefined, thisArg = undefined*/) {
-      var O = toObject(arrayLike),
-          C = typeof this == 'function' ? this : Array,
-          aLen = arguments.length,
-          mapfn = aLen > 1 ? arguments[1] : undefined,
-          mapping = mapfn !== undefined,
-          index = 0,
-          iterFn = getIterFn(O),
-          length,
-          result,
-          step,
-          iterator;
-      if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
-      // if object isn't iterable or it's array with default iterator - use simple case
-      if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
-        for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
-          createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
-        }
-      } else {
-        length = toLength(O.length);
-        for (result = new C(length); length > index; index++) {
-          createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
-        }
-      }
-      result.length = index;
-      return result;
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_create-property.js', ['./_object-dp', './_property-desc', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $defineProperty = $__require('./_object-dp'),
-      createDesc = $__require('./_property-desc');
-
-  module.exports = function (object, index, value) {
-    if (index in object) $defineProperty.f(object, index, createDesc(0, value));else object[index] = value;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.of.js', ['./_export', './_create-property', './_fails', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      createProperty = $__require('./_create-property');
-
-  // WebKit Array.of isn't generic
-  $export($export.S + $export.F * $__require('./_fails')(function () {
-    function F() {}
-    return !(Array.of.call(F) instanceof F);
-  }), 'Array', {
-    // 22.1.2.3 Array.of( ...items)
-    of: function of() /* ...args */{
-      var index = 0,
-          aLen = arguments.length,
-          result = new (typeof this == 'function' ? this : Array)(aLen);
-      while (aLen > index) createProperty(result, index, arguments[index++]);
-      result.length = aLen;
-      return result;
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.join.js', ['./_export', './_to-iobject', './_iobject', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-  // 22.1.3.13 Array.prototype.join(separator)
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      toIObject = $__require('./_to-iobject'),
-      arrayJoin = [].join;
-
-  // fallback for not array-like strings
-  $export($export.P + $export.F * ($__require('./_iobject') != Object || !$__require('./_strict-method')(arrayJoin)), 'Array', {
-    join: function join(separator) {
-      return arrayJoin.call(toIObject(this), separator === undefined ? ',' : separator);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.slice.js', ['./_export', './_html', './_cof', './_to-index', './_to-length', './_fails', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      html = $__require('./_html'),
-      cof = $__require('./_cof'),
-      toIndex = $__require('./_to-index'),
-      toLength = $__require('./_to-length'),
-      arraySlice = [].slice;
-
-  // fallback for not array-like ES3 strings and DOM objects
-  $export($export.P + $export.F * $__require('./_fails')(function () {
-    if (html) arraySlice.call(html);
-  }), 'Array', {
-    slice: function slice(begin, end) {
-      var len = toLength(this.length),
-          klass = cof(this);
-      end = end === undefined ? len : end;
-      if (klass == 'Array') return arraySlice.call(this, begin, end);
-      var start = toIndex(begin, len),
-          upTo = toIndex(end, len),
-          size = toLength(upTo - start),
-          cloned = Array(size),
-          i = 0;
-      for (; i < size; i++) cloned[i] = klass == 'String' ? this.charAt(start + i) : this[start + i];
-      return cloned;
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.sort.js', ['./_export', './_a-function', './_to-object', './_fails', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      aFunction = $__require('./_a-function'),
-      toObject = $__require('./_to-object'),
-      fails = $__require('./_fails'),
-      $sort = [].sort,
-      test = [1, 2, 3];
-
-  $export($export.P + $export.F * (fails(function () {
-    // IE8-
-    test.sort(undefined);
-  }) || !fails(function () {
-    // V8 bug
-    test.sort(null);
-    // Old WebKit
-  }) || !$__require('./_strict-method')($sort)), 'Array', {
-    // 22.1.3.25 Array.prototype.sort(comparefn)
-    sort: function sort(comparefn) {
-      return comparefn === undefined ? $sort.call(toObject(this)) : $sort.call(toObject(this), aFunction(comparefn));
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.for-each.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $forEach = $__require('./_array-methods')(0),
-      STRICT = $__require('./_strict-method')([].forEach, true);
-
-  $export($export.P + $export.F * !STRICT, 'Array', {
-    // 22.1.3.10 / 15.4.4.18 Array.prototype.forEach(callbackfn [, thisArg])
-    forEach: function forEach(callbackfn /* , thisArg */) {
-      return $forEach(this, callbackfn, arguments[1]);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.map.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $map = $__require('./_array-methods')(1);
-
-  $export($export.P + $export.F * !$__require('./_strict-method')([].map, true), 'Array', {
-    // 22.1.3.15 / 15.4.4.19 Array.prototype.map(callbackfn [, thisArg])
-    map: function map(callbackfn /* , thisArg */) {
-      return $map(this, callbackfn, arguments[1]);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.filter.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $filter = $__require('./_array-methods')(2);
-
-  $export($export.P + $export.F * !$__require('./_strict-method')([].filter, true), 'Array', {
-    // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
-    filter: function filter(callbackfn /* , thisArg */) {
-      return $filter(this, callbackfn, arguments[1]);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.some.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $some = $__require('./_array-methods')(3);
-
-  $export($export.P + $export.F * !$__require('./_strict-method')([].some, true), 'Array', {
-    // 22.1.3.23 / 15.4.4.17 Array.prototype.some(callbackfn [, thisArg])
-    some: function some(callbackfn /* , thisArg */) {
-      return $some(this, callbackfn, arguments[1]);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.every.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $every = $__require('./_array-methods')(4);
-
-  $export($export.P + $export.F * !$__require('./_strict-method')([].every, true), 'Array', {
-    // 22.1.3.5 / 15.4.4.16 Array.prototype.every(callbackfn [, thisArg])
-    every: function every(callbackfn /* , thisArg */) {
-      return $every(this, callbackfn, arguments[1]);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.reduce.js', ['./_export', './_array-reduce', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $reduce = $__require('./_array-reduce');
-
-  $export($export.P + $export.F * !$__require('./_strict-method')([].reduce, true), 'Array', {
-    // 22.1.3.18 / 15.4.4.21 Array.prototype.reduce(callbackfn [, initialValue])
-    reduce: function reduce(callbackfn /* , initialValue */) {
-      return $reduce(this, callbackfn, arguments.length, arguments[1], false);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-reduce.js', ['./_a-function', './_to-object', './_iobject', './_to-length', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var aFunction = $__require('./_a-function'),
-      toObject = $__require('./_to-object'),
-      IObject = $__require('./_iobject'),
-      toLength = $__require('./_to-length');
-
-  module.exports = function (that, callbackfn, aLen, memo, isRight) {
-    aFunction(callbackfn);
-    var O = toObject(that),
-        self = IObject(O),
-        length = toLength(O.length),
-        index = isRight ? length - 1 : 0,
-        i = isRight ? -1 : 1;
-    if (aLen < 2) for (;;) {
-      if (index in self) {
-        memo = self[index];
-        index += i;
-        break;
-      }
-      index += i;
-      if (isRight ? index < 0 : length <= index) {
-        throw TypeError('Reduce of empty array with no initial value');
-      }
-    }
-    for (; isRight ? index >= 0 : length > index; index += i) if (index in self) {
-      memo = callbackfn(memo, self[index], index, O);
-    }
-    return memo;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.reduce-right.js', ['./_export', './_array-reduce', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $reduce = $__require('./_array-reduce');
-
-  $export($export.P + $export.F * !$__require('./_strict-method')([].reduceRight, true), 'Array', {
-    // 22.1.3.19 / 15.4.4.22 Array.prototype.reduceRight(callbackfn [, initialValue])
-    reduceRight: function reduceRight(callbackfn /* , initialValue */) {
-      return $reduce(this, callbackfn, arguments.length, arguments[1], true);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.index-of.js', ['./_export', './_array-includes', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $indexOf = $__require('./_array-includes')(false),
-      $native = [].indexOf,
-      NEGATIVE_ZERO = !!$native && 1 / [1].indexOf(1, -0) < 0;
-
-  $export($export.P + $export.F * (NEGATIVE_ZERO || !$__require('./_strict-method')($native)), 'Array', {
-    // 22.1.3.11 / 15.4.4.14 Array.prototype.indexOf(searchElement [, fromIndex])
-    indexOf: function indexOf(searchElement /*, fromIndex = 0 */) {
-      return NEGATIVE_ZERO
-      // convert -0 to +0
-      ? $native.apply(this, arguments) || 0 : $indexOf(this, searchElement, arguments[1]);
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_strict-method.js', ['./_fails', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var fails = $__require('./_fails');
-
-  module.exports = function (method, arg) {
-    return !!method && fails(function () {
-      arg ? method.call(null, function () {}, 1) : method.call(null);
-    });
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.last-index-of.js', ['./_export', './_to-iobject', './_to-integer', './_to-length', './_strict-method', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      toIObject = $__require('./_to-iobject'),
-      toInteger = $__require('./_to-integer'),
-      toLength = $__require('./_to-length'),
-      $native = [].lastIndexOf,
-      NEGATIVE_ZERO = !!$native && 1 / [1].lastIndexOf(1, -0) < 0;
-
-  $export($export.P + $export.F * (NEGATIVE_ZERO || !$__require('./_strict-method')($native)), 'Array', {
-    // 22.1.3.14 / 15.4.4.15 Array.prototype.lastIndexOf(searchElement [, fromIndex])
-    lastIndexOf: function lastIndexOf(searchElement /*, fromIndex = @[*-1] */) {
-      // convert -0 to +0
-      if (NEGATIVE_ZERO) return $native.apply(this, arguments) || 0;
-      var O = toIObject(this),
-          length = toLength(O.length),
-          index = length - 1;
-      if (arguments.length > 1) index = Math.min(index, toInteger(arguments[1]));
-      if (index < 0) index = length + index;
-      for (; index >= 0; index--) if (index in O) if (O[index] === searchElement) return index || 0;
-      return -1;
-    }
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-copy-within.js', ['./_to-object', './_to-index', './_to-length', 'process'], true, function ($__require, exports, module) {
-  // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var toObject = $__require('./_to-object'),
-      toIndex = $__require('./_to-index'),
-      toLength = $__require('./_to-length');
-
-  module.exports = [].copyWithin || function copyWithin(target /*= 0*/, start /*= 0, end = @length*/) {
-    var O = toObject(this),
-        len = toLength(O.length),
-        to = toIndex(target, len),
-        from = toIndex(start, len),
-        end = arguments.length > 2 ? arguments[2] : undefined,
-        count = Math.min((end === undefined ? len : toIndex(end, len)) - from, len - to),
-        inc = 1;
-    if (from < to && to < from + count) {
-      inc = -1;
-      from += count - 1;
-      to += count - 1;
-    }
-    while (count-- > 0) {
-      if (from in O) O[to] = O[from];else delete O[to];
-      to += inc;
-      from += inc;
-    }return O;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.copy-within.js', ['./_export', './_array-copy-within', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
-  var $export = $__require('./_export');
-
-  $export($export.P, 'Array', { copyWithin: $__require('./_array-copy-within') });
-
-  $__require('./_add-to-unscopables')('copyWithin');
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-fill.js', ['./_to-object', './_to-index', './_to-length', 'process'], true, function ($__require, exports, module) {
-  // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var toObject = $__require('./_to-object'),
-      toIndex = $__require('./_to-index'),
-      toLength = $__require('./_to-length');
-  module.exports = function fill(value /*, start = 0, end = @length */) {
-    var O = toObject(this),
-        length = toLength(O.length),
-        aLen = arguments.length,
-        index = toIndex(aLen > 1 ? arguments[1] : undefined, length),
-        end = aLen > 2 ? arguments[2] : undefined,
-        endPos = end === undefined ? length : toIndex(end, length);
-    while (endPos > index) O[index++] = value;
-    return O;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.fill.js', ['./_export', './_array-fill', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
-  var $export = $__require('./_export');
-
-  $export($export.P, 'Array', { fill: $__require('./_array-fill') });
-
-  $__require('./_add-to-unscopables')('fill');
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.find.js', ['./_export', './_array-methods', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-  // 22.1.3.8 Array.prototype.find(predicate, thisArg = undefined)
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $find = $__require('./_array-methods')(5),
-      KEY = 'find',
-      forced = true;
-  // Shouldn't skip holes
-  if (KEY in []) Array(1)[KEY](function () {
-    forced = false;
-  });
-  $export($export.P + $export.F * forced, 'Array', {
-    find: function find(callbackfn /*, that = undefined */) {
-      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-    }
-  });
-  $__require('./_add-to-unscopables')(KEY);
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_is-array.js', ['./_cof', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 7.2.2 IsArray(argument)
-  var cof = $__require('./_cof');
-  module.exports = Array.isArray || function isArray(arg) {
-    return cof(arg) == 'Array';
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-species-constructor.js', ['./_is-object', './_is-array', './_wks', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var isObject = $__require('./_is-object'),
-      isArray = $__require('./_is-array'),
-      SPECIES = $__require('./_wks')('species');
-
-  module.exports = function (original) {
-    var C;
-    if (isArray(original)) {
-      C = original.constructor;
-      // cross-realm fallback
-      if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;
-      if (isObject(C)) {
-        C = C[SPECIES];
-        if (C === null) C = undefined;
-      }
-    }return C === undefined ? Array : C;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-species-create.js', ['./_array-species-constructor', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-  var speciesConstructor = $__require('./_array-species-constructor');
-
-  module.exports = function (original, length) {
-    return new (speciesConstructor(original))(length);
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-methods.js', ['./_ctx', './_iobject', './_to-object', './_to-length', './_array-species-create', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 0 -> Array#forEach
-  // 1 -> Array#map
-  // 2 -> Array#filter
-  // 3 -> Array#some
-  // 4 -> Array#every
-  // 5 -> Array#find
-  // 6 -> Array#findIndex
-  var ctx = $__require('./_ctx'),
-      IObject = $__require('./_iobject'),
-      toObject = $__require('./_to-object'),
-      toLength = $__require('./_to-length'),
-      asc = $__require('./_array-species-create');
-  module.exports = function (TYPE, $create) {
-    var IS_MAP = TYPE == 1,
-        IS_FILTER = TYPE == 2,
-        IS_SOME = TYPE == 3,
-        IS_EVERY = TYPE == 4,
-        IS_FIND_INDEX = TYPE == 6,
-        NO_HOLES = TYPE == 5 || IS_FIND_INDEX,
-        create = $create || asc;
-    return function ($this, callbackfn, that) {
-      var O = toObject($this),
-          self = IObject(O),
-          f = ctx(callbackfn, that, 3),
-          length = toLength(self.length),
-          index = 0,
-          result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined,
-          val,
-          res;
-      for (; length > index; index++) if (NO_HOLES || index in self) {
-        val = self[index];
-        res = f(val, index, O);
-        if (TYPE) {
-          if (IS_MAP) result[index] = res; // map
-          else if (res) switch (TYPE) {
-              case 3:
-                return true; // some
-              case 5:
-                return val; // find
-              case 6:
-                return index; // findIndex
-              case 2:
-                result.push(val); // filter
-            } else if (IS_EVERY) return false; // every
-        }
-      }
-      return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
-    };
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.find-index.js', ['./_export', './_array-methods', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-  // 22.1.3.9 Array.prototype.findIndex(predicate, thisArg = undefined)
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var $export = $__require('./_export'),
-      $find = $__require('./_array-methods')(6),
-      KEY = 'findIndex',
-      forced = true;
-  // Shouldn't skip holes
-  if (KEY in []) Array(1)[KEY](function () {
-    forced = false;
-  });
-  $export($export.P + $export.F * forced, 'Array', {
-    findIndex: function findIndex(callbackfn /*, that = undefined */) {
-      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-    }
-  });
-  $__require('./_add-to-unscopables')(KEY);
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_set-species.js', ['./_global', './_core', './_object-dp', './_descriptors', './_wks', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var global = $__require('./_global'),
-      core = $__require('./_core'),
-      dP = $__require('./_object-dp'),
-      DESCRIPTORS = $__require('./_descriptors'),
-      SPECIES = $__require('./_wks')('species');
-
-  module.exports = function (KEY) {
-    var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
-    if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
-      configurable: true,
-      get: function () {
-        return this;
-      }
-    });
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.species.js', ['./_set-species', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  $__require('./_set-species')('Array');
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_add-to-unscopables.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = function () {/* empty */};
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_iter-step.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = function (done, value) {
-    return { value: value, done: !!done };
-  };
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_library.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = true;
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_a-function.js', ['process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = function (it) {
-    if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-    return it;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_ctx.js', ['./_a-function', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // optional / simple context binding
-  var aFunction = $__require('./_a-function');
-  module.exports = function (fn, that, length) {
-    aFunction(fn);
-    if (that === undefined) return fn;
-    switch (length) {
-      case 1:
-        return function (a) {
-          return fn.call(that, a);
-        };
-      case 2:
-        return function (a, b) {
-          return fn.call(that, a, b);
-        };
-      case 3:
-        return function (a, b, c) {
-          return fn.call(that, a, b, c);
-        };
-    }
-    return function () /* ...args */{
-      return fn.apply(that, arguments);
-    };
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_export.js', ['./_global', './_core', './_ctx', './_hide', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var global = $__require('./_global'),
-      core = $__require('./_core'),
-      ctx = $__require('./_ctx'),
-      hide = $__require('./_hide'),
-      PROTOTYPE = 'prototype';
-
-  var $export = function (type, name, source) {
-    var IS_FORCED = type & $export.F,
-        IS_GLOBAL = type & $export.G,
-        IS_STATIC = type & $export.S,
-        IS_PROTO = type & $export.P,
-        IS_BIND = type & $export.B,
-        IS_WRAP = type & $export.W,
-        exports = IS_GLOBAL ? core : core[name] || (core[name] = {}),
-        expProto = exports[PROTOTYPE],
-        target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE],
-        key,
-        own,
-        out;
-    if (IS_GLOBAL) source = name;
-    for (key in source) {
-      // contains in native
-      own = !IS_FORCED && target && target[key] !== undefined;
-      if (own && key in exports) continue;
-      // export native or passed
-      out = own ? target[key] : source[key];
-      // prevent global pollution for namespaces
-      exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-      // bind timers to global for call from export context
-      : IS_BIND && own ? ctx(out, global)
-      // wrap global constructors for prevent change them in library
-      : IS_WRAP && target[key] == out ? function (C) {
-        var F = function (a, b, c) {
-          if (this instanceof C) {
-            switch (arguments.length) {
-              case 0:
-                return new C();
-              case 1:
-                return new C(a);
-              case 2:
-                return new C(a, b);
-            }return new C(a, b, c);
-          }return C.apply(this, arguments);
-        };
-        F[PROTOTYPE] = C[PROTOTYPE];
-        return F;
-        // make static versions for prototype methods
-      }(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-      // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-      if (IS_PROTO) {
-        (exports.virtual || (exports.virtual = {}))[key] = out;
-        // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-        if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
-      }
-    }
-  };
-  // type bitmap
-  $export.F = 1; // forced
-  $export.G = 2; // global
-  $export.S = 4; // static
-  $export.P = 8; // proto
-  $export.B = 16; // bind
-  $export.W = 32; // wrap
-  $export.U = 64; // safe
-  $export.R = 128; // real proto method for `library` 
-  module.exports = $export;
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_redefine.js', ['./_hide', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = $__require('./_hide');
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_iterators.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = {};
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_cof.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var toString = {}.toString;
-
-  module.exports = function (it) {
-    return toString.call(it).slice(8, -1);
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_iobject.js', ['./_cof', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // fallback for non-array-like ES3 and non-enumerable old V8 strings
-  var cof = $__require('./_cof');
-  module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-    return cof(it) == 'String' ? it.split('') : Object(it);
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-iobject.js', ['./_iobject', './_defined', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // to indexed object, toObject with fallback for non-array-like ES3 strings
-  var IObject = $__require('./_iobject'),
-      defined = $__require('./_defined');
-  module.exports = function (it) {
-    return IObject(defined(it));
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-length.js', ['./_to-integer', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 7.1.15 ToLength
-  var toInteger = $__require('./_to-integer'),
-      min = Math.min;
-  module.exports = function (it) {
-    return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-  };
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_to-integer.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 7.1.4 ToInteger
-  var ceil = Math.ceil,
-      floor = Math.floor;
-  module.exports = function (it) {
-    return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-index.js', ['./_to-integer', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var toInteger = $__require('./_to-integer'),
-      max = Math.max,
-      min = Math.min;
-  module.exports = function (index, length) {
-    index = toInteger(index);
-    return index < 0 ? max(index + length, 0) : min(index, length);
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-includes.js', ['./_to-iobject', './_to-length', './_to-index', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // false -> Array#indexOf
-  // true  -> Array#includes
-  var toIObject = $__require('./_to-iobject'),
-      toLength = $__require('./_to-length'),
-      toIndex = $__require('./_to-index');
-  module.exports = function (IS_INCLUDES) {
-    return function ($this, el, fromIndex) {
-      var O = toIObject($this),
-          length = toLength(O.length),
-          index = toIndex(fromIndex, length),
-          value;
-      // Array#includes uses SameValueZero equality algorithm
-      if (IS_INCLUDES && el != el) while (length > index) {
-        value = O[index++];
-        if (value != value) return true;
-        // Array#toIndex ignores holes, Array#includes - not
-      } else for (; length > index; index++) if (IS_INCLUDES || index in O) {
-        if (O[index] === el) return IS_INCLUDES || index || 0;
-      }return !IS_INCLUDES && -1;
-    };
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-keys-internal.js', ['./_has', './_to-iobject', './_array-includes', './_shared-key', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var has = $__require('./_has'),
-      toIObject = $__require('./_to-iobject'),
-      arrayIndexOf = $__require('./_array-includes')(false),
-      IE_PROTO = $__require('./_shared-key')('IE_PROTO');
-
-  module.exports = function (object, names) {
-    var O = toIObject(object),
-        i = 0,
-        result = [],
-        key;
-    for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
-    // Don't enum bug & hidden keys
-    while (names.length > i) if (has(O, key = names[i++])) {
-      ~arrayIndexOf(result, key) || result.push(key);
-    }
-    return result;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-keys.js', ['./_object-keys-internal', './_enum-bug-keys', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-  var $keys = $__require('./_object-keys-internal'),
-      enumBugKeys = $__require('./_enum-bug-keys');
-
-  module.exports = Object.keys || function keys(O) {
-    return $keys(O, enumBugKeys);
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-dps.js', ['./_object-dp', './_an-object', './_object-keys', './_descriptors', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var dP = $__require('./_object-dp'),
-      anObject = $__require('./_an-object'),
-      getKeys = $__require('./_object-keys');
-
-  module.exports = $__require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
-    anObject(O);
-    var keys = getKeys(Properties),
-        length = keys.length,
-        i = 0,
-        P;
-    while (length > i) dP.f(O, P = keys[i++], Properties[P]);
-    return O;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_enum-bug-keys.js', ['process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // IE 8- don't enum bug keys
-  module.exports = 'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'.split(',');
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_html.js', ['./_global', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = $__require('./_global').document && document.documentElement;
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-create.js', ['./_an-object', './_object-dps', './_enum-bug-keys', './_shared-key', './_dom-create', './_html', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-  var anObject = $__require('./_an-object'),
-      dPs = $__require('./_object-dps'),
-      enumBugKeys = $__require('./_enum-bug-keys'),
-      IE_PROTO = $__require('./_shared-key')('IE_PROTO'),
-      Empty = function () {/* empty */},
-      PROTOTYPE = 'prototype';
-
-  // Create object with fake `null` prototype: use iframe Object with cleared prototype
-  var createDict = function () {
-    // Thrash, waste and sodomy: IE GC bug
-    var iframe = $__require('./_dom-create')('iframe'),
-        i = enumBugKeys.length,
-        lt = '<',
-        gt = '>',
-        iframeDocument;
-    iframe.style.display = 'none';
-    $__require('./_html').appendChild(iframe);
-    iframe.src = 'javascript:'; // eslint-disable-line no-script-url
-    // createDict = iframe.contentWindow.Object;
-    // html.removeChild(iframe);
-    iframeDocument = iframe.contentWindow.document;
-    iframeDocument.open();
-    iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
-    iframeDocument.close();
-    createDict = iframeDocument.F;
-    while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
-    return createDict();
-  };
-
-  module.exports = Object.create || function create(O, Properties) {
-    var result;
-    if (O !== null) {
-      Empty[PROTOTYPE] = anObject(O);
-      result = new Empty();
-      Empty[PROTOTYPE] = null;
-      // add "__proto__" for Object.getPrototypeOf polyfill
-      result[IE_PROTO] = O;
-    } else result = createDict();
-    return Properties === undefined ? result : dPs(result, Properties);
-  };
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_property-desc.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = function (bitmap, value) {
-    return {
-      enumerable: !(bitmap & 1),
-      configurable: !(bitmap & 2),
-      writable: !(bitmap & 4),
-      value: value
-    };
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_hide.js', ['./_object-dp', './_property-desc', './_descriptors', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var dP = $__require('./_object-dp'),
-      createDesc = $__require('./_property-desc');
-  module.exports = $__require('./_descriptors') ? function (object, key, value) {
-    return dP.f(object, key, createDesc(1, value));
-  } : function (object, key, value) {
-    object[key] = value;
-    return object;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-create.js', ['./_object-create', './_property-desc', './_set-to-string-tag', './_hide', './_wks', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var create = $__require('./_object-create'),
-      descriptor = $__require('./_property-desc'),
-      setToStringTag = $__require('./_set-to-string-tag'),
-      IteratorPrototype = {};
-
-  // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-  $__require('./_hide')(IteratorPrototype, $__require('./_wks')('iterator'), function () {
-    return this;
-  });
-
-  module.exports = function (Constructor, NAME, next) {
-    Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
-    setToStringTag(Constructor, NAME + ' Iterator');
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_an-object.js', ['./_is-object', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var isObject = $__require('./_is-object');
-  module.exports = function (it) {
-    if (!isObject(it)) throw TypeError(it + ' is not an object!');
-    return it;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_dom-create.js', ['./_is-object', './_global', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var isObject = $__require('./_is-object'),
-      document = $__require('./_global').document
-  // in old IE typeof document.createElement is 'object'
-  ,
-      is = isObject(document) && isObject(document.createElement);
-  module.exports = function (it) {
-    return is ? document.createElement(it) : {};
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_ie8-dom-define.js', ['./_descriptors', './_fails', './_dom-create', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = !$__require('./_descriptors') && !$__require('./_fails')(function () {
-    return Object.defineProperty($__require('./_dom-create')('div'), 'a', { get: function () {
-        return 7;
-      } }).a != 7;
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_is-object.js', ['process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = function (it) {
-    return typeof it === 'object' ? it !== null : typeof it === 'function';
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-primitive.js', ['./_is-object', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 7.1.1 ToPrimitive(input [, PreferredType])
-  var isObject = $__require('./_is-object');
-  // instead of the ES6 spec version, we didn't implement @@toPrimitive case
-  // and the second argument - flag - preferred type is a string
-  module.exports = function (it, S) {
-    if (!isObject(it)) return it;
-    var fn, val;
-    if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-    if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-    if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-    throw TypeError("Can't convert object to primitive value");
-  };
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_fails.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  module.exports = function (exec) {
-    try {
-      return !!exec();
-    } catch (e) {
-      return true;
-    }
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_descriptors.js', ['./_fails', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // Thank's IE8 for his funny defineProperty
-  module.exports = !$__require('./_fails')(function () {
-    return Object.defineProperty({}, 'a', { get: function () {
-        return 7;
-      } }).a != 7;
-  });
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-dp.js', ['./_an-object', './_ie8-dom-define', './_to-primitive', './_descriptors', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var anObject = $__require('./_an-object'),
-      IE8_DOM_DEFINE = $__require('./_ie8-dom-define'),
-      toPrimitive = $__require('./_to-primitive'),
-      dP = Object.defineProperty;
-
-  exports.f = $__require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-    anObject(O);
-    P = toPrimitive(P, true);
-    anObject(Attributes);
-    if (IE8_DOM_DEFINE) try {
-      return dP(O, P, Attributes);
-    } catch (e) {/* empty */}
-    if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-    if ('value' in Attributes) O[P] = Attributes.value;
-    return O;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_set-to-string-tag.js', ['./_object-dp', './_has', './_wks', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var def = $__require('./_object-dp').f,
-      has = $__require('./_has'),
-      TAG = $__require('./_wks')('toStringTag');
-
-  module.exports = function (it, tag, stat) {
-    if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-  };
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_has.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var hasOwnProperty = {}.hasOwnProperty;
-  module.exports = function (it, key) {
-    return hasOwnProperty.call(it, key);
-  };
-  return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1/library/modules/_defined.js", ["process"], true, function ($__require, exports, module) {
-  var process = $__require("process");
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 7.2.1 RequireObjectCoercible(argument)
-  module.exports = function (it) {
-    if (it == undefined) throw TypeError("Can't call method on  " + it);
-    return it;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-object.js', ['./_defined', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 7.1.13 ToObject(argument)
-  var defined = $__require('./_defined');
-  module.exports = function (it) {
-    return Object(defined(it));
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_shared-key.js', ['./_shared', './_uid', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var shared = $__require('./_shared')('keys'),
-      uid = $__require('./_uid');
-  module.exports = function (key) {
-    return shared[key] || (shared[key] = uid(key));
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-gpo.js', ['./_has', './_to-object', './_shared-key', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-  var has = $__require('./_has'),
-      toObject = $__require('./_to-object'),
-      IE_PROTO = $__require('./_shared-key')('IE_PROTO'),
-      ObjectProto = Object.prototype;
-
-  module.exports = Object.getPrototypeOf || function (O) {
-    O = toObject(O);
-    if (has(O, IE_PROTO)) return O[IE_PROTO];
-    if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-      return O.constructor.prototype;
-    }return O instanceof Object ? ObjectProto : null;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_shared.js', ['./_global', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var global = $__require('./_global'),
-      SHARED = '__core-js_shared__',
-      store = global[SHARED] || (global[SHARED] = {});
-  module.exports = function (key) {
-    return store[key] || (store[key] = {});
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_uid.js', ['process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var id = 0,
-      px = Math.random();
-  module.exports = function (key) {
-    return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_global.js', ['process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-  var global = module.exports = typeof window != 'undefined' && window.Math == Math ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-  if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_wks.js', ['./_shared', './_uid', './_global', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var store = $__require('./_shared')('wks'),
-      uid = $__require('./_uid'),
-      Symbol = $__require('./_global').Symbol,
-      USE_SYMBOL = typeof Symbol == 'function';
-
-  var $exports = module.exports = function (name) {
-    return store[name] || (store[name] = USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
-  };
-
-  $exports.store = store;
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-define.js', ['./_library', './_export', './_redefine', './_hide', './_has', './_iterators', './_iter-create', './_set-to-string-tag', './_object-gpo', './_wks', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var LIBRARY = $__require('./_library'),
-      $export = $__require('./_export'),
-      redefine = $__require('./_redefine'),
-      hide = $__require('./_hide'),
-      has = $__require('./_has'),
-      Iterators = $__require('./_iterators'),
-      $iterCreate = $__require('./_iter-create'),
-      setToStringTag = $__require('./_set-to-string-tag'),
-      getPrototypeOf = $__require('./_object-gpo'),
-      ITERATOR = $__require('./_wks')('iterator'),
-      BUGGY = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
-  ,
-      FF_ITERATOR = '@@iterator',
-      KEYS = 'keys',
-      VALUES = 'values';
-
-  var returnThis = function () {
-    return this;
-  };
-
-  module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
-    $iterCreate(Constructor, NAME, next);
-    var getMethod = function (kind) {
-      if (!BUGGY && kind in proto) return proto[kind];
-      switch (kind) {
-        case KEYS:
-          return function keys() {
-            return new Constructor(this, kind);
-          };
-        case VALUES:
-          return function values() {
-            return new Constructor(this, kind);
-          };
-      }return function entries() {
-        return new Constructor(this, kind);
-      };
-    };
-    var TAG = NAME + ' Iterator',
-        DEF_VALUES = DEFAULT == VALUES,
-        VALUES_BUG = false,
-        proto = Base.prototype,
-        $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT],
-        $default = $native || getMethod(DEFAULT),
-        $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined,
-        $anyNative = NAME == 'Array' ? proto.entries || $native : $native,
-        methods,
-        key,
-        IteratorPrototype;
-    // Fix native
-    if ($anyNative) {
-      IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-      if (IteratorPrototype !== Object.prototype) {
-        // Set @@toStringTag to native iterators
-        setToStringTag(IteratorPrototype, TAG, true);
-        // fix for some old engines
-        if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
-      }
-    }
-    // fix Array#{values, @@iterator}.name in V8 / FF
-    if (DEF_VALUES && $native && $native.name !== VALUES) {
-      VALUES_BUG = true;
-      $default = function values() {
-        return $native.call(this);
-      };
-    }
-    // Define iterator
-    if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-      hide(proto, ITERATOR, $default);
-    }
-    // Plug for library
-    Iterators[NAME] = $default;
-    Iterators[TAG] = returnThis;
-    if (DEFAULT) {
-      methods = {
-        values: DEF_VALUES ? $default : getMethod(VALUES),
-        keys: IS_SET ? $default : getMethod(KEYS),
-        entries: $entries
-      };
-      if (FORCED) for (key in methods) {
-        if (!(key in proto)) redefine(proto, key, methods[key]);
-      } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
-    }
-    return methods;
-  };
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.iterator.js', ['./_add-to-unscopables', './_iter-step', './_iterators', './_to-iobject', './_iter-define', 'process'], true, function ($__require, exports, module) {
-  'use strict';
-
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var addToUnscopables = $__require('./_add-to-unscopables'),
-      step = $__require('./_iter-step'),
-      Iterators = $__require('./_iterators'),
-      toIObject = $__require('./_to-iobject');
-
-  // 22.1.3.4 Array.prototype.entries()
-  // 22.1.3.13 Array.prototype.keys()
-  // 22.1.3.29 Array.prototype.values()
-  // 22.1.3.30 Array.prototype[@@iterator]()
-  module.exports = $__require('./_iter-define')(Array, 'Array', function (iterated, kind) {
-    this._t = toIObject(iterated); // target
-    this._i = 0; // next index
-    this._k = kind; // kind
-    // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-  }, function () {
-    var O = this._t,
-        kind = this._k,
-        index = this._i++;
-    if (!O || index >= O.length) {
-      this._t = undefined;
-      return step(1);
-    }
-    if (kind == 'keys') return step(0, index);
-    if (kind == 'values') return step(0, O[index]);
-    return step(0, [index, O[index]]);
-  }, 'values');
-
-  // argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
-  Iterators.Arguments = Iterators.Array;
-
-  addToUnscopables('keys');
-  addToUnscopables('values');
-  addToUnscopables('entries');
-  return module.exports;
-});
-System.registerDynamic('npm:core-js@2.4.1/library/modules/_core.js', ['process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  var core = module.exports = { version: '2.4.0' };
-  if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-  return module.exports;
-});
-System.registerDynamic("github:jspm/nodelibs-process@0.2.0-alpha.json", [], false, function() {
-  return {
-    "main": "./process.js"
-  };
-});
-
-System.registerDynamic('github:jspm/nodelibs-process@0.2.0-alpha/process.js', ['@system-env'], true, function ($__require, exports, module) {
-    var define,
-        global = this || self,
-        GLOBAL = global;
-    // From https://github.com/defunctzombie/node-process/blob/master/browser.js
-    // shim for using process in browser
-
-    var productionEnv = $__require('@system-env').production;
-
-    var process = module.exports = {};
-    var queue = [];
-    var draining = false;
-    var currentQueue;
-    var queueIndex = -1;
-
-    function cleanUpNextTick() {
-        draining = false;
-        if (currentQueue.length) {
-            queue = currentQueue.concat(queue);
-        } else {
-            queueIndex = -1;
-        }
-        if (queue.length) {
-            drainQueue();
-        }
-    }
-
-    function drainQueue() {
-        if (draining) {
-            return;
-        }
-        var timeout = setTimeout(cleanUpNextTick);
-        draining = true;
-
-        var len = queue.length;
-        while (len) {
-            currentQueue = queue;
-            queue = [];
-            while (++queueIndex < len) {
-                if (currentQueue) {
-                    currentQueue[queueIndex].run();
-                }
-            }
-            queueIndex = -1;
-            len = queue.length;
-        }
-        currentQueue = null;
-        draining = false;
-        clearTimeout(timeout);
-    }
-
-    process.nextTick = function (fun) {
-        var args = new Array(arguments.length - 1);
-        if (arguments.length > 1) {
-            for (var i = 1; i < arguments.length; i++) {
-                args[i - 1] = arguments[i];
-            }
-        }
-        queue.push(new Item(fun, args));
-        if (queue.length === 1 && !draining) {
-            setTimeout(drainQueue, 0);
-        }
-    };
-
-    // v8 likes predictible objects
-    function Item(fun, array) {
-        this.fun = fun;
-        this.array = array;
-    }
-    Item.prototype.run = function () {
-        this.fun.apply(null, this.array);
-    };
-    process.title = 'browser';
-    process.browser = true;
-    process.env = {
-        NODE_ENV: productionEnv ? 'production' : 'development'
-    };
-    process.argv = [];
-    process.version = ''; // empty string to avoid regexp issues
-    process.versions = {};
-
-    function noop() {}
-
-    process.on = noop;
-    process.addListener = noop;
-    process.once = noop;
-    process.off = noop;
-    process.removeListener = noop;
-    process.removeAllListeners = noop;
-    process.emit = noop;
-
-    process.binding = function (name) {
-        throw new Error('process.binding is not supported');
-    };
-
-    process.cwd = function () {
-        return '/';
-    };
-    process.chdir = function (dir) {
-        throw new Error('process.chdir is not supported');
-    };
-    process.umask = function () {
-        return 0;
-    };
-    return module.exports;
-});
-System.registerDynamic("npm:core-js@2.4.1.json", [], false, function() {
-  return {
-    "main": "index.js",
-    "format": "cjs",
-    "meta": {
-      "*": {
-        "globals": {
-          "process": "process"
-        }
-      },
-      "*.json": {
-        "format": "json"
-      }
-    },
-    "map": {
-      "./build": "./build/index.js",
-      "./core": "./core/index.js",
-      "./es5": "./es5/index.js",
-      "./es6": "./es6/index.js",
-      "./es7": "./es7/index.js",
-      "./fn/array": "./fn/array/index.js",
-      "./fn/array/virtual": "./fn/array/virtual/index.js",
-      "./fn/date": "./fn/date/index.js",
-      "./fn/dom-collections": "./fn/dom-collections/index.js",
-      "./fn/error": "./fn/error/index.js",
-      "./fn/function": "./fn/function/index.js",
-      "./fn/function/virtual": "./fn/function/virtual/index.js",
-      "./fn/json": "./fn/json/index.js",
-      "./fn/math": "./fn/math/index.js",
-      "./fn/number": "./fn/number/index.js",
-      "./fn/number/virtual": "./fn/number/virtual/index.js",
-      "./fn/object": "./fn/object/index.js",
-      "./fn/reflect": "./fn/reflect/index.js",
-      "./fn/regexp": "./fn/regexp/index.js",
-      "./fn/string": "./fn/string/index.js",
-      "./fn/string/virtual": "./fn/string/virtual/index.js",
-      "./fn/symbol": "./fn/symbol/index.js",
-      "./fn/system": "./fn/system/index.js",
-      "./fn/typed": "./fn/typed/index.js",
-      "./library": "./library/index.js",
-      "./library/core": "./library/core/index.js",
-      "./library/es5": "./library/es5/index.js",
-      "./library/es6": "./library/es6/index.js",
-      "./library/es7": "./library/es7/index.js",
-      "./library/fn/array": "./library/fn/array/index.js",
-      "./library/fn/array/virtual": "./library/fn/array/virtual/index.js",
-      "./library/fn/date": "./library/fn/date/index.js",
-      "./library/fn/dom-collections": "./library/fn/dom-collections/index.js",
-      "./library/fn/error": "./library/fn/error/index.js",
-      "./library/fn/function": "./library/fn/function/index.js",
-      "./library/fn/function/virtual": "./library/fn/function/virtual/index.js",
-      "./library/fn/json": "./library/fn/json/index.js",
-      "./library/fn/math": "./library/fn/math/index.js",
-      "./library/fn/number": "./library/fn/number/index.js",
-      "./library/fn/number/virtual": "./library/fn/number/virtual/index.js",
-      "./library/fn/object": "./library/fn/object/index.js",
-      "./library/fn/reflect": "./library/fn/reflect/index.js",
-      "./library/fn/regexp": "./library/fn/regexp/index.js",
-      "./library/fn/string": "./library/fn/string/index.js",
-      "./library/fn/string/virtual": "./library/fn/string/virtual/index.js",
-      "./library/fn/symbol": "./library/fn/symbol/index.js",
-      "./library/fn/system": "./library/fn/system/index.js",
-      "./library/fn/typed": "./library/fn/typed/index.js",
-      "./library/stage": "./library/stage/index.js",
-      "./library/web": "./library/web/index.js",
-      "./package": "./package.json",
-      "./stage": "./stage/index.js",
-      "./web": "./web/index.js"
-    }
-  };
-});
-
-System.registerDynamic('npm:core-js@2.4.1/library/es6/array.js', ['../modules/es6.string.iterator', '../modules/es6.array.is-array', '../modules/es6.array.from', '../modules/es6.array.of', '../modules/es6.array.join', '../modules/es6.array.slice', '../modules/es6.array.sort', '../modules/es6.array.for-each', '../modules/es6.array.map', '../modules/es6.array.filter', '../modules/es6.array.some', '../modules/es6.array.every', '../modules/es6.array.reduce', '../modules/es6.array.reduce-right', '../modules/es6.array.index-of', '../modules/es6.array.last-index-of', '../modules/es6.array.copy-within', '../modules/es6.array.fill', '../modules/es6.array.find', '../modules/es6.array.find-index', '../modules/es6.array.species', '../modules/es6.array.iterator', '../modules/_core', 'process'], true, function ($__require, exports, module) {
-  var process = $__require('process');
-  var define,
-      global = this || self,
-      GLOBAL = global;
-  $__require('../modules/es6.string.iterator');
-  $__require('../modules/es6.array.is-array');
-  $__require('../modules/es6.array.from');
-  $__require('../modules/es6.array.of');
-  $__require('../modules/es6.array.join');
-  $__require('../modules/es6.array.slice');
-  $__require('../modules/es6.array.sort');
-  $__require('../modules/es6.array.for-each');
-  $__require('../modules/es6.array.map');
-  $__require('../modules/es6.array.filter');
-  $__require('../modules/es6.array.some');
-  $__require('../modules/es6.array.every');
-  $__require('../modules/es6.array.reduce');
-  $__require('../modules/es6.array.reduce-right');
-  $__require('../modules/es6.array.index-of');
-  $__require('../modules/es6.array.last-index-of');
-  $__require('../modules/es6.array.copy-within');
-  $__require('../modules/es6.array.fill');
-  $__require('../modules/es6.array.find');
-  $__require('../modules/es6.array.find-index');
-  $__require('../modules/es6.array.species');
-  $__require('../modules/es6.array.iterator');
-  module.exports = $__require('../modules/_core').Array;
-  return module.exports;
-});
-System.register('app/month_selector/view_model.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'core-js/library/es6/array.js', 'knockout', '../month.js'], function (_export, _context) {
+System.register('app/date_selector/view_model.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'knockout', '../date.js'], function (_export, _context) {
   "use strict";
 
-  var _classCallCheck, _createClass, CoreArray, Knockout, Month, MonthSelectorViewModel;
+  var _classCallCheck, _createClass, Knockout, Date, DateSelectorViewModel;
 
   return {
     setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
       _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
     }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
       _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
-    }, function (_coreJsLibraryEs6ArrayJs) {
-      CoreArray = _coreJsLibraryEs6ArrayJs.default;
     }, function (_knockout) {
       Knockout = _knockout.default;
-    }, function (_monthJs) {
-      Month = _monthJs.default;
+    }, function (_dateJs) {
+      Date = _dateJs.default;
     }],
     execute: function () {
-      MonthSelectorViewModel = function () {
-        _createClass(MonthSelectorViewModel, null, [{
-          key: 'monthNamesOfTheYear',
-          value: function monthNamesOfTheYear() {
-            return CoreArray.from(["Januaray", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]);
-          }
-        }]);
-
-        function MonthSelectorViewModel() {
+      DateSelectorViewModel = function () {
+        function DateSelectorViewModel() {
           var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-          var label = _ref.label;
-          var bindSelectedMonthTo = _ref.bindSelectedMonthTo;
+          var bindSelectedDateTo = _ref.bindSelectedDateTo;
+          var dayLabel = _ref.dayLabel;
+          var defaultDay = _ref.defaultDay;
+          var defaultMonth = _ref.defaultMonth;
+          var defaultYear = _ref.defaultYear;
+          var monthLabel = _ref.monthLabel;
+          var optionalMonths = _ref.optionalMonths;
+          var optionalYears = _ref.optionalYears;
+          var yearLabel = _ref.yearLabel;
 
-          _classCallCheck(this, MonthSelectorViewModel);
+          _classCallCheck(this, DateSelectorViewModel);
 
-          this.selectedMonth = bindSelectedMonthTo || Knockout.observable();
-          this.label = Knockout.observable(Knockout.unwrap(label));
-          this.optionalMonths = Knockout.observableArray(this.constructor.monthNamesOfTheYear().map(function (monthName) {
-            return { name: monthName, value: monthName };
-          }));
+          this.initYearSelector({ defaultValue: defaultYear, options: optionalYears, label: yearLabel });
+          this.initMonthSelector({ defaultValue: defaultMonth, options: optionalMonths,
+            label: monthLabel });
+          this.initDaySelector({ defaultValue: defaultDay, label: dayLabel });
+          this.selectedDate = Knockout.computed(function () {
+            return new Date({ year: this.selectedYear(), month: this.selectedMonth(),
+              day: this.selectedDay() });
+          }, this);
+          this.selectedDate.subscribe(function (newDate) {
+            bindSelectedDateTo(newDate);
+          });
         }
 
-        _createClass(MonthSelectorViewModel, [{
-          key: 'defaultMonth',
-          get: function get() {
-            return Month.current().name();
+        _createClass(DateSelectorViewModel, [{
+          key: 'initDaySelector',
+          value: function initDaySelector() {
+            var _this = this;
+
+            var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var defaultValue = _ref2.defaultValue;
+            var _ref2$label = _ref2.label;
+            var label = _ref2$label === undefined ? "Day" : _ref2$label;
+
+            this.selectedDay = Knockout.observable();
+            this.optionalDays = Knockout.computed(function () {
+              return Date.daysIn({ year: _this.selectedYear(), month: _this.selectedMonth() }).map(function (date) {
+                return { name: date.day, value: date.day };
+              });
+            });
+            this.dayLabel = Knockout.observable(Knockout.unwrap(label));
+            this.defaultDay = defaultValue || Date.now().day;
+          }
+        }, {
+          key: 'initYearSelector',
+          value: function initYearSelector() {
+            var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var defaultValue = _ref3.defaultValue;
+            var options = _ref3.options;
+            var _ref3$label = _ref3.label;
+            var label = _ref3$label === undefined ? "Year" : _ref3$label;
+
+            this.selectedYear = Knockout.observable();
+            this.optionalYears = Knockout.observableArray(options.map(function (year) {
+              return { name: year, value: year };
+            }));
+            this.yearLabel = Knockout.observable(Knockout.unwrap(label));
+            this.defaultYear = defaultValue || Date.now().year;
+          }
+        }, {
+          key: 'initMonthSelector',
+          value: function initMonthSelector() {
+            var _ref4 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var defaultValue = _ref4.defaultValue;
+            var _ref4$label = _ref4.label;
+            var label = _ref4$label === undefined ? "Month" : _ref4$label;
+            var options = _ref4.options;
+
+            this.selectedMonth = Knockout.observable();
+            this.optionalMonths = Knockout.observableArray((options || Date.monthsOfTheYear()).map(function (date) {
+              return { name: date.monthName(), value: date.monthName() };
+            }));
+            this.monthLabel = Knockout.observable(Knockout.unwrap(label));
+            this.defaultMonth = defaultValue || Date.now().monthName();
           }
         }]);
 
-        return MonthSelectorViewModel;
+        return DateSelectorViewModel;
       }();
 
-      _export('default', MonthSelectorViewModel);
+      _export('default', DateSelectorViewModel);
     }
   };
 });
-System.register('app/month_selector/component.js', ['../optional_label/component.js', '../searchable_dropdown_selector/component.js', 'knockout', './view_model.js'], function (_export, _context) {
+System.register('app/date_selector/component.js', ['../searchable_dropdown_selector/component.js', 'knockout', './view_model.js'], function (_export, _context) {
   "use strict";
 
   var Knockout, ViewModel;
   return {
-    setters: [function (_optional_labelComponentJs) {}, function (_searchable_dropdown_selectorComponentJs) {}, function (_knockout) {
+    setters: [function (_searchable_dropdown_selectorComponentJs) {}, function (_knockout) {
       Knockout = _knockout.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
@@ -12290,9 +10451,9 @@ System.register('app/month_selector/component.js', ['../optional_label/component
       (function () {
         'use strict';
 
-        Knockout.components.register('month_selector', {
+        Knockout.components.register('date_selector', {
           viewModel: ViewModel,
-          template: '\n      <searchable_dropdown_selector params="\n        bindLabelTo: label,\n        bindSelectedOptionTo: selectedMonth,\n        bindOptionsTo: optionalMonths,\n        defaultOption: defaultMonth\n      ">\n      </searchable_dropdown_selector>\n    '
+          template: '\n      <searchable_dropdown_selector class="field" params="\n        bindSelectedOptionTo: selectedYear,\n        bindOptionsTo: optionalYears,\n        defaultOption: defaultYear\n      ">\n      </searchable_dropdown_selector>\n      <searchable_dropdown_selector class="field" params="\n        bindSelectedOptionTo: selectedMonth,\n        bindOptionsTo: optionalMonths,\n        defaultOption: defaultMonth\n      ">\n      </searchable_dropdown_selector>\n      <searchable_dropdown_selector class="field" params="\n        bindSelectedOptionTo: selectedDay,\n        bindOptionsTo: optionalDays,\n        defaultOption: defaultDay\n      ">\n      </searchable_dropdown_selector>\n    '
         });
 
         Knockout.cleanNode(document);
@@ -16749,2481 +14910,1897 @@ var define = System.amdDefine;
 })();
 
 })();
-(function() {
-var define = System.amdDefine;
-;
-(function(root) {
-  var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
-  var freeModule = typeof module == 'object' && module && !module.nodeType && module;
-  var freeGlobal = typeof global == 'object' && global;
-  if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal) {
-    root = freeGlobal;
-  }
-  var punycode,
-      maxInt = 2147483647,
-      base = 36,
-      tMin = 1,
-      tMax = 26,
-      skew = 38,
-      damp = 700,
-      initialBias = 72,
-      initialN = 128,
-      delimiter = '-',
-      regexPunycode = /^xn--/,
-      regexNonASCII = /[^\x20-\x7E]/,
-      regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g,
-      errors = {
-        'overflow': 'Overflow: input needs wider integers to process',
-        'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-        'invalid-input': 'Invalid input'
-      },
-      baseMinusTMin = base - tMin,
-      floor = Math.floor,
-      stringFromCharCode = String.fromCharCode,
-      key;
-  function error(type) {
-    throw new RangeError(errors[type]);
-  }
-  function map(array, fn) {
-    var length = array.length;
-    var result = [];
-    while (length--) {
-      result[length] = fn(array[length]);
-    }
-    return result;
-  }
-  function mapDomain(string, fn) {
-    var parts = string.split('@');
-    var result = '';
-    if (parts.length > 1) {
-      result = parts[0] + '@';
-      string = parts[1];
-    }
-    string = string.replace(regexSeparators, '\x2E');
-    var labels = string.split('.');
-    var encoded = map(labels, fn).join('.');
-    return result + encoded;
-  }
-  function ucs2decode(string) {
-    var output = [],
-        counter = 0,
-        length = string.length,
-        value,
-        extra;
-    while (counter < length) {
-      value = string.charCodeAt(counter++);
-      if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-        extra = string.charCodeAt(counter++);
-        if ((extra & 0xFC00) == 0xDC00) {
-          output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-        } else {
-          output.push(value);
-          counter--;
-        }
-      } else {
-        output.push(value);
-      }
-    }
-    return output;
-  }
-  function ucs2encode(array) {
-    return map(array, function(value) {
-      var output = '';
-      if (value > 0xFFFF) {
-        value -= 0x10000;
-        output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
-        value = 0xDC00 | value & 0x3FF;
-      }
-      output += stringFromCharCode(value);
-      return output;
-    }).join('');
-  }
-  function basicToDigit(codePoint) {
-    if (codePoint - 48 < 10) {
-      return codePoint - 22;
-    }
-    if (codePoint - 65 < 26) {
-      return codePoint - 65;
-    }
-    if (codePoint - 97 < 26) {
-      return codePoint - 97;
-    }
-    return base;
-  }
-  function digitToBasic(digit, flag) {
-    return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
-  }
-  function adapt(delta, numPoints, firstTime) {
-    var k = 0;
-    delta = firstTime ? floor(delta / damp) : delta >> 1;
-    delta += floor(delta / numPoints);
-    for (; delta > baseMinusTMin * tMax >> 1; k += base) {
-      delta = floor(delta / baseMinusTMin);
-    }
-    return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
-  }
-  function decode(input) {
-    var output = [],
-        inputLength = input.length,
-        out,
-        i = 0,
-        n = initialN,
-        bias = initialBias,
-        basic,
-        j,
-        index,
-        oldi,
-        w,
-        k,
-        digit,
-        t,
-        baseMinusT;
-    basic = input.lastIndexOf(delimiter);
-    if (basic < 0) {
-      basic = 0;
-    }
-    for (j = 0; j < basic; ++j) {
-      if (input.charCodeAt(j) >= 0x80) {
-        error('not-basic');
-      }
-      output.push(input.charCodeAt(j));
-    }
-    for (index = basic > 0 ? basic + 1 : 0; index < inputLength; ) {
-      for (oldi = i, w = 1, k = base; ; k += base) {
-        if (index >= inputLength) {
-          error('invalid-input');
-        }
-        digit = basicToDigit(input.charCodeAt(index++));
-        if (digit >= base || digit > floor((maxInt - i) / w)) {
-          error('overflow');
-        }
-        i += digit * w;
-        t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-        if (digit < t) {
-          break;
-        }
-        baseMinusT = base - t;
-        if (w > floor(maxInt / baseMinusT)) {
-          error('overflow');
-        }
-        w *= baseMinusT;
-      }
-      out = output.length + 1;
-      bias = adapt(i - oldi, out, oldi == 0);
-      if (floor(i / out) > maxInt - n) {
-        error('overflow');
-      }
-      n += floor(i / out);
-      i %= out;
-      output.splice(i++, 0, n);
-    }
-    return ucs2encode(output);
-  }
-  function encode(input) {
-    var n,
-        delta,
-        handledCPCount,
-        basicLength,
-        bias,
-        j,
-        m,
-        q,
-        k,
-        t,
-        currentValue,
-        output = [],
-        inputLength,
-        handledCPCountPlusOne,
-        baseMinusT,
-        qMinusT;
-    input = ucs2decode(input);
-    inputLength = input.length;
-    n = initialN;
-    delta = 0;
-    bias = initialBias;
-    for (j = 0; j < inputLength; ++j) {
-      currentValue = input[j];
-      if (currentValue < 0x80) {
-        output.push(stringFromCharCode(currentValue));
-      }
-    }
-    handledCPCount = basicLength = output.length;
-    if (basicLength) {
-      output.push(delimiter);
-    }
-    while (handledCPCount < inputLength) {
-      for (m = maxInt, j = 0; j < inputLength; ++j) {
-        currentValue = input[j];
-        if (currentValue >= n && currentValue < m) {
-          m = currentValue;
-        }
-      }
-      handledCPCountPlusOne = handledCPCount + 1;
-      if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-        error('overflow');
-      }
-      delta += (m - n) * handledCPCountPlusOne;
-      n = m;
-      for (j = 0; j < inputLength; ++j) {
-        currentValue = input[j];
-        if (currentValue < n && ++delta > maxInt) {
-          error('overflow');
-        }
-        if (currentValue == n) {
-          for (q = delta, k = base; ; k += base) {
-            t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-            if (q < t) {
-              break;
-            }
-            qMinusT = q - t;
-            baseMinusT = base - t;
-            output.push(stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0)));
-            q = floor(qMinusT / baseMinusT);
-          }
-          output.push(stringFromCharCode(digitToBasic(q, 0)));
-          bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
-          delta = 0;
-          ++handledCPCount;
-        }
-      }
-      ++delta;
-      ++n;
-    }
-    return output.join('');
-  }
-  function toUnicode(input) {
-    return mapDomain(input, function(string) {
-      return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
-    });
-  }
-  function toASCII(input) {
-    return mapDomain(input, function(string) {
-      return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
-    });
-  }
-  punycode = {
-    'version': '1.3.2',
-    'ucs2': {
-      'decode': ucs2decode,
-      'encode': ucs2encode
-    },
-    'decode': decode,
-    'encode': encode,
-    'toASCII': toASCII,
-    'toUnicode': toUnicode
-  };
-  if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
-    define("github:medialize/URI.js@1.18.1/src/punycode.js", [], function() {
-      return punycode;
-    }) && define("punycode", ["github:medialize/URI.js@1.18.1/src/punycode.js"], function(m) {
-      return m;
-    });
-  } else if (freeExports && freeModule) {
-    if (module.exports == freeExports) {
-      freeModule.exports = punycode;
-    } else {
-      for (key in punycode) {
-        punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
-      }
-    }
-  } else {
-    root.punycode = punycode;
-  }
-}(this));
-
-})();
-(function() {
-var define = System.amdDefine;
-(function(root, factory) {
-  'use strict';
-  if (typeof exports === 'object') {
-    module.exports = factory();
-  } else if (typeof define === 'function' && define.amd) {
-    define("github:medialize/URI.js@1.18.1/src/IPv6.js", [], factory);
-  } else {
-    root.IPv6 = factory(root);
-  }
-}(this, function(root) {
-  'use strict';
-  var _IPv6 = root && root.IPv6;
-  function bestPresentation(address) {
-    var _address = address.toLowerCase();
-    var segments = _address.split(':');
-    var length = segments.length;
-    var total = 8;
-    if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
-      segments.shift();
-      segments.shift();
-    } else if (segments[0] === '' && segments[1] === '') {
-      segments.shift();
-    } else if (segments[length - 1] === '' && segments[length - 2] === '') {
-      segments.pop();
-    }
-    length = segments.length;
-    if (segments[length - 1].indexOf('.') !== -1) {
-      total = 7;
-    }
-    var pos;
-    for (pos = 0; pos < length; pos++) {
-      if (segments[pos] === '') {
-        break;
-      }
-    }
-    if (pos < total) {
-      segments.splice(pos, 1, '0000');
-      while (segments.length < total) {
-        segments.splice(pos, 0, '0000');
-      }
-    }
-    var _segments;
-    for (var i = 0; i < total; i++) {
-      _segments = segments[i].split('');
-      for (var j = 0; j < 3; j++) {
-        if (_segments[0] === '0' && _segments.length > 1) {
-          _segments.splice(0, 1);
-        } else {
-          break;
-        }
-      }
-      segments[i] = _segments.join('');
-    }
-    var best = -1;
-    var _best = 0;
-    var _current = 0;
-    var current = -1;
-    var inzeroes = false;
-    for (i = 0; i < total; i++) {
-      if (inzeroes) {
-        if (segments[i] === '0') {
-          _current += 1;
-        } else {
-          inzeroes = false;
-          if (_current > _best) {
-            best = current;
-            _best = _current;
-          }
-        }
-      } else {
-        if (segments[i] === '0') {
-          inzeroes = true;
-          current = i;
-          _current = 1;
-        }
-      }
-    }
-    if (_current > _best) {
-      best = current;
-      _best = _current;
-    }
-    if (_best > 1) {
-      segments.splice(best, _best, '');
-    }
-    length = segments.length;
-    var result = '';
-    if (segments[0] === '') {
-      result = ':';
-    }
-    for (i = 0; i < length; i++) {
-      result += segments[i];
-      if (i === length - 1) {
-        break;
-      }
-      result += ':';
-    }
-    if (segments[length - 1] === '') {
-      result += ':';
-    }
-    return result;
-  }
-  function noConflict() {
-    if (root.IPv6 === this) {
-      root.IPv6 = _IPv6;
-    }
-    return this;
-  }
-  return {
-    best: bestPresentation,
-    noConflict: noConflict
-  };
-}));
-
-})();
-(function() {
-var define = System.amdDefine;
-(function(root, factory) {
-  'use strict';
-  if (typeof exports === 'object') {
-    module.exports = factory();
-  } else if (typeof define === 'function' && define.amd) {
-    define("github:medialize/URI.js@1.18.1/src/SecondLevelDomains.js", [], factory);
-  } else {
-    root.SecondLevelDomains = factory(root);
-  }
-}(this, function(root) {
-  'use strict';
-  var _SecondLevelDomains = root && root.SecondLevelDomains;
-  var SLD = {
-    list: {
-      'ac': ' com gov mil net org ',
-      'ae': ' ac co gov mil name net org pro sch ',
-      'af': ' com edu gov net org ',
-      'al': ' com edu gov mil net org ',
-      'ao': ' co ed gv it og pb ',
-      'ar': ' com edu gob gov int mil net org tur ',
-      'at': ' ac co gv or ',
-      'au': ' asn com csiro edu gov id net org ',
-      'ba': ' co com edu gov mil net org rs unbi unmo unsa untz unze ',
-      'bb': ' biz co com edu gov info net org store tv ',
-      'bh': ' biz cc com edu gov info net org ',
-      'bn': ' com edu gov net org ',
-      'bo': ' com edu gob gov int mil net org tv ',
-      'br': ' adm adv agr am arq art ato b bio blog bmd cim cng cnt com coop ecn edu eng esp etc eti far flog fm fnd fot fst g12 ggf gov imb ind inf jor jus lel mat med mil mus net nom not ntr odo org ppg pro psc psi qsl rec slg srv tmp trd tur tv vet vlog wiki zlg ',
-      'bs': ' com edu gov net org ',
-      'bz': ' du et om ov rg ',
-      'ca': ' ab bc mb nb nf nl ns nt nu on pe qc sk yk ',
-      'ck': ' biz co edu gen gov info net org ',
-      'cn': ' ac ah bj com cq edu fj gd gov gs gx gz ha hb he hi hl hn jl js jx ln mil net nm nx org qh sc sd sh sn sx tj tw xj xz yn zj ',
-      'co': ' com edu gov mil net nom org ',
-      'cr': ' ac c co ed fi go or sa ',
-      'cy': ' ac biz com ekloges gov ltd name net org parliament press pro tm ',
-      'do': ' art com edu gob gov mil net org sld web ',
-      'dz': ' art asso com edu gov net org pol ',
-      'ec': ' com edu fin gov info med mil net org pro ',
-      'eg': ' com edu eun gov mil name net org sci ',
-      'er': ' com edu gov ind mil net org rochest w ',
-      'es': ' com edu gob nom org ',
-      'et': ' biz com edu gov info name net org ',
-      'fj': ' ac biz com info mil name net org pro ',
-      'fk': ' ac co gov net nom org ',
-      'fr': ' asso com f gouv nom prd presse tm ',
-      'gg': ' co net org ',
-      'gh': ' com edu gov mil org ',
-      'gn': ' ac com gov net org ',
-      'gr': ' com edu gov mil net org ',
-      'gt': ' com edu gob ind mil net org ',
-      'gu': ' com edu gov net org ',
-      'hk': ' com edu gov idv net org ',
-      'hu': ' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
-      'id': ' ac co go mil net or sch web ',
-      'il': ' ac co gov idf k12 muni net org ',
-      'in': ' ac co edu ernet firm gen gov i ind mil net nic org res ',
-      'iq': ' com edu gov i mil net org ',
-      'ir': ' ac co dnssec gov i id net org sch ',
-      'it': ' edu gov ',
-      'je': ' co net org ',
-      'jo': ' com edu gov mil name net org sch ',
-      'jp': ' ac ad co ed go gr lg ne or ',
-      'ke': ' ac co go info me mobi ne or sc ',
-      'kh': ' com edu gov mil net org per ',
-      'ki': ' biz com de edu gov info mob net org tel ',
-      'km': ' asso com coop edu gouv k medecin mil nom notaires pharmaciens presse tm veterinaire ',
-      'kn': ' edu gov net org ',
-      'kr': ' ac busan chungbuk chungnam co daegu daejeon es gangwon go gwangju gyeongbuk gyeonggi gyeongnam hs incheon jeju jeonbuk jeonnam k kg mil ms ne or pe re sc seoul ulsan ',
-      'kw': ' com edu gov net org ',
-      'ky': ' com edu gov net org ',
-      'kz': ' com edu gov mil net org ',
-      'lb': ' com edu gov net org ',
-      'lk': ' assn com edu gov grp hotel int ltd net ngo org sch soc web ',
-      'lr': ' com edu gov net org ',
-      'lv': ' asn com conf edu gov id mil net org ',
-      'ly': ' com edu gov id med net org plc sch ',
-      'ma': ' ac co gov m net org press ',
-      'mc': ' asso tm ',
-      'me': ' ac co edu gov its net org priv ',
-      'mg': ' com edu gov mil nom org prd tm ',
-      'mk': ' com edu gov inf name net org pro ',
-      'ml': ' com edu gov net org presse ',
-      'mn': ' edu gov org ',
-      'mo': ' com edu gov net org ',
-      'mt': ' com edu gov net org ',
-      'mv': ' aero biz com coop edu gov info int mil museum name net org pro ',
-      'mw': ' ac co com coop edu gov int museum net org ',
-      'mx': ' com edu gob net org ',
-      'my': ' com edu gov mil name net org sch ',
-      'nf': ' arts com firm info net other per rec store web ',
-      'ng': ' biz com edu gov mil mobi name net org sch ',
-      'ni': ' ac co com edu gob mil net nom org ',
-      'np': ' com edu gov mil net org ',
-      'nr': ' biz com edu gov info net org ',
-      'om': ' ac biz co com edu gov med mil museum net org pro sch ',
-      'pe': ' com edu gob mil net nom org sld ',
-      'ph': ' com edu gov i mil net ngo org ',
-      'pk': ' biz com edu fam gob gok gon gop gos gov net org web ',
-      'pl': ' art bialystok biz com edu gda gdansk gorzow gov info katowice krakow lodz lublin mil net ngo olsztyn org poznan pwr radom slupsk szczecin torun warszawa waw wroc wroclaw zgora ',
-      'pr': ' ac biz com edu est gov info isla name net org pro prof ',
-      'ps': ' com edu gov net org plo sec ',
-      'pw': ' belau co ed go ne or ',
-      'ro': ' arts com firm info nom nt org rec store tm www ',
-      'rs': ' ac co edu gov in org ',
-      'sb': ' com edu gov net org ',
-      'sc': ' com edu gov net org ',
-      'sh': ' co com edu gov net nom org ',
-      'sl': ' com edu gov net org ',
-      'st': ' co com consulado edu embaixada gov mil net org principe saotome store ',
-      'sv': ' com edu gob org red ',
-      'sz': ' ac co org ',
-      'tr': ' av bbs bel biz com dr edu gen gov info k12 name net org pol tel tsk tv web ',
-      'tt': ' aero biz cat co com coop edu gov info int jobs mil mobi museum name net org pro tel travel ',
-      'tw': ' club com ebiz edu game gov idv mil net org ',
-      'mu': ' ac co com gov net or org ',
-      'mz': ' ac co edu gov org ',
-      'na': ' co com ',
-      'nz': ' ac co cri geek gen govt health iwi maori mil net org parliament school ',
-      'pa': ' abo ac com edu gob ing med net nom org sld ',
-      'pt': ' com edu gov int net nome org publ ',
-      'py': ' com edu gov mil net org ',
-      'qa': ' com edu gov mil net org ',
-      're': ' asso com nom ',
-      'ru': ' ac adygeya altai amur arkhangelsk astrakhan bashkiria belgorod bir bryansk buryatia cbg chel chelyabinsk chita chukotka chuvashia com dagestan e-burg edu gov grozny int irkutsk ivanovo izhevsk jar joshkar-ola kalmykia kaluga kamchatka karelia kazan kchr kemerovo khabarovsk khakassia khv kirov koenig komi kostroma kranoyarsk kuban kurgan kursk lipetsk magadan mari mari-el marine mil mordovia mosreg msk murmansk nalchik net nnov nov novosibirsk nsk omsk orenburg org oryol penza perm pp pskov ptz rnd ryazan sakhalin samara saratov simbirsk smolensk spb stavropol stv surgut tambov tatarstan tom tomsk tsaritsyn tsk tula tuva tver tyumen udm udmurtia ulan-ude vladikavkaz vladimir vladivostok volgograd vologda voronezh vrn vyatka yakutia yamal yekaterinburg yuzhno-sakhalinsk ',
-      'rw': ' ac co com edu gouv gov int mil net ',
-      'sa': ' com edu gov med net org pub sch ',
-      'sd': ' com edu gov info med net org tv ',
-      'se': ' a ac b bd c d e f g h i k l m n o org p parti pp press r s t tm u w x y z ',
-      'sg': ' com edu gov idn net org per ',
-      'sn': ' art com edu gouv org perso univ ',
-      'sy': ' com edu gov mil net news org ',
-      'th': ' ac co go in mi net or ',
-      'tj': ' ac biz co com edu go gov info int mil name net nic org test web ',
-      'tn': ' agrinet com defense edunet ens fin gov ind info intl mincom nat net org perso rnrt rns rnu tourism ',
-      'tz': ' ac co go ne or ',
-      'ua': ' biz cherkassy chernigov chernovtsy ck cn co com crimea cv dn dnepropetrovsk donetsk dp edu gov if in ivano-frankivsk kh kharkov kherson khmelnitskiy kiev kirovograd km kr ks kv lg lugansk lutsk lviv me mk net nikolaev od odessa org pl poltava pp rovno rv sebastopol sumy te ternopil uzhgorod vinnica vn zaporizhzhe zhitomir zp zt ',
-      'ug': ' ac co go ne or org sc ',
-      'uk': ' ac bl british-library co cym gov govt icnet jet lea ltd me mil mod national-library-scotland nel net nhs nic nls org orgn parliament plc police sch scot soc ',
-      'us': ' dni fed isa kids nsn ',
-      'uy': ' com edu gub mil net org ',
-      've': ' co com edu gob info mil net org web ',
-      'vi': ' co com k12 net org ',
-      'vn': ' ac biz com edu gov health info int name net org pro ',
-      'ye': ' co com gov ltd me net org plc ',
-      'yu': ' ac co edu gov org ',
-      'za': ' ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ',
-      'zm': ' ac co com edu gov net org sch '
-    },
-    has: function(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= (domain.length - 1)) {
-        return false;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
-      if (sldOffset <= 0 || sldOffset >= (tldOffset - 1)) {
-        return false;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset + 1)];
-      if (!sldList) {
-        return false;
-      }
-      return sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') >= 0;
-    },
-    is: function(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= (domain.length - 1)) {
-        return false;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
-      if (sldOffset >= 0) {
-        return false;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset + 1)];
-      if (!sldList) {
-        return false;
-      }
-      return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
-    },
-    get: function(domain) {
-      var tldOffset = domain.lastIndexOf('.');
-      if (tldOffset <= 0 || tldOffset >= (domain.length - 1)) {
-        return null;
-      }
-      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
-      if (sldOffset <= 0 || sldOffset >= (tldOffset - 1)) {
-        return null;
-      }
-      var sldList = SLD.list[domain.slice(tldOffset + 1)];
-      if (!sldList) {
-        return null;
-      }
-      if (sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') < 0) {
-        return null;
-      }
-      return domain.slice(sldOffset + 1);
-    },
-    noConflict: function() {
-      if (root.SecondLevelDomains === this) {
-        root.SecondLevelDomains = _SecondLevelDomains;
-      }
-      return this;
-    }
-  };
-  return SLD;
-}));
-
-})();
-System.registerDynamic("github:medialize/URI.js@1.18.1.json", [], false, function() {
-  return {
-    "main": "./src/URI"
-  };
-});
-
-(function() {
-var define = System.amdDefine;
-(function(root, factory) {
-  'use strict';
-  if (typeof exports === 'object') {
-    module.exports = factory(require('./punycode'), require('./IPv6'), require('./SecondLevelDomains'));
-  } else if (typeof define === 'function' && define.amd) {
-    define("github:medialize/URI.js@1.18.1/src/URI.js", ["./punycode", "./IPv6", "./SecondLevelDomains"], factory);
-  } else {
-    root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
-  }
-}(this, function(punycode, IPv6, SLD, root) {
-  'use strict';
-  var _URI = root && root.URI;
-  function URI(url, base) {
-    var _urlSupplied = arguments.length >= 1;
-    var _baseSupplied = arguments.length >= 2;
-    if (!(this instanceof URI)) {
-      if (_urlSupplied) {
-        if (_baseSupplied) {
-          return new URI(url, base);
-        }
-        return new URI(url);
-      }
-      return new URI();
-    }
-    if (url === undefined) {
-      if (_urlSupplied) {
-        throw new TypeError('undefined is not a valid argument for URI');
-      }
-      if (typeof location !== 'undefined') {
-        url = location.href + '';
-      } else {
-        url = '';
-      }
-    }
-    this.href(url);
-    if (base !== undefined) {
-      return this.absoluteTo(base);
-    }
-    return this;
-  }
-  URI.version = '1.18.1';
-  var p = URI.prototype;
-  var hasOwn = Object.prototype.hasOwnProperty;
-  function escapeRegEx(string) {
-    return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-  }
-  function getType(value) {
-    if (value === undefined) {
-      return 'Undefined';
-    }
-    return String(Object.prototype.toString.call(value)).slice(8, -1);
-  }
-  function isArray(obj) {
-    return getType(obj) === 'Array';
-  }
-  function filterArrayValues(data, value) {
-    var lookup = {};
-    var i,
-        length;
-    if (getType(value) === 'RegExp') {
-      lookup = null;
-    } else if (isArray(value)) {
-      for (i = 0, length = value.length; i < length; i++) {
-        lookup[value[i]] = true;
-      }
-    } else {
-      lookup[value] = true;
-    }
-    for (i = 0, length = data.length; i < length; i++) {
-      var _match = lookup && lookup[data[i]] !== undefined || !lookup && value.test(data[i]);
-      if (_match) {
-        data.splice(i, 1);
-        length--;
-        i--;
-      }
-    }
-    return data;
-  }
-  function arrayContains(list, value) {
-    var i,
-        length;
-    if (isArray(value)) {
-      for (i = 0, length = value.length; i < length; i++) {
-        if (!arrayContains(list, value[i])) {
-          return false;
-        }
-      }
-      return true;
-    }
-    var _type = getType(value);
-    for (i = 0, length = list.length; i < length; i++) {
-      if (_type === 'RegExp') {
-        if (typeof list[i] === 'string' && list[i].match(value)) {
-          return true;
-        }
-      } else if (list[i] === value) {
-        return true;
-      }
-    }
-    return false;
-  }
-  function arraysEqual(one, two) {
-    if (!isArray(one) || !isArray(two)) {
-      return false;
-    }
-    if (one.length !== two.length) {
-      return false;
-    }
-    one.sort();
-    two.sort();
-    for (var i = 0,
-        l = one.length; i < l; i++) {
-      if (one[i] !== two[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-  function trimSlashes(text) {
-    var trim_expression = /^\/+|\/+$/g;
-    return text.replace(trim_expression, '');
-  }
-  URI._parts = function() {
-    return {
-      protocol: null,
-      username: null,
-      password: null,
-      hostname: null,
-      urn: null,
-      port: null,
-      path: null,
-      query: null,
-      fragment: null,
-      duplicateQueryParameters: URI.duplicateQueryParameters,
-      escapeQuerySpace: URI.escapeQuerySpace
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_string-at.js', ['./_to-integer', './_defined', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var toInteger = $__require('./_to-integer'),
+      defined = $__require('./_defined');
+  // true  -> String#at
+  // false -> String#codePointAt
+  module.exports = function (TO_STRING) {
+    return function (that, pos) {
+      var s = String(defined(that)),
+          i = toInteger(pos),
+          l = s.length,
+          a,
+          b;
+      if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+      a = s.charCodeAt(i);
+      return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff ? TO_STRING ? s.charAt(i) : a : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
     };
   };
-  URI.duplicateQueryParameters = false;
-  URI.escapeQuerySpace = true;
-  URI.protocol_expression = /^[a-z][a-z0-9.+-]*$/i;
-  URI.idn_expression = /[^a-z0-9\.-]/i;
-  URI.punycode_expression = /(xn--)/i;
-  URI.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
-  URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
-  URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
-  URI.findUri = {
-    start: /\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi,
-    end: /[\s\r\n]|$/,
-    trim: /[`!()\[\]{};:'".,<>?«»“”„‘’]+$/
-  };
-  URI.defaultPorts = {
-    http: '80',
-    https: '443',
-    ftp: '21',
-    gopher: '70',
-    ws: '80',
-    wss: '443'
-  };
-  URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
-  URI.domAttributes = {
-    'a': 'href',
-    'blockquote': 'cite',
-    'link': 'href',
-    'base': 'href',
-    'script': 'src',
-    'form': 'action',
-    'img': 'src',
-    'area': 'href',
-    'iframe': 'src',
-    'embed': 'src',
-    'source': 'src',
-    'track': 'src',
-    'input': 'src',
-    'audio': 'src',
-    'video': 'src'
-  };
-  URI.getDomAttribute = function(node) {
-    if (!node || !node.nodeName) {
-      return undefined;
-    }
-    var nodeName = node.nodeName.toLowerCase();
-    if (nodeName === 'input' && node.type !== 'image') {
-      return undefined;
-    }
-    return URI.domAttributes[nodeName];
-  };
-  function escapeForDumbFirefox36(value) {
-    return escape(value);
-  }
-  function strictEncodeURIComponent(string) {
-    return encodeURIComponent(string).replace(/[!'()*]/g, escapeForDumbFirefox36).replace(/\*/g, '%2A');
-  }
-  URI.encode = strictEncodeURIComponent;
-  URI.decode = decodeURIComponent;
-  URI.iso8859 = function() {
-    URI.encode = escape;
-    URI.decode = unescape;
-  };
-  URI.unicode = function() {
-    URI.encode = strictEncodeURIComponent;
-    URI.decode = decodeURIComponent;
-  };
-  URI.characters = {
-    pathname: {
-      encode: {
-        expression: /%(24|26|2B|2C|3B|3D|3A|40)/ig,
-        map: {
-          '%24': '$',
-          '%26': '&',
-          '%2B': '+',
-          '%2C': ',',
-          '%3B': ';',
-          '%3D': '=',
-          '%3A': ':',
-          '%40': '@'
-        }
-      },
-      decode: {
-        expression: /[\/\?#]/g,
-        map: {
-          '/': '%2F',
-          '?': '%3F',
-          '#': '%23'
-        }
-      }
-    },
-    reserved: {encode: {
-        expression: /%(21|23|24|26|27|28|29|2A|2B|2C|2F|3A|3B|3D|3F|40|5B|5D)/ig,
-        map: {
-          '%3A': ':',
-          '%2F': '/',
-          '%3F': '?',
-          '%23': '#',
-          '%5B': '[',
-          '%5D': ']',
-          '%40': '@',
-          '%21': '!',
-          '%24': '$',
-          '%26': '&',
-          '%27': '\'',
-          '%28': '(',
-          '%29': ')',
-          '%2A': '*',
-          '%2B': '+',
-          '%2C': ',',
-          '%3B': ';',
-          '%3D': '='
-        }
-      }},
-    urnpath: {
-      encode: {
-        expression: /%(21|24|27|28|29|2A|2B|2C|3B|3D|40)/ig,
-        map: {
-          '%21': '!',
-          '%24': '$',
-          '%27': '\'',
-          '%28': '(',
-          '%29': ')',
-          '%2A': '*',
-          '%2B': '+',
-          '%2C': ',',
-          '%3B': ';',
-          '%3D': '=',
-          '%40': '@'
-        }
-      },
-      decode: {
-        expression: /[\/\?#:]/g,
-        map: {
-          '/': '%2F',
-          '?': '%3F',
-          '#': '%23',
-          ':': '%3A'
-        }
-      }
-    }
-  };
-  URI.encodeQuery = function(string, escapeQuerySpace) {
-    var escaped = URI.encode(string + '');
-    if (escapeQuerySpace === undefined) {
-      escapeQuerySpace = URI.escapeQuerySpace;
-    }
-    return escapeQuerySpace ? escaped.replace(/%20/g, '+') : escaped;
-  };
-  URI.decodeQuery = function(string, escapeQuerySpace) {
-    string += '';
-    if (escapeQuerySpace === undefined) {
-      escapeQuerySpace = URI.escapeQuerySpace;
-    }
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.string.iterator.js', ['./_string-at', './_iter-define', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $at = $__require('./_string-at')(true);
+
+  // 21.1.3.27 String.prototype[@@iterator]()
+  $__require('./_iter-define')(String, 'String', function (iterated) {
+    this._t = String(iterated); // target
+    this._i = 0; // next index
+    // 21.1.5.2.1 %StringIteratorPrototype%.next()
+  }, function () {
+    var O = this._t,
+        index = this._i,
+        point;
+    if (index >= O.length) return { value: undefined, done: true };
+    point = $at(O, index);
+    this._i += point.length;
+    return { value: point, done: false };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.is-array.js', ['./_export', './_is-array', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
+  var $export = $__require('./_export');
+
+  $export($export.S, 'Array', { isArray: $__require('./_is-array') });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-call.js', ['./_an-object', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // call something on iterator step with safe closing on error
+  var anObject = $__require('./_an-object');
+  module.exports = function (iterator, fn, value, entries) {
     try {
-      return URI.decode(escapeQuerySpace ? string.replace(/\+/g, '%20') : string);
+      return entries ? fn(anObject(value)[0], value[1]) : fn(value);
+      // 7.4.6 IteratorClose(iterator, completion)
     } catch (e) {
-      return string;
+      var ret = iterator['return'];
+      if (ret !== undefined) anObject(ret.call(iterator));
+      throw e;
     }
   };
-  var _parts = {
-    'encode': 'encode',
-    'decode': 'decode'
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_is-array-iter.js', ['./_iterators', './_wks', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // check on default Array iterator
+  var Iterators = $__require('./_iterators'),
+      ITERATOR = $__require('./_wks')('iterator'),
+      ArrayProto = Array.prototype;
+
+  module.exports = function (it) {
+    return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
   };
-  var _part;
-  var generateAccessor = function(_group, _part) {
-    return function(string) {
-      try {
-        return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function(c) {
-          return URI.characters[_group][_part].map[c];
-        });
-      } catch (e) {
-        return string;
-      }
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_classof.js', ['./_cof', './_wks', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // getting tag from 19.1.3.6 Object.prototype.toString()
+  var cof = $__require('./_cof'),
+      TAG = $__require('./_wks')('toStringTag')
+  // ES3 wrong here
+  ,
+      ARG = cof(function () {
+    return arguments;
+  }()) == 'Arguments';
+
+  // fallback for IE11 Script Access Denied error
+  var tryGet = function (it, key) {
+    try {
+      return it[key];
+    } catch (e) {/* empty */}
+  };
+
+  module.exports = function (it) {
+    var O, T, B;
+    return it === undefined ? 'Undefined' : it === null ? 'Null'
+    // @@toStringTag case
+    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
+    // builtinTag case
+    : ARG ? cof(O)
+    // ES3 arguments fallback
+    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/core.get-iterator-method.js', ['./_classof', './_wks', './_iterators', './_core', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var classof = $__require('./_classof'),
+      ITERATOR = $__require('./_wks')('iterator'),
+      Iterators = $__require('./_iterators');
+  module.exports = $__require('./_core').getIteratorMethod = function (it) {
+    if (it != undefined) return it[ITERATOR] || it['@@iterator'] || Iterators[classof(it)];
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-detect.js', ['./_wks', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var ITERATOR = $__require('./_wks')('iterator'),
+      SAFE_CLOSING = false;
+
+  try {
+    var riter = [7][ITERATOR]();
+    riter['return'] = function () {
+      SAFE_CLOSING = true;
     };
+    Array.from(riter, function () {
+      throw 2;
+    });
+  } catch (e) {/* empty */}
+
+  module.exports = function (exec, skipClosing) {
+    if (!skipClosing && !SAFE_CLOSING) return false;
+    var safe = false;
+    try {
+      var arr = [7],
+          iter = arr[ITERATOR]();
+      iter.next = function () {
+        return { done: safe = true };
+      };
+      arr[ITERATOR] = function () {
+        return iter;
+      };
+      exec(arr);
+    } catch (e) {/* empty */}
+    return safe;
   };
-  for (_part in _parts) {
-    URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
-    URI[_part + 'UrnPathSegment'] = generateAccessor('urnpath', _parts[_part]);
-  }
-  var generateSegmentedPathFunction = function(_sep, _codingFuncName, _innerCodingFuncName) {
-    return function(string) {
-      var actualCodingFunc;
-      if (!_innerCodingFuncName) {
-        actualCodingFunc = URI[_codingFuncName];
-      } else {
-        actualCodingFunc = function(string) {
-          return URI[_codingFuncName](URI[_innerCodingFuncName](string));
-        };
-      }
-      var segments = (string + '').split(_sep);
-      for (var i = 0,
-          length = segments.length; i < length; i++) {
-        segments[i] = actualCodingFunc(segments[i]);
-      }
-      return segments.join(_sep);
-    };
-  };
-  URI.decodePath = generateSegmentedPathFunction('/', 'decodePathSegment');
-  URI.decodeUrnPath = generateSegmentedPathFunction(':', 'decodeUrnPathSegment');
-  URI.recodePath = generateSegmentedPathFunction('/', 'encodePathSegment', 'decode');
-  URI.recodeUrnPath = generateSegmentedPathFunction(':', 'encodeUrnPathSegment', 'decode');
-  URI.encodeReserved = generateAccessor('reserved', 'encode');
-  URI.parse = function(string, parts) {
-    var pos;
-    if (!parts) {
-      parts = {};
-    }
-    pos = string.indexOf('#');
-    if (pos > -1) {
-      parts.fragment = string.substring(pos + 1) || null;
-      string = string.substring(0, pos);
-    }
-    pos = string.indexOf('?');
-    if (pos > -1) {
-      parts.query = string.substring(pos + 1) || null;
-      string = string.substring(0, pos);
-    }
-    if (string.substring(0, 2) === '//') {
-      parts.protocol = null;
-      string = string.substring(2);
-      string = URI.parseAuthority(string, parts);
-    } else {
-      pos = string.indexOf(':');
-      if (pos > -1) {
-        parts.protocol = string.substring(0, pos) || null;
-        if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
-          parts.protocol = undefined;
-        } else if (string.substring(pos + 1, pos + 3) === '//') {
-          string = string.substring(pos + 3);
-          string = URI.parseAuthority(string, parts);
-        } else {
-          string = string.substring(pos + 1);
-          parts.urn = true;
-        }
-      }
-    }
-    parts.path = string;
-    return parts;
-  };
-  URI.parseHost = function(string, parts) {
-    string = string.replace(/\\/g, '/');
-    var pos = string.indexOf('/');
-    var bracketPos;
-    var t;
-    if (pos === -1) {
-      pos = string.length;
-    }
-    if (string.charAt(0) === '[') {
-      bracketPos = string.indexOf(']');
-      parts.hostname = string.substring(1, bracketPos) || null;
-      parts.port = string.substring(bracketPos + 2, pos) || null;
-      if (parts.port === '/') {
-        parts.port = null;
-      }
-    } else {
-      var firstColon = string.indexOf(':');
-      var firstSlash = string.indexOf('/');
-      var nextColon = string.indexOf(':', firstColon + 1);
-      if (nextColon !== -1 && (firstSlash === -1 || nextColon < firstSlash)) {
-        parts.hostname = string.substring(0, pos) || null;
-        parts.port = null;
-      } else {
-        t = string.substring(0, pos).split(':');
-        parts.hostname = t[0] || null;
-        parts.port = t[1] || null;
-      }
-    }
-    if (parts.hostname && string.substring(pos).charAt(0) !== '/') {
-      pos++;
-      string = '/' + string;
-    }
-    return string.substring(pos) || '/';
-  };
-  URI.parseAuthority = function(string, parts) {
-    string = URI.parseUserinfo(string, parts);
-    return URI.parseHost(string, parts);
-  };
-  URI.parseUserinfo = function(string, parts) {
-    var firstSlash = string.indexOf('/');
-    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
-    var t;
-    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
-      t = string.substring(0, pos).split(':');
-      parts.username = t[0] ? URI.decode(t[0]) : null;
-      t.shift();
-      parts.password = t[0] ? URI.decode(t.join(':')) : null;
-      string = string.substring(pos + 1);
-    } else {
-      parts.username = null;
-      parts.password = null;
-    }
-    return string;
-  };
-  URI.parseQuery = function(string, escapeQuerySpace) {
-    if (!string) {
-      return {};
-    }
-    string = string.replace(/&+/g, '&').replace(/^\?*&*|&+$/g, '');
-    if (!string) {
-      return {};
-    }
-    var items = {};
-    var splits = string.split('&');
-    var length = splits.length;
-    var v,
-        name,
-        value;
-    for (var i = 0; i < length; i++) {
-      v = splits[i].split('=');
-      name = URI.decodeQuery(v.shift(), escapeQuerySpace);
-      value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
-      if (hasOwn.call(items, name)) {
-        if (typeof items[name] === 'string' || items[name] === null) {
-          items[name] = [items[name]];
-        }
-        items[name].push(value);
-      } else {
-        items[name] = value;
-      }
-    }
-    return items;
-  };
-  URI.build = function(parts) {
-    var t = '';
-    if (parts.protocol) {
-      t += parts.protocol + ':';
-    }
-    if (!parts.urn && (t || parts.hostname)) {
-      t += '//';
-    }
-    t += (URI.buildAuthority(parts) || '');
-    if (typeof parts.path === 'string') {
-      if (parts.path.charAt(0) !== '/' && typeof parts.hostname === 'string') {
-        t += '/';
-      }
-      t += parts.path;
-    }
-    if (typeof parts.query === 'string' && parts.query) {
-      t += '?' + parts.query;
-    }
-    if (typeof parts.fragment === 'string' && parts.fragment) {
-      t += '#' + parts.fragment;
-    }
-    return t;
-  };
-  URI.buildHost = function(parts) {
-    var t = '';
-    if (!parts.hostname) {
-      return '';
-    } else if (URI.ip6_expression.test(parts.hostname)) {
-      t += '[' + parts.hostname + ']';
-    } else {
-      t += parts.hostname;
-    }
-    if (parts.port) {
-      t += ':' + parts.port;
-    }
-    return t;
-  };
-  URI.buildAuthority = function(parts) {
-    return URI.buildUserinfo(parts) + URI.buildHost(parts);
-  };
-  URI.buildUserinfo = function(parts) {
-    var t = '';
-    if (parts.username) {
-      t += URI.encode(parts.username);
-    }
-    if (parts.password) {
-      t += ':' + URI.encode(parts.password);
-    }
-    if (t) {
-      t += '@';
-    }
-    return t;
-  };
-  URI.buildQuery = function(data, duplicateQueryParameters, escapeQuerySpace) {
-    var t = '';
-    var unique,
-        key,
-        i,
-        length;
-    for (key in data) {
-      if (hasOwn.call(data, key) && key) {
-        if (isArray(data[key])) {
-          unique = {};
-          for (i = 0, length = data[key].length; i < length; i++) {
-            if (data[key][i] !== undefined && unique[data[key][i] + ''] === undefined) {
-              t += '&' + URI.buildQueryParameter(key, data[key][i], escapeQuerySpace);
-              if (duplicateQueryParameters !== true) {
-                unique[data[key][i] + ''] = true;
-              }
-            }
-          }
-        } else if (data[key] !== undefined) {
-          t += '&' + URI.buildQueryParameter(key, data[key], escapeQuerySpace);
-        }
-      }
-    }
-    return t.substring(1);
-  };
-  URI.buildQueryParameter = function(name, value, escapeQuerySpace) {
-    return URI.encodeQuery(name, escapeQuerySpace) + (value !== null ? '=' + URI.encodeQuery(value, escapeQuerySpace) : '');
-  };
-  URI.addQuery = function(data, name, value) {
-    if (typeof name === 'object') {
-      for (var key in name) {
-        if (hasOwn.call(name, key)) {
-          URI.addQuery(data, key, name[key]);
-        }
-      }
-    } else if (typeof name === 'string') {
-      if (data[name] === undefined) {
-        data[name] = value;
-        return;
-      } else if (typeof data[name] === 'string') {
-        data[name] = [data[name]];
-      }
-      if (!isArray(value)) {
-        value = [value];
-      }
-      data[name] = (data[name] || []).concat(value);
-    } else {
-      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
-    }
-  };
-  URI.removeQuery = function(data, name, value) {
-    var i,
-        length,
-        key;
-    if (isArray(name)) {
-      for (i = 0, length = name.length; i < length; i++) {
-        data[name[i]] = undefined;
-      }
-    } else if (getType(name) === 'RegExp') {
-      for (key in data) {
-        if (name.test(key)) {
-          data[key] = undefined;
-        }
-      }
-    } else if (typeof name === 'object') {
-      for (key in name) {
-        if (hasOwn.call(name, key)) {
-          URI.removeQuery(data, key, name[key]);
-        }
-      }
-    } else if (typeof name === 'string') {
-      if (value !== undefined) {
-        if (getType(value) === 'RegExp') {
-          if (!isArray(data[name]) && value.test(data[name])) {
-            data[name] = undefined;
-          } else {
-            data[name] = filterArrayValues(data[name], value);
-          }
-        } else if (data[name] === String(value) && (!isArray(value) || value.length === 1)) {
-          data[name] = undefined;
-        } else if (isArray(data[name])) {
-          data[name] = filterArrayValues(data[name], value);
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.from.js', ['./_ctx', './_export', './_to-object', './_iter-call', './_is-array-iter', './_to-length', './_create-property', './core.get-iterator-method', './_iter-detect', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var ctx = $__require('./_ctx'),
+      $export = $__require('./_export'),
+      toObject = $__require('./_to-object'),
+      call = $__require('./_iter-call'),
+      isArrayIter = $__require('./_is-array-iter'),
+      toLength = $__require('./_to-length'),
+      createProperty = $__require('./_create-property'),
+      getIterFn = $__require('./core.get-iterator-method');
+
+  $export($export.S + $export.F * !$__require('./_iter-detect')(function (iter) {
+    Array.from(iter);
+  }), 'Array', {
+    // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+    from: function from(arrayLike /*, mapfn = undefined, thisArg = undefined*/) {
+      var O = toObject(arrayLike),
+          C = typeof this == 'function' ? this : Array,
+          aLen = arguments.length,
+          mapfn = aLen > 1 ? arguments[1] : undefined,
+          mapping = mapfn !== undefined,
+          index = 0,
+          iterFn = getIterFn(O),
+          length,
+          result,
+          step,
+          iterator;
+      if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+      // if object isn't iterable or it's array with default iterator - use simple case
+      if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
+        for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
+          createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
         }
       } else {
-        data[name] = undefined;
-      }
-    } else {
-      throw new TypeError('URI.removeQuery() accepts an object, string, RegExp as the first parameter');
-    }
-  };
-  URI.hasQuery = function(data, name, value, withinArray) {
-    switch (getType(name)) {
-      case 'String':
-        break;
-      case 'RegExp':
-        for (var key in data) {
-          if (hasOwn.call(data, key)) {
-            if (name.test(key) && (value === undefined || URI.hasQuery(data, key, value))) {
-              return true;
-            }
-          }
-        }
-        return false;
-      case 'Object':
-        for (var _key in name) {
-          if (hasOwn.call(name, _key)) {
-            if (!URI.hasQuery(data, _key, name[_key])) {
-              return false;
-            }
-          }
-        }
-        return true;
-      default:
-        throw new TypeError('URI.hasQuery() accepts a string, regular expression or object as the name parameter');
-    }
-    switch (getType(value)) {
-      case 'Undefined':
-        return name in data;
-      case 'Boolean':
-        var _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
-        return value === _booly;
-      case 'Function':
-        return !!value(data[name], name, data);
-      case 'Array':
-        if (!isArray(data[name])) {
-          return false;
-        }
-        var op = withinArray ? arrayContains : arraysEqual;
-        return op(data[name], value);
-      case 'RegExp':
-        if (!isArray(data[name])) {
-          return Boolean(data[name] && data[name].match(value));
-        }
-        if (!withinArray) {
-          return false;
-        }
-        return arrayContains(data[name], value);
-      case 'Number':
-        value = String(value);
-      case 'String':
-        if (!isArray(data[name])) {
-          return data[name] === value;
-        }
-        if (!withinArray) {
-          return false;
-        }
-        return arrayContains(data[name], value);
-      default:
-        throw new TypeError('URI.hasQuery() accepts undefined, boolean, string, number, RegExp, Function as the value parameter');
-    }
-  };
-  URI.joinPaths = function() {
-    var input = [];
-    var segments = [];
-    var nonEmptySegments = 0;
-    for (var i = 0; i < arguments.length; i++) {
-      var url = new URI(arguments[i]);
-      input.push(url);
-      var _segments = url.segment();
-      for (var s = 0; s < _segments.length; s++) {
-        if (typeof _segments[s] === 'string') {
-          segments.push(_segments[s]);
-        }
-        if (_segments[s]) {
-          nonEmptySegments++;
+        length = toLength(O.length);
+        for (result = new C(length); length > index; index++) {
+          createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
         }
       }
+      result.length = index;
+      return result;
     }
-    if (!segments.length || !nonEmptySegments) {
-      return new URI('');
-    }
-    var uri = new URI('').segment(segments);
-    if (input[0].path() === '' || input[0].path().slice(0, 1) === '/') {
-      uri.path('/' + uri.path());
-    }
-    return uri.normalize();
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_create-property.js', ['./_object-dp', './_property-desc', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $defineProperty = $__require('./_object-dp'),
+      createDesc = $__require('./_property-desc');
+
+  module.exports = function (object, index, value) {
+    if (index in object) $defineProperty.f(object, index, createDesc(0, value));else object[index] = value;
   };
-  URI.commonPath = function(one, two) {
-    var length = Math.min(one.length, two.length);
-    var pos;
-    for (pos = 0; pos < length; pos++) {
-      if (one.charAt(pos) !== two.charAt(pos)) {
-        pos--;
-        break;
-      }
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.of.js', ['./_export', './_create-property', './_fails', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      createProperty = $__require('./_create-property');
+
+  // WebKit Array.of isn't generic
+  $export($export.S + $export.F * $__require('./_fails')(function () {
+    function F() {}
+    return !(Array.of.call(F) instanceof F);
+  }), 'Array', {
+    // 22.1.2.3 Array.of( ...items)
+    of: function of() /* ...args */{
+      var index = 0,
+          aLen = arguments.length,
+          result = new (typeof this == 'function' ? this : Array)(aLen);
+      while (aLen > index) createProperty(result, index, arguments[index++]);
+      result.length = aLen;
+      return result;
     }
-    if (pos < 1) {
-      return one.charAt(0) === two.charAt(0) && one.charAt(0) === '/' ? '/' : '';
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.join.js', ['./_export', './_to-iobject', './_iobject', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+  // 22.1.3.13 Array.prototype.join(separator)
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      toIObject = $__require('./_to-iobject'),
+      arrayJoin = [].join;
+
+  // fallback for not array-like strings
+  $export($export.P + $export.F * ($__require('./_iobject') != Object || !$__require('./_strict-method')(arrayJoin)), 'Array', {
+    join: function join(separator) {
+      return arrayJoin.call(toIObject(this), separator === undefined ? ',' : separator);
     }
-    if (one.charAt(pos) !== '/' || two.charAt(pos) !== '/') {
-      pos = one.substring(0, pos).lastIndexOf('/');
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.slice.js', ['./_export', './_html', './_cof', './_to-index', './_to-length', './_fails', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      html = $__require('./_html'),
+      cof = $__require('./_cof'),
+      toIndex = $__require('./_to-index'),
+      toLength = $__require('./_to-length'),
+      arraySlice = [].slice;
+
+  // fallback for not array-like ES3 strings and DOM objects
+  $export($export.P + $export.F * $__require('./_fails')(function () {
+    if (html) arraySlice.call(html);
+  }), 'Array', {
+    slice: function slice(begin, end) {
+      var len = toLength(this.length),
+          klass = cof(this);
+      end = end === undefined ? len : end;
+      if (klass == 'Array') return arraySlice.call(this, begin, end);
+      var start = toIndex(begin, len),
+          upTo = toIndex(end, len),
+          size = toLength(upTo - start),
+          cloned = Array(size),
+          i = 0;
+      for (; i < size; i++) cloned[i] = klass == 'String' ? this.charAt(start + i) : this[start + i];
+      return cloned;
     }
-    return one.substring(0, pos + 1);
-  };
-  URI.withinString = function(string, callback, options) {
-    options || (options = {});
-    var _start = options.start || URI.findUri.start;
-    var _end = options.end || URI.findUri.end;
-    var _trim = options.trim || URI.findUri.trim;
-    var _attributeOpen = /[a-z0-9-]=["']?$/i;
-    _start.lastIndex = 0;
-    while (true) {
-      var match = _start.exec(string);
-      if (!match) {
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.sort.js', ['./_export', './_a-function', './_to-object', './_fails', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      aFunction = $__require('./_a-function'),
+      toObject = $__require('./_to-object'),
+      fails = $__require('./_fails'),
+      $sort = [].sort,
+      test = [1, 2, 3];
+
+  $export($export.P + $export.F * (fails(function () {
+    // IE8-
+    test.sort(undefined);
+  }) || !fails(function () {
+    // V8 bug
+    test.sort(null);
+    // Old WebKit
+  }) || !$__require('./_strict-method')($sort)), 'Array', {
+    // 22.1.3.25 Array.prototype.sort(comparefn)
+    sort: function sort(comparefn) {
+      return comparefn === undefined ? $sort.call(toObject(this)) : $sort.call(toObject(this), aFunction(comparefn));
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.for-each.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $forEach = $__require('./_array-methods')(0),
+      STRICT = $__require('./_strict-method')([].forEach, true);
+
+  $export($export.P + $export.F * !STRICT, 'Array', {
+    // 22.1.3.10 / 15.4.4.18 Array.prototype.forEach(callbackfn [, thisArg])
+    forEach: function forEach(callbackfn /* , thisArg */) {
+      return $forEach(this, callbackfn, arguments[1]);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.map.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $map = $__require('./_array-methods')(1);
+
+  $export($export.P + $export.F * !$__require('./_strict-method')([].map, true), 'Array', {
+    // 22.1.3.15 / 15.4.4.19 Array.prototype.map(callbackfn [, thisArg])
+    map: function map(callbackfn /* , thisArg */) {
+      return $map(this, callbackfn, arguments[1]);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.filter.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $filter = $__require('./_array-methods')(2);
+
+  $export($export.P + $export.F * !$__require('./_strict-method')([].filter, true), 'Array', {
+    // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
+    filter: function filter(callbackfn /* , thisArg */) {
+      return $filter(this, callbackfn, arguments[1]);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.some.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $some = $__require('./_array-methods')(3);
+
+  $export($export.P + $export.F * !$__require('./_strict-method')([].some, true), 'Array', {
+    // 22.1.3.23 / 15.4.4.17 Array.prototype.some(callbackfn [, thisArg])
+    some: function some(callbackfn /* , thisArg */) {
+      return $some(this, callbackfn, arguments[1]);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.every.js', ['./_export', './_array-methods', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $every = $__require('./_array-methods')(4);
+
+  $export($export.P + $export.F * !$__require('./_strict-method')([].every, true), 'Array', {
+    // 22.1.3.5 / 15.4.4.16 Array.prototype.every(callbackfn [, thisArg])
+    every: function every(callbackfn /* , thisArg */) {
+      return $every(this, callbackfn, arguments[1]);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.reduce.js', ['./_export', './_array-reduce', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $reduce = $__require('./_array-reduce');
+
+  $export($export.P + $export.F * !$__require('./_strict-method')([].reduce, true), 'Array', {
+    // 22.1.3.18 / 15.4.4.21 Array.prototype.reduce(callbackfn [, initialValue])
+    reduce: function reduce(callbackfn /* , initialValue */) {
+      return $reduce(this, callbackfn, arguments.length, arguments[1], false);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-reduce.js', ['./_a-function', './_to-object', './_iobject', './_to-length', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var aFunction = $__require('./_a-function'),
+      toObject = $__require('./_to-object'),
+      IObject = $__require('./_iobject'),
+      toLength = $__require('./_to-length');
+
+  module.exports = function (that, callbackfn, aLen, memo, isRight) {
+    aFunction(callbackfn);
+    var O = toObject(that),
+        self = IObject(O),
+        length = toLength(O.length),
+        index = isRight ? length - 1 : 0,
+        i = isRight ? -1 : 1;
+    if (aLen < 2) for (;;) {
+      if (index in self) {
+        memo = self[index];
+        index += i;
         break;
       }
-      var start = match.index;
-      if (options.ignoreHtml) {
-        var attributeOpen = string.slice(Math.max(start - 3, 0), start);
-        if (attributeOpen && _attributeOpen.test(attributeOpen)) {
-          continue;
-        }
+      index += i;
+      if (isRight ? index < 0 : length <= index) {
+        throw TypeError('Reduce of empty array with no initial value');
       }
-      var end = start + string.slice(start).search(_end);
-      var slice = string.slice(start, end).replace(_trim, '');
-      if (options.ignore && options.ignore.test(slice)) {
-        continue;
-      }
-      end = start + slice.length;
-      var result = callback(slice, start, end, string);
-      string = string.slice(0, start) + result + string.slice(end);
-      _start.lastIndex = start + result.length;
     }
-    _start.lastIndex = 0;
-    return string;
+    for (; isRight ? index >= 0 : length > index; index += i) if (index in self) {
+      memo = callbackfn(memo, self[index], index, O);
+    }
+    return memo;
   };
-  URI.ensureValidHostname = function(v) {
-    if (v.match(URI.invalid_hostname_characters)) {
-      if (!punycode) {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-] and Punycode.js is not available');
-      }
-      if (punycode.toASCII(v).match(URI.invalid_hostname_characters)) {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
-      }
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.reduce-right.js', ['./_export', './_array-reduce', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $reduce = $__require('./_array-reduce');
+
+  $export($export.P + $export.F * !$__require('./_strict-method')([].reduceRight, true), 'Array', {
+    // 22.1.3.19 / 15.4.4.22 Array.prototype.reduceRight(callbackfn [, initialValue])
+    reduceRight: function reduceRight(callbackfn /* , initialValue */) {
+      return $reduce(this, callbackfn, arguments.length, arguments[1], true);
     }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.index-of.js', ['./_export', './_array-includes', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $indexOf = $__require('./_array-includes')(false),
+      $native = [].indexOf,
+      NEGATIVE_ZERO = !!$native && 1 / [1].indexOf(1, -0) < 0;
+
+  $export($export.P + $export.F * (NEGATIVE_ZERO || !$__require('./_strict-method')($native)), 'Array', {
+    // 22.1.3.11 / 15.4.4.14 Array.prototype.indexOf(searchElement [, fromIndex])
+    indexOf: function indexOf(searchElement /*, fromIndex = 0 */) {
+      return NEGATIVE_ZERO
+      // convert -0 to +0
+      ? $native.apply(this, arguments) || 0 : $indexOf(this, searchElement, arguments[1]);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_strict-method.js', ['./_fails', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var fails = $__require('./_fails');
+
+  module.exports = function (method, arg) {
+    return !!method && fails(function () {
+      arg ? method.call(null, function () {}, 1) : method.call(null);
+    });
   };
-  URI.noConflict = function(removeAll) {
-    if (removeAll) {
-      var unconflicted = {URI: this.noConflict()};
-      if (root.URITemplate && typeof root.URITemplate.noConflict === 'function') {
-        unconflicted.URITemplate = root.URITemplate.noConflict();
-      }
-      if (root.IPv6 && typeof root.IPv6.noConflict === 'function') {
-        unconflicted.IPv6 = root.IPv6.noConflict();
-      }
-      if (root.SecondLevelDomains && typeof root.SecondLevelDomains.noConflict === 'function') {
-        unconflicted.SecondLevelDomains = root.SecondLevelDomains.noConflict();
-      }
-      return unconflicted;
-    } else if (root.URI === this) {
-      root.URI = _URI;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.last-index-of.js', ['./_export', './_to-iobject', './_to-integer', './_to-length', './_strict-method', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      toIObject = $__require('./_to-iobject'),
+      toInteger = $__require('./_to-integer'),
+      toLength = $__require('./_to-length'),
+      $native = [].lastIndexOf,
+      NEGATIVE_ZERO = !!$native && 1 / [1].lastIndexOf(1, -0) < 0;
+
+  $export($export.P + $export.F * (NEGATIVE_ZERO || !$__require('./_strict-method')($native)), 'Array', {
+    // 22.1.3.14 / 15.4.4.15 Array.prototype.lastIndexOf(searchElement [, fromIndex])
+    lastIndexOf: function lastIndexOf(searchElement /*, fromIndex = @[*-1] */) {
+      // convert -0 to +0
+      if (NEGATIVE_ZERO) return $native.apply(this, arguments) || 0;
+      var O = toIObject(this),
+          length = toLength(O.length),
+          index = length - 1;
+      if (arguments.length > 1) index = Math.min(index, toInteger(arguments[1]));
+      if (index < 0) index = length + index;
+      for (; index >= 0; index--) if (index in O) if (O[index] === searchElement) return index || 0;
+      return -1;
     }
-    return this;
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-copy-within.js', ['./_to-object', './_to-index', './_to-length', 'process'], true, function ($__require, exports, module) {
+  // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var toObject = $__require('./_to-object'),
+      toIndex = $__require('./_to-index'),
+      toLength = $__require('./_to-length');
+
+  module.exports = [].copyWithin || function copyWithin(target /*= 0*/, start /*= 0, end = @length*/) {
+    var O = toObject(this),
+        len = toLength(O.length),
+        to = toIndex(target, len),
+        from = toIndex(start, len),
+        end = arguments.length > 2 ? arguments[2] : undefined,
+        count = Math.min((end === undefined ? len : toIndex(end, len)) - from, len - to),
+        inc = 1;
+    if (from < to && to < from + count) {
+      inc = -1;
+      from += count - 1;
+      to += count - 1;
+    }
+    while (count-- > 0) {
+      if (from in O) O[to] = O[from];else delete O[to];
+      to += inc;
+      from += inc;
+    }return O;
   };
-  p.build = function(deferBuild) {
-    if (deferBuild === true) {
-      this._deferred_build = true;
-    } else if (deferBuild === undefined || this._deferred_build) {
-      this._string = URI.build(this._parts);
-      this._deferred_build = false;
-    }
-    return this;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.copy-within.js', ['./_export', './_array-copy-within', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
+  var $export = $__require('./_export');
+
+  $export($export.P, 'Array', { copyWithin: $__require('./_array-copy-within') });
+
+  $__require('./_add-to-unscopables')('copyWithin');
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-fill.js', ['./_to-object', './_to-index', './_to-length', 'process'], true, function ($__require, exports, module) {
+  // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var toObject = $__require('./_to-object'),
+      toIndex = $__require('./_to-index'),
+      toLength = $__require('./_to-length');
+  module.exports = function fill(value /*, start = 0, end = @length */) {
+    var O = toObject(this),
+        length = toLength(O.length),
+        aLen = arguments.length,
+        index = toIndex(aLen > 1 ? arguments[1] : undefined, length),
+        end = aLen > 2 ? arguments[2] : undefined,
+        endPos = end === undefined ? length : toIndex(end, length);
+    while (endPos > index) O[index++] = value;
+    return O;
   };
-  p.clone = function() {
-    return new URI(this);
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.fill.js', ['./_export', './_array-fill', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
+  var $export = $__require('./_export');
+
+  $export($export.P, 'Array', { fill: $__require('./_array-fill') });
+
+  $__require('./_add-to-unscopables')('fill');
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.find.js', ['./_export', './_array-methods', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+  // 22.1.3.8 Array.prototype.find(predicate, thisArg = undefined)
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $find = $__require('./_array-methods')(5),
+      KEY = 'find',
+      forced = true;
+  // Shouldn't skip holes
+  if (KEY in []) Array(1)[KEY](function () {
+    forced = false;
+  });
+  $export($export.P + $export.F * forced, 'Array', {
+    find: function find(callbackfn /*, that = undefined */) {
+      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+  $__require('./_add-to-unscopables')(KEY);
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_is-array.js', ['./_cof', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 7.2.2 IsArray(argument)
+  var cof = $__require('./_cof');
+  module.exports = Array.isArray || function isArray(arg) {
+    return cof(arg) == 'Array';
   };
-  p.valueOf = p.toString = function() {
-    return this.build(false)._string;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-species-constructor.js', ['./_is-object', './_is-array', './_wks', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var isObject = $__require('./_is-object'),
+      isArray = $__require('./_is-array'),
+      SPECIES = $__require('./_wks')('species');
+
+  module.exports = function (original) {
+    var C;
+    if (isArray(original)) {
+      C = original.constructor;
+      // cross-realm fallback
+      if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;
+      if (isObject(C)) {
+        C = C[SPECIES];
+        if (C === null) C = undefined;
+      }
+    }return C === undefined ? Array : C;
   };
-  function generateSimpleAccessor(_part) {
-    return function(v, build) {
-      if (v === undefined) {
-        return this._parts[_part] || '';
-      } else {
-        this._parts[_part] = v || null;
-        this.build(!build);
-        return this;
-      }
-    };
-  }
-  function generatePrefixAccessor(_part, _key) {
-    return function(v, build) {
-      if (v === undefined) {
-        return this._parts[_part] || '';
-      } else {
-        if (v !== null) {
-          v = v + '';
-          if (v.charAt(0) === _key) {
-            v = v.substring(1);
-          }
-        }
-        this._parts[_part] = v;
-        this.build(!build);
-        return this;
-      }
-    };
-  }
-  p.protocol = generateSimpleAccessor('protocol');
-  p.username = generateSimpleAccessor('username');
-  p.password = generateSimpleAccessor('password');
-  p.hostname = generateSimpleAccessor('hostname');
-  p.port = generateSimpleAccessor('port');
-  p.query = generatePrefixAccessor('query', '?');
-  p.fragment = generatePrefixAccessor('fragment', '#');
-  p.search = function(v, build) {
-    var t = this.query(v, build);
-    return typeof t === 'string' && t.length ? ('?' + t) : t;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-species-create.js', ['./_array-species-constructor', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 9.4.2.3 ArraySpeciesCreate(originalArray, length)
+  var speciesConstructor = $__require('./_array-species-constructor');
+
+  module.exports = function (original, length) {
+    return new (speciesConstructor(original))(length);
   };
-  p.hash = function(v, build) {
-    var t = this.fragment(v, build);
-    return typeof t === 'string' && t.length ? ('#' + t) : t;
-  };
-  p.pathname = function(v, build) {
-    if (v === undefined || v === true) {
-      var res = this._parts.path || (this._parts.hostname ? '/' : '');
-      return v ? (this._parts.urn ? URI.decodeUrnPath : URI.decodePath)(res) : res;
-    } else {
-      if (this._parts.urn) {
-        this._parts.path = v ? URI.recodeUrnPath(v) : '';
-      } else {
-        this._parts.path = v ? URI.recodePath(v) : '/';
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.path = p.pathname;
-  p.href = function(href, build) {
-    var key;
-    if (href === undefined) {
-      return this.toString();
-    }
-    this._string = '';
-    this._parts = URI._parts();
-    var _URI = href instanceof URI;
-    var _object = typeof href === 'object' && (href.hostname || href.path || href.pathname);
-    if (href.nodeName) {
-      var attribute = URI.getDomAttribute(href);
-      href = href[attribute] || '';
-      _object = false;
-    }
-    if (!_URI && _object && href.pathname !== undefined) {
-      href = href.toString();
-    }
-    if (typeof href === 'string' || href instanceof String) {
-      this._parts = URI.parse(String(href), this._parts);
-    } else if (_URI || _object) {
-      var src = _URI ? href._parts : href;
-      for (key in src) {
-        if (hasOwn.call(this._parts, key)) {
-          this._parts[key] = src[key];
-        }
-      }
-    } else {
-      throw new TypeError('invalid input');
-    }
-    this.build(!build);
-    return this;
-  };
-  p.is = function(what) {
-    var ip = false;
-    var ip4 = false;
-    var ip6 = false;
-    var name = false;
-    var sld = false;
-    var idn = false;
-    var punycode = false;
-    var relative = !this._parts.urn;
-    if (this._parts.hostname) {
-      relative = false;
-      ip4 = URI.ip4_expression.test(this._parts.hostname);
-      ip6 = URI.ip6_expression.test(this._parts.hostname);
-      ip = ip4 || ip6;
-      name = !ip;
-      sld = name && SLD && SLD.has(this._parts.hostname);
-      idn = name && URI.idn_expression.test(this._parts.hostname);
-      punycode = name && URI.punycode_expression.test(this._parts.hostname);
-    }
-    switch (what.toLowerCase()) {
-      case 'relative':
-        return relative;
-      case 'absolute':
-        return !relative;
-      case 'domain':
-      case 'name':
-        return name;
-      case 'sld':
-        return sld;
-      case 'ip':
-        return ip;
-      case 'ip4':
-      case 'ipv4':
-      case 'inet4':
-        return ip4;
-      case 'ip6':
-      case 'ipv6':
-      case 'inet6':
-        return ip6;
-      case 'idn':
-        return idn;
-      case 'url':
-        return !this._parts.urn;
-      case 'urn':
-        return !!this._parts.urn;
-      case 'punycode':
-        return punycode;
-    }
-    return null;
-  };
-  var _protocol = p.protocol;
-  var _port = p.port;
-  var _hostname = p.hostname;
-  p.protocol = function(v, build) {
-    if (v !== undefined) {
-      if (v) {
-        v = v.replace(/:(\/\/)?$/, '');
-        if (!v.match(URI.protocol_expression)) {
-          throw new TypeError('Protocol "' + v + '" contains characters other than [A-Z0-9.+-] or doesn\'t start with [A-Z]');
-        }
-      }
-    }
-    return _protocol.call(this, v, build);
-  };
-  p.scheme = p.protocol;
-  p.port = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v !== undefined) {
-      if (v === 0) {
-        v = null;
-      }
-      if (v) {
-        v += '';
-        if (v.charAt(0) === ':') {
-          v = v.substring(1);
-        }
-        if (v.match(/[^0-9]/)) {
-          throw new TypeError('Port "' + v + '" contains characters other than [0-9]');
-        }
-      }
-    }
-    return _port.call(this, v, build);
-  };
-  p.hostname = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v !== undefined) {
-      var x = {};
-      var res = URI.parseHost(v, x);
-      if (res !== '/') {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
-      }
-      v = x.hostname;
-    }
-    return _hostname.call(this, v, build);
-  };
-  p.origin = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      var protocol = this.protocol();
-      var authority = this.authority();
-      if (!authority) {
-        return '';
-      }
-      return (protocol ? protocol + '://' : '') + this.authority();
-    } else {
-      var origin = URI(v);
-      this.protocol(origin.protocol()).authority(origin.authority()).build(!build);
-      return this;
-    }
-  };
-  p.host = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      return this._parts.hostname ? URI.buildHost(this._parts) : '';
-    } else {
-      var res = URI.parseHost(v, this._parts);
-      if (res !== '/') {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.authority = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      return this._parts.hostname ? URI.buildAuthority(this._parts) : '';
-    } else {
-      var res = URI.parseAuthority(v, this._parts);
-      if (res !== '/') {
-        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.userinfo = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      var t = URI.buildUserinfo(this._parts);
-      return t ? t.substring(0, t.length - 1) : t;
-    } else {
-      if (v[v.length - 1] !== '@') {
-        v += '@';
-      }
-      URI.parseUserinfo(v, this._parts);
-      this.build(!build);
-      return this;
-    }
-  };
-  p.resource = function(v, build) {
-    var parts;
-    if (v === undefined) {
-      return this.path() + this.search() + this.hash();
-    }
-    parts = URI.parse(v);
-    this._parts.path = parts.path;
-    this._parts.query = parts.query;
-    this._parts.fragment = parts.fragment;
-    this.build(!build);
-    return this;
-  };
-  p.subdomain = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined) {
-      if (!this._parts.hostname || this.is('IP')) {
-        return '';
-      }
-      var end = this._parts.hostname.length - this.domain().length - 1;
-      return this._parts.hostname.substring(0, end) || '';
-    } else {
-      var e = this._parts.hostname.length - this.domain().length;
-      var sub = this._parts.hostname.substring(0, e);
-      var replace = new RegExp('^' + escapeRegEx(sub));
-      if (v && v.charAt(v.length - 1) !== '.') {
-        v += '.';
-      }
-      if (v) {
-        URI.ensureValidHostname(v);
-      }
-      this._parts.hostname = this._parts.hostname.replace(replace, v);
-      this.build(!build);
-      return this;
-    }
-  };
-  p.domain = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (typeof v === 'boolean') {
-      build = v;
-      v = undefined;
-    }
-    if (v === undefined) {
-      if (!this._parts.hostname || this.is('IP')) {
-        return '';
-      }
-      var t = this._parts.hostname.match(/\./g);
-      if (t && t.length < 2) {
-        return this._parts.hostname;
-      }
-      var end = this._parts.hostname.length - this.tld(build).length - 1;
-      end = this._parts.hostname.lastIndexOf('.', end - 1) + 1;
-      return this._parts.hostname.substring(end) || '';
-    } else {
-      if (!v) {
-        throw new TypeError('cannot set domain empty');
-      }
-      URI.ensureValidHostname(v);
-      if (!this._parts.hostname || this.is('IP')) {
-        this._parts.hostname = v;
-      } else {
-        var replace = new RegExp(escapeRegEx(this.domain()) + '$');
-        this._parts.hostname = this._parts.hostname.replace(replace, v);
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.tld = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (typeof v === 'boolean') {
-      build = v;
-      v = undefined;
-    }
-    if (v === undefined) {
-      if (!this._parts.hostname || this.is('IP')) {
-        return '';
-      }
-      var pos = this._parts.hostname.lastIndexOf('.');
-      var tld = this._parts.hostname.substring(pos + 1);
-      if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
-        return SLD.get(this._parts.hostname) || tld;
-      }
-      return tld;
-    } else {
-      var replace;
-      if (!v) {
-        throw new TypeError('cannot set TLD empty');
-      } else if (v.match(/[^a-zA-Z0-9-]/)) {
-        if (SLD && SLD.is(v)) {
-          replace = new RegExp(escapeRegEx(this.tld()) + '$');
-          this._parts.hostname = this._parts.hostname.replace(replace, v);
-        } else {
-          throw new TypeError('TLD "' + v + '" contains characters other than [A-Z0-9]');
-        }
-      } else if (!this._parts.hostname || this.is('IP')) {
-        throw new ReferenceError('cannot set TLD on non-domain host');
-      } else {
-        replace = new RegExp(escapeRegEx(this.tld()) + '$');
-        this._parts.hostname = this._parts.hostname.replace(replace, v);
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.directory = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined || v === true) {
-      if (!this._parts.path && !this._parts.hostname) {
-        return '';
-      }
-      if (this._parts.path === '/') {
-        return '/';
-      }
-      var end = this._parts.path.length - this.filename().length - 1;
-      var res = this._parts.path.substring(0, end) || (this._parts.hostname ? '/' : '');
-      return v ? URI.decodePath(res) : res;
-    } else {
-      var e = this._parts.path.length - this.filename().length;
-      var directory = this._parts.path.substring(0, e);
-      var replace = new RegExp('^' + escapeRegEx(directory));
-      if (!this.is('relative')) {
-        if (!v) {
-          v = '/';
-        }
-        if (v.charAt(0) !== '/') {
-          v = '/' + v;
-        }
-      }
-      if (v && v.charAt(v.length - 1) !== '/') {
-        v += '/';
-      }
-      v = URI.recodePath(v);
-      this._parts.path = this._parts.path.replace(replace, v);
-      this.build(!build);
-      return this;
-    }
-  };
-  p.filename = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined || v === true) {
-      if (!this._parts.path || this._parts.path === '/') {
-        return '';
-      }
-      var pos = this._parts.path.lastIndexOf('/');
-      var res = this._parts.path.substring(pos + 1);
-      return v ? URI.decodePathSegment(res) : res;
-    } else {
-      var mutatedDirectory = false;
-      if (v.charAt(0) === '/') {
-        v = v.substring(1);
-      }
-      if (v.match(/\.?\//)) {
-        mutatedDirectory = true;
-      }
-      var replace = new RegExp(escapeRegEx(this.filename()) + '$');
-      v = URI.recodePath(v);
-      this._parts.path = this._parts.path.replace(replace, v);
-      if (mutatedDirectory) {
-        this.normalizePath(build);
-      } else {
-        this.build(!build);
-      }
-      return this;
-    }
-  };
-  p.suffix = function(v, build) {
-    if (this._parts.urn) {
-      return v === undefined ? '' : this;
-    }
-    if (v === undefined || v === true) {
-      if (!this._parts.path || this._parts.path === '/') {
-        return '';
-      }
-      var filename = this.filename();
-      var pos = filename.lastIndexOf('.');
-      var s,
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-methods.js', ['./_ctx', './_iobject', './_to-object', './_to-length', './_array-species-create', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 0 -> Array#forEach
+  // 1 -> Array#map
+  // 2 -> Array#filter
+  // 3 -> Array#some
+  // 4 -> Array#every
+  // 5 -> Array#find
+  // 6 -> Array#findIndex
+  var ctx = $__require('./_ctx'),
+      IObject = $__require('./_iobject'),
+      toObject = $__require('./_to-object'),
+      toLength = $__require('./_to-length'),
+      asc = $__require('./_array-species-create');
+  module.exports = function (TYPE, $create) {
+    var IS_MAP = TYPE == 1,
+        IS_FILTER = TYPE == 2,
+        IS_SOME = TYPE == 3,
+        IS_EVERY = TYPE == 4,
+        IS_FIND_INDEX = TYPE == 6,
+        NO_HOLES = TYPE == 5 || IS_FIND_INDEX,
+        create = $create || asc;
+    return function ($this, callbackfn, that) {
+      var O = toObject($this),
+          self = IObject(O),
+          f = ctx(callbackfn, that, 3),
+          length = toLength(self.length),
+          index = 0,
+          result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined,
+          val,
           res;
-      if (pos === -1) {
-        return '';
-      }
-      s = filename.substring(pos + 1);
-      res = (/^[a-z0-9%]+$/i).test(s) ? s : '';
-      return v ? URI.decodePathSegment(res) : res;
-    } else {
-      if (v.charAt(0) === '.') {
-        v = v.substring(1);
-      }
-      var suffix = this.suffix();
-      var replace;
-      if (!suffix) {
-        if (!v) {
-          return this;
-        }
-        this._parts.path += '.' + URI.recodePath(v);
-      } else if (!v) {
-        replace = new RegExp(escapeRegEx('.' + suffix) + '$');
-      } else {
-        replace = new RegExp(escapeRegEx(suffix) + '$');
-      }
-      if (replace) {
-        v = URI.recodePath(v);
-        this._parts.path = this._parts.path.replace(replace, v);
-      }
-      this.build(!build);
-      return this;
-    }
-  };
-  p.segment = function(segment, v, build) {
-    var separator = this._parts.urn ? ':' : '/';
-    var path = this.path();
-    var absolute = path.substring(0, 1) === '/';
-    var segments = path.split(separator);
-    if (segment !== undefined && typeof segment !== 'number') {
-      build = v;
-      v = segment;
-      segment = undefined;
-    }
-    if (segment !== undefined && typeof segment !== 'number') {
-      throw new Error('Bad segment "' + segment + '", must be 0-based integer');
-    }
-    if (absolute) {
-      segments.shift();
-    }
-    if (segment < 0) {
-      segment = Math.max(segments.length + segment, 0);
-    }
-    if (v === undefined) {
-      return segment === undefined ? segments : segments[segment];
-    } else if (segment === null || segments[segment] === undefined) {
-      if (isArray(v)) {
-        segments = [];
-        for (var i = 0,
-            l = v.length; i < l; i++) {
-          if (!v[i].length && (!segments.length || !segments[segments.length - 1].length)) {
-            continue;
-          }
-          if (segments.length && !segments[segments.length - 1].length) {
-            segments.pop();
-          }
-          segments.push(trimSlashes(v[i]));
-        }
-      } else if (v || typeof v === 'string') {
-        v = trimSlashes(v);
-        if (segments[segments.length - 1] === '') {
-          segments[segments.length - 1] = v;
-        } else {
-          segments.push(v);
+      for (; length > index; index++) if (NO_HOLES || index in self) {
+        val = self[index];
+        res = f(val, index, O);
+        if (TYPE) {
+          if (IS_MAP) result[index] = res; // map
+          else if (res) switch (TYPE) {
+              case 3:
+                return true; // some
+              case 5:
+                return val; // find
+              case 6:
+                return index; // findIndex
+              case 2:
+                result.push(val); // filter
+            } else if (IS_EVERY) return false; // every
         }
       }
-    } else {
-      if (v) {
-        segments[segment] = trimSlashes(v);
-      } else {
-        segments.splice(segment, 1);
+      return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
+    };
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.find-index.js', ['./_export', './_array-methods', './_add-to-unscopables', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+  // 22.1.3.9 Array.prototype.findIndex(predicate, thisArg = undefined)
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      $find = $__require('./_array-methods')(6),
+      KEY = 'findIndex',
+      forced = true;
+  // Shouldn't skip holes
+  if (KEY in []) Array(1)[KEY](function () {
+    forced = false;
+  });
+  $export($export.P + $export.F * forced, 'Array', {
+    findIndex: function findIndex(callbackfn /*, that = undefined */) {
+      return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+  $__require('./_add-to-unscopables')(KEY);
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_set-species.js', ['./_global', './_core', './_object-dp', './_descriptors', './_wks', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var global = $__require('./_global'),
+      core = $__require('./_core'),
+      dP = $__require('./_object-dp'),
+      DESCRIPTORS = $__require('./_descriptors'),
+      SPECIES = $__require('./_wks')('species');
+
+  module.exports = function (KEY) {
+    var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
+    if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
+      configurable: true,
+      get: function () {
+        return this;
+      }
+    });
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.species.js', ['./_set-species', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  $__require('./_set-species')('Array');
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_add-to-unscopables.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = function () {/* empty */};
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_iter-step.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = function (done, value) {
+    return { value: value, done: !!done };
+  };
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_library.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = true;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_a-function.js', ['process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = function (it) {
+    if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+    return it;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_ctx.js', ['./_a-function', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // optional / simple context binding
+  var aFunction = $__require('./_a-function');
+  module.exports = function (fn, that, length) {
+    aFunction(fn);
+    if (that === undefined) return fn;
+    switch (length) {
+      case 1:
+        return function (a) {
+          return fn.call(that, a);
+        };
+      case 2:
+        return function (a, b) {
+          return fn.call(that, a, b);
+        };
+      case 3:
+        return function (a, b, c) {
+          return fn.call(that, a, b, c);
+        };
+    }
+    return function () /* ...args */{
+      return fn.apply(that, arguments);
+    };
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_export.js', ['./_global', './_core', './_ctx', './_hide', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var global = $__require('./_global'),
+      core = $__require('./_core'),
+      ctx = $__require('./_ctx'),
+      hide = $__require('./_hide'),
+      PROTOTYPE = 'prototype';
+
+  var $export = function (type, name, source) {
+    var IS_FORCED = type & $export.F,
+        IS_GLOBAL = type & $export.G,
+        IS_STATIC = type & $export.S,
+        IS_PROTO = type & $export.P,
+        IS_BIND = type & $export.B,
+        IS_WRAP = type & $export.W,
+        exports = IS_GLOBAL ? core : core[name] || (core[name] = {}),
+        expProto = exports[PROTOTYPE],
+        target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE],
+        key,
+        own,
+        out;
+    if (IS_GLOBAL) source = name;
+    for (key in source) {
+      // contains in native
+      own = !IS_FORCED && target && target[key] !== undefined;
+      if (own && key in exports) continue;
+      // export native or passed
+      out = own ? target[key] : source[key];
+      // prevent global pollution for namespaces
+      exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+      // bind timers to global for call from export context
+      : IS_BIND && own ? ctx(out, global)
+      // wrap global constructors for prevent change them in library
+      : IS_WRAP && target[key] == out ? function (C) {
+        var F = function (a, b, c) {
+          if (this instanceof C) {
+            switch (arguments.length) {
+              case 0:
+                return new C();
+              case 1:
+                return new C(a);
+              case 2:
+                return new C(a, b);
+            }return new C(a, b, c);
+          }return C.apply(this, arguments);
+        };
+        F[PROTOTYPE] = C[PROTOTYPE];
+        return F;
+        // make static versions for prototype methods
+      }(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+      // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+      if (IS_PROTO) {
+        (exports.virtual || (exports.virtual = {}))[key] = out;
+        // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+        if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
       }
     }
-    if (absolute) {
-      segments.unshift('');
-    }
-    return this.path(segments.join(separator), build);
   };
-  p.segmentCoded = function(segment, v, build) {
-    var segments,
-        i,
-        l;
-    if (typeof segment !== 'number') {
-      build = v;
-      v = segment;
-      segment = undefined;
-    }
-    if (v === undefined) {
-      segments = this.segment(segment, v, build);
-      if (!isArray(segments)) {
-        segments = segments !== undefined ? URI.decode(segments) : undefined;
-      } else {
-        for (i = 0, l = segments.length; i < l; i++) {
-          segments[i] = URI.decode(segments[i]);
-        }
-      }
-      return segments;
-    }
-    if (!isArray(v)) {
-      v = (typeof v === 'string' || v instanceof String) ? URI.encode(v) : v;
-    } else {
-      for (i = 0, l = v.length; i < l; i++) {
-        v[i] = URI.encode(v[i]);
-      }
-    }
-    return this.segment(segment, v, build);
+  // type bitmap
+  $export.F = 1; // forced
+  $export.G = 2; // global
+  $export.S = 4; // static
+  $export.P = 8; // proto
+  $export.B = 16; // bind
+  $export.W = 32; // wrap
+  $export.U = 64; // safe
+  $export.R = 128; // real proto method for `library` 
+  module.exports = $export;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_redefine.js', ['./_hide', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = $__require('./_hide');
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_iterators.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = {};
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_cof.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var toString = {}.toString;
+
+  module.exports = function (it) {
+    return toString.call(it).slice(8, -1);
   };
-  var q = p.query;
-  p.query = function(v, build) {
-    if (v === true) {
-      return URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    } else if (typeof v === 'function') {
-      var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-      var result = v.call(this, data);
-      this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-      this.build(!build);
-      return this;
-    } else if (v !== undefined && typeof v !== 'string') {
-      this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-      this.build(!build);
-      return this;
-    } else {
-      return q.call(this, v, build);
-    }
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_iobject.js', ['./_cof', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // fallback for non-array-like ES3 and non-enumerable old V8 strings
+  var cof = $__require('./_cof');
+  module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+    return cof(it) == 'String' ? it.split('') : Object(it);
   };
-  p.setQuery = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    if (typeof name === 'string' || name instanceof String) {
-      data[name] = value !== undefined ? value : null;
-    } else if (typeof name === 'object') {
-      for (var key in name) {
-        if (hasOwn.call(name, key)) {
-          data[key] = name[key];
-        }
-      }
-    } else {
-      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
-    }
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-    if (typeof name !== 'string') {
-      build = value;
-    }
-    this.build(!build);
-    return this;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-iobject.js', ['./_iobject', './_defined', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // to indexed object, toObject with fallback for non-array-like ES3 strings
+  var IObject = $__require('./_iobject'),
+      defined = $__require('./_defined');
+  module.exports = function (it) {
+    return IObject(defined(it));
   };
-  p.addQuery = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    URI.addQuery(data, name, value === undefined ? null : value);
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-    if (typeof name !== 'string') {
-      build = value;
-    }
-    this.build(!build);
-    return this;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-length.js', ['./_to-integer', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 7.1.15 ToLength
+  var toInteger = $__require('./_to-integer'),
+      min = Math.min;
+  module.exports = function (it) {
+    return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
   };
-  p.removeQuery = function(name, value, build) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    URI.removeQuery(data, name, value);
-    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
-    if (typeof name !== 'string') {
-      build = value;
-    }
-    this.build(!build);
-    return this;
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_to-integer.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 7.1.4 ToInteger
+  var ceil = Math.ceil,
+      floor = Math.floor;
+  module.exports = function (it) {
+    return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
   };
-  p.hasQuery = function(name, value, withinArray) {
-    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
-    return URI.hasQuery(data, name, value, withinArray);
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-index.js', ['./_to-integer', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var toInteger = $__require('./_to-integer'),
+      max = Math.max,
+      min = Math.min;
+  module.exports = function (index, length) {
+    index = toInteger(index);
+    return index < 0 ? max(index + length, 0) : min(index, length);
   };
-  p.setSearch = p.setQuery;
-  p.addSearch = p.addQuery;
-  p.removeSearch = p.removeQuery;
-  p.hasSearch = p.hasQuery;
-  p.normalize = function() {
-    if (this._parts.urn) {
-      return this.normalizeProtocol(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
-    }
-    return this.normalizeProtocol(false).normalizeHostname(false).normalizePort(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_array-includes.js', ['./_to-iobject', './_to-length', './_to-index', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // false -> Array#indexOf
+  // true  -> Array#includes
+  var toIObject = $__require('./_to-iobject'),
+      toLength = $__require('./_to-length'),
+      toIndex = $__require('./_to-index');
+  module.exports = function (IS_INCLUDES) {
+    return function ($this, el, fromIndex) {
+      var O = toIObject($this),
+          length = toLength(O.length),
+          index = toIndex(fromIndex, length),
+          value;
+      // Array#includes uses SameValueZero equality algorithm
+      if (IS_INCLUDES && el != el) while (length > index) {
+        value = O[index++];
+        if (value != value) return true;
+        // Array#toIndex ignores holes, Array#includes - not
+      } else for (; length > index; index++) if (IS_INCLUDES || index in O) {
+        if (O[index] === el) return IS_INCLUDES || index || 0;
+      }return !IS_INCLUDES && -1;
+    };
   };
-  p.normalizeProtocol = function(build) {
-    if (typeof this._parts.protocol === 'string') {
-      this._parts.protocol = this._parts.protocol.toLowerCase();
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizeHostname = function(build) {
-    if (this._parts.hostname) {
-      if (this.is('IDN') && punycode) {
-        this._parts.hostname = punycode.toASCII(this._parts.hostname);
-      } else if (this.is('IPv6') && IPv6) {
-        this._parts.hostname = IPv6.best(this._parts.hostname);
-      }
-      this._parts.hostname = this._parts.hostname.toLowerCase();
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizePort = function(build) {
-    if (typeof this._parts.protocol === 'string' && this._parts.port === URI.defaultPorts[this._parts.protocol]) {
-      this._parts.port = null;
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizePath = function(build) {
-    var _path = this._parts.path;
-    if (!_path) {
-      return this;
-    }
-    if (this._parts.urn) {
-      this._parts.path = URI.recodeUrnPath(this._parts.path);
-      this.build(!build);
-      return this;
-    }
-    if (this._parts.path === '/') {
-      return this;
-    }
-    _path = URI.recodePath(_path);
-    var _was_relative;
-    var _leadingParents = '';
-    var _parent,
-        _pos;
-    if (_path.charAt(0) !== '/') {
-      _was_relative = true;
-      _path = '/' + _path;
-    }
-    if (_path.slice(-3) === '/..' || _path.slice(-2) === '/.') {
-      _path += '/';
-    }
-    _path = _path.replace(/(\/(\.\/)+)|(\/\.$)/g, '/').replace(/\/{2,}/g, '/');
-    if (_was_relative) {
-      _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
-      if (_leadingParents) {
-        _leadingParents = _leadingParents[0];
-      }
-    }
-    while (true) {
-      _parent = _path.search(/\/\.\.(\/|$)/);
-      if (_parent === -1) {
-        break;
-      } else if (_parent === 0) {
-        _path = _path.substring(3);
-        continue;
-      }
-      _pos = _path.substring(0, _parent).lastIndexOf('/');
-      if (_pos === -1) {
-        _pos = _parent;
-      }
-      _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
-    }
-    if (_was_relative && this.is('relative')) {
-      _path = _leadingParents + _path.substring(1);
-    }
-    this._parts.path = _path;
-    this.build(!build);
-    return this;
-  };
-  p.normalizePathname = p.normalizePath;
-  p.normalizeQuery = function(build) {
-    if (typeof this._parts.query === 'string') {
-      if (!this._parts.query.length) {
-        this._parts.query = null;
-      } else {
-        this.query(URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace));
-      }
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizeFragment = function(build) {
-    if (!this._parts.fragment) {
-      this._parts.fragment = null;
-      this.build(!build);
-    }
-    return this;
-  };
-  p.normalizeSearch = p.normalizeQuery;
-  p.normalizeHash = p.normalizeFragment;
-  p.iso8859 = function() {
-    var e = URI.encode;
-    var d = URI.decode;
-    URI.encode = escape;
-    URI.decode = decodeURIComponent;
-    try {
-      this.normalize();
-    } finally {
-      URI.encode = e;
-      URI.decode = d;
-    }
-    return this;
-  };
-  p.unicode = function() {
-    var e = URI.encode;
-    var d = URI.decode;
-    URI.encode = strictEncodeURIComponent;
-    URI.decode = unescape;
-    try {
-      this.normalize();
-    } finally {
-      URI.encode = e;
-      URI.decode = d;
-    }
-    return this;
-  };
-  p.readable = function() {
-    var uri = this.clone();
-    uri.username('').password('').normalize();
-    var t = '';
-    if (uri._parts.protocol) {
-      t += uri._parts.protocol + '://';
-    }
-    if (uri._parts.hostname) {
-      if (uri.is('punycode') && punycode) {
-        t += punycode.toUnicode(uri._parts.hostname);
-        if (uri._parts.port) {
-          t += ':' + uri._parts.port;
-        }
-      } else {
-        t += uri.host();
-      }
-    }
-    if (uri._parts.hostname && uri._parts.path && uri._parts.path.charAt(0) !== '/') {
-      t += '/';
-    }
-    t += uri.path(true);
-    if (uri._parts.query) {
-      var q = '';
-      for (var i = 0,
-          qp = uri._parts.query.split('&'),
-          l = qp.length; i < l; i++) {
-        var kv = (qp[i] || '').split('=');
-        q += '&' + URI.decodeQuery(kv[0], this._parts.escapeQuerySpace).replace(/&/g, '%26');
-        if (kv[1] !== undefined) {
-          q += '=' + URI.decodeQuery(kv[1], this._parts.escapeQuerySpace).replace(/&/g, '%26');
-        }
-      }
-      t += '?' + q.substring(1);
-    }
-    t += URI.decodeQuery(uri.hash(), true);
-    return t;
-  };
-  p.absoluteTo = function(base) {
-    var resolved = this.clone();
-    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
-    var basedir,
-        i,
-        p;
-    if (this._parts.urn) {
-      throw new Error('URNs do not have any generally defined hierarchical components');
-    }
-    if (!(base instanceof URI)) {
-      base = new URI(base);
-    }
-    if (!resolved._parts.protocol) {
-      resolved._parts.protocol = base._parts.protocol;
-    }
-    if (this._parts.hostname) {
-      return resolved;
-    }
-    for (i = 0; (p = properties[i]); i++) {
-      resolved._parts[p] = base._parts[p];
-    }
-    if (!resolved._parts.path) {
-      resolved._parts.path = base._parts.path;
-      if (!resolved._parts.query) {
-        resolved._parts.query = base._parts.query;
-      }
-    } else if (resolved._parts.path.substring(-2) === '..') {
-      resolved._parts.path += '/';
-    }
-    if (resolved.path().charAt(0) !== '/') {
-      basedir = base.directory();
-      basedir = basedir ? basedir : base.path().indexOf('/') === 0 ? '/' : '';
-      resolved._parts.path = (basedir ? (basedir + '/') : '') + resolved._parts.path;
-      resolved.normalizePath();
-    }
-    resolved.build();
-    return resolved;
-  };
-  p.relativeTo = function(base) {
-    var relative = this.clone().normalize();
-    var relativeParts,
-        baseParts,
-        common,
-        relativePath,
-        basePath;
-    if (relative._parts.urn) {
-      throw new Error('URNs do not have any generally defined hierarchical components');
-    }
-    base = new URI(base).normalize();
-    relativeParts = relative._parts;
-    baseParts = base._parts;
-    relativePath = relative.path();
-    basePath = base.path();
-    if (relativePath.charAt(0) !== '/') {
-      throw new Error('URI is already relative');
-    }
-    if (basePath.charAt(0) !== '/') {
-      throw new Error('Cannot calculate a URI relative to another relative URI');
-    }
-    if (relativeParts.protocol === baseParts.protocol) {
-      relativeParts.protocol = null;
-    }
-    if (relativeParts.username !== baseParts.username || relativeParts.password !== baseParts.password) {
-      return relative.build();
-    }
-    if (relativeParts.protocol !== null || relativeParts.username !== null || relativeParts.password !== null) {
-      return relative.build();
-    }
-    if (relativeParts.hostname === baseParts.hostname && relativeParts.port === baseParts.port) {
-      relativeParts.hostname = null;
-      relativeParts.port = null;
-    } else {
-      return relative.build();
-    }
-    if (relativePath === basePath) {
-      relativeParts.path = '';
-      return relative.build();
-    }
-    common = URI.commonPath(relativePath, basePath);
-    if (!common) {
-      return relative.build();
-    }
-    var parents = baseParts.path.substring(common.length).replace(/[^\/]*$/, '').replace(/.*?\//g, '../');
-    relativeParts.path = (parents + relativeParts.path.substring(common.length)) || './';
-    return relative.build();
-  };
-  p.equals = function(uri) {
-    var one = this.clone();
-    var two = new URI(uri);
-    var one_map = {};
-    var two_map = {};
-    var checked = {};
-    var one_query,
-        two_query,
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-keys-internal.js', ['./_has', './_to-iobject', './_array-includes', './_shared-key', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var has = $__require('./_has'),
+      toIObject = $__require('./_to-iobject'),
+      arrayIndexOf = $__require('./_array-includes')(false),
+      IE_PROTO = $__require('./_shared-key')('IE_PROTO');
+
+  module.exports = function (object, names) {
+    var O = toIObject(object),
+        i = 0,
+        result = [],
         key;
-    one.normalize();
-    two.normalize();
-    if (one.toString() === two.toString()) {
+    for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+    // Don't enum bug & hidden keys
+    while (names.length > i) if (has(O, key = names[i++])) {
+      ~arrayIndexOf(result, key) || result.push(key);
+    }
+    return result;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-keys.js', ['./_object-keys-internal', './_enum-bug-keys', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.14 / 15.2.3.14 Object.keys(O)
+  var $keys = $__require('./_object-keys-internal'),
+      enumBugKeys = $__require('./_enum-bug-keys');
+
+  module.exports = Object.keys || function keys(O) {
+    return $keys(O, enumBugKeys);
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-dps.js', ['./_object-dp', './_an-object', './_object-keys', './_descriptors', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var dP = $__require('./_object-dp'),
+      anObject = $__require('./_an-object'),
+      getKeys = $__require('./_object-keys');
+
+  module.exports = $__require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
+    anObject(O);
+    var keys = getKeys(Properties),
+        length = keys.length,
+        i = 0,
+        P;
+    while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+    return O;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_enum-bug-keys.js', ['process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // IE 8- don't enum bug keys
+  module.exports = 'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'.split(',');
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_html.js', ['./_global', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = $__require('./_global').document && document.documentElement;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-create.js', ['./_an-object', './_object-dps', './_enum-bug-keys', './_shared-key', './_dom-create', './_html', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+  var anObject = $__require('./_an-object'),
+      dPs = $__require('./_object-dps'),
+      enumBugKeys = $__require('./_enum-bug-keys'),
+      IE_PROTO = $__require('./_shared-key')('IE_PROTO'),
+      Empty = function () {/* empty */},
+      PROTOTYPE = 'prototype';
+
+  // Create object with fake `null` prototype: use iframe Object with cleared prototype
+  var createDict = function () {
+    // Thrash, waste and sodomy: IE GC bug
+    var iframe = $__require('./_dom-create')('iframe'),
+        i = enumBugKeys.length,
+        lt = '<',
+        gt = '>',
+        iframeDocument;
+    iframe.style.display = 'none';
+    $__require('./_html').appendChild(iframe);
+    iframe.src = 'javascript:'; // eslint-disable-line no-script-url
+    // createDict = iframe.contentWindow.Object;
+    // html.removeChild(iframe);
+    iframeDocument = iframe.contentWindow.document;
+    iframeDocument.open();
+    iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+    iframeDocument.close();
+    createDict = iframeDocument.F;
+    while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+    return createDict();
+  };
+
+  module.exports = Object.create || function create(O, Properties) {
+    var result;
+    if (O !== null) {
+      Empty[PROTOTYPE] = anObject(O);
+      result = new Empty();
+      Empty[PROTOTYPE] = null;
+      // add "__proto__" for Object.getPrototypeOf polyfill
+      result[IE_PROTO] = O;
+    } else result = createDict();
+    return Properties === undefined ? result : dPs(result, Properties);
+  };
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_property-desc.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = function (bitmap, value) {
+    return {
+      enumerable: !(bitmap & 1),
+      configurable: !(bitmap & 2),
+      writable: !(bitmap & 4),
+      value: value
+    };
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_hide.js', ['./_object-dp', './_property-desc', './_descriptors', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var dP = $__require('./_object-dp'),
+      createDesc = $__require('./_property-desc');
+  module.exports = $__require('./_descriptors') ? function (object, key, value) {
+    return dP.f(object, key, createDesc(1, value));
+  } : function (object, key, value) {
+    object[key] = value;
+    return object;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-create.js', ['./_object-create', './_property-desc', './_set-to-string-tag', './_hide', './_wks', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var create = $__require('./_object-create'),
+      descriptor = $__require('./_property-desc'),
+      setToStringTag = $__require('./_set-to-string-tag'),
+      IteratorPrototype = {};
+
+  // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+  $__require('./_hide')(IteratorPrototype, $__require('./_wks')('iterator'), function () {
+    return this;
+  });
+
+  module.exports = function (Constructor, NAME, next) {
+    Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+    setToStringTag(Constructor, NAME + ' Iterator');
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_an-object.js', ['./_is-object', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var isObject = $__require('./_is-object');
+  module.exports = function (it) {
+    if (!isObject(it)) throw TypeError(it + ' is not an object!');
+    return it;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_dom-create.js', ['./_is-object', './_global', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var isObject = $__require('./_is-object'),
+      document = $__require('./_global').document
+  // in old IE typeof document.createElement is 'object'
+  ,
+      is = isObject(document) && isObject(document.createElement);
+  module.exports = function (it) {
+    return is ? document.createElement(it) : {};
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_ie8-dom-define.js', ['./_descriptors', './_fails', './_dom-create', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = !$__require('./_descriptors') && !$__require('./_fails')(function () {
+    return Object.defineProperty($__require('./_dom-create')('div'), 'a', { get: function () {
+        return 7;
+      } }).a != 7;
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_is-object.js', ['process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = function (it) {
+    return typeof it === 'object' ? it !== null : typeof it === 'function';
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-primitive.js', ['./_is-object', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 7.1.1 ToPrimitive(input [, PreferredType])
+  var isObject = $__require('./_is-object');
+  // instead of the ES6 spec version, we didn't implement @@toPrimitive case
+  // and the second argument - flag - preferred type is a string
+  module.exports = function (it, S) {
+    if (!isObject(it)) return it;
+    var fn, val;
+    if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+    if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+    if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+    throw TypeError("Can't convert object to primitive value");
+  };
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_fails.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  module.exports = function (exec) {
+    try {
+      return !!exec();
+    } catch (e) {
       return true;
     }
-    one_query = one.query();
-    two_query = two.query();
-    one.query('');
-    two.query('');
-    if (one.toString() !== two.toString()) {
-      return false;
-    }
-    if (one_query.length !== two_query.length) {
-      return false;
-    }
-    one_map = URI.parseQuery(one_query, this._parts.escapeQuerySpace);
-    two_map = URI.parseQuery(two_query, this._parts.escapeQuerySpace);
-    for (key in one_map) {
-      if (hasOwn.call(one_map, key)) {
-        if (!isArray(one_map[key])) {
-          if (one_map[key] !== two_map[key]) {
-            return false;
-          }
-        } else if (!arraysEqual(one_map[key], two_map[key])) {
-          return false;
-        }
-        checked[key] = true;
-      }
-    }
-    for (key in two_map) {
-      if (hasOwn.call(two_map, key)) {
-        if (!checked[key]) {
-          return false;
-        }
-      }
-    }
-    return true;
   };
-  p.duplicateQueryParameters = function(v) {
-    this._parts.duplicateQueryParameters = !!v;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_descriptors.js', ['./_fails', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // Thank's IE8 for his funny defineProperty
+  module.exports = !$__require('./_fails')(function () {
+    return Object.defineProperty({}, 'a', { get: function () {
+        return 7;
+      } }).a != 7;
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-dp.js', ['./_an-object', './_ie8-dom-define', './_to-primitive', './_descriptors', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var anObject = $__require('./_an-object'),
+      IE8_DOM_DEFINE = $__require('./_ie8-dom-define'),
+      toPrimitive = $__require('./_to-primitive'),
+      dP = Object.defineProperty;
+
+  exports.f = $__require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+    anObject(O);
+    P = toPrimitive(P, true);
+    anObject(Attributes);
+    if (IE8_DOM_DEFINE) try {
+      return dP(O, P, Attributes);
+    } catch (e) {/* empty */}
+    if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+    if ('value' in Attributes) O[P] = Attributes.value;
+    return O;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_set-to-string-tag.js', ['./_object-dp', './_has', './_wks', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var def = $__require('./_object-dp').f,
+      has = $__require('./_has'),
+      TAG = $__require('./_wks')('toStringTag');
+
+  module.exports = function (it, tag, stat) {
+    if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+  };
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_has.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var hasOwnProperty = {}.hasOwnProperty;
+  module.exports = function (it, key) {
+    return hasOwnProperty.call(it, key);
+  };
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_defined.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 7.2.1 RequireObjectCoercible(argument)
+  module.exports = function (it) {
+    if (it == undefined) throw TypeError("Can't call method on  " + it);
+    return it;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_to-object.js', ['./_defined', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 7.1.13 ToObject(argument)
+  var defined = $__require('./_defined');
+  module.exports = function (it) {
+    return Object(defined(it));
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_shared-key.js', ['./_shared', './_uid', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var shared = $__require('./_shared')('keys'),
+      uid = $__require('./_uid');
+  module.exports = function (key) {
+    return shared[key] || (shared[key] = uid(key));
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-gpo.js', ['./_has', './_to-object', './_shared-key', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+  var has = $__require('./_has'),
+      toObject = $__require('./_to-object'),
+      IE_PROTO = $__require('./_shared-key')('IE_PROTO'),
+      ObjectProto = Object.prototype;
+
+  module.exports = Object.getPrototypeOf || function (O) {
+    O = toObject(O);
+    if (has(O, IE_PROTO)) return O[IE_PROTO];
+    if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+      return O.constructor.prototype;
+    }return O instanceof Object ? ObjectProto : null;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_shared.js', ['./_global', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var global = $__require('./_global'),
+      SHARED = '__core-js_shared__',
+      store = global[SHARED] || (global[SHARED] = {});
+  module.exports = function (key) {
+    return store[key] || (store[key] = {});
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_uid.js', ['process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var id = 0,
+      px = Math.random();
+  module.exports = function (key) {
+    return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_global.js', ['process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+  var global = module.exports = typeof window != 'undefined' && window.Math == Math ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+  if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_wks.js', ['./_shared', './_uid', './_global', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var store = $__require('./_shared')('wks'),
+      uid = $__require('./_uid'),
+      Symbol = $__require('./_global').Symbol,
+      USE_SYMBOL = typeof Symbol == 'function';
+
+  var $exports = module.exports = function (name) {
+    return store[name] || (store[name] = USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+  };
+
+  $exports.store = store;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_iter-define.js', ['./_library', './_export', './_redefine', './_hide', './_has', './_iterators', './_iter-create', './_set-to-string-tag', './_object-gpo', './_wks', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var LIBRARY = $__require('./_library'),
+      $export = $__require('./_export'),
+      redefine = $__require('./_redefine'),
+      hide = $__require('./_hide'),
+      has = $__require('./_has'),
+      Iterators = $__require('./_iterators'),
+      $iterCreate = $__require('./_iter-create'),
+      setToStringTag = $__require('./_set-to-string-tag'),
+      getPrototypeOf = $__require('./_object-gpo'),
+      ITERATOR = $__require('./_wks')('iterator'),
+      BUGGY = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+  ,
+      FF_ITERATOR = '@@iterator',
+      KEYS = 'keys',
+      VALUES = 'values';
+
+  var returnThis = function () {
     return this;
   };
-  p.escapeQuerySpace = function(v) {
-    this._parts.escapeQuerySpace = !!v;
-    return this;
+
+  module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+    $iterCreate(Constructor, NAME, next);
+    var getMethod = function (kind) {
+      if (!BUGGY && kind in proto) return proto[kind];
+      switch (kind) {
+        case KEYS:
+          return function keys() {
+            return new Constructor(this, kind);
+          };
+        case VALUES:
+          return function values() {
+            return new Constructor(this, kind);
+          };
+      }return function entries() {
+        return new Constructor(this, kind);
+      };
+    };
+    var TAG = NAME + ' Iterator',
+        DEF_VALUES = DEFAULT == VALUES,
+        VALUES_BUG = false,
+        proto = Base.prototype,
+        $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT],
+        $default = $native || getMethod(DEFAULT),
+        $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined,
+        $anyNative = NAME == 'Array' ? proto.entries || $native : $native,
+        methods,
+        key,
+        IteratorPrototype;
+    // Fix native
+    if ($anyNative) {
+      IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+      if (IteratorPrototype !== Object.prototype) {
+        // Set @@toStringTag to native iterators
+        setToStringTag(IteratorPrototype, TAG, true);
+        // fix for some old engines
+        if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+      }
+    }
+    // fix Array#{values, @@iterator}.name in V8 / FF
+    if (DEF_VALUES && $native && $native.name !== VALUES) {
+      VALUES_BUG = true;
+      $default = function values() {
+        return $native.call(this);
+      };
+    }
+    // Define iterator
+    if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+      hide(proto, ITERATOR, $default);
+    }
+    // Plug for library
+    Iterators[NAME] = $default;
+    Iterators[TAG] = returnThis;
+    if (DEFAULT) {
+      methods = {
+        values: DEF_VALUES ? $default : getMethod(VALUES),
+        keys: IS_SET ? $default : getMethod(KEYS),
+        entries: $entries
+      };
+      if (FORCED) for (key in methods) {
+        if (!(key in proto)) redefine(proto, key, methods[key]);
+      } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+    }
+    return methods;
   };
-  return URI;
-}));
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.array.iterator.js', ['./_add-to-unscopables', './_iter-step', './_iterators', './_to-iobject', './_iter-define', 'process'], true, function ($__require, exports, module) {
+  'use strict';
 
-})();
-System.register('app/traffic_stop_count_by_month/request.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'moment', 'uri'], function (_export, _context) {
-  "use strict";
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var addToUnscopables = $__require('./_add-to-unscopables'),
+      step = $__require('./_iter-step'),
+      Iterators = $__require('./_iterators'),
+      toIObject = $__require('./_to-iobject');
 
-  var _classCallCheck, _createClass, Moment, URI, TrafficStopCountByMonthRequest;
+  // 22.1.3.4 Array.prototype.entries()
+  // 22.1.3.13 Array.prototype.keys()
+  // 22.1.3.29 Array.prototype.values()
+  // 22.1.3.30 Array.prototype[@@iterator]()
+  module.exports = $__require('./_iter-define')(Array, 'Array', function (iterated, kind) {
+    this._t = toIObject(iterated); // target
+    this._i = 0; // next index
+    this._k = kind; // kind
+    // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
+  }, function () {
+    var O = this._t,
+        kind = this._k,
+        index = this._i++;
+    if (!O || index >= O.length) {
+      this._t = undefined;
+      return step(1);
+    }
+    if (kind == 'keys') return step(0, index);
+    if (kind == 'values') return step(0, O[index]);
+    return step(0, [index, O[index]]);
+  }, 'values');
 
+  // argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
+  Iterators.Arguments = Iterators.Array;
+
+  addToUnscopables('keys');
+  addToUnscopables('values');
+  addToUnscopables('entries');
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_core.js', ['process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var core = module.exports = { version: '2.4.0' };
+  if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
+  return module.exports;
+});
+System.registerDynamic("github:jspm/nodelibs-process@0.2.0-alpha.json", [], false, function() {
   return {
-    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
-      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
-    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
-      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
-    }, function (_moment) {
-      Moment = _moment.default;
-    }, function (_uri) {
-      URI = _uri.default;
-    }],
-    execute: function () {
-      TrafficStopCountByMonthRequest = function () {
-        function TrafficStopCountByMonthRequest() {
-          var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    "main": "./process.js"
+  };
+});
 
-          var index = _ref.index;
+System.registerDynamic('github:jspm/nodelibs-process@0.2.0-alpha/process.js', ['@system-env'], true, function ($__require, exports, module) {
+    var define,
+        global = this || self,
+        GLOBAL = global;
+    // From https://github.com/defunctzombie/node-process/blob/master/browser.js
+    // shim for using process in browser
 
-          _classCallCheck(this, TrafficStopCountByMonthRequest);
+    var productionEnv = $__require('@system-env').production;
 
-          this.month = new Moment().month(index);
+    var process = module.exports = {};
+    var queue = [];
+    var draining = false;
+    var currentQueue;
+    var queueIndex = -1;
+
+    function cleanUpNextTick() {
+        draining = false;
+        if (currentQueue.length) {
+            queue = currentQueue.concat(queue);
+        } else {
+            queueIndex = -1;
         }
+        if (queue.length) {
+            drainQueue();
+        }
+    }
 
-        _createClass(TrafficStopCountByMonthRequest, [{
-          key: 'count',
-          value: function count() {
-            try {
-              var request = new XMLHttpRequest();
-              request.open('get', this.uri().normalize(), false);
-              request.setRequestHeader("X-App-Token", "3QZx3OfxcculHVue3kYIPrrKZ");
-              request.setRequestHeader("Accept", "application/json");
-              request.send();
-              return JSON.parse(request.response)[0].count_stopdescription;
-            } catch (e) {
-              return 0;
+    function drainQueue() {
+        if (draining) {
+            return;
+        }
+        var timeout = setTimeout(cleanUpNextTick);
+        draining = true;
+
+        var len = queue.length;
+        while (len) {
+            currentQueue = queue;
+            queue = [];
+            while (++queueIndex < len) {
+                if (currentQueue) {
+                    currentQueue[queueIndex].run();
+                }
             }
-          }
-        }, {
-          key: 'dbFormat',
-          value: function dbFormat() {
-            return 'YYYY-MM-DDTHH:mm:ss';
-          }
-        }, {
-          key: 'endOfMonth',
-          value: function endOfMonth() {
-            return this.month.endOf('month');
-          }
-        }, {
-          key: 'month',
-          value: function month() {
-            return this.month;
-          }
-        }, {
-          key: 'eventdateRangeBeginning',
-          value: function eventdateRangeBeginning() {
-            return this.startOfMonth().format(this.dbFormat());
-          }
-        }, {
-          key: 'eventdateRangeEnd',
-          value: function eventdateRangeEnd() {
-            return this.endOfMonth().format(this.dbFormat());
-          }
-        }, {
-          key: 'startOfMonth',
-          value: function startOfMonth() {
-            return this.month.startOf('month');
-          }
-        }, {
-          key: 'toString',
-          value: function toString() {
-            return "GET " + this.uri();
-          }
-        }, {
-          key: 'uri',
-          value: function uri() {
-            return URI("https://data.nola.gov/resource/nfft-hjwi").addQuery({ $where: "stopdescription like '%TRAFFIC VIOLATION%' and " + "eventdate between " + ('\'' + this.eventdateRangeBeginning() + '\' and ') + ('\'' + this.eventdateRangeEnd() + '\'') }).addQuery({ $select: "count(stopdescription)" });
-          }
-        }]);
-
-        return TrafficStopCountByMonthRequest;
-      }();
-
-      _export('default', TrafficStopCountByMonthRequest);
-    }
-  };
-});
-System.register("npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js", [], function (_export, _context) {
-  "use strict";
-
-  return {
-    setters: [],
-    execute: function () {
-      _export("default", function (instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-          throw new TypeError("Cannot call a class as a function");
+            queueIndex = -1;
+            len = queue.length;
         }
-      });
+        currentQueue = null;
+        draining = false;
+        clearTimeout(timeout);
     }
-  };
+
+    process.nextTick = function (fun) {
+        var args = new Array(arguments.length - 1);
+        if (arguments.length > 1) {
+            for (var i = 1; i < arguments.length; i++) {
+                args[i - 1] = arguments[i];
+            }
+        }
+        queue.push(new Item(fun, args));
+        if (queue.length === 1 && !draining) {
+            setTimeout(drainQueue, 0);
+        }
+    };
+
+    // v8 likes predictible objects
+    function Item(fun, array) {
+        this.fun = fun;
+        this.array = array;
+    }
+    Item.prototype.run = function () {
+        this.fun.apply(null, this.array);
+    };
+    process.title = 'browser';
+    process.browser = true;
+    process.env = {
+        NODE_ENV: productionEnv ? 'production' : 'development'
+    };
+    process.argv = [];
+    process.version = ''; // empty string to avoid regexp issues
+    process.versions = {};
+
+    function noop() {}
+
+    process.on = noop;
+    process.addListener = noop;
+    process.once = noop;
+    process.off = noop;
+    process.removeListener = noop;
+    process.removeAllListeners = noop;
+    process.emit = noop;
+
+    process.binding = function (name) {
+        throw new Error('process.binding is not supported');
+    };
+
+    process.cwd = function () {
+        return '/';
+    };
+    process.chdir = function (dir) {
+        throw new Error('process.chdir is not supported');
+    };
+    process.umask = function () {
+        return 0;
+    };
+    return module.exports;
 });
-System.registerDynamic("npm:systemjs-plugin-babel@0.0.16.json", [], false, function() {
+System.registerDynamic("npm:core-js@2.4.1.json", [], false, function() {
   return {
-    "main": "plugin-babel.js",
-    "map": {
-      "systemjs-babel-build": {
-        "browser": "./systemjs-babel-browser.js",
-        "default": "./systemjs-babel-browser.js"
+    "main": "index.js",
+    "format": "cjs",
+    "meta": {
+      "*": {
+        "globals": {
+          "process": "process"
+        }
+      },
+      "*.json": {
+        "format": "json"
       }
     },
-    "meta": {
-      "./plugin-babel.js": {
-        "format": "cjs"
-      }
+    "map": {
+      "./build": "./build/index.js",
+      "./core": "./core/index.js",
+      "./es5": "./es5/index.js",
+      "./es6": "./es6/index.js",
+      "./es7": "./es7/index.js",
+      "./fn/array": "./fn/array/index.js",
+      "./fn/array/virtual": "./fn/array/virtual/index.js",
+      "./fn/date": "./fn/date/index.js",
+      "./fn/dom-collections": "./fn/dom-collections/index.js",
+      "./fn/error": "./fn/error/index.js",
+      "./fn/function": "./fn/function/index.js",
+      "./fn/function/virtual": "./fn/function/virtual/index.js",
+      "./fn/json": "./fn/json/index.js",
+      "./fn/math": "./fn/math/index.js",
+      "./fn/number": "./fn/number/index.js",
+      "./fn/number/virtual": "./fn/number/virtual/index.js",
+      "./fn/object": "./fn/object/index.js",
+      "./fn/reflect": "./fn/reflect/index.js",
+      "./fn/regexp": "./fn/regexp/index.js",
+      "./fn/string": "./fn/string/index.js",
+      "./fn/string/virtual": "./fn/string/virtual/index.js",
+      "./fn/symbol": "./fn/symbol/index.js",
+      "./fn/system": "./fn/system/index.js",
+      "./fn/typed": "./fn/typed/index.js",
+      "./library": "./library/index.js",
+      "./library/core": "./library/core/index.js",
+      "./library/es5": "./library/es5/index.js",
+      "./library/es6": "./library/es6/index.js",
+      "./library/es7": "./library/es7/index.js",
+      "./library/fn/array": "./library/fn/array/index.js",
+      "./library/fn/array/virtual": "./library/fn/array/virtual/index.js",
+      "./library/fn/date": "./library/fn/date/index.js",
+      "./library/fn/dom-collections": "./library/fn/dom-collections/index.js",
+      "./library/fn/error": "./library/fn/error/index.js",
+      "./library/fn/function": "./library/fn/function/index.js",
+      "./library/fn/function/virtual": "./library/fn/function/virtual/index.js",
+      "./library/fn/json": "./library/fn/json/index.js",
+      "./library/fn/math": "./library/fn/math/index.js",
+      "./library/fn/number": "./library/fn/number/index.js",
+      "./library/fn/number/virtual": "./library/fn/number/virtual/index.js",
+      "./library/fn/object": "./library/fn/object/index.js",
+      "./library/fn/reflect": "./library/fn/reflect/index.js",
+      "./library/fn/regexp": "./library/fn/regexp/index.js",
+      "./library/fn/string": "./library/fn/string/index.js",
+      "./library/fn/string/virtual": "./library/fn/string/virtual/index.js",
+      "./library/fn/symbol": "./library/fn/symbol/index.js",
+      "./library/fn/system": "./library/fn/system/index.js",
+      "./library/fn/typed": "./library/fn/typed/index.js",
+      "./library/stage": "./library/stage/index.js",
+      "./library/web": "./library/web/index.js",
+      "./package": "./package.json",
+      "./stage": "./stage/index.js",
+      "./web": "./web/index.js"
     }
   };
 });
 
-System.register("npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js", [], function (_export, _context) {
-  "use strict";
-
-  return {
-    setters: [],
-    execute: function () {
-      _export("default", function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];
-            descriptor.enumerable = descriptor.enumerable || false;
-            descriptor.configurable = true;
-            if ("value" in descriptor) descriptor.writable = true;
-            Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);
-          if (staticProps) defineProperties(Constructor, staticProps);
-          return Constructor;
-        };
-      }());
-    }
-  };
+System.registerDynamic('npm:core-js@2.4.1/library/es6/array.js', ['../modules/es6.string.iterator', '../modules/es6.array.is-array', '../modules/es6.array.from', '../modules/es6.array.of', '../modules/es6.array.join', '../modules/es6.array.slice', '../modules/es6.array.sort', '../modules/es6.array.for-each', '../modules/es6.array.map', '../modules/es6.array.filter', '../modules/es6.array.some', '../modules/es6.array.every', '../modules/es6.array.reduce', '../modules/es6.array.reduce-right', '../modules/es6.array.index-of', '../modules/es6.array.last-index-of', '../modules/es6.array.copy-within', '../modules/es6.array.fill', '../modules/es6.array.find', '../modules/es6.array.find-index', '../modules/es6.array.species', '../modules/es6.array.iterator', '../modules/_core', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  $__require('../modules/es6.string.iterator');
+  $__require('../modules/es6.array.is-array');
+  $__require('../modules/es6.array.from');
+  $__require('../modules/es6.array.of');
+  $__require('../modules/es6.array.join');
+  $__require('../modules/es6.array.slice');
+  $__require('../modules/es6.array.sort');
+  $__require('../modules/es6.array.for-each');
+  $__require('../modules/es6.array.map');
+  $__require('../modules/es6.array.filter');
+  $__require('../modules/es6.array.some');
+  $__require('../modules/es6.array.every');
+  $__require('../modules/es6.array.reduce');
+  $__require('../modules/es6.array.reduce-right');
+  $__require('../modules/es6.array.index-of');
+  $__require('../modules/es6.array.last-index-of');
+  $__require('../modules/es6.array.copy-within');
+  $__require('../modules/es6.array.fill');
+  $__require('../modules/es6.array.find');
+  $__require('../modules/es6.array.find-index');
+  $__require('../modules/es6.array.species');
+  $__require('../modules/es6.array.iterator');
+  module.exports = $__require('../modules/_core').Array;
+  return module.exports;
 });
 System.registerDynamic("npm:moment@2.15.0.json", [], false, function() {
   return {
@@ -22377,86 +19954,2660 @@ var define = System.amdDefine;
 }));
 
 })();
-System.register('app/month.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'moment'], function (_export, _context) {
+System.register('app/date.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'core-js/library/es6/array.js', 'moment'], function (_export, _context) {
   "use strict";
 
-  var _classCallCheck, _createClass, Moment, Month;
+  var _classCallCheck, _createClass, CoreArray, Moment, Date;
 
   return {
     setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
       _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
     }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
       _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_coreJsLibraryEs6ArrayJs) {
+      CoreArray = _coreJsLibraryEs6ArrayJs.default;
     }, function (_moment) {
       Moment = _moment.default;
     }],
     execute: function () {
-      Month = function () {
-        _createClass(Month, null, [{
-          key: 'named',
-          value: function named(name) {
-            return new Month({ index: name });
+      Date = function () {
+        _createClass(Date, null, [{
+          key: 'daysIn',
+          value: function daysIn() {
+            var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var year = _ref.year;
+            var month = _ref.month;
+
+            var moment = new Moment({ year: year });
+            moment.month(month);
+            return Array(moment.daysInMonth()).fill().map(function (_, i) {
+              return new Date({ year: year, month: month, day: i + 1 });
+            });
           }
         }, {
-          key: 'current',
-          value: function current() {
-            return new Month({ index: new Moment().month() });
+          key: 'endOfMonth',
+          value: function endOfMonth() {
+            return this.now().endOfMonth();
+          }
+        }, {
+          key: 'monthNamesOfTheYear',
+          value: function monthNamesOfTheYear() {
+            return CoreArray.from(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]);
+          }
+        }, {
+          key: 'monthNumber',
+          value: function monthNumber(month) {
+            return this.monthsAndNumbers()[month];
+          }
+        }, {
+          key: 'monthsAndNumbers',
+          value: function monthsAndNumbers() {
+            return {
+              "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
+              "July": 7, "August": 8, "September": 9, "October": 10, "November": 11,
+              "December": 12 };
+          }
+        }, {
+          key: 'monthsOfTheYear',
+          value: function monthsOfTheYear() {
+            return Array(12).fill().map(function (_, i) {
+              return new Date({ year: Date.now().year, month: i + 1 });
+            });
+          }
+        }, {
+          key: 'now',
+          value: function now() {
+            var now = new Moment();
+            return new Date({ year: now.year(), month: now.month() + 1, day: now.date() });
+          }
+        }, {
+          key: 'startOfMonth',
+          value: function startOfMonth() {
+            return this.now().startOfMonth();
           }
         }]);
 
-        function Month() {
-          var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        function Date() {
+          var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-          var index = _ref.index;
+          var year = _ref2.year;
+          var month = _ref2.month;
+          var day = _ref2.day;
 
-          _classCallCheck(this, Month);
+          _classCallCheck(this, Date);
 
-          this.moment = new Moment().month(index);
+          this.year = year;
+          if (typeof month == "string") {
+            this.month = this.constructor.monthNumber(month);
+          } else {
+            this.month = month;
+          }
+          this.day = day;
         }
 
-        _createClass(Month, [{
-          key: 'abbreviation',
-          value: function abbreviation() {
-            return this.moment.format("MMM");
+        _createClass(Date, [{
+          key: 'change',
+          value: function change() {
+            var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            var year = _ref3.year;
+            var month = _ref3.month;
+            var day = _ref3.day;
+
+            if (typeof year != 'undefined') {
+              this.year = year;
+            }
+
+            if (typeof month != 'undefined') {
+              this.month = month;
+            }
+
+            if (typeof day != 'undefined') {
+              this.day = day;
+            }
           }
         }, {
-          key: 'end',
-          value: function end() {
-            return this.moment.endOf('month');
+          key: 'daysInMonth',
+          value: function daysInMonth() {
+            return this.toMoment().daysInMonth();
           }
         }, {
-          key: 'name',
-          value: function name() {
-            return this.moment.format("MMMM");
+          key: 'endOfMonth',
+          value: function endOfMonth() {
+            return new Date({ year: this.year, month: this.month, day: this.daysInMonth() });
           }
         }, {
-          key: 'start',
-          value: function start() {
-            return this.moment.startOf('month');
+          key: 'format',
+          value: function format(params) {
+            return this.toMoment().format(params);
           }
         }, {
-          key: 'toInteger',
-          value: function toInteger() {
-            return this.moment.month();
+          key: 'isValid',
+          value: function isValid() {
+            return this.toMoment().isValid();
+          }
+        }, {
+          key: 'monthName',
+          value: function monthName() {
+            return this.toMoment().format("MMMM");
+          }
+        }, {
+          key: 'startOfMonth',
+          value: function startOfMonth() {
+            return new Date({ year: this.year, month: this.month, day: 1 });
+          }
+        }, {
+          key: 'toMoment',
+          value: function toMoment() {
+            return new Moment({ year: this.year, month: this.month - 1, day: this.day });
+          }
+        }, {
+          key: 'day',
+          get: function get() {
+            return this._day;
+          },
+          set: function set(newDay) {
+            this._day = newDay;
+          }
+        }, {
+          key: 'month',
+          get: function get() {
+            return this._month;
+          },
+          set: function set(newMonth) {
+            this._month = newMonth;
+          }
+        }, {
+          key: 'year',
+          get: function get() {
+            return this._year;
+          },
+          set: function set(newYear) {
+            this._year = newYear;
+          }
+        }]);
+
+        return Date;
+      }();
+
+      _export('default', Date);
+    }
+  };
+});
+System.register("npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js", [], function (_export, _context) {
+  "use strict";
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("default", function (instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+          throw new TypeError("Cannot call a class as a function");
+        }
+      });
+    }
+  };
+});
+System.registerDynamic("npm:systemjs-plugin-babel@0.0.16.json", [], false, function() {
+  return {
+    "main": "plugin-babel.js",
+    "map": {
+      "systemjs-babel-build": {
+        "browser": "./systemjs-babel-browser.js",
+        "default": "./systemjs-babel-browser.js"
+      }
+    },
+    "meta": {
+      "./plugin-babel.js": {
+        "format": "cjs"
+      }
+    }
+  };
+});
+
+System.register("npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js", [], function (_export, _context) {
+  "use strict";
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("default", function () {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);
+          if (staticProps) defineProperties(Constructor, staticProps);
+          return Constructor;
+        };
+      }());
+    }
+  };
+});
+(function() {
+var define = System.amdDefine;
+;
+(function(root) {
+  var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+  var freeModule = typeof module == 'object' && module && !module.nodeType && module;
+  var freeGlobal = typeof global == 'object' && global;
+  if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal) {
+    root = freeGlobal;
+  }
+  var punycode,
+      maxInt = 2147483647,
+      base = 36,
+      tMin = 1,
+      tMax = 26,
+      skew = 38,
+      damp = 700,
+      initialBias = 72,
+      initialN = 128,
+      delimiter = '-',
+      regexPunycode = /^xn--/,
+      regexNonASCII = /[^\x20-\x7E]/,
+      regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g,
+      errors = {
+        'overflow': 'Overflow: input needs wider integers to process',
+        'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+        'invalid-input': 'Invalid input'
+      },
+      baseMinusTMin = base - tMin,
+      floor = Math.floor,
+      stringFromCharCode = String.fromCharCode,
+      key;
+  function error(type) {
+    throw new RangeError(errors[type]);
+  }
+  function map(array, fn) {
+    var length = array.length;
+    var result = [];
+    while (length--) {
+      result[length] = fn(array[length]);
+    }
+    return result;
+  }
+  function mapDomain(string, fn) {
+    var parts = string.split('@');
+    var result = '';
+    if (parts.length > 1) {
+      result = parts[0] + '@';
+      string = parts[1];
+    }
+    string = string.replace(regexSeparators, '\x2E');
+    var labels = string.split('.');
+    var encoded = map(labels, fn).join('.');
+    return result + encoded;
+  }
+  function ucs2decode(string) {
+    var output = [],
+        counter = 0,
+        length = string.length,
+        value,
+        extra;
+    while (counter < length) {
+      value = string.charCodeAt(counter++);
+      if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+        extra = string.charCodeAt(counter++);
+        if ((extra & 0xFC00) == 0xDC00) {
+          output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+        } else {
+          output.push(value);
+          counter--;
+        }
+      } else {
+        output.push(value);
+      }
+    }
+    return output;
+  }
+  function ucs2encode(array) {
+    return map(array, function(value) {
+      var output = '';
+      if (value > 0xFFFF) {
+        value -= 0x10000;
+        output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+        value = 0xDC00 | value & 0x3FF;
+      }
+      output += stringFromCharCode(value);
+      return output;
+    }).join('');
+  }
+  function basicToDigit(codePoint) {
+    if (codePoint - 48 < 10) {
+      return codePoint - 22;
+    }
+    if (codePoint - 65 < 26) {
+      return codePoint - 65;
+    }
+    if (codePoint - 97 < 26) {
+      return codePoint - 97;
+    }
+    return base;
+  }
+  function digitToBasic(digit, flag) {
+    return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
+  }
+  function adapt(delta, numPoints, firstTime) {
+    var k = 0;
+    delta = firstTime ? floor(delta / damp) : delta >> 1;
+    delta += floor(delta / numPoints);
+    for (; delta > baseMinusTMin * tMax >> 1; k += base) {
+      delta = floor(delta / baseMinusTMin);
+    }
+    return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+  }
+  function decode(input) {
+    var output = [],
+        inputLength = input.length,
+        out,
+        i = 0,
+        n = initialN,
+        bias = initialBias,
+        basic,
+        j,
+        index,
+        oldi,
+        w,
+        k,
+        digit,
+        t,
+        baseMinusT;
+    basic = input.lastIndexOf(delimiter);
+    if (basic < 0) {
+      basic = 0;
+    }
+    for (j = 0; j < basic; ++j) {
+      if (input.charCodeAt(j) >= 0x80) {
+        error('not-basic');
+      }
+      output.push(input.charCodeAt(j));
+    }
+    for (index = basic > 0 ? basic + 1 : 0; index < inputLength; ) {
+      for (oldi = i, w = 1, k = base; ; k += base) {
+        if (index >= inputLength) {
+          error('invalid-input');
+        }
+        digit = basicToDigit(input.charCodeAt(index++));
+        if (digit >= base || digit > floor((maxInt - i) / w)) {
+          error('overflow');
+        }
+        i += digit * w;
+        t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+        if (digit < t) {
+          break;
+        }
+        baseMinusT = base - t;
+        if (w > floor(maxInt / baseMinusT)) {
+          error('overflow');
+        }
+        w *= baseMinusT;
+      }
+      out = output.length + 1;
+      bias = adapt(i - oldi, out, oldi == 0);
+      if (floor(i / out) > maxInt - n) {
+        error('overflow');
+      }
+      n += floor(i / out);
+      i %= out;
+      output.splice(i++, 0, n);
+    }
+    return ucs2encode(output);
+  }
+  function encode(input) {
+    var n,
+        delta,
+        handledCPCount,
+        basicLength,
+        bias,
+        j,
+        m,
+        q,
+        k,
+        t,
+        currentValue,
+        output = [],
+        inputLength,
+        handledCPCountPlusOne,
+        baseMinusT,
+        qMinusT;
+    input = ucs2decode(input);
+    inputLength = input.length;
+    n = initialN;
+    delta = 0;
+    bias = initialBias;
+    for (j = 0; j < inputLength; ++j) {
+      currentValue = input[j];
+      if (currentValue < 0x80) {
+        output.push(stringFromCharCode(currentValue));
+      }
+    }
+    handledCPCount = basicLength = output.length;
+    if (basicLength) {
+      output.push(delimiter);
+    }
+    while (handledCPCount < inputLength) {
+      for (m = maxInt, j = 0; j < inputLength; ++j) {
+        currentValue = input[j];
+        if (currentValue >= n && currentValue < m) {
+          m = currentValue;
+        }
+      }
+      handledCPCountPlusOne = handledCPCount + 1;
+      if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+        error('overflow');
+      }
+      delta += (m - n) * handledCPCountPlusOne;
+      n = m;
+      for (j = 0; j < inputLength; ++j) {
+        currentValue = input[j];
+        if (currentValue < n && ++delta > maxInt) {
+          error('overflow');
+        }
+        if (currentValue == n) {
+          for (q = delta, k = base; ; k += base) {
+            t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+            if (q < t) {
+              break;
+            }
+            qMinusT = q - t;
+            baseMinusT = base - t;
+            output.push(stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0)));
+            q = floor(qMinusT / baseMinusT);
+          }
+          output.push(stringFromCharCode(digitToBasic(q, 0)));
+          bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+          delta = 0;
+          ++handledCPCount;
+        }
+      }
+      ++delta;
+      ++n;
+    }
+    return output.join('');
+  }
+  function toUnicode(input) {
+    return mapDomain(input, function(string) {
+      return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
+    });
+  }
+  function toASCII(input) {
+    return mapDomain(input, function(string) {
+      return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
+    });
+  }
+  punycode = {
+    'version': '1.3.2',
+    'ucs2': {
+      'decode': ucs2decode,
+      'encode': ucs2encode
+    },
+    'decode': decode,
+    'encode': encode,
+    'toASCII': toASCII,
+    'toUnicode': toUnicode
+  };
+  if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
+    define("github:medialize/URI.js@1.18.1/src/punycode.js", [], function() {
+      return punycode;
+    }) && define("punycode", ["github:medialize/URI.js@1.18.1/src/punycode.js"], function(m) {
+      return m;
+    });
+  } else if (freeExports && freeModule) {
+    if (module.exports == freeExports) {
+      freeModule.exports = punycode;
+    } else {
+      for (key in punycode) {
+        punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
+      }
+    }
+  } else {
+    root.punycode = punycode;
+  }
+}(this));
+
+})();
+(function() {
+var define = System.amdDefine;
+(function(root, factory) {
+  'use strict';
+  if (typeof exports === 'object') {
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    define("github:medialize/URI.js@1.18.1/src/IPv6.js", [], factory);
+  } else {
+    root.IPv6 = factory(root);
+  }
+}(this, function(root) {
+  'use strict';
+  var _IPv6 = root && root.IPv6;
+  function bestPresentation(address) {
+    var _address = address.toLowerCase();
+    var segments = _address.split(':');
+    var length = segments.length;
+    var total = 8;
+    if (segments[0] === '' && segments[1] === '' && segments[2] === '') {
+      segments.shift();
+      segments.shift();
+    } else if (segments[0] === '' && segments[1] === '') {
+      segments.shift();
+    } else if (segments[length - 1] === '' && segments[length - 2] === '') {
+      segments.pop();
+    }
+    length = segments.length;
+    if (segments[length - 1].indexOf('.') !== -1) {
+      total = 7;
+    }
+    var pos;
+    for (pos = 0; pos < length; pos++) {
+      if (segments[pos] === '') {
+        break;
+      }
+    }
+    if (pos < total) {
+      segments.splice(pos, 1, '0000');
+      while (segments.length < total) {
+        segments.splice(pos, 0, '0000');
+      }
+    }
+    var _segments;
+    for (var i = 0; i < total; i++) {
+      _segments = segments[i].split('');
+      for (var j = 0; j < 3; j++) {
+        if (_segments[0] === '0' && _segments.length > 1) {
+          _segments.splice(0, 1);
+        } else {
+          break;
+        }
+      }
+      segments[i] = _segments.join('');
+    }
+    var best = -1;
+    var _best = 0;
+    var _current = 0;
+    var current = -1;
+    var inzeroes = false;
+    for (i = 0; i < total; i++) {
+      if (inzeroes) {
+        if (segments[i] === '0') {
+          _current += 1;
+        } else {
+          inzeroes = false;
+          if (_current > _best) {
+            best = current;
+            _best = _current;
+          }
+        }
+      } else {
+        if (segments[i] === '0') {
+          inzeroes = true;
+          current = i;
+          _current = 1;
+        }
+      }
+    }
+    if (_current > _best) {
+      best = current;
+      _best = _current;
+    }
+    if (_best > 1) {
+      segments.splice(best, _best, '');
+    }
+    length = segments.length;
+    var result = '';
+    if (segments[0] === '') {
+      result = ':';
+    }
+    for (i = 0; i < length; i++) {
+      result += segments[i];
+      if (i === length - 1) {
+        break;
+      }
+      result += ':';
+    }
+    if (segments[length - 1] === '') {
+      result += ':';
+    }
+    return result;
+  }
+  function noConflict() {
+    if (root.IPv6 === this) {
+      root.IPv6 = _IPv6;
+    }
+    return this;
+  }
+  return {
+    best: bestPresentation,
+    noConflict: noConflict
+  };
+}));
+
+})();
+(function() {
+var define = System.amdDefine;
+(function(root, factory) {
+  'use strict';
+  if (typeof exports === 'object') {
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    define("github:medialize/URI.js@1.18.1/src/SecondLevelDomains.js", [], factory);
+  } else {
+    root.SecondLevelDomains = factory(root);
+  }
+}(this, function(root) {
+  'use strict';
+  var _SecondLevelDomains = root && root.SecondLevelDomains;
+  var SLD = {
+    list: {
+      'ac': ' com gov mil net org ',
+      'ae': ' ac co gov mil name net org pro sch ',
+      'af': ' com edu gov net org ',
+      'al': ' com edu gov mil net org ',
+      'ao': ' co ed gv it og pb ',
+      'ar': ' com edu gob gov int mil net org tur ',
+      'at': ' ac co gv or ',
+      'au': ' asn com csiro edu gov id net org ',
+      'ba': ' co com edu gov mil net org rs unbi unmo unsa untz unze ',
+      'bb': ' biz co com edu gov info net org store tv ',
+      'bh': ' biz cc com edu gov info net org ',
+      'bn': ' com edu gov net org ',
+      'bo': ' com edu gob gov int mil net org tv ',
+      'br': ' adm adv agr am arq art ato b bio blog bmd cim cng cnt com coop ecn edu eng esp etc eti far flog fm fnd fot fst g12 ggf gov imb ind inf jor jus lel mat med mil mus net nom not ntr odo org ppg pro psc psi qsl rec slg srv tmp trd tur tv vet vlog wiki zlg ',
+      'bs': ' com edu gov net org ',
+      'bz': ' du et om ov rg ',
+      'ca': ' ab bc mb nb nf nl ns nt nu on pe qc sk yk ',
+      'ck': ' biz co edu gen gov info net org ',
+      'cn': ' ac ah bj com cq edu fj gd gov gs gx gz ha hb he hi hl hn jl js jx ln mil net nm nx org qh sc sd sh sn sx tj tw xj xz yn zj ',
+      'co': ' com edu gov mil net nom org ',
+      'cr': ' ac c co ed fi go or sa ',
+      'cy': ' ac biz com ekloges gov ltd name net org parliament press pro tm ',
+      'do': ' art com edu gob gov mil net org sld web ',
+      'dz': ' art asso com edu gov net org pol ',
+      'ec': ' com edu fin gov info med mil net org pro ',
+      'eg': ' com edu eun gov mil name net org sci ',
+      'er': ' com edu gov ind mil net org rochest w ',
+      'es': ' com edu gob nom org ',
+      'et': ' biz com edu gov info name net org ',
+      'fj': ' ac biz com info mil name net org pro ',
+      'fk': ' ac co gov net nom org ',
+      'fr': ' asso com f gouv nom prd presse tm ',
+      'gg': ' co net org ',
+      'gh': ' com edu gov mil org ',
+      'gn': ' ac com gov net org ',
+      'gr': ' com edu gov mil net org ',
+      'gt': ' com edu gob ind mil net org ',
+      'gu': ' com edu gov net org ',
+      'hk': ' com edu gov idv net org ',
+      'hu': ' 2000 agrar bolt casino city co erotica erotika film forum games hotel info ingatlan jogasz konyvelo lakas media news org priv reklam sex shop sport suli szex tm tozsde utazas video ',
+      'id': ' ac co go mil net or sch web ',
+      'il': ' ac co gov idf k12 muni net org ',
+      'in': ' ac co edu ernet firm gen gov i ind mil net nic org res ',
+      'iq': ' com edu gov i mil net org ',
+      'ir': ' ac co dnssec gov i id net org sch ',
+      'it': ' edu gov ',
+      'je': ' co net org ',
+      'jo': ' com edu gov mil name net org sch ',
+      'jp': ' ac ad co ed go gr lg ne or ',
+      'ke': ' ac co go info me mobi ne or sc ',
+      'kh': ' com edu gov mil net org per ',
+      'ki': ' biz com de edu gov info mob net org tel ',
+      'km': ' asso com coop edu gouv k medecin mil nom notaires pharmaciens presse tm veterinaire ',
+      'kn': ' edu gov net org ',
+      'kr': ' ac busan chungbuk chungnam co daegu daejeon es gangwon go gwangju gyeongbuk gyeonggi gyeongnam hs incheon jeju jeonbuk jeonnam k kg mil ms ne or pe re sc seoul ulsan ',
+      'kw': ' com edu gov net org ',
+      'ky': ' com edu gov net org ',
+      'kz': ' com edu gov mil net org ',
+      'lb': ' com edu gov net org ',
+      'lk': ' assn com edu gov grp hotel int ltd net ngo org sch soc web ',
+      'lr': ' com edu gov net org ',
+      'lv': ' asn com conf edu gov id mil net org ',
+      'ly': ' com edu gov id med net org plc sch ',
+      'ma': ' ac co gov m net org press ',
+      'mc': ' asso tm ',
+      'me': ' ac co edu gov its net org priv ',
+      'mg': ' com edu gov mil nom org prd tm ',
+      'mk': ' com edu gov inf name net org pro ',
+      'ml': ' com edu gov net org presse ',
+      'mn': ' edu gov org ',
+      'mo': ' com edu gov net org ',
+      'mt': ' com edu gov net org ',
+      'mv': ' aero biz com coop edu gov info int mil museum name net org pro ',
+      'mw': ' ac co com coop edu gov int museum net org ',
+      'mx': ' com edu gob net org ',
+      'my': ' com edu gov mil name net org sch ',
+      'nf': ' arts com firm info net other per rec store web ',
+      'ng': ' biz com edu gov mil mobi name net org sch ',
+      'ni': ' ac co com edu gob mil net nom org ',
+      'np': ' com edu gov mil net org ',
+      'nr': ' biz com edu gov info net org ',
+      'om': ' ac biz co com edu gov med mil museum net org pro sch ',
+      'pe': ' com edu gob mil net nom org sld ',
+      'ph': ' com edu gov i mil net ngo org ',
+      'pk': ' biz com edu fam gob gok gon gop gos gov net org web ',
+      'pl': ' art bialystok biz com edu gda gdansk gorzow gov info katowice krakow lodz lublin mil net ngo olsztyn org poznan pwr radom slupsk szczecin torun warszawa waw wroc wroclaw zgora ',
+      'pr': ' ac biz com edu est gov info isla name net org pro prof ',
+      'ps': ' com edu gov net org plo sec ',
+      'pw': ' belau co ed go ne or ',
+      'ro': ' arts com firm info nom nt org rec store tm www ',
+      'rs': ' ac co edu gov in org ',
+      'sb': ' com edu gov net org ',
+      'sc': ' com edu gov net org ',
+      'sh': ' co com edu gov net nom org ',
+      'sl': ' com edu gov net org ',
+      'st': ' co com consulado edu embaixada gov mil net org principe saotome store ',
+      'sv': ' com edu gob org red ',
+      'sz': ' ac co org ',
+      'tr': ' av bbs bel biz com dr edu gen gov info k12 name net org pol tel tsk tv web ',
+      'tt': ' aero biz cat co com coop edu gov info int jobs mil mobi museum name net org pro tel travel ',
+      'tw': ' club com ebiz edu game gov idv mil net org ',
+      'mu': ' ac co com gov net or org ',
+      'mz': ' ac co edu gov org ',
+      'na': ' co com ',
+      'nz': ' ac co cri geek gen govt health iwi maori mil net org parliament school ',
+      'pa': ' abo ac com edu gob ing med net nom org sld ',
+      'pt': ' com edu gov int net nome org publ ',
+      'py': ' com edu gov mil net org ',
+      'qa': ' com edu gov mil net org ',
+      're': ' asso com nom ',
+      'ru': ' ac adygeya altai amur arkhangelsk astrakhan bashkiria belgorod bir bryansk buryatia cbg chel chelyabinsk chita chukotka chuvashia com dagestan e-burg edu gov grozny int irkutsk ivanovo izhevsk jar joshkar-ola kalmykia kaluga kamchatka karelia kazan kchr kemerovo khabarovsk khakassia khv kirov koenig komi kostroma kranoyarsk kuban kurgan kursk lipetsk magadan mari mari-el marine mil mordovia mosreg msk murmansk nalchik net nnov nov novosibirsk nsk omsk orenburg org oryol penza perm pp pskov ptz rnd ryazan sakhalin samara saratov simbirsk smolensk spb stavropol stv surgut tambov tatarstan tom tomsk tsaritsyn tsk tula tuva tver tyumen udm udmurtia ulan-ude vladikavkaz vladimir vladivostok volgograd vologda voronezh vrn vyatka yakutia yamal yekaterinburg yuzhno-sakhalinsk ',
+      'rw': ' ac co com edu gouv gov int mil net ',
+      'sa': ' com edu gov med net org pub sch ',
+      'sd': ' com edu gov info med net org tv ',
+      'se': ' a ac b bd c d e f g h i k l m n o org p parti pp press r s t tm u w x y z ',
+      'sg': ' com edu gov idn net org per ',
+      'sn': ' art com edu gouv org perso univ ',
+      'sy': ' com edu gov mil net news org ',
+      'th': ' ac co go in mi net or ',
+      'tj': ' ac biz co com edu go gov info int mil name net nic org test web ',
+      'tn': ' agrinet com defense edunet ens fin gov ind info intl mincom nat net org perso rnrt rns rnu tourism ',
+      'tz': ' ac co go ne or ',
+      'ua': ' biz cherkassy chernigov chernovtsy ck cn co com crimea cv dn dnepropetrovsk donetsk dp edu gov if in ivano-frankivsk kh kharkov kherson khmelnitskiy kiev kirovograd km kr ks kv lg lugansk lutsk lviv me mk net nikolaev od odessa org pl poltava pp rovno rv sebastopol sumy te ternopil uzhgorod vinnica vn zaporizhzhe zhitomir zp zt ',
+      'ug': ' ac co go ne or org sc ',
+      'uk': ' ac bl british-library co cym gov govt icnet jet lea ltd me mil mod national-library-scotland nel net nhs nic nls org orgn parliament plc police sch scot soc ',
+      'us': ' dni fed isa kids nsn ',
+      'uy': ' com edu gub mil net org ',
+      've': ' co com edu gob info mil net org web ',
+      'vi': ' co com k12 net org ',
+      'vn': ' ac biz com edu gov health info int name net org pro ',
+      'ye': ' co com gov ltd me net org plc ',
+      'yu': ' ac co edu gov org ',
+      'za': ' ac agric alt bourse city co cybernet db edu gov grondar iaccess imt inca landesign law mil net ngo nis nom olivetti org pix school tm web ',
+      'zm': ' ac co com edu gov net org sch '
+    },
+    has: function(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= (domain.length - 1)) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset <= 0 || sldOffset >= (tldOffset - 1)) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') >= 0;
+    },
+    is: function(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= (domain.length - 1)) {
+        return false;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset >= 0) {
+        return false;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return false;
+      }
+      return sldList.indexOf(' ' + domain.slice(0, tldOffset) + ' ') >= 0;
+    },
+    get: function(domain) {
+      var tldOffset = domain.lastIndexOf('.');
+      if (tldOffset <= 0 || tldOffset >= (domain.length - 1)) {
+        return null;
+      }
+      var sldOffset = domain.lastIndexOf('.', tldOffset - 1);
+      if (sldOffset <= 0 || sldOffset >= (tldOffset - 1)) {
+        return null;
+      }
+      var sldList = SLD.list[domain.slice(tldOffset + 1)];
+      if (!sldList) {
+        return null;
+      }
+      if (sldList.indexOf(' ' + domain.slice(sldOffset + 1, tldOffset) + ' ') < 0) {
+        return null;
+      }
+      return domain.slice(sldOffset + 1);
+    },
+    noConflict: function() {
+      if (root.SecondLevelDomains === this) {
+        root.SecondLevelDomains = _SecondLevelDomains;
+      }
+      return this;
+    }
+  };
+  return SLD;
+}));
+
+})();
+System.registerDynamic("github:medialize/URI.js@1.18.1.json", [], false, function() {
+  return {
+    "main": "./src/URI"
+  };
+});
+
+(function() {
+var define = System.amdDefine;
+(function(root, factory) {
+  'use strict';
+  if (typeof exports === 'object') {
+    module.exports = factory(require('./punycode'), require('./IPv6'), require('./SecondLevelDomains'));
+  } else if (typeof define === 'function' && define.amd) {
+    define("github:medialize/URI.js@1.18.1/src/URI.js", ["./punycode", "./IPv6", "./SecondLevelDomains"], factory);
+  } else {
+    root.URI = factory(root.punycode, root.IPv6, root.SecondLevelDomains, root);
+  }
+}(this, function(punycode, IPv6, SLD, root) {
+  'use strict';
+  var _URI = root && root.URI;
+  function URI(url, base) {
+    var _urlSupplied = arguments.length >= 1;
+    var _baseSupplied = arguments.length >= 2;
+    if (!(this instanceof URI)) {
+      if (_urlSupplied) {
+        if (_baseSupplied) {
+          return new URI(url, base);
+        }
+        return new URI(url);
+      }
+      return new URI();
+    }
+    if (url === undefined) {
+      if (_urlSupplied) {
+        throw new TypeError('undefined is not a valid argument for URI');
+      }
+      if (typeof location !== 'undefined') {
+        url = location.href + '';
+      } else {
+        url = '';
+      }
+    }
+    this.href(url);
+    if (base !== undefined) {
+      return this.absoluteTo(base);
+    }
+    return this;
+  }
+  URI.version = '1.18.1';
+  var p = URI.prototype;
+  var hasOwn = Object.prototype.hasOwnProperty;
+  function escapeRegEx(string) {
+    return string.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+  }
+  function getType(value) {
+    if (value === undefined) {
+      return 'Undefined';
+    }
+    return String(Object.prototype.toString.call(value)).slice(8, -1);
+  }
+  function isArray(obj) {
+    return getType(obj) === 'Array';
+  }
+  function filterArrayValues(data, value) {
+    var lookup = {};
+    var i,
+        length;
+    if (getType(value) === 'RegExp') {
+      lookup = null;
+    } else if (isArray(value)) {
+      for (i = 0, length = value.length; i < length; i++) {
+        lookup[value[i]] = true;
+      }
+    } else {
+      lookup[value] = true;
+    }
+    for (i = 0, length = data.length; i < length; i++) {
+      var _match = lookup && lookup[data[i]] !== undefined || !lookup && value.test(data[i]);
+      if (_match) {
+        data.splice(i, 1);
+        length--;
+        i--;
+      }
+    }
+    return data;
+  }
+  function arrayContains(list, value) {
+    var i,
+        length;
+    if (isArray(value)) {
+      for (i = 0, length = value.length; i < length; i++) {
+        if (!arrayContains(list, value[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    var _type = getType(value);
+    for (i = 0, length = list.length; i < length; i++) {
+      if (_type === 'RegExp') {
+        if (typeof list[i] === 'string' && list[i].match(value)) {
+          return true;
+        }
+      } else if (list[i] === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function arraysEqual(one, two) {
+    if (!isArray(one) || !isArray(two)) {
+      return false;
+    }
+    if (one.length !== two.length) {
+      return false;
+    }
+    one.sort();
+    two.sort();
+    for (var i = 0,
+        l = one.length; i < l; i++) {
+      if (one[i] !== two[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  function trimSlashes(text) {
+    var trim_expression = /^\/+|\/+$/g;
+    return text.replace(trim_expression, '');
+  }
+  URI._parts = function() {
+    return {
+      protocol: null,
+      username: null,
+      password: null,
+      hostname: null,
+      urn: null,
+      port: null,
+      path: null,
+      query: null,
+      fragment: null,
+      duplicateQueryParameters: URI.duplicateQueryParameters,
+      escapeQuerySpace: URI.escapeQuerySpace
+    };
+  };
+  URI.duplicateQueryParameters = false;
+  URI.escapeQuerySpace = true;
+  URI.protocol_expression = /^[a-z][a-z0-9.+-]*$/i;
+  URI.idn_expression = /[^a-z0-9\.-]/i;
+  URI.punycode_expression = /(xn--)/i;
+  URI.ip4_expression = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+  URI.ip6_expression = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+  URI.find_uri_expression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/ig;
+  URI.findUri = {
+    start: /\b(?:([a-z][a-z0-9.+-]*:\/\/)|www\.)/gi,
+    end: /[\s\r\n]|$/,
+    trim: /[`!()\[\]{};:'".,<>?«»“”„‘’]+$/
+  };
+  URI.defaultPorts = {
+    http: '80',
+    https: '443',
+    ftp: '21',
+    gopher: '70',
+    ws: '80',
+    wss: '443'
+  };
+  URI.invalid_hostname_characters = /[^a-zA-Z0-9\.-]/;
+  URI.domAttributes = {
+    'a': 'href',
+    'blockquote': 'cite',
+    'link': 'href',
+    'base': 'href',
+    'script': 'src',
+    'form': 'action',
+    'img': 'src',
+    'area': 'href',
+    'iframe': 'src',
+    'embed': 'src',
+    'source': 'src',
+    'track': 'src',
+    'input': 'src',
+    'audio': 'src',
+    'video': 'src'
+  };
+  URI.getDomAttribute = function(node) {
+    if (!node || !node.nodeName) {
+      return undefined;
+    }
+    var nodeName = node.nodeName.toLowerCase();
+    if (nodeName === 'input' && node.type !== 'image') {
+      return undefined;
+    }
+    return URI.domAttributes[nodeName];
+  };
+  function escapeForDumbFirefox36(value) {
+    return escape(value);
+  }
+  function strictEncodeURIComponent(string) {
+    return encodeURIComponent(string).replace(/[!'()*]/g, escapeForDumbFirefox36).replace(/\*/g, '%2A');
+  }
+  URI.encode = strictEncodeURIComponent;
+  URI.decode = decodeURIComponent;
+  URI.iso8859 = function() {
+    URI.encode = escape;
+    URI.decode = unescape;
+  };
+  URI.unicode = function() {
+    URI.encode = strictEncodeURIComponent;
+    URI.decode = decodeURIComponent;
+  };
+  URI.characters = {
+    pathname: {
+      encode: {
+        expression: /%(24|26|2B|2C|3B|3D|3A|40)/ig,
+        map: {
+          '%24': '$',
+          '%26': '&',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '=',
+          '%3A': ':',
+          '%40': '@'
+        }
+      },
+      decode: {
+        expression: /[\/\?#]/g,
+        map: {
+          '/': '%2F',
+          '?': '%3F',
+          '#': '%23'
+        }
+      }
+    },
+    reserved: {encode: {
+        expression: /%(21|23|24|26|27|28|29|2A|2B|2C|2F|3A|3B|3D|3F|40|5B|5D)/ig,
+        map: {
+          '%3A': ':',
+          '%2F': '/',
+          '%3F': '?',
+          '%23': '#',
+          '%5B': '[',
+          '%5D': ']',
+          '%40': '@',
+          '%21': '!',
+          '%24': '$',
+          '%26': '&',
+          '%27': '\'',
+          '%28': '(',
+          '%29': ')',
+          '%2A': '*',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '='
+        }
+      }},
+    urnpath: {
+      encode: {
+        expression: /%(21|24|27|28|29|2A|2B|2C|3B|3D|40)/ig,
+        map: {
+          '%21': '!',
+          '%24': '$',
+          '%27': '\'',
+          '%28': '(',
+          '%29': ')',
+          '%2A': '*',
+          '%2B': '+',
+          '%2C': ',',
+          '%3B': ';',
+          '%3D': '=',
+          '%40': '@'
+        }
+      },
+      decode: {
+        expression: /[\/\?#:]/g,
+        map: {
+          '/': '%2F',
+          '?': '%3F',
+          '#': '%23',
+          ':': '%3A'
+        }
+      }
+    }
+  };
+  URI.encodeQuery = function(string, escapeQuerySpace) {
+    var escaped = URI.encode(string + '');
+    if (escapeQuerySpace === undefined) {
+      escapeQuerySpace = URI.escapeQuerySpace;
+    }
+    return escapeQuerySpace ? escaped.replace(/%20/g, '+') : escaped;
+  };
+  URI.decodeQuery = function(string, escapeQuerySpace) {
+    string += '';
+    if (escapeQuerySpace === undefined) {
+      escapeQuerySpace = URI.escapeQuerySpace;
+    }
+    try {
+      return URI.decode(escapeQuerySpace ? string.replace(/\+/g, '%20') : string);
+    } catch (e) {
+      return string;
+    }
+  };
+  var _parts = {
+    'encode': 'encode',
+    'decode': 'decode'
+  };
+  var _part;
+  var generateAccessor = function(_group, _part) {
+    return function(string) {
+      try {
+        return URI[_part](string + '').replace(URI.characters[_group][_part].expression, function(c) {
+          return URI.characters[_group][_part].map[c];
+        });
+      } catch (e) {
+        return string;
+      }
+    };
+  };
+  for (_part in _parts) {
+    URI[_part + 'PathSegment'] = generateAccessor('pathname', _parts[_part]);
+    URI[_part + 'UrnPathSegment'] = generateAccessor('urnpath', _parts[_part]);
+  }
+  var generateSegmentedPathFunction = function(_sep, _codingFuncName, _innerCodingFuncName) {
+    return function(string) {
+      var actualCodingFunc;
+      if (!_innerCodingFuncName) {
+        actualCodingFunc = URI[_codingFuncName];
+      } else {
+        actualCodingFunc = function(string) {
+          return URI[_codingFuncName](URI[_innerCodingFuncName](string));
+        };
+      }
+      var segments = (string + '').split(_sep);
+      for (var i = 0,
+          length = segments.length; i < length; i++) {
+        segments[i] = actualCodingFunc(segments[i]);
+      }
+      return segments.join(_sep);
+    };
+  };
+  URI.decodePath = generateSegmentedPathFunction('/', 'decodePathSegment');
+  URI.decodeUrnPath = generateSegmentedPathFunction(':', 'decodeUrnPathSegment');
+  URI.recodePath = generateSegmentedPathFunction('/', 'encodePathSegment', 'decode');
+  URI.recodeUrnPath = generateSegmentedPathFunction(':', 'encodeUrnPathSegment', 'decode');
+  URI.encodeReserved = generateAccessor('reserved', 'encode');
+  URI.parse = function(string, parts) {
+    var pos;
+    if (!parts) {
+      parts = {};
+    }
+    pos = string.indexOf('#');
+    if (pos > -1) {
+      parts.fragment = string.substring(pos + 1) || null;
+      string = string.substring(0, pos);
+    }
+    pos = string.indexOf('?');
+    if (pos > -1) {
+      parts.query = string.substring(pos + 1) || null;
+      string = string.substring(0, pos);
+    }
+    if (string.substring(0, 2) === '//') {
+      parts.protocol = null;
+      string = string.substring(2);
+      string = URI.parseAuthority(string, parts);
+    } else {
+      pos = string.indexOf(':');
+      if (pos > -1) {
+        parts.protocol = string.substring(0, pos) || null;
+        if (parts.protocol && !parts.protocol.match(URI.protocol_expression)) {
+          parts.protocol = undefined;
+        } else if (string.substring(pos + 1, pos + 3) === '//') {
+          string = string.substring(pos + 3);
+          string = URI.parseAuthority(string, parts);
+        } else {
+          string = string.substring(pos + 1);
+          parts.urn = true;
+        }
+      }
+    }
+    parts.path = string;
+    return parts;
+  };
+  URI.parseHost = function(string, parts) {
+    string = string.replace(/\\/g, '/');
+    var pos = string.indexOf('/');
+    var bracketPos;
+    var t;
+    if (pos === -1) {
+      pos = string.length;
+    }
+    if (string.charAt(0) === '[') {
+      bracketPos = string.indexOf(']');
+      parts.hostname = string.substring(1, bracketPos) || null;
+      parts.port = string.substring(bracketPos + 2, pos) || null;
+      if (parts.port === '/') {
+        parts.port = null;
+      }
+    } else {
+      var firstColon = string.indexOf(':');
+      var firstSlash = string.indexOf('/');
+      var nextColon = string.indexOf(':', firstColon + 1);
+      if (nextColon !== -1 && (firstSlash === -1 || nextColon < firstSlash)) {
+        parts.hostname = string.substring(0, pos) || null;
+        parts.port = null;
+      } else {
+        t = string.substring(0, pos).split(':');
+        parts.hostname = t[0] || null;
+        parts.port = t[1] || null;
+      }
+    }
+    if (parts.hostname && string.substring(pos).charAt(0) !== '/') {
+      pos++;
+      string = '/' + string;
+    }
+    return string.substring(pos) || '/';
+  };
+  URI.parseAuthority = function(string, parts) {
+    string = URI.parseUserinfo(string, parts);
+    return URI.parseHost(string, parts);
+  };
+  URI.parseUserinfo = function(string, parts) {
+    var firstSlash = string.indexOf('/');
+    var pos = string.lastIndexOf('@', firstSlash > -1 ? firstSlash : string.length - 1);
+    var t;
+    if (pos > -1 && (firstSlash === -1 || pos < firstSlash)) {
+      t = string.substring(0, pos).split(':');
+      parts.username = t[0] ? URI.decode(t[0]) : null;
+      t.shift();
+      parts.password = t[0] ? URI.decode(t.join(':')) : null;
+      string = string.substring(pos + 1);
+    } else {
+      parts.username = null;
+      parts.password = null;
+    }
+    return string;
+  };
+  URI.parseQuery = function(string, escapeQuerySpace) {
+    if (!string) {
+      return {};
+    }
+    string = string.replace(/&+/g, '&').replace(/^\?*&*|&+$/g, '');
+    if (!string) {
+      return {};
+    }
+    var items = {};
+    var splits = string.split('&');
+    var length = splits.length;
+    var v,
+        name,
+        value;
+    for (var i = 0; i < length; i++) {
+      v = splits[i].split('=');
+      name = URI.decodeQuery(v.shift(), escapeQuerySpace);
+      value = v.length ? URI.decodeQuery(v.join('='), escapeQuerySpace) : null;
+      if (hasOwn.call(items, name)) {
+        if (typeof items[name] === 'string' || items[name] === null) {
+          items[name] = [items[name]];
+        }
+        items[name].push(value);
+      } else {
+        items[name] = value;
+      }
+    }
+    return items;
+  };
+  URI.build = function(parts) {
+    var t = '';
+    if (parts.protocol) {
+      t += parts.protocol + ':';
+    }
+    if (!parts.urn && (t || parts.hostname)) {
+      t += '//';
+    }
+    t += (URI.buildAuthority(parts) || '');
+    if (typeof parts.path === 'string') {
+      if (parts.path.charAt(0) !== '/' && typeof parts.hostname === 'string') {
+        t += '/';
+      }
+      t += parts.path;
+    }
+    if (typeof parts.query === 'string' && parts.query) {
+      t += '?' + parts.query;
+    }
+    if (typeof parts.fragment === 'string' && parts.fragment) {
+      t += '#' + parts.fragment;
+    }
+    return t;
+  };
+  URI.buildHost = function(parts) {
+    var t = '';
+    if (!parts.hostname) {
+      return '';
+    } else if (URI.ip6_expression.test(parts.hostname)) {
+      t += '[' + parts.hostname + ']';
+    } else {
+      t += parts.hostname;
+    }
+    if (parts.port) {
+      t += ':' + parts.port;
+    }
+    return t;
+  };
+  URI.buildAuthority = function(parts) {
+    return URI.buildUserinfo(parts) + URI.buildHost(parts);
+  };
+  URI.buildUserinfo = function(parts) {
+    var t = '';
+    if (parts.username) {
+      t += URI.encode(parts.username);
+    }
+    if (parts.password) {
+      t += ':' + URI.encode(parts.password);
+    }
+    if (t) {
+      t += '@';
+    }
+    return t;
+  };
+  URI.buildQuery = function(data, duplicateQueryParameters, escapeQuerySpace) {
+    var t = '';
+    var unique,
+        key,
+        i,
+        length;
+    for (key in data) {
+      if (hasOwn.call(data, key) && key) {
+        if (isArray(data[key])) {
+          unique = {};
+          for (i = 0, length = data[key].length; i < length; i++) {
+            if (data[key][i] !== undefined && unique[data[key][i] + ''] === undefined) {
+              t += '&' + URI.buildQueryParameter(key, data[key][i], escapeQuerySpace);
+              if (duplicateQueryParameters !== true) {
+                unique[data[key][i] + ''] = true;
+              }
+            }
+          }
+        } else if (data[key] !== undefined) {
+          t += '&' + URI.buildQueryParameter(key, data[key], escapeQuerySpace);
+        }
+      }
+    }
+    return t.substring(1);
+  };
+  URI.buildQueryParameter = function(name, value, escapeQuerySpace) {
+    return URI.encodeQuery(name, escapeQuerySpace) + (value !== null ? '=' + URI.encodeQuery(value, escapeQuerySpace) : '');
+  };
+  URI.addQuery = function(data, name, value) {
+    if (typeof name === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.addQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      if (data[name] === undefined) {
+        data[name] = value;
+        return;
+      } else if (typeof data[name] === 'string') {
+        data[name] = [data[name]];
+      }
+      if (!isArray(value)) {
+        value = [value];
+      }
+      data[name] = (data[name] || []).concat(value);
+    } else {
+      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
+    }
+  };
+  URI.removeQuery = function(data, name, value) {
+    var i,
+        length,
+        key;
+    if (isArray(name)) {
+      for (i = 0, length = name.length; i < length; i++) {
+        data[name[i]] = undefined;
+      }
+    } else if (getType(name) === 'RegExp') {
+      for (key in data) {
+        if (name.test(key)) {
+          data[key] = undefined;
+        }
+      }
+    } else if (typeof name === 'object') {
+      for (key in name) {
+        if (hasOwn.call(name, key)) {
+          URI.removeQuery(data, key, name[key]);
+        }
+      }
+    } else if (typeof name === 'string') {
+      if (value !== undefined) {
+        if (getType(value) === 'RegExp') {
+          if (!isArray(data[name]) && value.test(data[name])) {
+            data[name] = undefined;
+          } else {
+            data[name] = filterArrayValues(data[name], value);
+          }
+        } else if (data[name] === String(value) && (!isArray(value) || value.length === 1)) {
+          data[name] = undefined;
+        } else if (isArray(data[name])) {
+          data[name] = filterArrayValues(data[name], value);
+        }
+      } else {
+        data[name] = undefined;
+      }
+    } else {
+      throw new TypeError('URI.removeQuery() accepts an object, string, RegExp as the first parameter');
+    }
+  };
+  URI.hasQuery = function(data, name, value, withinArray) {
+    switch (getType(name)) {
+      case 'String':
+        break;
+      case 'RegExp':
+        for (var key in data) {
+          if (hasOwn.call(data, key)) {
+            if (name.test(key) && (value === undefined || URI.hasQuery(data, key, value))) {
+              return true;
+            }
+          }
+        }
+        return false;
+      case 'Object':
+        for (var _key in name) {
+          if (hasOwn.call(name, _key)) {
+            if (!URI.hasQuery(data, _key, name[_key])) {
+              return false;
+            }
+          }
+        }
+        return true;
+      default:
+        throw new TypeError('URI.hasQuery() accepts a string, regular expression or object as the name parameter');
+    }
+    switch (getType(value)) {
+      case 'Undefined':
+        return name in data;
+      case 'Boolean':
+        var _booly = Boolean(isArray(data[name]) ? data[name].length : data[name]);
+        return value === _booly;
+      case 'Function':
+        return !!value(data[name], name, data);
+      case 'Array':
+        if (!isArray(data[name])) {
+          return false;
+        }
+        var op = withinArray ? arrayContains : arraysEqual;
+        return op(data[name], value);
+      case 'RegExp':
+        if (!isArray(data[name])) {
+          return Boolean(data[name] && data[name].match(value));
+        }
+        if (!withinArray) {
+          return false;
+        }
+        return arrayContains(data[name], value);
+      case 'Number':
+        value = String(value);
+      case 'String':
+        if (!isArray(data[name])) {
+          return data[name] === value;
+        }
+        if (!withinArray) {
+          return false;
+        }
+        return arrayContains(data[name], value);
+      default:
+        throw new TypeError('URI.hasQuery() accepts undefined, boolean, string, number, RegExp, Function as the value parameter');
+    }
+  };
+  URI.joinPaths = function() {
+    var input = [];
+    var segments = [];
+    var nonEmptySegments = 0;
+    for (var i = 0; i < arguments.length; i++) {
+      var url = new URI(arguments[i]);
+      input.push(url);
+      var _segments = url.segment();
+      for (var s = 0; s < _segments.length; s++) {
+        if (typeof _segments[s] === 'string') {
+          segments.push(_segments[s]);
+        }
+        if (_segments[s]) {
+          nonEmptySegments++;
+        }
+      }
+    }
+    if (!segments.length || !nonEmptySegments) {
+      return new URI('');
+    }
+    var uri = new URI('').segment(segments);
+    if (input[0].path() === '' || input[0].path().slice(0, 1) === '/') {
+      uri.path('/' + uri.path());
+    }
+    return uri.normalize();
+  };
+  URI.commonPath = function(one, two) {
+    var length = Math.min(one.length, two.length);
+    var pos;
+    for (pos = 0; pos < length; pos++) {
+      if (one.charAt(pos) !== two.charAt(pos)) {
+        pos--;
+        break;
+      }
+    }
+    if (pos < 1) {
+      return one.charAt(0) === two.charAt(0) && one.charAt(0) === '/' ? '/' : '';
+    }
+    if (one.charAt(pos) !== '/' || two.charAt(pos) !== '/') {
+      pos = one.substring(0, pos).lastIndexOf('/');
+    }
+    return one.substring(0, pos + 1);
+  };
+  URI.withinString = function(string, callback, options) {
+    options || (options = {});
+    var _start = options.start || URI.findUri.start;
+    var _end = options.end || URI.findUri.end;
+    var _trim = options.trim || URI.findUri.trim;
+    var _attributeOpen = /[a-z0-9-]=["']?$/i;
+    _start.lastIndex = 0;
+    while (true) {
+      var match = _start.exec(string);
+      if (!match) {
+        break;
+      }
+      var start = match.index;
+      if (options.ignoreHtml) {
+        var attributeOpen = string.slice(Math.max(start - 3, 0), start);
+        if (attributeOpen && _attributeOpen.test(attributeOpen)) {
+          continue;
+        }
+      }
+      var end = start + string.slice(start).search(_end);
+      var slice = string.slice(start, end).replace(_trim, '');
+      if (options.ignore && options.ignore.test(slice)) {
+        continue;
+      }
+      end = start + slice.length;
+      var result = callback(slice, start, end, string);
+      string = string.slice(0, start) + result + string.slice(end);
+      _start.lastIndex = start + result.length;
+    }
+    _start.lastIndex = 0;
+    return string;
+  };
+  URI.ensureValidHostname = function(v) {
+    if (v.match(URI.invalid_hostname_characters)) {
+      if (!punycode) {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-] and Punycode.js is not available');
+      }
+      if (punycode.toASCII(v).match(URI.invalid_hostname_characters)) {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+    }
+  };
+  URI.noConflict = function(removeAll) {
+    if (removeAll) {
+      var unconflicted = {URI: this.noConflict()};
+      if (root.URITemplate && typeof root.URITemplate.noConflict === 'function') {
+        unconflicted.URITemplate = root.URITemplate.noConflict();
+      }
+      if (root.IPv6 && typeof root.IPv6.noConflict === 'function') {
+        unconflicted.IPv6 = root.IPv6.noConflict();
+      }
+      if (root.SecondLevelDomains && typeof root.SecondLevelDomains.noConflict === 'function') {
+        unconflicted.SecondLevelDomains = root.SecondLevelDomains.noConflict();
+      }
+      return unconflicted;
+    } else if (root.URI === this) {
+      root.URI = _URI;
+    }
+    return this;
+  };
+  p.build = function(deferBuild) {
+    if (deferBuild === true) {
+      this._deferred_build = true;
+    } else if (deferBuild === undefined || this._deferred_build) {
+      this._string = URI.build(this._parts);
+      this._deferred_build = false;
+    }
+    return this;
+  };
+  p.clone = function() {
+    return new URI(this);
+  };
+  p.valueOf = p.toString = function() {
+    return this.build(false)._string;
+  };
+  function generateSimpleAccessor(_part) {
+    return function(v, build) {
+      if (v === undefined) {
+        return this._parts[_part] || '';
+      } else {
+        this._parts[_part] = v || null;
+        this.build(!build);
+        return this;
+      }
+    };
+  }
+  function generatePrefixAccessor(_part, _key) {
+    return function(v, build) {
+      if (v === undefined) {
+        return this._parts[_part] || '';
+      } else {
+        if (v !== null) {
+          v = v + '';
+          if (v.charAt(0) === _key) {
+            v = v.substring(1);
+          }
+        }
+        this._parts[_part] = v;
+        this.build(!build);
+        return this;
+      }
+    };
+  }
+  p.protocol = generateSimpleAccessor('protocol');
+  p.username = generateSimpleAccessor('username');
+  p.password = generateSimpleAccessor('password');
+  p.hostname = generateSimpleAccessor('hostname');
+  p.port = generateSimpleAccessor('port');
+  p.query = generatePrefixAccessor('query', '?');
+  p.fragment = generatePrefixAccessor('fragment', '#');
+  p.search = function(v, build) {
+    var t = this.query(v, build);
+    return typeof t === 'string' && t.length ? ('?' + t) : t;
+  };
+  p.hash = function(v, build) {
+    var t = this.fragment(v, build);
+    return typeof t === 'string' && t.length ? ('#' + t) : t;
+  };
+  p.pathname = function(v, build) {
+    if (v === undefined || v === true) {
+      var res = this._parts.path || (this._parts.hostname ? '/' : '');
+      return v ? (this._parts.urn ? URI.decodeUrnPath : URI.decodePath)(res) : res;
+    } else {
+      if (this._parts.urn) {
+        this._parts.path = v ? URI.recodeUrnPath(v) : '';
+      } else {
+        this._parts.path = v ? URI.recodePath(v) : '/';
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.path = p.pathname;
+  p.href = function(href, build) {
+    var key;
+    if (href === undefined) {
+      return this.toString();
+    }
+    this._string = '';
+    this._parts = URI._parts();
+    var _URI = href instanceof URI;
+    var _object = typeof href === 'object' && (href.hostname || href.path || href.pathname);
+    if (href.nodeName) {
+      var attribute = URI.getDomAttribute(href);
+      href = href[attribute] || '';
+      _object = false;
+    }
+    if (!_URI && _object && href.pathname !== undefined) {
+      href = href.toString();
+    }
+    if (typeof href === 'string' || href instanceof String) {
+      this._parts = URI.parse(String(href), this._parts);
+    } else if (_URI || _object) {
+      var src = _URI ? href._parts : href;
+      for (key in src) {
+        if (hasOwn.call(this._parts, key)) {
+          this._parts[key] = src[key];
+        }
+      }
+    } else {
+      throw new TypeError('invalid input');
+    }
+    this.build(!build);
+    return this;
+  };
+  p.is = function(what) {
+    var ip = false;
+    var ip4 = false;
+    var ip6 = false;
+    var name = false;
+    var sld = false;
+    var idn = false;
+    var punycode = false;
+    var relative = !this._parts.urn;
+    if (this._parts.hostname) {
+      relative = false;
+      ip4 = URI.ip4_expression.test(this._parts.hostname);
+      ip6 = URI.ip6_expression.test(this._parts.hostname);
+      ip = ip4 || ip6;
+      name = !ip;
+      sld = name && SLD && SLD.has(this._parts.hostname);
+      idn = name && URI.idn_expression.test(this._parts.hostname);
+      punycode = name && URI.punycode_expression.test(this._parts.hostname);
+    }
+    switch (what.toLowerCase()) {
+      case 'relative':
+        return relative;
+      case 'absolute':
+        return !relative;
+      case 'domain':
+      case 'name':
+        return name;
+      case 'sld':
+        return sld;
+      case 'ip':
+        return ip;
+      case 'ip4':
+      case 'ipv4':
+      case 'inet4':
+        return ip4;
+      case 'ip6':
+      case 'ipv6':
+      case 'inet6':
+        return ip6;
+      case 'idn':
+        return idn;
+      case 'url':
+        return !this._parts.urn;
+      case 'urn':
+        return !!this._parts.urn;
+      case 'punycode':
+        return punycode;
+    }
+    return null;
+  };
+  var _protocol = p.protocol;
+  var _port = p.port;
+  var _hostname = p.hostname;
+  p.protocol = function(v, build) {
+    if (v !== undefined) {
+      if (v) {
+        v = v.replace(/:(\/\/)?$/, '');
+        if (!v.match(URI.protocol_expression)) {
+          throw new TypeError('Protocol "' + v + '" contains characters other than [A-Z0-9.+-] or doesn\'t start with [A-Z]');
+        }
+      }
+    }
+    return _protocol.call(this, v, build);
+  };
+  p.scheme = p.protocol;
+  p.port = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v !== undefined) {
+      if (v === 0) {
+        v = null;
+      }
+      if (v) {
+        v += '';
+        if (v.charAt(0) === ':') {
+          v = v.substring(1);
+        }
+        if (v.match(/[^0-9]/)) {
+          throw new TypeError('Port "' + v + '" contains characters other than [0-9]');
+        }
+      }
+    }
+    return _port.call(this, v, build);
+  };
+  p.hostname = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v !== undefined) {
+      var x = {};
+      var res = URI.parseHost(v, x);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      v = x.hostname;
+    }
+    return _hostname.call(this, v, build);
+  };
+  p.origin = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      var protocol = this.protocol();
+      var authority = this.authority();
+      if (!authority) {
+        return '';
+      }
+      return (protocol ? protocol + '://' : '') + this.authority();
+    } else {
+      var origin = URI(v);
+      this.protocol(origin.protocol()).authority(origin.authority()).build(!build);
+      return this;
+    }
+  };
+  p.host = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      return this._parts.hostname ? URI.buildHost(this._parts) : '';
+    } else {
+      var res = URI.parseHost(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.authority = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      return this._parts.hostname ? URI.buildAuthority(this._parts) : '';
+    } else {
+      var res = URI.parseAuthority(v, this._parts);
+      if (res !== '/') {
+        throw new TypeError('Hostname "' + v + '" contains characters other than [A-Z0-9.-]');
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.userinfo = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      var t = URI.buildUserinfo(this._parts);
+      return t ? t.substring(0, t.length - 1) : t;
+    } else {
+      if (v[v.length - 1] !== '@') {
+        v += '@';
+      }
+      URI.parseUserinfo(v, this._parts);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.resource = function(v, build) {
+    var parts;
+    if (v === undefined) {
+      return this.path() + this.search() + this.hash();
+    }
+    parts = URI.parse(v);
+    this._parts.path = parts.path;
+    this._parts.query = parts.query;
+    this._parts.fragment = parts.fragment;
+    this.build(!build);
+    return this;
+  };
+  p.subdomain = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+      var end = this._parts.hostname.length - this.domain().length - 1;
+      return this._parts.hostname.substring(0, end) || '';
+    } else {
+      var e = this._parts.hostname.length - this.domain().length;
+      var sub = this._parts.hostname.substring(0, e);
+      var replace = new RegExp('^' + escapeRegEx(sub));
+      if (v && v.charAt(v.length - 1) !== '.') {
+        v += '.';
+      }
+      if (v) {
+        URI.ensureValidHostname(v);
+      }
+      this._parts.hostname = this._parts.hostname.replace(replace, v);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.domain = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v === 'boolean') {
+      build = v;
+      v = undefined;
+    }
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+      var t = this._parts.hostname.match(/\./g);
+      if (t && t.length < 2) {
+        return this._parts.hostname;
+      }
+      var end = this._parts.hostname.length - this.tld(build).length - 1;
+      end = this._parts.hostname.lastIndexOf('.', end - 1) + 1;
+      return this._parts.hostname.substring(end) || '';
+    } else {
+      if (!v) {
+        throw new TypeError('cannot set domain empty');
+      }
+      URI.ensureValidHostname(v);
+      if (!this._parts.hostname || this.is('IP')) {
+        this._parts.hostname = v;
+      } else {
+        var replace = new RegExp(escapeRegEx(this.domain()) + '$');
+        this._parts.hostname = this._parts.hostname.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.tld = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (typeof v === 'boolean') {
+      build = v;
+      v = undefined;
+    }
+    if (v === undefined) {
+      if (!this._parts.hostname || this.is('IP')) {
+        return '';
+      }
+      var pos = this._parts.hostname.lastIndexOf('.');
+      var tld = this._parts.hostname.substring(pos + 1);
+      if (build !== true && SLD && SLD.list[tld.toLowerCase()]) {
+        return SLD.get(this._parts.hostname) || tld;
+      }
+      return tld;
+    } else {
+      var replace;
+      if (!v) {
+        throw new TypeError('cannot set TLD empty');
+      } else if (v.match(/[^a-zA-Z0-9-]/)) {
+        if (SLD && SLD.is(v)) {
+          replace = new RegExp(escapeRegEx(this.tld()) + '$');
+          this._parts.hostname = this._parts.hostname.replace(replace, v);
+        } else {
+          throw new TypeError('TLD "' + v + '" contains characters other than [A-Z0-9]');
+        }
+      } else if (!this._parts.hostname || this.is('IP')) {
+        throw new ReferenceError('cannot set TLD on non-domain host');
+      } else {
+        replace = new RegExp(escapeRegEx(this.tld()) + '$');
+        this._parts.hostname = this._parts.hostname.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.directory = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined || v === true) {
+      if (!this._parts.path && !this._parts.hostname) {
+        return '';
+      }
+      if (this._parts.path === '/') {
+        return '/';
+      }
+      var end = this._parts.path.length - this.filename().length - 1;
+      var res = this._parts.path.substring(0, end) || (this._parts.hostname ? '/' : '');
+      return v ? URI.decodePath(res) : res;
+    } else {
+      var e = this._parts.path.length - this.filename().length;
+      var directory = this._parts.path.substring(0, e);
+      var replace = new RegExp('^' + escapeRegEx(directory));
+      if (!this.is('relative')) {
+        if (!v) {
+          v = '/';
+        }
+        if (v.charAt(0) !== '/') {
+          v = '/' + v;
+        }
+      }
+      if (v && v.charAt(v.length - 1) !== '/') {
+        v += '/';
+      }
+      v = URI.recodePath(v);
+      this._parts.path = this._parts.path.replace(replace, v);
+      this.build(!build);
+      return this;
+    }
+  };
+  p.filename = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined || v === true) {
+      if (!this._parts.path || this._parts.path === '/') {
+        return '';
+      }
+      var pos = this._parts.path.lastIndexOf('/');
+      var res = this._parts.path.substring(pos + 1);
+      return v ? URI.decodePathSegment(res) : res;
+    } else {
+      var mutatedDirectory = false;
+      if (v.charAt(0) === '/') {
+        v = v.substring(1);
+      }
+      if (v.match(/\.?\//)) {
+        mutatedDirectory = true;
+      }
+      var replace = new RegExp(escapeRegEx(this.filename()) + '$');
+      v = URI.recodePath(v);
+      this._parts.path = this._parts.path.replace(replace, v);
+      if (mutatedDirectory) {
+        this.normalizePath(build);
+      } else {
+        this.build(!build);
+      }
+      return this;
+    }
+  };
+  p.suffix = function(v, build) {
+    if (this._parts.urn) {
+      return v === undefined ? '' : this;
+    }
+    if (v === undefined || v === true) {
+      if (!this._parts.path || this._parts.path === '/') {
+        return '';
+      }
+      var filename = this.filename();
+      var pos = filename.lastIndexOf('.');
+      var s,
+          res;
+      if (pos === -1) {
+        return '';
+      }
+      s = filename.substring(pos + 1);
+      res = (/^[a-z0-9%]+$/i).test(s) ? s : '';
+      return v ? URI.decodePathSegment(res) : res;
+    } else {
+      if (v.charAt(0) === '.') {
+        v = v.substring(1);
+      }
+      var suffix = this.suffix();
+      var replace;
+      if (!suffix) {
+        if (!v) {
+          return this;
+        }
+        this._parts.path += '.' + URI.recodePath(v);
+      } else if (!v) {
+        replace = new RegExp(escapeRegEx('.' + suffix) + '$');
+      } else {
+        replace = new RegExp(escapeRegEx(suffix) + '$');
+      }
+      if (replace) {
+        v = URI.recodePath(v);
+        this._parts.path = this._parts.path.replace(replace, v);
+      }
+      this.build(!build);
+      return this;
+    }
+  };
+  p.segment = function(segment, v, build) {
+    var separator = this._parts.urn ? ':' : '/';
+    var path = this.path();
+    var absolute = path.substring(0, 1) === '/';
+    var segments = path.split(separator);
+    if (segment !== undefined && typeof segment !== 'number') {
+      build = v;
+      v = segment;
+      segment = undefined;
+    }
+    if (segment !== undefined && typeof segment !== 'number') {
+      throw new Error('Bad segment "' + segment + '", must be 0-based integer');
+    }
+    if (absolute) {
+      segments.shift();
+    }
+    if (segment < 0) {
+      segment = Math.max(segments.length + segment, 0);
+    }
+    if (v === undefined) {
+      return segment === undefined ? segments : segments[segment];
+    } else if (segment === null || segments[segment] === undefined) {
+      if (isArray(v)) {
+        segments = [];
+        for (var i = 0,
+            l = v.length; i < l; i++) {
+          if (!v[i].length && (!segments.length || !segments[segments.length - 1].length)) {
+            continue;
+          }
+          if (segments.length && !segments[segments.length - 1].length) {
+            segments.pop();
+          }
+          segments.push(trimSlashes(v[i]));
+        }
+      } else if (v || typeof v === 'string') {
+        v = trimSlashes(v);
+        if (segments[segments.length - 1] === '') {
+          segments[segments.length - 1] = v;
+        } else {
+          segments.push(v);
+        }
+      }
+    } else {
+      if (v) {
+        segments[segment] = trimSlashes(v);
+      } else {
+        segments.splice(segment, 1);
+      }
+    }
+    if (absolute) {
+      segments.unshift('');
+    }
+    return this.path(segments.join(separator), build);
+  };
+  p.segmentCoded = function(segment, v, build) {
+    var segments,
+        i,
+        l;
+    if (typeof segment !== 'number') {
+      build = v;
+      v = segment;
+      segment = undefined;
+    }
+    if (v === undefined) {
+      segments = this.segment(segment, v, build);
+      if (!isArray(segments)) {
+        segments = segments !== undefined ? URI.decode(segments) : undefined;
+      } else {
+        for (i = 0, l = segments.length; i < l; i++) {
+          segments[i] = URI.decode(segments[i]);
+        }
+      }
+      return segments;
+    }
+    if (!isArray(v)) {
+      v = (typeof v === 'string' || v instanceof String) ? URI.encode(v) : v;
+    } else {
+      for (i = 0, l = v.length; i < l; i++) {
+        v[i] = URI.encode(v[i]);
+      }
+    }
+    return this.segment(segment, v, build);
+  };
+  var q = p.query;
+  p.query = function(v, build) {
+    if (v === true) {
+      return URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    } else if (typeof v === 'function') {
+      var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+      var result = v.call(this, data);
+      this._parts.query = URI.buildQuery(result || data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+      this.build(!build);
+      return this;
+    } else if (v !== undefined && typeof v !== 'string') {
+      this._parts.query = URI.buildQuery(v, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+      this.build(!build);
+      return this;
+    } else {
+      return q.call(this, v, build);
+    }
+  };
+  p.setQuery = function(name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    if (typeof name === 'string' || name instanceof String) {
+      data[name] = value !== undefined ? value : null;
+    } else if (typeof name === 'object') {
+      for (var key in name) {
+        if (hasOwn.call(name, key)) {
+          data[key] = name[key];
+        }
+      }
+    } else {
+      throw new TypeError('URI.addQuery() accepts an object, string as the name parameter');
+    }
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.addQuery = function(name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    URI.addQuery(data, name, value === undefined ? null : value);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.removeQuery = function(name, value, build) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    URI.removeQuery(data, name, value);
+    this._parts.query = URI.buildQuery(data, this._parts.duplicateQueryParameters, this._parts.escapeQuerySpace);
+    if (typeof name !== 'string') {
+      build = value;
+    }
+    this.build(!build);
+    return this;
+  };
+  p.hasQuery = function(name, value, withinArray) {
+    var data = URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace);
+    return URI.hasQuery(data, name, value, withinArray);
+  };
+  p.setSearch = p.setQuery;
+  p.addSearch = p.addQuery;
+  p.removeSearch = p.removeQuery;
+  p.hasSearch = p.hasQuery;
+  p.normalize = function() {
+    if (this._parts.urn) {
+      return this.normalizeProtocol(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
+    }
+    return this.normalizeProtocol(false).normalizeHostname(false).normalizePort(false).normalizePath(false).normalizeQuery(false).normalizeFragment(false).build();
+  };
+  p.normalizeProtocol = function(build) {
+    if (typeof this._parts.protocol === 'string') {
+      this._parts.protocol = this._parts.protocol.toLowerCase();
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeHostname = function(build) {
+    if (this._parts.hostname) {
+      if (this.is('IDN') && punycode) {
+        this._parts.hostname = punycode.toASCII(this._parts.hostname);
+      } else if (this.is('IPv6') && IPv6) {
+        this._parts.hostname = IPv6.best(this._parts.hostname);
+      }
+      this._parts.hostname = this._parts.hostname.toLowerCase();
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizePort = function(build) {
+    if (typeof this._parts.protocol === 'string' && this._parts.port === URI.defaultPorts[this._parts.protocol]) {
+      this._parts.port = null;
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizePath = function(build) {
+    var _path = this._parts.path;
+    if (!_path) {
+      return this;
+    }
+    if (this._parts.urn) {
+      this._parts.path = URI.recodeUrnPath(this._parts.path);
+      this.build(!build);
+      return this;
+    }
+    if (this._parts.path === '/') {
+      return this;
+    }
+    _path = URI.recodePath(_path);
+    var _was_relative;
+    var _leadingParents = '';
+    var _parent,
+        _pos;
+    if (_path.charAt(0) !== '/') {
+      _was_relative = true;
+      _path = '/' + _path;
+    }
+    if (_path.slice(-3) === '/..' || _path.slice(-2) === '/.') {
+      _path += '/';
+    }
+    _path = _path.replace(/(\/(\.\/)+)|(\/\.$)/g, '/').replace(/\/{2,}/g, '/');
+    if (_was_relative) {
+      _leadingParents = _path.substring(1).match(/^(\.\.\/)+/) || '';
+      if (_leadingParents) {
+        _leadingParents = _leadingParents[0];
+      }
+    }
+    while (true) {
+      _parent = _path.search(/\/\.\.(\/|$)/);
+      if (_parent === -1) {
+        break;
+      } else if (_parent === 0) {
+        _path = _path.substring(3);
+        continue;
+      }
+      _pos = _path.substring(0, _parent).lastIndexOf('/');
+      if (_pos === -1) {
+        _pos = _parent;
+      }
+      _path = _path.substring(0, _pos) + _path.substring(_parent + 3);
+    }
+    if (_was_relative && this.is('relative')) {
+      _path = _leadingParents + _path.substring(1);
+    }
+    this._parts.path = _path;
+    this.build(!build);
+    return this;
+  };
+  p.normalizePathname = p.normalizePath;
+  p.normalizeQuery = function(build) {
+    if (typeof this._parts.query === 'string') {
+      if (!this._parts.query.length) {
+        this._parts.query = null;
+      } else {
+        this.query(URI.parseQuery(this._parts.query, this._parts.escapeQuerySpace));
+      }
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeFragment = function(build) {
+    if (!this._parts.fragment) {
+      this._parts.fragment = null;
+      this.build(!build);
+    }
+    return this;
+  };
+  p.normalizeSearch = p.normalizeQuery;
+  p.normalizeHash = p.normalizeFragment;
+  p.iso8859 = function() {
+    var e = URI.encode;
+    var d = URI.decode;
+    URI.encode = escape;
+    URI.decode = decodeURIComponent;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
+    return this;
+  };
+  p.unicode = function() {
+    var e = URI.encode;
+    var d = URI.decode;
+    URI.encode = strictEncodeURIComponent;
+    URI.decode = unescape;
+    try {
+      this.normalize();
+    } finally {
+      URI.encode = e;
+      URI.decode = d;
+    }
+    return this;
+  };
+  p.readable = function() {
+    var uri = this.clone();
+    uri.username('').password('').normalize();
+    var t = '';
+    if (uri._parts.protocol) {
+      t += uri._parts.protocol + '://';
+    }
+    if (uri._parts.hostname) {
+      if (uri.is('punycode') && punycode) {
+        t += punycode.toUnicode(uri._parts.hostname);
+        if (uri._parts.port) {
+          t += ':' + uri._parts.port;
+        }
+      } else {
+        t += uri.host();
+      }
+    }
+    if (uri._parts.hostname && uri._parts.path && uri._parts.path.charAt(0) !== '/') {
+      t += '/';
+    }
+    t += uri.path(true);
+    if (uri._parts.query) {
+      var q = '';
+      for (var i = 0,
+          qp = uri._parts.query.split('&'),
+          l = qp.length; i < l; i++) {
+        var kv = (qp[i] || '').split('=');
+        q += '&' + URI.decodeQuery(kv[0], this._parts.escapeQuerySpace).replace(/&/g, '%26');
+        if (kv[1] !== undefined) {
+          q += '=' + URI.decodeQuery(kv[1], this._parts.escapeQuerySpace).replace(/&/g, '%26');
+        }
+      }
+      t += '?' + q.substring(1);
+    }
+    t += URI.decodeQuery(uri.hash(), true);
+    return t;
+  };
+  p.absoluteTo = function(base) {
+    var resolved = this.clone();
+    var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
+    var basedir,
+        i,
+        p;
+    if (this._parts.urn) {
+      throw new Error('URNs do not have any generally defined hierarchical components');
+    }
+    if (!(base instanceof URI)) {
+      base = new URI(base);
+    }
+    if (!resolved._parts.protocol) {
+      resolved._parts.protocol = base._parts.protocol;
+    }
+    if (this._parts.hostname) {
+      return resolved;
+    }
+    for (i = 0; (p = properties[i]); i++) {
+      resolved._parts[p] = base._parts[p];
+    }
+    if (!resolved._parts.path) {
+      resolved._parts.path = base._parts.path;
+      if (!resolved._parts.query) {
+        resolved._parts.query = base._parts.query;
+      }
+    } else if (resolved._parts.path.substring(-2) === '..') {
+      resolved._parts.path += '/';
+    }
+    if (resolved.path().charAt(0) !== '/') {
+      basedir = base.directory();
+      basedir = basedir ? basedir : base.path().indexOf('/') === 0 ? '/' : '';
+      resolved._parts.path = (basedir ? (basedir + '/') : '') + resolved._parts.path;
+      resolved.normalizePath();
+    }
+    resolved.build();
+    return resolved;
+  };
+  p.relativeTo = function(base) {
+    var relative = this.clone().normalize();
+    var relativeParts,
+        baseParts,
+        common,
+        relativePath,
+        basePath;
+    if (relative._parts.urn) {
+      throw new Error('URNs do not have any generally defined hierarchical components');
+    }
+    base = new URI(base).normalize();
+    relativeParts = relative._parts;
+    baseParts = base._parts;
+    relativePath = relative.path();
+    basePath = base.path();
+    if (relativePath.charAt(0) !== '/') {
+      throw new Error('URI is already relative');
+    }
+    if (basePath.charAt(0) !== '/') {
+      throw new Error('Cannot calculate a URI relative to another relative URI');
+    }
+    if (relativeParts.protocol === baseParts.protocol) {
+      relativeParts.protocol = null;
+    }
+    if (relativeParts.username !== baseParts.username || relativeParts.password !== baseParts.password) {
+      return relative.build();
+    }
+    if (relativeParts.protocol !== null || relativeParts.username !== null || relativeParts.password !== null) {
+      return relative.build();
+    }
+    if (relativeParts.hostname === baseParts.hostname && relativeParts.port === baseParts.port) {
+      relativeParts.hostname = null;
+      relativeParts.port = null;
+    } else {
+      return relative.build();
+    }
+    if (relativePath === basePath) {
+      relativeParts.path = '';
+      return relative.build();
+    }
+    common = URI.commonPath(relativePath, basePath);
+    if (!common) {
+      return relative.build();
+    }
+    var parents = baseParts.path.substring(common.length).replace(/[^\/]*$/, '').replace(/.*?\//g, '../');
+    relativeParts.path = (parents + relativeParts.path.substring(common.length)) || './';
+    return relative.build();
+  };
+  p.equals = function(uri) {
+    var one = this.clone();
+    var two = new URI(uri);
+    var one_map = {};
+    var two_map = {};
+    var checked = {};
+    var one_query,
+        two_query,
+        key;
+    one.normalize();
+    two.normalize();
+    if (one.toString() === two.toString()) {
+      return true;
+    }
+    one_query = one.query();
+    two_query = two.query();
+    one.query('');
+    two.query('');
+    if (one.toString() !== two.toString()) {
+      return false;
+    }
+    if (one_query.length !== two_query.length) {
+      return false;
+    }
+    one_map = URI.parseQuery(one_query, this._parts.escapeQuerySpace);
+    two_map = URI.parseQuery(two_query, this._parts.escapeQuerySpace);
+    for (key in one_map) {
+      if (hasOwn.call(one_map, key)) {
+        if (!isArray(one_map[key])) {
+          if (one_map[key] !== two_map[key]) {
+            return false;
+          }
+        } else if (!arraysEqual(one_map[key], two_map[key])) {
+          return false;
+        }
+        checked[key] = true;
+      }
+    }
+    for (key in two_map) {
+      if (hasOwn.call(two_map, key)) {
+        if (!checked[key]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+  p.duplicateQueryParameters = function(v) {
+    this._parts.duplicateQueryParameters = !!v;
+    return this;
+  };
+  p.escapeQuerySpace = function(v) {
+    this._parts.escapeQuerySpace = !!v;
+    return this;
+  };
+  return URI;
+}));
+
+})();
+System.register('app/traffic_stop_count_in_date_range/request.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'uri'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _createClass, URI, TrafficStopCountInDateRangeRequest;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_uri) {
+      URI = _uri.default;
+    }],
+    execute: function () {
+      TrafficStopCountInDateRangeRequest = function () {
+        function TrafficStopCountInDateRangeRequest() {
+          var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+          var endDate = _ref.endDate;
+          var startDate = _ref.startDate;
+
+          _classCallCheck(this, TrafficStopCountInDateRangeRequest);
+
+          this.endDate = endDate;
+          this.startDate = startDate;
+        }
+
+        _createClass(TrafficStopCountInDateRangeRequest, [{
+          key: 'count',
+          value: function count() {
+            if (!this.isValid()) {
+              return 0;
+            }
+            try {
+              var request = new XMLHttpRequest();
+              request.open('get', this.uri().normalize(), false);
+              request.setRequestHeader("X-App-Token", "3QZx3OfxcculHVue3kYIPrrKZ");
+              request.setRequestHeader("Accept", "application/json");
+              request.send();
+              return JSON.parse(request.response)[0].count_stopdescription;
+            } catch (e) {
+              return 0;
+            }
+          }
+        }, {
+          key: 'dbFormat',
+          value: function dbFormat() {
+            return 'YYYY-MM-DDTHH:mm:ss';
+          }
+        }, {
+          key: 'eventdateRangeBeginning',
+          value: function eventdateRangeBeginning() {
+            return this.startDate.format(this.dbFormat());
+          }
+        }, {
+          key: 'eventdateRangeEnd',
+          value: function eventdateRangeEnd() {
+            return this.endDate.format(this.dbFormat());
+          }
+        }, {
+          key: 'isValid',
+          value: function isValid() {
+            return this.startDate.isValid() && this.endDate.isValid();
           }
         }, {
           key: 'toString',
           value: function toString() {
-            return this.name();
+            return "GET " + this.uri();
+          }
+        }, {
+          key: 'uri',
+          value: function uri() {
+            return URI("https://data.nola.gov/resource/nfft-hjwi").addQuery({ $where: "stopdescription like '%TRAFFIC VIOLATION%' and " + "eventdate between " + ('\'' + this.eventdateRangeBeginning() + '\' and ') + ('\'' + this.eventdateRangeEnd() + '\'') }).addQuery({ $select: "count(stopdescription)" });
           }
         }]);
 
-        return Month;
+        return TrafficStopCountInDateRangeRequest;
       }();
 
-      _export('default', Month);
+      _export('default', TrafficStopCountInDateRangeRequest);
     }
   };
 });
-System.register('app/traffic_stop_count_by_month/view_model.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'knockout', './request.js', '../month.js'], function (_export, _context) {
+System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'knockout', '../date.js', './request.js'], function (_export, _context) {
   "use strict";
 
-  var _classCallCheck, _createClass, Knockout, Request, Month, TrafficStopCountByMonthViewModel;
+  var _classCallCheck, _createClass, Knockout, Date, Request, TrafficStopCountInDateRangeViewModel;
 
   return {
     setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
@@ -22465,28 +22616,80 @@ System.register('app/traffic_stop_count_by_month/view_model.js', ['npm:systemjs-
       _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
     }, function (_knockout) {
       Knockout = _knockout.default;
+    }, function (_dateJs) {
+      Date = _dateJs.default;
     }, function (_requestJs) {
       Request = _requestJs.default;
-    }, function (_monthJs) {
-      Month = _monthJs.default;
     }],
     execute: function () {
-      TrafficStopCountByMonthViewModel = function () {
-        function TrafficStopCountByMonthViewModel() {
-          var _this = this;
+      TrafficStopCountInDateRangeViewModel = function () {
+        function TrafficStopCountInDateRangeViewModel() {
+          _classCallCheck(this, TrafficStopCountInDateRangeViewModel);
 
-          _classCallCheck(this, TrafficStopCountByMonthViewModel);
-
-          this.selectedMonth = Knockout.observable(this.defaultMonth());
+          this.startDate = Knockout.observable();
+          this.endDate = Knockout.observable();
           this.count = Knockout.computed(function () {
-            return new Request({ index: _this.selectedMonth() }).count();
-          });
+            if (typeof this.startDate() == "undefined") {
+              return 0;
+            }
+            if (typeof this.endDate() == "undefined") {
+              return 0;
+            }
+            return new Request({ startDate: this.startDate(), endDate: this.endDate() }).count();
+          }, this);
+          this.startDateString = Knockout.computed(function () {
+            if (typeof this.startDate() == "undefined") {
+              return "";
+            }
+            return this.startDate().format();
+          }, this);
+          this.endDateString = Knockout.computed(function () {
+            if (typeof this.endDate() == "undefined") {
+              return "";
+            }
+            return this.endDate().format();
+          }, this);
         }
 
-        _createClass(TrafficStopCountByMonthViewModel, [{
-          key: 'defaultMonth',
-          value: function defaultMonth() {
-            return Month.current().toString();
+        _createClass(TrafficStopCountInDateRangeViewModel, [{
+          key: 'defaultEndDate',
+          value: function defaultEndDate() {
+            return Date.endOfMonth();
+          }
+        }, {
+          key: 'defaultStartDate',
+          value: function defaultStartDate() {
+            return Date.startOfMonth();
+          }
+        }, {
+          key: 'defaultStartDateYear',
+          value: function defaultStartDateYear() {
+            return Date.now().year;
+          }
+        }, {
+          key: 'defaultStartDateMonth',
+          value: function defaultStartDateMonth() {
+            return Date.now().monthName();
+          }
+        }, {
+          key: 'defaultStartDateDay',
+          value: function defaultStartDateDay() {
+            return 1;
+          }
+        }, {
+          key: 'endDateLabel',
+          value: function endDateLabel() {
+            return "To";
+          }
+        }, {
+          key: 'optionalYears',
+          value: function optionalYears() {
+            return [2011, 2012, 2013, 2014, 2015, 2016];
+          }
+        }, {
+          key: 'startDateLabel',
+          value: function startDateLabel() {
+            return "From";
           }
         }, {
           key: 'title',
@@ -22495,19 +22698,19 @@ System.register('app/traffic_stop_count_by_month/view_model.js', ['npm:systemjs-
           }
         }]);
 
-        return TrafficStopCountByMonthViewModel;
+        return TrafficStopCountInDateRangeViewModel;
       }();
 
-      _export('default', TrafficStopCountByMonthViewModel);
+      _export('default', TrafficStopCountInDateRangeViewModel);
     }
   };
 });
-System.register('app/traffic_stop_count_by_month/component.js', ['../month_selector/component.js', 'knockout', './view_model.js'], function (_export, _context) {
+System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_selector/component.js', 'knockout', './view_model.js'], function (_export, _context) {
   "use strict";
 
   var Knockout, ViewModel;
   return {
-    setters: [function (_month_selectorComponentJs) {}, function (_knockout) {
+    setters: [function (_date_selectorComponentJs) {}, function (_knockout) {
       Knockout = _knockout.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
@@ -22517,9 +22720,9 @@ System.register('app/traffic_stop_count_by_month/component.js', ['../month_selec
       (function () {
         'use strict';
 
-        Knockout.components.register('traffic_stop_count_by_month', {
+        Knockout.components.register('traffic_stop_count_in_date_range', {
           viewModel: ViewModel,
-          template: '\n      <div class="ui">\n        <div class="title">\n          <h2 class="ui header">\n            <i class="car icon"></i>\n            <div class="content" data-bind="text: title()"></div>\n          </h2>\n        </div>\n        <div class="content">\n          <div class="ui form">\n            <month_selector params="\n              bindSelectedMonthTo: selectedMonth,\n              label: \'In\'\n            ">\n            </month_selector>\n          </div>\n          <div class="ui centered grid">\n            <div class="ui column centered row">\n              <div class="ui horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <div class="ui">\n        <div class="title">\n          <h2 class="ui header">\n            <i class="car icon"></i>\n            <div class="content" data-bind="text: title()"></div>\n          </h2>\n        </div>\n        <div class="content">\n          <div class="ui form">\n            <div class="field">\n              <label data-bind="text: startDateLabel()"></label>\n              <date_selector class="fields"\n                params="bindSelectedDateTo: startDate,\n                        defaultYear: defaultStartDateYear(),\n                        defaultMonth: defaultStartDateMonth(),\n                        defaultDay: defaultStartDateDay(),\n                        optionalYears: optionalYears()">\n              </date_selector>\n            </div>\n            <div class="field">\n              <label data-bind="text: endDateLabel()"></label>\n              <date_selector class="fields"\n                params="bindSelectedDateTo: endDate,\n                        optionalYears: optionalYears()">\n              </date_selector>\n            </div>\n          </div>\n          <div class="ui centered grid">\n            <div class="ui column centered row">\n              <div class="ui horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
         });
 
         Knockout.cleanNode(document);

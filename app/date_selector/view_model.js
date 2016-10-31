@@ -4,18 +4,22 @@ import Date from '../date.js'
 export default class DateSelectorViewModel {
   constructor({
     bindSelectedDateTo,
-    dayLabel, defaultMonth, defaultYear, monthLabel,
+    dayLabel, defaultDay, defaultMonth, defaultYear, monthLabel,
     optionalMonths, optionalYears, yearLabel } = {}) {
     this.initYearSelector(
       { defaultValue: defaultYear, options: optionalYears, label: yearLabel })
     this.initMonthSelector(
       { defaultValue: defaultMonth, options: optionalMonths,
         label: monthLabel })
-    this.initDaySelector({ label: dayLabel })
-    bindSelectedDateTo = Knockout.computed(() => (
-      new Date(
+    this.initDaySelector({ defaultValue: defaultDay, label: dayLabel })
+    this.selectedDate = Knockout.computed(function() {
+      return new Date(
         { year: this.selectedYear(), month: this.selectedMonth(),
-          day: this.selectedDay() })))
+          day: this.selectedDay() })
+      }, this)
+    this.selectedDate.subscribe(function(newDate) {
+      bindSelectedDateTo(newDate)
+    })
   }
 
   initDaySelector({ defaultValue, label="Day" } = {}) {
