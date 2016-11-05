@@ -15,29 +15,31 @@ import ViewModel from './view_model.js'
             <div class="content" data-bind="text: title()"></div>
           </h2>
         </div>
-        <div class="content">
-          <div class="ui form">
-            <div class="field">
-              <label data-bind="text: startDateLabel()"></label>
-              <date_selector class="fields"
-                params="bindSelectedDateTo: startDate,
-                        defaultYear: defaultStartDateYear(),
-                        defaultMonth: defaultStartDateMonth(),
-                        defaultDay: defaultStartDateDay(),
-                        optionalYears: optionalYears()">
-              </date_selector>
+        <div class="content ui grid container">
+          <div class="ui column row">
+            <div class="ten wide column">
+              <div class="ui form">
+                <div class="field">
+                  <label data-bind="text: startDateLabel()"></label>
+                  <date_selector class="fields"
+                    params="bindSelectedDateTo: startDate,
+                            defaultYear: defaultStartDateYear(),
+                            defaultMonth: defaultStartDateMonth(),
+                            defaultDay: defaultStartDateDay(),
+                            optionalYears: optionalYears()">
+                  </date_selector>
+                </div>
+                <div class="field">
+                  <label data-bind="text: endDateLabel()"></label>
+                  <date_selector class="fields"
+                    params="bindSelectedDateTo: endDate,
+                            optionalYears: optionalYears()">
+                  </date_selector>
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label data-bind="text: endDateLabel()"></label>
-              <date_selector class="fields"
-                params="bindSelectedDateTo: endDate,
-                        optionalYears: optionalYears()">
-              </date_selector>
-            </div>
-          </div>
-          <div class="ui centered grid">
-            <div class="ui column centered row">
-              <div class="ui horizontal statistic">
+            <div class="middle aligned center aligned six wide column">
+              <div class="ui huge horizontal statistic">
                 <div class="value" data-bind="text: count"></div>
                 <div class="label">Total</div>
               </div>
