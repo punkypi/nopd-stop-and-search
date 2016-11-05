@@ -9,13 +9,11 @@ import ViewModel from './view_model.js'
     viewModel: ViewModel,
     template: `
       <div class="ui">
-        <div class="title">
-          <h2 class="ui header">
-            <i class="car icon"></i>
-            <div class="content" data-bind="text: title()"></div>
-          </h2>
-        </div>
-        <div class="content ui grid container">
+        <h2 class="ui header">
+          <i class="car icon"></i>
+          <div class="content" data-bind="text: title()"></div>
+        </h2>
+        <div class="ui grid container">
           <div class="ui column row">
             <div class="ten wide column">
               <div class="ui form">
