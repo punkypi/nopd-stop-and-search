@@ -31,6 +31,9 @@ import ViewModel from './view_model.js'
                   <label data-bind="text: endDateLabel()"></label>
                   <date_selector class="fields"
                     params="bindSelectedDateTo: endDate,
+                            defaultYear: defaultEndDateYear(),
+                            defaultMonth: defaultEndDateMonth(),
+                            defaultDay: defaultEndDateDay(),
                             optionalYears: optionalYears()">
                   </date_selector>
                 </div>

@@ -43,8 +43,8 @@ export default class TrafficStopCountInDateRangeRequest {
 
   uri() {
     return URI("https://data.nola.gov/resource/nfft-hjwi")
-      .addQuery({ $where: "stopdescription like '%TRAFFIC VIOLATION%' and " +
-                          "eventdate between " +
+      .addQuery({ stopdescription: "TRAFFIC VIOLATION" })
+      .addQuery({ $where: "eventdate between " +
                           `'${this.eventdateRangeBeginning()}' and ` +
                           `'${this.eventdateRangeEnd()}'` })
       .addQuery({ $select: "count(stopdescription)"})

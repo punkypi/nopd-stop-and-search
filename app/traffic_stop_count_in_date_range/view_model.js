@@ -23,23 +23,35 @@ export default class TrafficStopCountInDateRangeViewModel {
   }
 
   defaultEndDate() {
-    return Date.endOfMonth()
+    return Date.now()
+  }
+
+  defaultEndDateDay() {
+    return this.defaultEndDate().day
+  }
+
+  defaultEndDateMonth() {
+    return this.defaultEndDate().month
+  }
+
+  defaultEndDateYear() {
+    return this.defaultEndDate().year
   }
 
   defaultStartDate() {
     return Date.startOfMonth()
   }
 
-  defaultStartDateYear() {
-    return Date.now().year
+  defaultStartDateDay() {
+    return this.defaultStartDate().day
   }
 
   defaultStartDateMonth() {
-    return Date.now().monthName()
+    return this.defaultStartDate().month
   }
 
-  defaultStartDateDay() {
-    return 1
+  defaultStartDateYear() {
+    return this.defaultStartDate().year
   }
 
   endDateLabel() {

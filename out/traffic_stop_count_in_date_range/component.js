@@ -22593,7 +22593,7 @@ System.register('app/traffic_stop_count_in_date_range/request.js', ['npm:systemj
         }, {
           key: 'uri',
           value: function uri() {
-            return URI("https://data.nola.gov/resource/nfft-hjwi").addQuery({ $where: "stopdescription like '%TRAFFIC VIOLATION%' and " + "eventdate between " + ('\'' + this.eventdateRangeBeginning() + '\' and ') + ('\'' + this.eventdateRangeEnd() + '\'') }).addQuery({ $select: "count(stopdescription)" });
+            return URI("https://data.nola.gov/resource/nfft-hjwi").addQuery({ stopdescription: "TRAFFIC VIOLATION" }).addQuery({ $where: "eventdate between " + ('\'' + this.eventdateRangeBeginning() + '\' and ') + ('\'' + this.eventdateRangeEnd() + '\'') }).addQuery({ $select: "count(stopdescription)" });
           }
         }]);
 
@@ -22654,7 +22654,22 @@ System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:syst
         _createClass(TrafficStopCountInDateRangeViewModel, [{
           key: 'defaultEndDate',
           value: function defaultEndDate() {
-            return Date.endOfMonth();
+            return Date.now();
+          }
+        }, {
+          key: 'defaultEndDateDay',
+          value: function defaultEndDateDay() {
+            return this.defaultEndDate().day;
+          }
+        }, {
+          key: 'defaultEndDateMonth',
+          value: function defaultEndDateMonth() {
+            return this.defaultEndDate().month;
+          }
+        }, {
+          key: 'defaultEndDateYear',
+          value: function defaultEndDateYear() {
+            return this.defaultEndDate().year;
           }
         }, {
           key: 'defaultStartDate',
@@ -22662,19 +22677,19 @@ System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:syst
             return Date.startOfMonth();
           }
         }, {
-          key: 'defaultStartDateYear',
-          value: function defaultStartDateYear() {
-            return Date.now().year;
+          key: 'defaultStartDateDay',
+          value: function defaultStartDateDay() {
+            return this.defaultStartDate().day;
           }
         }, {
           key: 'defaultStartDateMonth',
           value: function defaultStartDateMonth() {
-            return Date.now().monthName();
+            return this.defaultStartDate().month;
           }
         }, {
-          key: 'defaultStartDateDay',
-          value: function defaultStartDateDay() {
-            return 1;
+          key: 'defaultStartDateYear',
+          value: function defaultStartDateYear() {
+            return this.defaultStartDate().year;
           }
         }, {
           key: 'endDateLabel',
@@ -22722,7 +22737,7 @@ System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_s
 
         Knockout.components.register('traffic_stop_count_in_date_range', {
           viewModel: ViewModel,
-          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonth(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonth(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonth(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
         });
 
         Knockout.cleanNode(document);
