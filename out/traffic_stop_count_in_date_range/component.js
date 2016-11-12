@@ -22662,9 +22662,9 @@ System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:syst
             return this.defaultEndDate().day;
           }
         }, {
-          key: 'defaultEndDateMonth',
-          value: function defaultEndDateMonth() {
-            return this.defaultEndDate().month;
+          key: 'defaultEndDateMonthName',
+          value: function defaultEndDateMonthName() {
+            return this.defaultEndDate().monthName();
           }
         }, {
           key: 'defaultEndDateYear',
@@ -22682,9 +22682,9 @@ System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:syst
             return this.defaultStartDate().day;
           }
         }, {
-          key: 'defaultStartDateMonth',
-          value: function defaultStartDateMonth() {
-            return this.defaultStartDate().month;
+          key: 'defaultStartDateMonthName',
+          value: function defaultStartDateMonthName() {
+            return this.defaultStartDate().monthName();
           }
         }, {
           key: 'defaultStartDateYear',
@@ -22737,7 +22737,7 @@ System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_s
 
         Knockout.components.register('traffic_stop_count_in_date_range', {
           viewModel: ViewModel,
-          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonth(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonth(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonthName(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonthName(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
         });
 
         Knockout.cleanNode(document);

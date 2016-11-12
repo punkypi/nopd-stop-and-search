@@ -22,7 +22,7 @@ import ViewModel from './view_model.js'
                   <date_selector class="fields"
                     params="bindSelectedDateTo: startDate,
                             defaultYear: defaultStartDateYear(),
-                            defaultMonth: defaultStartDateMonth(),
+                            defaultMonth: defaultStartDateMonthName(),
                             defaultDay: defaultStartDateDay(),
                             optionalYears: optionalYears()">
                   </date_selector>
@@ -32,7 +32,7 @@ import ViewModel from './view_model.js'
                   <date_selector class="fields"
                     params="bindSelectedDateTo: endDate,
                             defaultYear: defaultEndDateYear(),
-                            defaultMonth: defaultEndDateMonth(),
+                            defaultMonth: defaultEndDateMonthName(),
                             defaultDay: defaultEndDateDay(),
                             optionalYears: optionalYears()">
                   </date_selector>

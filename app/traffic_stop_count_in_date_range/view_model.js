@@ -30,8 +30,8 @@ export default class TrafficStopCountInDateRangeViewModel {
     return this.defaultEndDate().day
   }
 
-  defaultEndDateMonth() {
-    return this.defaultEndDate().month
+  defaultEndDateMonthName() {
+    return this.defaultEndDate().monthName()
   }
 
   defaultEndDateYear() {
@@ -46,8 +46,8 @@ export default class TrafficStopCountInDateRangeViewModel {
     return this.defaultStartDate().day
   }
 
-  defaultStartDateMonth() {
-    return this.defaultStartDate().month
+  defaultStartDateMonthName() {
+    return this.defaultStartDate().monthName()
   }
 
   defaultStartDateYear() {
