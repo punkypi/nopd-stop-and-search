@@ -10462,6 +10462,2917 @@ System.register('app/date_selector/component.js', ['../searchable_dropdown_selec
     }
   };
 });
+System.register('app/traffic_violations_grouped_by_vehicle/vehicle_count.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', '../basic_object.js'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _possibleConstructorReturn, _createClass, _inherits, BasicObject, _class;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs) {
+      _possibleConstructorReturn = _npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersInheritsJs) {
+      _inherits = _npmSystemjsPluginBabel0016BabelHelpersInheritsJs.default;
+    }, function (_basic_objectJs) {
+      BasicObject = _basic_objectJs.default;
+    }],
+    execute: function () {
+      _class = function (_BasicObject) {
+        _inherits(_class, _BasicObject);
+
+        _createClass(_class, null, [{
+          key: 'constraints',
+          get: function get() {
+            return {
+              count: {
+                numericality: { onlyinteger: true },
+                presence: true
+              },
+              vehicle_make: { presence: true },
+              vehicle_model: { presence: true }
+            };
+          }
+        }]);
+
+        function _class() {
+          var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+          var count = _ref.count;
+          var vehicle_make = _ref.vehicle_make;
+          var vehicle_model = _ref.vehicle_model;
+
+          _classCallCheck(this, _class);
+
+          var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+
+          _this.count = count;
+          _this.vehicle_make = vehicle_make;
+          _this.vehicle_model = vehicle_model;
+          _this.validate();
+          return _this;
+        }
+
+        _createClass(_class, [{
+          key: 'vehicleName',
+          get: function get() {
+            return this.vehicle_make + ' ' + this.vehicle_model;
+          }
+        }]);
+
+        return _class;
+      }(BasicObject);
+
+      _export('default', _class);
+    }
+  };
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_wks-ext.js', ['./_wks', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  exports.f = $__require('./_wks');
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_wks-define.js', ['./_global', './_core', './_library', './_wks-ext', './_object-dp', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var global = $__require('./_global'),
+      core = $__require('./_core'),
+      LIBRARY = $__require('./_library'),
+      wksExt = $__require('./_wks-ext'),
+      defineProperty = $__require('./_object-dp').f;
+  module.exports = function (name) {
+    var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
+    if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_keyof.js', ['./_object-keys', './_to-iobject', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var getKeys = $__require('./_object-keys'),
+      toIObject = $__require('./_to-iobject');
+  module.exports = function (object, el) {
+    var O = toIObject(object),
+        keys = getKeys(O),
+        length = keys.length,
+        index = 0,
+        key;
+    while (length > index) if (O[key = keys[index++]] === el) return key;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_enum-keys.js', ['./_object-keys', './_object-gops', './_object-pie', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // all enumerable object keys, includes symbols
+  var getKeys = $__require('./_object-keys'),
+      gOPS = $__require('./_object-gops'),
+      pIE = $__require('./_object-pie');
+  module.exports = function (it) {
+    var result = getKeys(it),
+        getSymbols = gOPS.f;
+    if (getSymbols) {
+      var symbols = getSymbols(it),
+          isEnum = pIE.f,
+          i = 0,
+          key;
+      while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+    }return result;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.symbol.js', ['./_global', './_has', './_descriptors', './_export', './_redefine', './_meta', './_fails', './_shared', './_set-to-string-tag', './_uid', './_wks', './_wks-ext', './_wks-define', './_keyof', './_enum-keys', './_is-array', './_an-object', './_to-iobject', './_to-primitive', './_property-desc', './_object-create', './_object-gopn-ext', './_object-gopd', './_object-dp', './_object-keys', './_object-gopn', './_object-pie', './_object-gops', './_library', './_hide', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+  // ECMAScript 6 symbols shim
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var global = $__require('./_global'),
+      has = $__require('./_has'),
+      DESCRIPTORS = $__require('./_descriptors'),
+      $export = $__require('./_export'),
+      redefine = $__require('./_redefine'),
+      META = $__require('./_meta').KEY,
+      $fails = $__require('./_fails'),
+      shared = $__require('./_shared'),
+      setToStringTag = $__require('./_set-to-string-tag'),
+      uid = $__require('./_uid'),
+      wks = $__require('./_wks'),
+      wksExt = $__require('./_wks-ext'),
+      wksDefine = $__require('./_wks-define'),
+      keyOf = $__require('./_keyof'),
+      enumKeys = $__require('./_enum-keys'),
+      isArray = $__require('./_is-array'),
+      anObject = $__require('./_an-object'),
+      toIObject = $__require('./_to-iobject'),
+      toPrimitive = $__require('./_to-primitive'),
+      createDesc = $__require('./_property-desc'),
+      _create = $__require('./_object-create'),
+      gOPNExt = $__require('./_object-gopn-ext'),
+      $GOPD = $__require('./_object-gopd'),
+      $DP = $__require('./_object-dp'),
+      $keys = $__require('./_object-keys'),
+      gOPD = $GOPD.f,
+      dP = $DP.f,
+      gOPN = gOPNExt.f,
+      $Symbol = global.Symbol,
+      $JSON = global.JSON,
+      _stringify = $JSON && $JSON.stringify,
+      PROTOTYPE = 'prototype',
+      HIDDEN = wks('_hidden'),
+      TO_PRIMITIVE = wks('toPrimitive'),
+      isEnum = {}.propertyIsEnumerable,
+      SymbolRegistry = shared('symbol-registry'),
+      AllSymbols = shared('symbols'),
+      OPSymbols = shared('op-symbols'),
+      ObjectProto = Object[PROTOTYPE],
+      USE_NATIVE = typeof $Symbol == 'function',
+      QObject = global.QObject;
+  // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
+  var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
+
+  // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
+  var setSymbolDesc = DESCRIPTORS && $fails(function () {
+    return _create(dP({}, 'a', {
+      get: function () {
+        return dP(this, 'a', { value: 7 }).a;
+      }
+    })).a != 7;
+  }) ? function (it, key, D) {
+    var protoDesc = gOPD(ObjectProto, key);
+    if (protoDesc) delete ObjectProto[key];
+    dP(it, key, D);
+    if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
+  } : dP;
+
+  var wrap = function (tag) {
+    var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
+    sym._k = tag;
+    return sym;
+  };
+
+  var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
+    return typeof it == 'symbol';
+  } : function (it) {
+    return it instanceof $Symbol;
+  };
+
+  var $defineProperty = function defineProperty(it, key, D) {
+    if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+    anObject(it);
+    key = toPrimitive(key, true);
+    anObject(D);
+    if (has(AllSymbols, key)) {
+      if (!D.enumerable) {
+        if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
+        it[HIDDEN][key] = true;
+      } else {
+        if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
+        D = _create(D, { enumerable: createDesc(0, false) });
+      }return setSymbolDesc(it, key, D);
+    }return dP(it, key, D);
+  };
+  var $defineProperties = function defineProperties(it, P) {
+    anObject(it);
+    var keys = enumKeys(P = toIObject(P)),
+        i = 0,
+        l = keys.length,
+        key;
+    while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+    return it;
+  };
+  var $create = function create(it, P) {
+    return P === undefined ? _create(it) : $defineProperties(_create(it), P);
+  };
+  var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+    var E = isEnum.call(this, key = toPrimitive(key, true));
+    if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+    return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
+  };
+  var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
+    it = toIObject(it);
+    key = toPrimitive(key, true);
+    if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+    var D = gOPD(it, key);
+    if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+    return D;
+  };
+  var $getOwnPropertyNames = function getOwnPropertyNames(it) {
+    var names = gOPN(toIObject(it)),
+        result = [],
+        i = 0,
+        key;
+    while (names.length > i) {
+      if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+    }return result;
+  };
+  var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
+    var IS_OP = it === ObjectProto,
+        names = gOPN(IS_OP ? OPSymbols : toIObject(it)),
+        result = [],
+        i = 0,
+        key;
+    while (names.length > i) {
+      if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+    }return result;
+  };
+
+  // 19.4.1.1 Symbol([description])
+  if (!USE_NATIVE) {
+    $Symbol = function Symbol() {
+      if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+      var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
+      var $set = function (value) {
+        if (this === ObjectProto) $set.call(OPSymbols, value);
+        if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+        setSymbolDesc(this, tag, createDesc(1, value));
+      };
+      if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
+      return wrap(tag);
+    };
+    redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+      return this._k;
+    });
+
+    $GOPD.f = $getOwnPropertyDescriptor;
+    $DP.f = $defineProperty;
+    $__require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
+    $__require('./_object-pie').f = $propertyIsEnumerable;
+    $__require('./_object-gops').f = $getOwnPropertySymbols;
+
+    if (DESCRIPTORS && !$__require('./_library')) {
+      redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
+    }
+
+    wksExt.f = function (name) {
+      return wrap(wks(name));
+    };
+  }
+
+  $export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
+
+  for (var symbols =
+  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
+  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'.split(','), i = 0; symbols.length > i;) wks(symbols[i++]);
+
+  for (var symbols = $keys(wks.store), i = 0; symbols.length > i;) wksDefine(symbols[i++]);
+
+  $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
+    // 19.4.2.1 Symbol.for(key)
+    'for': function (key) {
+      return has(SymbolRegistry, key += '') ? SymbolRegistry[key] : SymbolRegistry[key] = $Symbol(key);
+    },
+    // 19.4.2.5 Symbol.keyFor(sym)
+    keyFor: function keyFor(key) {
+      if (isSymbol(key)) return keyOf(SymbolRegistry, key);
+      throw TypeError(key + ' is not a symbol!');
+    },
+    useSetter: function () {
+      setter = true;
+    },
+    useSimple: function () {
+      setter = false;
+    }
+  });
+
+  $export($export.S + $export.F * !USE_NATIVE, 'Object', {
+    // 19.1.2.2 Object.create(O [, Properties])
+    create: $create,
+    // 19.1.2.4 Object.defineProperty(O, P, Attributes)
+    defineProperty: $defineProperty,
+    // 19.1.2.3 Object.defineProperties(O, Properties)
+    defineProperties: $defineProperties,
+    // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+    getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
+    // 19.1.2.7 Object.getOwnPropertyNames(O)
+    getOwnPropertyNames: $getOwnPropertyNames,
+    // 19.1.2.8 Object.getOwnPropertySymbols(O)
+    getOwnPropertySymbols: $getOwnPropertySymbols
+  });
+
+  // 24.3.2 JSON.stringify(value [, replacer [, space]])
+  $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+    var S = $Symbol();
+    // MS Edge converts symbol values to JSON as {}
+    // WebKit converts symbol values to JSON as null
+    // V8 throws on boxed symbols
+    return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+  })), 'JSON', {
+    stringify: function stringify(it) {
+      if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+      var args = [it],
+          i = 1,
+          replacer,
+          $replacer;
+      while (arguments.length > i) args.push(arguments[i++]);
+      replacer = args[1];
+      if (typeof replacer == 'function') $replacer = replacer;
+      if ($replacer || !isArray(replacer)) replacer = function (key, value) {
+        if ($replacer) value = $replacer.call(this, key, value);
+        if (!isSymbol(value)) return value;
+      };
+      args[1] = replacer;
+      return _stringify.apply($JSON, args);
+    }
+  });
+
+  // 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
+  $Symbol[PROTOTYPE][TO_PRIMITIVE] || $__require('./_hide')($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+  // 19.4.3.5 Symbol.prototype[@@toStringTag]
+  setToStringTag($Symbol, 'Symbol');
+  // 20.2.1.9 Math[@@toStringTag]
+  setToStringTag(Math, 'Math', true);
+  // 24.3.3 JSON[@@toStringTag]
+  setToStringTag(global.JSON, 'JSON', true);
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.create.js', ['./_export', './_object-create', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export');
+  // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+  $export($export.S, 'Object', { create: $__require('./_object-create') });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.define-property.js', ['./_export', './_descriptors', './_object-dp', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export');
+  // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+  $export($export.S + $export.F * !$__require('./_descriptors'), 'Object', { defineProperty: $__require('./_object-dp').f });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.define-properties.js', ['./_export', './_descriptors', './_object-dps', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export');
+  // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
+  $export($export.S + $export.F * !$__require('./_descriptors'), 'Object', { defineProperties: $__require('./_object-dps') });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.get-own-property-descriptor.js', ['./_to-iobject', './_object-gopd', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+  var toIObject = $__require('./_to-iobject'),
+      $getOwnPropertyDescriptor = $__require('./_object-gopd').f;
+
+  $__require('./_object-sap')('getOwnPropertyDescriptor', function () {
+    return function getOwnPropertyDescriptor(it, key) {
+      return $getOwnPropertyDescriptor(toIObject(it), key);
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.get-prototype-of.js', ['./_to-object', './_object-gpo', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.9 Object.getPrototypeOf(O)
+  var toObject = $__require('./_to-object'),
+      $getPrototypeOf = $__require('./_object-gpo');
+
+  $__require('./_object-sap')('getPrototypeOf', function () {
+    return function getPrototypeOf(it) {
+      return $getPrototypeOf(toObject(it));
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.keys.js', ['./_to-object', './_object-keys', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.14 Object.keys(O)
+  var toObject = $__require('./_to-object'),
+      $keys = $__require('./_object-keys');
+
+  $__require('./_object-sap')('keys', function () {
+    return function keys(it) {
+      return $keys(toObject(it));
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-gopn-ext.js', ['./_to-iobject', './_object-gopn', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
+  var toIObject = $__require('./_to-iobject'),
+      gOPN = $__require('./_object-gopn').f,
+      toString = {}.toString;
+
+  var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [];
+
+  var getWindowNames = function (it) {
+    try {
+      return gOPN(it);
+    } catch (e) {
+      return windowNames.slice();
+    }
+  };
+
+  module.exports.f = function getOwnPropertyNames(it) {
+    return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.get-own-property-names.js', ['./_object-sap', './_object-gopn-ext', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.7 Object.getOwnPropertyNames(O)
+  $__require('./_object-sap')('getOwnPropertyNames', function () {
+    return $__require('./_object-gopn-ext').f;
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.freeze.js', ['./_is-object', './_meta', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.5 Object.freeze(O)
+  var isObject = $__require('./_is-object'),
+      meta = $__require('./_meta').onFreeze;
+
+  $__require('./_object-sap')('freeze', function ($freeze) {
+    return function freeze(it) {
+      return $freeze && isObject(it) ? $freeze(meta(it)) : it;
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.seal.js', ['./_is-object', './_meta', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.17 Object.seal(O)
+  var isObject = $__require('./_is-object'),
+      meta = $__require('./_meta').onFreeze;
+
+  $__require('./_object-sap')('seal', function ($seal) {
+    return function seal(it) {
+      return $seal && isObject(it) ? $seal(meta(it)) : it;
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_meta.js', ['./_uid', './_is-object', './_has', './_object-dp', './_fails', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var META = $__require('./_uid')('meta'),
+      isObject = $__require('./_is-object'),
+      has = $__require('./_has'),
+      setDesc = $__require('./_object-dp').f,
+      id = 0;
+  var isExtensible = Object.isExtensible || function () {
+    return true;
+  };
+  var FREEZE = !$__require('./_fails')(function () {
+    return isExtensible(Object.preventExtensions({}));
+  });
+  var setMeta = function (it) {
+    setDesc(it, META, { value: {
+        i: 'O' + ++id, // object ID
+        w: {} // weak collections IDs
+      } });
+  };
+  var fastKey = function (it, create) {
+    // return primitive with prefix
+    if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+    if (!has(it, META)) {
+      // can't set metadata to uncaught frozen object
+      if (!isExtensible(it)) return 'F';
+      // not necessary to add metadata
+      if (!create) return 'E';
+      // add missing metadata
+      setMeta(it);
+      // return object ID
+    }return it[META].i;
+  };
+  var getWeak = function (it, create) {
+    if (!has(it, META)) {
+      // can't set metadata to uncaught frozen object
+      if (!isExtensible(it)) return true;
+      // not necessary to add metadata
+      if (!create) return false;
+      // add missing metadata
+      setMeta(it);
+      // return hash weak collections IDs
+    }return it[META].w;
+  };
+  // add metadata on freeze-family methods calling
+  var onFreeze = function (it) {
+    if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+    return it;
+  };
+  var meta = module.exports = {
+    KEY: META,
+    NEED: false,
+    fastKey: fastKey,
+    getWeak: getWeak,
+    onFreeze: onFreeze
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.prevent-extensions.js', ['./_is-object', './_meta', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.15 Object.preventExtensions(O)
+  var isObject = $__require('./_is-object'),
+      meta = $__require('./_meta').onFreeze;
+
+  $__require('./_object-sap')('preventExtensions', function ($preventExtensions) {
+    return function preventExtensions(it) {
+      return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.is-frozen.js', ['./_is-object', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.12 Object.isFrozen(O)
+  var isObject = $__require('./_is-object');
+
+  $__require('./_object-sap')('isFrozen', function ($isFrozen) {
+    return function isFrozen(it) {
+      return isObject(it) ? $isFrozen ? $isFrozen(it) : false : true;
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.is-sealed.js', ['./_is-object', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.13 Object.isSealed(O)
+  var isObject = $__require('./_is-object');
+
+  $__require('./_object-sap')('isSealed', function ($isSealed) {
+    return function isSealed(it) {
+      return isObject(it) ? $isSealed ? $isSealed(it) : false : true;
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-sap.js', ['./_export', './_core', './_fails', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // most Object methods by ES6 should accept primitives
+  var $export = $__require('./_export'),
+      core = $__require('./_core'),
+      fails = $__require('./_fails');
+  module.exports = function (KEY, exec) {
+    var fn = (core.Object || {})[KEY] || Object[KEY],
+        exp = {};
+    exp[KEY] = exec(fn);
+    $export($export.S + $export.F * fails(function () {
+      fn(1);
+    }), 'Object', exp);
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.is-extensible.js', ['./_is-object', './_object-sap', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.11 Object.isExtensible(O)
+  var isObject = $__require('./_is-object');
+
+  $__require('./_object-sap')('isExtensible', function ($isExtensible) {
+    return function isExtensible(it) {
+      return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
+    };
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-assign.js', ['./_object-keys', './_object-gops', './_object-pie', './_to-object', './_iobject', './_fails', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+  // 19.1.2.1 Object.assign(target, source, ...)
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var getKeys = $__require('./_object-keys'),
+      gOPS = $__require('./_object-gops'),
+      pIE = $__require('./_object-pie'),
+      toObject = $__require('./_to-object'),
+      IObject = $__require('./_iobject'),
+      $assign = Object.assign;
+
+  // should work with symbols and should have deterministic property order (V8 bug)
+  module.exports = !$assign || $__require('./_fails')(function () {
+    var A = {},
+        B = {},
+        S = Symbol(),
+        K = 'abcdefghijklmnopqrst';
+    A[S] = 7;
+    K.split('').forEach(function (k) {
+      B[k] = k;
+    });
+    return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+  }) ? function assign(target, source) {
+    // eslint-disable-line no-unused-vars
+    var T = toObject(target),
+        aLen = arguments.length,
+        index = 1,
+        getSymbols = gOPS.f,
+        isEnum = pIE.f;
+    while (aLen > index) {
+      var S = IObject(arguments[index++]),
+          keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S),
+          length = keys.length,
+          j = 0,
+          key;
+      while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+    }return T;
+  } : $assign;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.assign.js', ['./_export', './_object-assign', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.3.1 Object.assign(target, source)
+  var $export = $__require('./_export');
+
+  $export($export.S + $export.F, 'Object', { assign: $__require('./_object-assign') });
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_same-value.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 7.2.9 SameValue(x, y)
+  module.exports = Object.is || function is(x, y) {
+    return x === y ? x !== 0 || 1 / x === 1 / y : x != x && y != y;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.is.js', ['./_export', './_same-value', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.3.10 Object.is(value1, value2)
+  var $export = $__require('./_export');
+  $export($export.S, 'Object', { is: $__require('./_same-value') });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_set-proto.js', ['./_is-object', './_an-object', './_ctx', './_object-gopd', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // Works with __proto__ only. Old v8 can't work with null proto objects.
+  /* eslint-disable no-proto */
+  var isObject = $__require('./_is-object'),
+      anObject = $__require('./_an-object');
+  var check = function (O, proto) {
+    anObject(O);
+    if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
+  };
+  module.exports = {
+    set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
+    function (test, buggy, set) {
+      try {
+        set = $__require('./_ctx')(Function.call, $__require('./_object-gopd').f(Object.prototype, '__proto__').set, 2);
+        set(test, []);
+        buggy = !(test instanceof Array);
+      } catch (e) {
+        buggy = true;
+      }
+      return function setPrototypeOf(O, proto) {
+        check(O, proto);
+        if (buggy) O.__proto__ = proto;else set(O, proto);
+        return O;
+      };
+    }({}, false) : undefined),
+    check: check
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es6.object.set-prototype-of.js', ['./_export', './_set-proto', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.3.19 Object.setPrototypeOf(O, proto)
+  var $export = $__require('./_export');
+  $export($export.S, 'Object', { setPrototypeOf: $__require('./_set-proto').set });
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/es6.object.to-string.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/es6/object.js', ['../modules/es6.symbol', '../modules/es6.object.create', '../modules/es6.object.define-property', '../modules/es6.object.define-properties', '../modules/es6.object.get-own-property-descriptor', '../modules/es6.object.get-prototype-of', '../modules/es6.object.keys', '../modules/es6.object.get-own-property-names', '../modules/es6.object.freeze', '../modules/es6.object.seal', '../modules/es6.object.prevent-extensions', '../modules/es6.object.is-frozen', '../modules/es6.object.is-sealed', '../modules/es6.object.is-extensible', '../modules/es6.object.assign', '../modules/es6.object.is', '../modules/es6.object.set-prototype-of', '../modules/es6.object.to-string', '../modules/_core', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  $__require('../modules/es6.symbol');
+  $__require('../modules/es6.object.create');
+  $__require('../modules/es6.object.define-property');
+  $__require('../modules/es6.object.define-properties');
+  $__require('../modules/es6.object.get-own-property-descriptor');
+  $__require('../modules/es6.object.get-prototype-of');
+  $__require('../modules/es6.object.keys');
+  $__require('../modules/es6.object.get-own-property-names');
+  $__require('../modules/es6.object.freeze');
+  $__require('../modules/es6.object.seal');
+  $__require('../modules/es6.object.prevent-extensions');
+  $__require('../modules/es6.object.is-frozen');
+  $__require('../modules/es6.object.is-sealed');
+  $__require('../modules/es6.object.is-extensible');
+  $__require('../modules/es6.object.assign');
+  $__require('../modules/es6.object.is');
+  $__require('../modules/es6.object.set-prototype-of');
+  $__require('../modules/es6.object.to-string');
+
+  module.exports = $__require('../modules/_core').Object;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-gopn.js', ['./_object-keys-internal', './_enum-bug-keys', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
+  var $keys = $__require('./_object-keys-internal'),
+      hiddenKeys = $__require('./_enum-bug-keys').concat('length', 'prototype');
+
+  exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+    return $keys(O, hiddenKeys);
+  };
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_object-gops.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  exports.f = Object.getOwnPropertySymbols;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_own-keys.js', ['./_object-gopn', './_object-gops', './_an-object', './_global', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // all object keys, includes non-enumerable and symbols
+  var gOPN = $__require('./_object-gopn'),
+      gOPS = $__require('./_object-gops'),
+      anObject = $__require('./_an-object'),
+      Reflect = $__require('./_global').Reflect;
+  module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
+    var keys = gOPN.f(anObject(it)),
+        getSymbols = gOPS.f;
+    return getSymbols ? keys.concat(getSymbols(it)) : keys;
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es7.object.get-own-property-descriptors.js', ['./_export', './_own-keys', './_to-iobject', './_object-gopd', './_create-property', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // https://github.com/tc39/proposal-object-getownpropertydescriptors
+  var $export = $__require('./_export'),
+      ownKeys = $__require('./_own-keys'),
+      toIObject = $__require('./_to-iobject'),
+      gOPD = $__require('./_object-gopd'),
+      createProperty = $__require('./_create-property');
+
+  $export($export.S, 'Object', {
+    getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+      var O = toIObject(object),
+          getDesc = gOPD.f,
+          keys = ownKeys(O),
+          result = {},
+          i = 0,
+          key;
+      while (keys.length > i) createProperty(result, key = keys[i++], getDesc(O, key));
+      return result;
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es7.object.values.js', ['./_export', './_object-to-array', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // https://github.com/tc39/proposal-object-values-entries
+  var $export = $__require('./_export'),
+      $values = $__require('./_object-to-array')(false);
+
+  $export($export.S, 'Object', {
+    values: function values(it) {
+      return $values(it);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-to-array.js', ['./_object-keys', './_to-iobject', './_object-pie', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var getKeys = $__require('./_object-keys'),
+      toIObject = $__require('./_to-iobject'),
+      isEnum = $__require('./_object-pie').f;
+  module.exports = function (isEntries) {
+    return function (it) {
+      var O = toIObject(it),
+          keys = getKeys(O),
+          length = keys.length,
+          i = 0,
+          result = [],
+          key;
+      while (length > i) if (isEnum.call(O, key = keys[i++])) {
+        result.push(isEntries ? [key, O[key]] : O[key]);
+      }return result;
+    };
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es7.object.entries.js', ['./_export', './_object-to-array', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // https://github.com/tc39/proposal-object-values-entries
+  var $export = $__require('./_export'),
+      $entries = $__require('./_object-to-array')(true);
+
+  $export($export.S, 'Object', {
+    entries: function entries(it) {
+      return $entries(it);
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es7.object.define-getter.js', ['./_export', './_to-object', './_a-function', './_object-dp', './_descriptors', './_object-forced-pam', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      toObject = $__require('./_to-object'),
+      aFunction = $__require('./_a-function'),
+      $defineProperty = $__require('./_object-dp');
+
+  // B.2.2.2 Object.prototype.__defineGetter__(P, getter)
+  $__require('./_descriptors') && $export($export.P + $__require('./_object-forced-pam'), 'Object', {
+    __defineGetter__: function __defineGetter__(P, getter) {
+      $defineProperty.f(toObject(this), P, { get: aFunction(getter), enumerable: true, configurable: true });
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es7.object.define-setter.js', ['./_export', './_to-object', './_a-function', './_object-dp', './_descriptors', './_object-forced-pam', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      toObject = $__require('./_to-object'),
+      aFunction = $__require('./_a-function'),
+      $defineProperty = $__require('./_object-dp');
+
+  // B.2.2.3 Object.prototype.__defineSetter__(P, setter)
+  $__require('./_descriptors') && $export($export.P + $__require('./_object-forced-pam'), 'Object', {
+    __defineSetter__: function __defineSetter__(P, setter) {
+      $defineProperty.f(toObject(this), P, { set: aFunction(setter), enumerable: true, configurable: true });
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es7.object.lookup-getter.js', ['./_export', './_to-object', './_to-primitive', './_object-gpo', './_object-gopd', './_descriptors', './_object-forced-pam', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      toObject = $__require('./_to-object'),
+      toPrimitive = $__require('./_to-primitive'),
+      getPrototypeOf = $__require('./_object-gpo'),
+      getOwnPropertyDescriptor = $__require('./_object-gopd').f;
+
+  // B.2.2.4 Object.prototype.__lookupGetter__(P)
+  $__require('./_descriptors') && $export($export.P + $__require('./_object-forced-pam'), 'Object', {
+    __lookupGetter__: function __lookupGetter__(P) {
+      var O = toObject(this),
+          K = toPrimitive(P, true),
+          D;
+      do {
+        if (D = getOwnPropertyDescriptor(O, K)) return D.get;
+      } while (O = getPrototypeOf(O));
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic("npm:core-js@2.4.1/library/modules/_object-pie.js", ["process"], true, function ($__require, exports, module) {
+  var process = $__require("process");
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  exports.f = {}.propertyIsEnumerable;
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-gopd.js', ['./_object-pie', './_property-desc', './_to-iobject', './_to-primitive', './_has', './_ie8-dom-define', './_descriptors', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var pIE = $__require('./_object-pie'),
+      createDesc = $__require('./_property-desc'),
+      toIObject = $__require('./_to-iobject'),
+      toPrimitive = $__require('./_to-primitive'),
+      has = $__require('./_has'),
+      IE8_DOM_DEFINE = $__require('./_ie8-dom-define'),
+      gOPD = Object.getOwnPropertyDescriptor;
+
+  exports.f = $__require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
+    O = toIObject(O);
+    P = toPrimitive(P, true);
+    if (IE8_DOM_DEFINE) try {
+      return gOPD(O, P);
+    } catch (e) {/* empty */}
+    if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+  };
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/_object-forced-pam.js', ['./_library', './_fails', './_global', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  // Forced replacement prototype accessors methods
+  module.exports = $__require('./_library') || !$__require('./_fails')(function () {
+    var K = Math.random();
+    // In FF throws only define methods
+    __defineSetter__.call(null, K, function () {/* empty */});
+    delete $__require('./_global')[K];
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/modules/es7.object.lookup-setter.js', ['./_export', './_to-object', './_to-primitive', './_object-gpo', './_object-gopd', './_descriptors', './_object-forced-pam', 'process'], true, function ($__require, exports, module) {
+  'use strict';
+
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  var $export = $__require('./_export'),
+      toObject = $__require('./_to-object'),
+      toPrimitive = $__require('./_to-primitive'),
+      getPrototypeOf = $__require('./_object-gpo'),
+      getOwnPropertyDescriptor = $__require('./_object-gopd').f;
+
+  // B.2.2.5 Object.prototype.__lookupSetter__(P)
+  $__require('./_descriptors') && $export($export.P + $__require('./_object-forced-pam'), 'Object', {
+    __lookupSetter__: function __lookupSetter__(P) {
+      var O = toObject(this),
+          K = toPrimitive(P, true),
+          D;
+      do {
+        if (D = getOwnPropertyDescriptor(O, K)) return D.set;
+      } while (O = getPrototypeOf(O));
+    }
+  });
+  return module.exports;
+});
+System.registerDynamic('npm:core-js@2.4.1/library/es7/object.js', ['../modules/es7.object.get-own-property-descriptors', '../modules/es7.object.values', '../modules/es7.object.entries', '../modules/es7.object.define-getter', '../modules/es7.object.define-setter', '../modules/es7.object.lookup-getter', '../modules/es7.object.lookup-setter', '../modules/_core', 'process'], true, function ($__require, exports, module) {
+  var process = $__require('process');
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  $__require('../modules/es7.object.get-own-property-descriptors');
+  $__require('../modules/es7.object.values');
+  $__require('../modules/es7.object.entries');
+  $__require('../modules/es7.object.define-getter');
+  $__require('../modules/es7.object.define-setter');
+  $__require('../modules/es7.object.lookup-getter');
+  $__require('../modules/es7.object.lookup-setter');
+  module.exports = $__require('../modules/_core').Object;
+  return module.exports;
+});
+System.registerDynamic("npm:validate.js@0.11.1.json", [], false, function() {
+  return {
+    "main": "validate.js",
+    "format": "cjs",
+    "meta": {
+      "*.json": {
+        "format": "json"
+      },
+      "specs/vendor/promise-1.0.0.min.js": {
+        "format": "amd"
+      }
+    }
+  };
+});
+
+System.registerDynamic("npm:validate.js@0.11.1/validate.js", [], true, function ($__require, exports, module) {
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  /*!
+   * validate.js 0.11.1
+   *
+   * (c) 2013-2016 Nicklas Ansman, 2013 Wrapp
+   * Validate.js may be freely distributed under the MIT license.
+   * For all details and documentation:
+   * http://validatejs.org/
+   */
+
+  (function (exports, module, define) {
+    "use strict";
+
+    // The main function that calls the validators specified by the constraints.
+    // The options are the following:
+    //   - format (string) - An option that controls how the returned value is formatted
+    //     * flat - Returns a flat array of just the error messages
+    //     * grouped - Returns the messages grouped by attribute (default)
+    //     * detailed - Returns an array of the raw validation data
+    //   - fullMessages (boolean) - If `true` (default) the attribute name is prepended to the error.
+    //
+    // Please note that the options are also passed to each validator.
+
+    var validate = function (attributes, constraints, options) {
+      options = v.extend({}, v.options, options);
+
+      var results = v.runValidations(attributes, constraints, options),
+          attr,
+          validator;
+
+      for (attr in results) {
+        for (validator in results[attr]) {
+          if (v.isPromise(results[attr][validator])) {
+            throw new Error("Use validate.async if you want support for promises");
+          }
+        }
+      }
+      return validate.processValidationResults(results, options);
+    };
+
+    var v = validate;
+
+    // Copies over attributes from one or more sources to a single destination.
+    // Very much similar to underscore's extend.
+    // The first argument is the target object and the remaining arguments will be
+    // used as sources.
+    v.extend = function (obj) {
+      [].slice.call(arguments, 1).forEach(function (source) {
+        for (var attr in source) {
+          obj[attr] = source[attr];
+        }
+      });
+      return obj;
+    };
+
+    v.extend(validate, {
+      // This is the version of the library as a semver.
+      // The toString function will allow it to be coerced into a string
+      version: {
+        major: 0,
+        minor: 11,
+        patch: 1,
+        metadata: null,
+        toString: function () {
+          var version = v.format("%{major}.%{minor}.%{patch}", v.version);
+          if (!v.isEmpty(v.version.metadata)) {
+            version += "+" + v.version.metadata;
+          }
+          return version;
+        }
+      },
+
+      // Below is the dependencies that are used in validate.js
+
+      // The constructor of the Promise implementation.
+      // If you are using Q.js, RSVP or any other A+ compatible implementation
+      // override this attribute to be the constructor of that promise.
+      // Since jQuery promises aren't A+ compatible they won't work.
+      Promise: typeof Promise !== "undefined" ? Promise : /* istanbul ignore next */null,
+
+      EMPTY_STRING_REGEXP: /^\s*$/,
+
+      // Runs the validators specified by the constraints object.
+      // Will return an array of the format:
+      //     [{attribute: "<attribute name>", error: "<validation result>"}, ...]
+      runValidations: function (attributes, constraints, options) {
+        var results = [],
+            attr,
+            validatorName,
+            value,
+            validators,
+            validator,
+            validatorOptions,
+            error;
+
+        if (v.isDomElement(attributes) || v.isJqueryElement(attributes)) {
+          attributes = v.collectFormValues(attributes);
+        }
+
+        // Loops through each constraints, finds the correct validator and run it.
+        for (attr in constraints) {
+          value = v.getDeepObjectValue(attributes, attr);
+          // This allows the constraints for an attribute to be a function.
+          // The function will be called with the value, attribute name, the complete dict of
+          // attributes as well as the options and constraints passed in.
+          // This is useful when you want to have different
+          // validations depending on the attribute value.
+          validators = v.result(constraints[attr], value, attributes, attr, options, constraints);
+
+          for (validatorName in validators) {
+            validator = v.validators[validatorName];
+
+            if (!validator) {
+              error = v.format("Unknown validator %{name}", { name: validatorName });
+              throw new Error(error);
+            }
+
+            validatorOptions = validators[validatorName];
+            // This allows the options to be a function. The function will be
+            // called with the value, attribute name, the complete dict of
+            // attributes as well as the options and constraints passed in.
+            // This is useful when you want to have different
+            // validations depending on the attribute value.
+            validatorOptions = v.result(validatorOptions, value, attributes, attr, options, constraints);
+            if (!validatorOptions) {
+              continue;
+            }
+            results.push({
+              attribute: attr,
+              value: value,
+              validator: validatorName,
+              globalOptions: options,
+              attributes: attributes,
+              options: validatorOptions,
+              error: validator.call(validator, value, validatorOptions, attr, attributes, options)
+            });
+          }
+        }
+
+        return results;
+      },
+
+      // Takes the output from runValidations and converts it to the correct
+      // output format.
+      processValidationResults: function (errors, options) {
+        errors = v.pruneEmptyErrors(errors, options);
+        errors = v.expandMultipleErrors(errors, options);
+        errors = v.convertErrorMessages(errors, options);
+
+        var format = options.format || "grouped";
+
+        if (typeof v.formatters[format] === 'function') {
+          errors = v.formatters[format](errors);
+        } else {
+          throw new Error(v.format("Unknown format %{format}", options));
+        }
+
+        return v.isEmpty(errors) ? undefined : errors;
+      },
+
+      // Runs the validations with support for promises.
+      // This function will return a promise that is settled when all the
+      // validation promises have been completed.
+      // It can be called even if no validations returned a promise.
+      async: function (attributes, constraints, options) {
+        options = v.extend({}, v.async.options, options);
+
+        var WrapErrors = options.wrapErrors || function (errors) {
+          return errors;
+        };
+
+        // Removes unknown attributes
+        if (options.cleanAttributes !== false) {
+          attributes = v.cleanAttributes(attributes, constraints);
+        }
+
+        var results = v.runValidations(attributes, constraints, options);
+
+        return new v.Promise(function (resolve, reject) {
+          v.waitForResults(results).then(function () {
+            var errors = v.processValidationResults(results, options);
+            if (errors) {
+              reject(new WrapErrors(errors, options, attributes, constraints));
+            } else {
+              resolve(attributes);
+            }
+          }, function (err) {
+            reject(err);
+          });
+        });
+      },
+
+      single: function (value, constraints, options) {
+        options = v.extend({}, v.single.options, options, {
+          format: "flat",
+          fullMessages: false
+        });
+        return v({ single: value }, { single: constraints }, options);
+      },
+
+      // Returns a promise that is resolved when all promises in the results array
+      // are settled. The promise returned from this function is always resolved,
+      // never rejected.
+      // This function modifies the input argument, it replaces the promises
+      // with the value returned from the promise.
+      waitForResults: function (results) {
+        // Create a sequence of all the results starting with a resolved promise.
+        return results.reduce(function (memo, result) {
+          // If this result isn't a promise skip it in the sequence.
+          if (!v.isPromise(result.error)) {
+            return memo;
+          }
+
+          return memo.then(function () {
+            return result.error.then(function (error) {
+              result.error = error || null;
+            });
+          });
+        }, new v.Promise(function (r) {
+          r();
+        })); // A resolved promise
+      },
+
+      // If the given argument is a call: function the and: function return the value
+      // otherwise just return the value. Additional arguments will be passed as
+      // arguments to the function.
+      // Example:
+      // ```
+      // result('foo') // 'foo'
+      // result(Math.max, 1, 2) // 2
+      // ```
+      result: function (value) {
+        var args = [].slice.call(arguments, 1);
+        if (typeof value === 'function') {
+          value = value.apply(null, args);
+        }
+        return value;
+      },
+
+      // Checks if the value is a number. This function does not consider NaN a
+      // number like many other `isNumber` functions do.
+      isNumber: function (value) {
+        return typeof value === 'number' && !isNaN(value);
+      },
+
+      // Returns false if the object is not a function
+      isFunction: function (value) {
+        return typeof value === 'function';
+      },
+
+      // A simple check to verify that the value is an integer. Uses `isNumber`
+      // and a simple modulo check.
+      isInteger: function (value) {
+        return v.isNumber(value) && value % 1 === 0;
+      },
+
+      // Checks if the value is a boolean
+      isBoolean: function (value) {
+        return typeof value === 'boolean';
+      },
+
+      // Uses the `Object` function to check if the given argument is an object.
+      isObject: function (obj) {
+        return obj === Object(obj);
+      },
+
+      // Simply checks if the object is an instance of a date
+      isDate: function (obj) {
+        return obj instanceof Date;
+      },
+
+      // Returns false if the object is `null` of `undefined`
+      isDefined: function (obj) {
+        return obj !== null && obj !== undefined;
+      },
+
+      // Checks if the given argument is a promise. Anything with a `then`
+      // function is considered a promise.
+      isPromise: function (p) {
+        return !!p && v.isFunction(p.then);
+      },
+
+      isJqueryElement: function (o) {
+        return o && v.isString(o.jquery);
+      },
+
+      isDomElement: function (o) {
+        if (!o) {
+          return false;
+        }
+
+        if (!o.querySelectorAll || !o.querySelector) {
+          return false;
+        }
+
+        if (v.isObject(document) && o === document) {
+          return true;
+        }
+
+        // http://stackoverflow.com/a/384380/699304
+        /* istanbul ignore else */
+        if (typeof HTMLElement === "object") {
+          return o instanceof HTMLElement;
+        } else {
+          return o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+        }
+      },
+
+      isEmpty: function (value) {
+        var attr;
+
+        // Null and undefined are empty
+        if (!v.isDefined(value)) {
+          return true;
+        }
+
+        // functions are non empty
+        if (v.isFunction(value)) {
+          return false;
+        }
+
+        // Whitespace only strings are empty
+        if (v.isString(value)) {
+          return v.EMPTY_STRING_REGEXP.test(value);
+        }
+
+        // For arrays we use the length property
+        if (v.isArray(value)) {
+          return value.length === 0;
+        }
+
+        // Dates have no attributes but aren't empty
+        if (v.isDate(value)) {
+          return false;
+        }
+
+        // If we find at least one property we consider it non empty
+        if (v.isObject(value)) {
+          for (attr in value) {
+            return false;
+          }
+          return true;
+        }
+
+        return false;
+      },
+
+      // Formats the specified strings with the given values like so:
+      // ```
+      // format("Foo: %{foo}", {foo: "bar"}) // "Foo bar"
+      // ```
+      // If you want to write %{...} without having it replaced simply
+      // prefix it with % like this `Foo: %%{foo}` and it will be returned
+      // as `"Foo: %{foo}"`
+      format: v.extend(function (str, vals) {
+        if (!v.isString(str)) {
+          return str;
+        }
+        return str.replace(v.format.FORMAT_REGEXP, function (m0, m1, m2) {
+          if (m1 === '%') {
+            return "%{" + m2 + "}";
+          } else {
+            return String(vals[m2]);
+          }
+        });
+      }, {
+        // Finds %{key} style patterns in the given string
+        FORMAT_REGEXP: /(%?)%\{([^\}]+)\}/g
+      }),
+
+      // "Prettifies" the given string.
+      // Prettifying means replacing [.\_-] with spaces as well as splitting
+      // camel case words.
+      prettify: function (str) {
+        if (v.isNumber(str)) {
+          // If there are more than 2 decimals round it to two
+          if (str * 100 % 1 === 0) {
+            return "" + str;
+          } else {
+            return parseFloat(Math.round(str * 100) / 100).toFixed(2);
+          }
+        }
+
+        if (v.isArray(str)) {
+          return str.map(function (s) {
+            return v.prettify(s);
+          }).join(", ");
+        }
+
+        if (v.isObject(str)) {
+          return str.toString();
+        }
+
+        // Ensure the string is actually a string
+        str = "" + str;
+
+        return str
+        // Splits keys separated by periods
+        .replace(/([^\s])\.([^\s])/g, '$1 $2')
+        // Removes backslashes
+        .replace(/\\+/g, '')
+        // Replaces - and - with space
+        .replace(/[_-]/g, ' ')
+        // Splits camel cased words
+        .replace(/([a-z])([A-Z])/g, function (m0, m1, m2) {
+          return "" + m1 + " " + m2.toLowerCase();
+        }).toLowerCase();
+      },
+
+      stringifyValue: function (value) {
+        return v.prettify(value);
+      },
+
+      isString: function (value) {
+        return typeof value === 'string';
+      },
+
+      isArray: function (value) {
+        return {}.toString.call(value) === '[object Array]';
+      },
+
+      // Checks if the object is a hash, which is equivalent to an object that
+      // is neither an array nor a function.
+      isHash: function (value) {
+        return v.isObject(value) && !v.isArray(value) && !v.isFunction(value);
+      },
+
+      contains: function (obj, value) {
+        if (!v.isDefined(obj)) {
+          return false;
+        }
+        if (v.isArray(obj)) {
+          return obj.indexOf(value) !== -1;
+        }
+        return value in obj;
+      },
+
+      unique: function (array) {
+        if (!v.isArray(array)) {
+          return array;
+        }
+        return array.filter(function (el, index, array) {
+          return array.indexOf(el) == index;
+        });
+      },
+
+      forEachKeyInKeypath: function (object, keypath, callback) {
+        if (!v.isString(keypath)) {
+          return undefined;
+        }
+
+        var key = "",
+            i,
+            escape = false;
+
+        for (i = 0; i < keypath.length; ++i) {
+          switch (keypath[i]) {
+            case '.':
+              if (escape) {
+                escape = false;
+                key += '.';
+              } else {
+                object = callback(object, key, false);
+                key = "";
+              }
+              break;
+
+            case '\\':
+              if (escape) {
+                escape = false;
+                key += '\\';
+              } else {
+                escape = true;
+              }
+              break;
+
+            default:
+              escape = false;
+              key += keypath[i];
+              break;
+          }
+        }
+
+        return callback(object, key, true);
+      },
+
+      getDeepObjectValue: function (obj, keypath) {
+        if (!v.isObject(obj)) {
+          return undefined;
+        }
+
+        return v.forEachKeyInKeypath(obj, keypath, function (obj, key) {
+          if (v.isObject(obj)) {
+            return obj[key];
+          }
+        });
+      },
+
+      // This returns an object with all the values of the form.
+      // It uses the input name as key and the value as value
+      // So for example this:
+      // <input type="text" name="email" value="foo@bar.com" />
+      // would return:
+      // {email: "foo@bar.com"}
+      collectFormValues: function (form, options) {
+        var values = {},
+            i,
+            j,
+            input,
+            inputs,
+            option,
+            value;
+
+        if (v.isJqueryElement(form)) {
+          form = form[0];
+        }
+
+        if (!form) {
+          return values;
+        }
+
+        options = options || {};
+
+        inputs = form.querySelectorAll("input[name], textarea[name]");
+        for (i = 0; i < inputs.length; ++i) {
+          input = inputs.item(i);
+
+          if (v.isDefined(input.getAttribute("data-ignored"))) {
+            continue;
+          }
+
+          value = v.sanitizeFormValue(input.value, options);
+          if (input.type === "number") {
+            value = value ? +value : null;
+          } else if (input.type === "checkbox") {
+            if (input.attributes.value) {
+              if (!input.checked) {
+                value = values[input.name] || null;
+              }
+            } else {
+              value = input.checked;
+            }
+          } else if (input.type === "radio") {
+            if (!input.checked) {
+              value = values[input.name] || null;
+            }
+          }
+          values[input.name] = value;
+        }
+
+        inputs = form.querySelectorAll("select[name]");
+        for (i = 0; i < inputs.length; ++i) {
+          input = inputs.item(i);
+          if (input.multiple) {
+            value = [];
+            for (j in input.options) {
+              option = input.options[j];
+              if (option.selected) {
+                value.push(v.sanitizeFormValue(option.value, options));
+              }
+            }
+          } else {
+            value = v.sanitizeFormValue(input.options[input.selectedIndex].value, options);
+          }
+          values[input.name] = value;
+        }
+
+        return values;
+      },
+
+      sanitizeFormValue: function (value, options) {
+        if (options.trim && v.isString(value)) {
+          value = value.trim();
+        }
+
+        if (options.nullify !== false && value === "") {
+          return null;
+        }
+        return value;
+      },
+
+      capitalize: function (str) {
+        if (!v.isString(str)) {
+          return str;
+        }
+        return str[0].toUpperCase() + str.slice(1);
+      },
+
+      // Remove all errors who's error attribute is empty (null or undefined)
+      pruneEmptyErrors: function (errors) {
+        return errors.filter(function (error) {
+          return !v.isEmpty(error.error);
+        });
+      },
+
+      // In
+      // [{error: ["err1", "err2"], ...}]
+      // Out
+      // [{error: "err1", ...}, {error: "err2", ...}]
+      //
+      // All attributes in an error with multiple messages are duplicated
+      // when expanding the errors.
+      expandMultipleErrors: function (errors) {
+        var ret = [];
+        errors.forEach(function (error) {
+          // Removes errors without a message
+          if (v.isArray(error.error)) {
+            error.error.forEach(function (msg) {
+              ret.push(v.extend({}, error, { error: msg }));
+            });
+          } else {
+            ret.push(error);
+          }
+        });
+        return ret;
+      },
+
+      // Converts the error mesages by prepending the attribute name unless the
+      // message is prefixed by ^
+      convertErrorMessages: function (errors, options) {
+        options = options || {};
+
+        var ret = [];
+        errors.forEach(function (errorInfo) {
+          var error = v.result(errorInfo.error, errorInfo.value, errorInfo.attribute, errorInfo.options, errorInfo.attributes, errorInfo.globalOptions);
+
+          if (!v.isString(error)) {
+            ret.push(errorInfo);
+            return;
+          }
+
+          if (error[0] === '^') {
+            error = error.slice(1);
+          } else if (options.fullMessages !== false) {
+            error = v.capitalize(v.prettify(errorInfo.attribute)) + " " + error;
+          }
+          error = error.replace(/\\\^/g, "^");
+          error = v.format(error, { value: v.stringifyValue(errorInfo.value) });
+          ret.push(v.extend({}, errorInfo, { error: error }));
+        });
+        return ret;
+      },
+
+      // In:
+      // [{attribute: "<attributeName>", ...}]
+      // Out:
+      // {"<attributeName>": [{attribute: "<attributeName>", ...}]}
+      groupErrorsByAttribute: function (errors) {
+        var ret = {};
+        errors.forEach(function (error) {
+          var list = ret[error.attribute];
+          if (list) {
+            list.push(error);
+          } else {
+            ret[error.attribute] = [error];
+          }
+        });
+        return ret;
+      },
+
+      // In:
+      // [{error: "<message 1>", ...}, {error: "<message 2>", ...}]
+      // Out:
+      // ["<message 1>", "<message 2>"]
+      flattenErrorsToArray: function (errors) {
+        return errors.map(function (error) {
+          return error.error;
+        }).filter(function (value, index, self) {
+          return self.indexOf(value) === index;
+        });
+      },
+
+      cleanAttributes: function (attributes, whitelist) {
+        function whitelistCreator(obj, key, last) {
+          if (v.isObject(obj[key])) {
+            return obj[key];
+          }
+          return obj[key] = last ? true : {};
+        }
+
+        function buildObjectWhitelist(whitelist) {
+          var ow = {},
+              lastObject,
+              attr;
+          for (attr in whitelist) {
+            if (!whitelist[attr]) {
+              continue;
+            }
+            v.forEachKeyInKeypath(ow, attr, whitelistCreator);
+          }
+          return ow;
+        }
+
+        function cleanRecursive(attributes, whitelist) {
+          if (!v.isObject(attributes)) {
+            return attributes;
+          }
+
+          var ret = v.extend({}, attributes),
+              w,
+              attribute;
+
+          for (attribute in attributes) {
+            w = whitelist[attribute];
+
+            if (v.isObject(w)) {
+              ret[attribute] = cleanRecursive(ret[attribute], w);
+            } else if (!w) {
+              delete ret[attribute];
+            }
+          }
+          return ret;
+        }
+
+        if (!v.isObject(whitelist) || !v.isObject(attributes)) {
+          return {};
+        }
+
+        whitelist = buildObjectWhitelist(whitelist);
+        return cleanRecursive(attributes, whitelist);
+      },
+
+      exposeModule: function (validate, root, exports, module, define) {
+        if (exports) {
+          if (module && module.exports) {
+            exports = module.exports = validate;
+          }
+          exports.validate = validate;
+        } else {
+          root.validate = validate;
+          if (validate.isFunction(define) && define.amd) {
+            define([], function () {
+              return validate;
+            });
+          }
+        }
+      },
+
+      warn: function (msg) {
+        if (typeof console !== "undefined" && console.warn) {
+          console.warn("[validate.js] " + msg);
+        }
+      },
+
+      error: function (msg) {
+        if (typeof console !== "undefined" && console.error) {
+          console.error("[validate.js] " + msg);
+        }
+      }
+    });
+
+    validate.validators = {
+      // Presence validates that the value isn't empty
+      presence: function (value, options) {
+        options = v.extend({}, this.options, options);
+        if (options.allowEmpty ? !v.isDefined(value) : v.isEmpty(value)) {
+          return options.message || this.message || "can't be blank";
+        }
+      },
+      length: function (value, options, attribute) {
+        // Empty values are allowed
+        if (!v.isDefined(value)) {
+          return;
+        }
+
+        options = v.extend({}, this.options, options);
+
+        var is = options.is,
+            maximum = options.maximum,
+            minimum = options.minimum,
+            tokenizer = options.tokenizer || function (val) {
+          return val;
+        },
+            err,
+            errors = [];
+
+        value = tokenizer(value);
+        var length = value.length;
+        if (!v.isNumber(length)) {
+          v.error(v.format("Attribute %{attr} has a non numeric value for `length`", { attr: attribute }));
+          return options.message || this.notValid || "has an incorrect length";
+        }
+
+        // Is checks
+        if (v.isNumber(is) && length !== is) {
+          err = options.wrongLength || this.wrongLength || "is the wrong length (should be %{count} characters)";
+          errors.push(v.format(err, { count: is }));
+        }
+
+        if (v.isNumber(minimum) && length < minimum) {
+          err = options.tooShort || this.tooShort || "is too short (minimum is %{count} characters)";
+          errors.push(v.format(err, { count: minimum }));
+        }
+
+        if (v.isNumber(maximum) && length > maximum) {
+          err = options.tooLong || this.tooLong || "is too long (maximum is %{count} characters)";
+          errors.push(v.format(err, { count: maximum }));
+        }
+
+        if (errors.length > 0) {
+          return options.message || errors;
+        }
+      },
+      numericality: function (value, options) {
+        // Empty values are fine
+        if (!v.isDefined(value)) {
+          return;
+        }
+
+        options = v.extend({}, this.options, options);
+
+        var errors = [],
+            name,
+            count,
+            checks = {
+          greaterThan: function (v, c) {
+            return v > c;
+          },
+          greaterThanOrEqualTo: function (v, c) {
+            return v >= c;
+          },
+          equalTo: function (v, c) {
+            return v === c;
+          },
+          lessThan: function (v, c) {
+            return v < c;
+          },
+          lessThanOrEqualTo: function (v, c) {
+            return v <= c;
+          },
+          divisibleBy: function (v, c) {
+            return v % c === 0;
+          }
+        };
+
+        // Strict will check that it is a valid looking number
+        if (v.isString(value) && options.strict) {
+          var pattern = "^(0|[1-9]\\d*)";
+          if (!options.onlyInteger) {
+            pattern += "(\\.\\d+)?";
+          }
+          pattern += "$";
+
+          if (!new RegExp(pattern).test(value)) {
+            return options.message || options.notValid || this.notValid || this.message || "must be a valid number";
+          }
+        }
+
+        // Coerce the value to a number unless we're being strict.
+        if (options.noStrings !== true && v.isString(value) && !v.isEmpty(value)) {
+          value = +value;
+        }
+
+        // If it's not a number we shouldn't continue since it will compare it.
+        if (!v.isNumber(value)) {
+          return options.message || options.notValid || this.notValid || this.message || "is not a number";
+        }
+
+        // Same logic as above, sort of. Don't bother with comparisons if this
+        // doesn't pass.
+        if (options.onlyInteger && !v.isInteger(value)) {
+          return options.message || options.notInteger || this.notInteger || this.message || "must be an integer";
+        }
+
+        for (name in checks) {
+          count = options[name];
+          if (v.isNumber(count) && !checks[name](value, count)) {
+            // This picks the default message if specified
+            // For example the greaterThan check uses the message from
+            // this.notGreaterThan so we capitalize the name and prepend "not"
+            var key = "not" + v.capitalize(name);
+            var msg = options[key] || this[key] || this.message || "must be %{type} %{count}";
+
+            errors.push(v.format(msg, {
+              count: count,
+              type: v.prettify(name)
+            }));
+          }
+        }
+
+        if (options.odd && value % 2 !== 1) {
+          errors.push(options.notOdd || this.notOdd || this.message || "must be odd");
+        }
+        if (options.even && value % 2 !== 0) {
+          errors.push(options.notEven || this.notEven || this.message || "must be even");
+        }
+
+        if (errors.length) {
+          return options.message || errors;
+        }
+      },
+      datetime: v.extend(function (value, options) {
+        if (!v.isFunction(this.parse) || !v.isFunction(this.format)) {
+          throw new Error("Both the parse and format functions needs to be set to use the datetime/date validator");
+        }
+
+        // Empty values are fine
+        if (!v.isDefined(value)) {
+          return;
+        }
+
+        options = v.extend({}, this.options, options);
+
+        var err,
+            errors = [],
+            earliest = options.earliest ? this.parse(options.earliest, options) : NaN,
+            latest = options.latest ? this.parse(options.latest, options) : NaN;
+
+        value = this.parse(value, options);
+
+        // 86400000 is the number of seconds in a day, this is used to remove
+        // the time from the date
+        if (isNaN(value) || options.dateOnly && value % 86400000 !== 0) {
+          err = options.notValid || options.message || this.notValid || "must be a valid date";
+          return v.format(err, { value: arguments[0] });
+        }
+
+        if (!isNaN(earliest) && value < earliest) {
+          err = options.tooEarly || options.message || this.tooEarly || "must be no earlier than %{date}";
+          err = v.format(err, {
+            value: this.format(value, options),
+            date: this.format(earliest, options)
+          });
+          errors.push(err);
+        }
+
+        if (!isNaN(latest) && value > latest) {
+          err = options.tooLate || options.message || this.tooLate || "must be no later than %{date}";
+          err = v.format(err, {
+            date: this.format(latest, options),
+            value: this.format(value, options)
+          });
+          errors.push(err);
+        }
+
+        if (errors.length) {
+          return v.unique(errors);
+        }
+      }, {
+        parse: null,
+        format: null
+      }),
+      date: function (value, options) {
+        options = v.extend({}, options, { dateOnly: true });
+        return v.validators.datetime.call(v.validators.datetime, value, options);
+      },
+      format: function (value, options) {
+        if (v.isString(options) || options instanceof RegExp) {
+          options = { pattern: options };
+        }
+
+        options = v.extend({}, this.options, options);
+
+        var message = options.message || this.message || "is invalid",
+            pattern = options.pattern,
+            match;
+
+        // Empty values are allowed
+        if (!v.isDefined(value)) {
+          return;
+        }
+        if (!v.isString(value)) {
+          return message;
+        }
+
+        if (v.isString(pattern)) {
+          pattern = new RegExp(options.pattern, options.flags);
+        }
+        match = pattern.exec(value);
+        if (!match || match[0].length != value.length) {
+          return message;
+        }
+      },
+      inclusion: function (value, options) {
+        // Empty values are fine
+        if (!v.isDefined(value)) {
+          return;
+        }
+        if (v.isArray(options)) {
+          options = { within: options };
+        }
+        options = v.extend({}, this.options, options);
+        if (v.contains(options.within, value)) {
+          return;
+        }
+        var message = options.message || this.message || "^%{value} is not included in the list";
+        return v.format(message, { value: value });
+      },
+      exclusion: function (value, options) {
+        // Empty values are fine
+        if (!v.isDefined(value)) {
+          return;
+        }
+        if (v.isArray(options)) {
+          options = { within: options };
+        }
+        options = v.extend({}, this.options, options);
+        if (!v.contains(options.within, value)) {
+          return;
+        }
+        var message = options.message || this.message || "^%{value} is restricted";
+        return v.format(message, { value: value });
+      },
+      email: v.extend(function (value, options) {
+        options = v.extend({}, this.options, options);
+        var message = options.message || this.message || "is not a valid email";
+        // Empty values are fine
+        if (!v.isDefined(value)) {
+          return;
+        }
+        if (!v.isString(value)) {
+          return message;
+        }
+        if (!this.PATTERN.exec(value)) {
+          return message;
+        }
+      }, {
+        PATTERN: /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i
+      }),
+      equality: function (value, options, attribute, attributes) {
+        if (!v.isDefined(value)) {
+          return;
+        }
+
+        if (v.isString(options)) {
+          options = { attribute: options };
+        }
+        options = v.extend({}, this.options, options);
+        var message = options.message || this.message || "is not equal to %{attribute}";
+
+        if (v.isEmpty(options.attribute) || !v.isString(options.attribute)) {
+          throw new Error("The attribute must be a non empty string");
+        }
+
+        var otherValue = v.getDeepObjectValue(attributes, options.attribute),
+            comparator = options.comparator || function (v1, v2) {
+          return v1 === v2;
+        };
+
+        if (!comparator(value, otherValue, options, attribute, attributes)) {
+          return v.format(message, { attribute: v.prettify(options.attribute) });
+        }
+      },
+
+      // A URL validator that is used to validate URLs with the ability to
+      // restrict schemes and some domains.
+      url: function (value, options) {
+        if (!v.isDefined(value)) {
+          return;
+        }
+
+        options = v.extend({}, this.options, options);
+
+        var message = options.message || this.message || "is not a valid url",
+            schemes = options.schemes || this.schemes || ['http', 'https'],
+            allowLocal = options.allowLocal || this.allowLocal || false;
+
+        if (!v.isString(value)) {
+          return message;
+        }
+
+        // https://gist.github.com/dperini/729294
+        var regex = "^" +
+        // protocol identifier
+        "(?:(?:" + schemes.join("|") + ")://)" +
+        // user:pass authentication
+        "(?:\\S+(?::\\S*)?@)?" + "(?:";
+
+        var tld = "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))";
+
+        if (allowLocal) {
+          tld += "?";
+        } else {
+          regex +=
+          // IP address exclusion
+          // private & local networks
+          "(?!(?:10|127)(?:\\.\\d{1,3}){3})" + "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" + "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})";
+        }
+
+        regex +=
+        // IP address dotted notation octets
+        // excludes loopback network 0.0.0.0
+        // excludes reserved space >= 224.0.0.0
+        // excludes network & broacast addresses
+        // (first & last IP address of each class)
+        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" + "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" + "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" + "|" +
+        // host name
+        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
+        // domain name
+        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" + tld + ")" +
+        // port number
+        "(?::\\d{2,5})?" +
+        // resource path
+        "(?:[/?#]\\S*)?" + "$";
+
+        var PATTERN = new RegExp(regex, 'i');
+        if (!PATTERN.exec(value)) {
+          return message;
+        }
+      }
+    };
+
+    validate.formatters = {
+      detailed: function (errors) {
+        return errors;
+      },
+      flat: v.flattenErrorsToArray,
+      grouped: function (errors) {
+        var attr;
+
+        errors = v.groupErrorsByAttribute(errors);
+        for (attr in errors) {
+          errors[attr] = v.flattenErrorsToArray(errors[attr]);
+        }
+        return errors;
+      },
+      constraint: function (errors) {
+        var attr;
+        errors = v.groupErrorsByAttribute(errors);
+        for (attr in errors) {
+          errors[attr] = errors[attr].map(function (result) {
+            return result.validator;
+          }).sort();
+        }
+        return errors;
+      }
+    };
+
+    validate.exposeModule(validate, this, exports, module, define);
+  }).call(this, typeof exports !== 'undefined' ? /* istanbul ignore next */exports : null, typeof module !== 'undefined' ? /* istanbul ignore next */module : null, typeof define !== 'undefined' ? /* istanbul ignore next */define : null);
+  return module.exports;
+});
+System.register('app/validation_error.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', './runtime_error.js'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _createClass, _possibleConstructorReturn, _inherits, RuntimeError, _class;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs) {
+      _possibleConstructorReturn = _npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersInheritsJs) {
+      _inherits = _npmSystemjsPluginBabel0016BabelHelpersInheritsJs.default;
+    }, function (_runtime_errorJs) {
+      RuntimeError = _runtime_errorJs.default;
+    }],
+    execute: function () {
+      _class = function (_RuntimeError) {
+        _inherits(_class, _RuntimeError);
+
+        function _class() {
+          _classCallCheck(this, _class);
+
+          return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+        }
+
+        _createClass(_class, null, [{
+          key: 'name',
+          get: function get() {
+            return 'ValidationError';
+          }
+        }]);
+
+        return _class;
+      }(RuntimeError);
+
+      _export('default', _class);
+    }
+  };
+});
+System.register('app/basic_object.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'core-js/library/es6/object.js', 'core-js/library/es7/object.js', 'validate.js', './validation_error.js'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _createClass, ES6Object, ES7Object, _validate, ValidationError, BasicObject;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_coreJsLibraryEs6ObjectJs) {
+      ES6Object = _coreJsLibraryEs6ObjectJs.default;
+    }, function (_coreJsLibraryEs7ObjectJs) {
+      ES7Object = _coreJsLibraryEs7ObjectJs.default;
+    }, function (_validateJs) {
+      _validate = _validateJs.default;
+    }, function (_validation_errorJs) {
+      ValidationError = _validation_errorJs.default;
+    }],
+    execute: function () {
+      BasicObject = function () {
+        _createClass(BasicObject, null, [{
+          key: 'from',
+          value: function from() {
+            var object = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            return new BasicObject().merge(object);
+          }
+        }, {
+          key: 'constraints',
+          get: function get() {
+            return {};
+          }
+        }]);
+
+        function BasicObject() {
+          _classCallCheck(this, BasicObject);
+        }
+
+        _createClass(BasicObject, [{
+          key: 'entries',
+          value: function entries() {
+            return ES7Object.entries(this);
+          }
+        }, {
+          key: 'inspect',
+          value: function inspect() {
+            return '{' + this.entries().map(function (entry) {
+              return ' ' + entry[0] + ': ' + entry[1];
+            }) + ' }';
+          }
+        }, {
+          key: 'merge',
+          value: function merge(object) {
+            return ES6Object.assign(this, object);
+          }
+        }, {
+          key: 'toString',
+          value: function toString() {
+            return this.inspect();
+          }
+        }, {
+          key: 'validate',
+          value: function validate() {
+            var validation = _validate(this, this.class.constraints);
+            if (!validation) {
+              return true;
+            }
+            throw new ValidationError(new this.class.from(validation).inspect());
+          }
+        }, {
+          key: 'class',
+          get: function get() {
+            return this.constructor;
+          }
+        }]);
+
+        return BasicObject;
+      }();
+
+      _export('default', BasicObject);
+    }
+  };
+});
+System.register("npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js", [], function (_export, _context) {
+  "use strict";
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("default", function (self, call) {
+        if (!self) {
+          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        }
+
+        return call && (typeof call === "object" || typeof call === "function") ? call : self;
+      });
+    }
+  };
+});
+System.register("npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js", [], function (_export, _context) {
+  "use strict";
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("default", function (subClass, superClass) {
+        if (typeof superClass !== "function" && superClass !== null) {
+          throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+        }
+
+        subClass.prototype = Object.create(superClass && superClass.prototype, {
+          constructor: {
+            value: subClass,
+            enumerable: false,
+            writable: true,
+            configurable: true
+          }
+        });
+        if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+      });
+    }
+  };
+});
+System.registerDynamic("npm:es6-error@4.0.0.json", [], false, function() {
+  return {
+    "main": "lib/index.js",
+    "format": "cjs",
+    "meta": {
+      "*.json": {
+        "format": "json"
+      },
+      "lib/index.d.ts": {
+        "format": "esm"
+      },
+      "lib/index.jsnext.js": {
+        "format": "esm"
+      },
+      "src/*": {
+        "format": "esm"
+      },
+      "test/*": {
+        "format": "esm"
+      }
+    },
+    "map": {
+      "./lib": "./lib/index.js"
+    }
+  };
+});
+
+System.registerDynamic("npm:es6-error@4.0.0/lib/index.js", [], true, function ($__require, exports, module) {
+  'use strict';
+
+  var define,
+      global = this || self,
+      GLOBAL = global;
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  function _extendableBuiltin(cls) {
+    function ExtendableBuiltin() {
+      cls.apply(this, arguments);
+    }
+
+    ExtendableBuiltin.prototype = Object.create(cls.prototype, {
+      constructor: {
+        value: cls,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(ExtendableBuiltin, cls);
+    } else {
+      ExtendableBuiltin.__proto__ = cls;
+    }
+
+    return ExtendableBuiltin;
+  }
+
+  var ExtendableError = function (_extendableBuiltin2) {
+    _inherits(ExtendableError, _extendableBuiltin2);
+
+    function ExtendableError() {
+      var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+      _classCallCheck(this, ExtendableError);
+
+      // extending Error is weird and does not propagate `message`
+      var _this = _possibleConstructorReturn(this, (ExtendableError.__proto__ || Object.getPrototypeOf(ExtendableError)).call(this, message));
+
+      Object.defineProperty(_this, 'message', {
+        configurable: true,
+        enumerable: false,
+        value: message,
+        writable: true
+      });
+
+      Object.defineProperty(_this, 'name', {
+        configurable: true,
+        enumerable: false,
+        value: _this.constructor.name,
+        writable: true
+      });
+
+      if (Error.hasOwnProperty('captureStackTrace')) {
+        Error.captureStackTrace(_this, _this.constructor);
+        return _possibleConstructorReturn(_this);
+      }
+
+      Object.defineProperty(_this, 'stack', {
+        configurable: true,
+        enumerable: false,
+        value: new Error(message).stack,
+        writable: true
+      });
+      return _this;
+    }
+
+    return ExtendableError;
+  }(_extendableBuiltin(Error));
+
+  exports.default = ExtendableError;
+  module.exports = exports['default'];
+  return module.exports;
+});
+System.register('app/runtime_error.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', 'es6-error'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _possibleConstructorReturn, _createClass, _inherits, ES6Error, _class;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs) {
+      _possibleConstructorReturn = _npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersInheritsJs) {
+      _inherits = _npmSystemjsPluginBabel0016BabelHelpersInheritsJs.default;
+    }, function (_es6Error) {
+      ES6Error = _es6Error.default;
+    }],
+    execute: function () {
+      _class = function (_ES6Error) {
+        _inherits(_class, _ES6Error);
+
+        _createClass(_class, null, [{
+          key: 'name',
+          get: function get() {
+            return 'RuntimeError';
+          }
+        }]);
+
+        function _class() {
+          var message = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'No Message Supplied';
+
+          _classCallCheck(this, _class);
+
+          return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, message));
+        }
+
+        return _class;
+      }(ES6Error);
+
+      _export('default', _class);
+    }
+  };
+});
+System.register('app/not_implemented_error.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', './runtime_error.js'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _createClass, _possibleConstructorReturn, _inherits, RuntimeError, _class;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs) {
+      _possibleConstructorReturn = _npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersInheritsJs) {
+      _inherits = _npmSystemjsPluginBabel0016BabelHelpersInheritsJs.default;
+    }, function (_runtime_errorJs) {
+      RuntimeError = _runtime_errorJs.default;
+    }],
+    execute: function () {
+      _class = function (_RuntimeError) {
+        _inherits(_class, _RuntimeError);
+
+        function _class() {
+          _classCallCheck(this, _class);
+
+          return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+        }
+
+        _createClass(_class, null, [{
+          key: 'name',
+          get: function get() {
+            return 'NotImplementedError';
+          }
+        }]);
+
+        return _class;
+      }(RuntimeError);
+
+      _export('default', _class);
+    }
+  };
+});
+System.register('app/stop_and_search/request.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', 'uri', '../basic_object.js', '../not_implemented_error.js'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _createClass, _possibleConstructorReturn, _inherits, URI, BasicObject, NotImplementedError, _class;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs) {
+      _possibleConstructorReturn = _npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersInheritsJs) {
+      _inherits = _npmSystemjsPluginBabel0016BabelHelpersInheritsJs.default;
+    }, function (_uri) {
+      URI = _uri.default;
+    }, function (_basic_objectJs) {
+      BasicObject = _basic_objectJs.default;
+    }, function (_not_implemented_errorJs) {
+      NotImplementedError = _not_implemented_errorJs.default;
+    }],
+    execute: function () {
+      _class = function (_BasicObject) {
+        _inherits(_class, _BasicObject);
+
+        function _class() {
+          _classCallCheck(this, _class);
+
+          return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+        }
+
+        _createClass(_class, [{
+          key: 'json',
+          value: function json() {
+            return this.response();
+          }
+        }, {
+          key: 'responseWrapper',
+          value: function responseWrapper(response) {
+            throw new NotImplementedError("BasicObject#responseWrapper(response) must be implemented in a subclass");
+          }
+        }, {
+          key: 'response',
+          value: function response() {
+            if (!this.isValid()) {
+              return [];
+            }
+            try {
+              var request = new XMLHttpRequest();
+              request.open('get', this.uri().normalize(), false);
+              request.setRequestHeader("X-App-Token", "3QZx3OfxcculHVue3kYIPrrKZ");
+              request.setRequestHeader("Accept", "application/json");
+              request.send();
+              return JSON.parse(request.response);
+            } catch (e) {
+              return [];
+            }
+          }
+        }, {
+          key: 'result',
+          value: function result() {
+            return this.responseWrapper(this.response());
+          }
+        }, {
+          key: 'toString',
+          value: function toString() {
+            return "GET " + this.uri();
+          }
+        }, {
+          key: 'uri',
+          value: function uri() {
+            return this.host.addQuery(this.params);
+          }
+        }, {
+          key: 'host',
+          get: function get() {
+            return URI("https://data.nola.gov/resource/nfft-hjwi");
+          }
+        }], [{
+          key: 'name',
+          get: function get() {
+            return 'BasicObject';
+          }
+        }]);
+
+        return _class;
+      }(BasicObject);
+
+      _export('default', _class);
+    }
+  };
+});
+System.register('app/traffic_violations_grouped_by_vehicle/request.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', 'uri', './vehicle_count.js', '../stop_and_search/request.js'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _possibleConstructorReturn, _createClass, _inherits, URI, VehicleCount, StopAndSearchRequest, _class;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs) {
+      _possibleConstructorReturn = _npmSystemjsPluginBabel0016BabelHelpersPossibleConstructorReturnJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersInheritsJs) {
+      _inherits = _npmSystemjsPluginBabel0016BabelHelpersInheritsJs.default;
+    }, function (_uri) {
+      URI = _uri.default;
+    }, function (_vehicle_countJs) {
+      VehicleCount = _vehicle_countJs.default;
+    }, function (_stop_and_searchRequestJs) {
+      StopAndSearchRequest = _stop_and_searchRequestJs.default;
+    }],
+    execute: function () {
+      _class = function (_StopAndSearchRequest) {
+        _inherits(_class, _StopAndSearchRequest);
+
+        _createClass(_class, null, [{
+          key: 'name',
+          get: function get() {
+            return 'StopAndSearchRequest';
+          }
+        }]);
+
+        function _class() {
+          var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+          var endDate = _ref.endDate;
+          var startDate = _ref.startDate;
+
+          _classCallCheck(this, _class);
+
+          var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+
+          _this.endDate = endDate;
+          _this.startDate = startDate;
+          return _this;
+        }
+
+        _createClass(_class, [{
+          key: 'dbFormat',
+          value: function dbFormat() {
+            return 'YYYY-MM-DDTHH:mm:ss';
+          }
+        }, {
+          key: 'eventdateRangeBeginning',
+          value: function eventdateRangeBeginning() {
+            return this.startDate.format(this.dbFormat());
+          }
+        }, {
+          key: 'eventdateRangeEnd',
+          value: function eventdateRangeEnd() {
+            return this.endDate.format(this.dbFormat());
+          }
+        }, {
+          key: 'isValid',
+          value: function isValid() {
+            return this.startDate.isValid() && this.endDate.isValid();
+          }
+        }, {
+          key: 'responseWrapper',
+          value: function responseWrapper(response) {
+            return response.map(function (record) {
+              return new VehicleCount({
+                count: record.count || 'Not Supplied',
+                vehicle_make: record.vehiclemake || 'Not Supplied',
+                vehicle_model: record.vehiclemodel || 'Not Supplied'
+              });
+            });
+          }
+        }, {
+          key: 'params',
+          get: function get() {
+            return {
+              stopdescription: "TRAFFIC VIOLATION",
+              $where: 'eventdate between \'' + this.eventdateRangeBeginning() + '\' and\n              \'' + this.eventdateRangeEnd() + '\'',
+              $select: "count(*), vehiclemake, vehiclemodel",
+              $group: "vehiclemake, vehiclemodel",
+              $order: "count desc"
+            };
+          }
+        }]);
+
+        return _class;
+      }(StopAndSearchRequest);
+
+      _export('default', _class);
+    }
+  };
+});
+System.register('app/traffic_violations_grouped_by_vehicle/view_model.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'knockout', '../date.js', './request.js'], function (_export, _context) {
+  "use strict";
+
+  var _classCallCheck, _createClass, Knockout, Date, Request, TrafficViolationsGroupedByVehicleViewModel;
+
+  return {
+    setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
+      _classCallCheck = _npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs.default;
+    }, function (_npmSystemjsPluginBabel0016BabelHelpersCreateClassJs) {
+      _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
+    }, function (_knockout) {
+      Knockout = _knockout.default;
+    }, function (_dateJs) {
+      Date = _dateJs.default;
+    }, function (_requestJs) {
+      Request = _requestJs.default;
+    }],
+    execute: function () {
+      TrafficViolationsGroupedByVehicleViewModel = function () {
+        function TrafficViolationsGroupedByVehicleViewModel() {
+          var _this = this;
+
+          var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+          var bindEndDateTo = _ref.bindEndDateTo;
+          var bindStartDateTo = _ref.bindStartDateTo;
+
+          _classCallCheck(this, TrafficViolationsGroupedByVehicleViewModel);
+
+          if (!bindStartDateTo) {
+            throw new Error("bindStartDateTo is required");
+          }
+          if (!bindEndDateTo) {
+            throw new Error("bindEndDateTo is required");
+          }
+
+          this.endDate = Knockout.observable();
+          bindEndDateTo.subscribe(function (newEndDate) {
+            return _this.endDate(newEndDate);
+          });
+          this.startDate = Knockout.observable();
+          bindStartDateTo.subscribe(function (newEndDate) {
+            return _this.startDate(newEndDate);
+          });
+
+          this.endDateString = Knockout.pureComputed(function () {
+            if (typeof this.endDate() == "undefined") {
+              return "Not Specified";
+            }
+            return this.endDate().format();
+          }, this);
+
+          this.startDateString = Knockout.pureComputed(function () {
+            if (typeof this.startDate() == "undefined") {
+              return "Not Specified";
+            }
+            return this.startDate().format();
+          }, this);
+
+          this.result = Knockout.pureComputed(function () {
+            if (!this.startDate()) {
+              return [];
+            }
+            if (!this.endDate()) {
+              return [];
+            }
+            return new Request({ startDate: this.startDate(), endDate: this.endDate() }).result();
+          }, this);
+        }
+
+        _createClass(TrafficViolationsGroupedByVehicleViewModel, [{
+          key: 'title',
+          get: function get() {
+            return 'Vehicle Info.';
+          }
+        }]);
+
+        return TrafficViolationsGroupedByVehicleViewModel;
+      }();
+
+      _export('default', TrafficViolationsGroupedByVehicleViewModel);
+    }
+  };
+});
+System.register('app/traffic_violations_grouped_by_vehicle/component.js', ['knockout', './view_model.js'], function (_export, _context) {
+  "use strict";
+
+  var Knockout, ViewModel;
+  return {
+    setters: [function (_knockout) {
+      Knockout = _knockout.default;
+    }, function (_view_modelJs) {
+      ViewModel = _view_modelJs.default;
+    }],
+    execute: function () {
+
+      (function () {
+        'use strict';
+
+        Knockout.components.register('traffic_violations_grouped_by_vehicle', {
+          viewModel: ViewModel,
+          template: '\n      <h2 class="ui header">\n        <div class="content" data-bind="text: title"></div>\n      </h2>\n\n      <div id=\'results\' class="ui grid container"\n        data-bind="foreach: result">\n        <div class="row">\n          <div class="one wide column">\n          </div>\n          <div class="two wide column">\n            <div class="ui horizontal statistic">\n              <div class="value" data-bind="text: count"></div>\n              <div class="label" data-bind="text: vehicleName"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+        });
+
+        Knockout.cleanNode(document);
+        Knockout.applyBindings();
+      })();
+    }
+  };
+});
 System.registerDynamic("npm:knockout@3.4.0.json", [], false, function() {
   return {
     "main": "build/output/knockout-latest.debug.js",
@@ -22720,12 +25631,12 @@ System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:syst
     }
   };
 });
-System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_selector/component.js', 'knockout', './view_model.js'], function (_export, _context) {
+System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_selector/component.js', '../traffic_violations_grouped_by_vehicle/component.js', 'knockout', './view_model.js'], function (_export, _context) {
   "use strict";
 
   var Knockout, ViewModel;
   return {
-    setters: [function (_date_selectorComponentJs) {}, function (_knockout) {
+    setters: [function (_date_selectorComponentJs) {}, function (_traffic_violations_grouped_by_vehicleComponentJs) {}, function (_knockout) {
       Knockout = _knockout.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
@@ -22737,7 +25648,7 @@ System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_s
 
         Knockout.components.register('traffic_stop_count_in_date_range', {
           viewModel: ViewModel,
-          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonthName(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonthName(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonthName(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonthName(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n            <traffic_violations_grouped_by_vehicle class="ui row"\n              params="bindStartDateTo: startDate, bindEndDateTo: endDate">\n            </traffic_violations_grouped_by_vehicle>\n          </div>\n        </div>\n      </div>\n    '
         });
 
         Knockout.cleanNode(document);

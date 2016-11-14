@@ -22,6 +22,7 @@
   "jspm": {
     "dependencies": {
       "core-js": "npm:core-js@^2.4.1",
+      "es6-error": "npm:es6-error@^4.0.0",
       "jquery": "npm:jquery@^3.1.1",
       "knockout": "npm:knockout@^3.4.0",
       "moment": "npm:moment@^2.15.0",
@@ -29,7 +30,8 @@
       "semantic-ui-css": "npm:semantic-ui-css@^2.2.4",
       "semantic-ui-dropdown": "npm:semantic-ui-dropdown@^2.2.3",
       "semantic-ui-transition": "npm:semantic-ui-transition@^2.2.3",
-      "uri": "github:medialize/URI.js@^1.18.1"
+      "uri": "github:medialize/URI.js@^1.18.1",
+      "validate.js": "npm:validate.js@^0.11.1"
     },
     "devDependencies": {
       "babel-runtime": "npm:babel-runtime@^5.8.24",

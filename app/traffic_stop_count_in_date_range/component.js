@@ -1,4 +1,5 @@
 import '../date_selector/component.js'
+import '../traffic_violations_grouped_by_vehicle/component.js'
 import Knockout from 'knockout'
 import ViewModel from './view_model.js'
 
@@ -45,6 +46,10 @@ import ViewModel from './view_model.js'
                 <div class="label">Total</div>
               </div>
             </div>
+          </div>
+            <traffic_violations_grouped_by_vehicle class="ui row"
+              params="bindStartDateTo: startDate, bindEndDateTo: endDate">
+            </traffic_violations_grouped_by_vehicle>
           </div>
         </div>
       </div>

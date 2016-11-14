@@ -43,6 +43,7 @@ SystemJS.config({
   ],
   map: {
     "core-js": "npm:core-js@2.4.1",
+    "es6-error": "npm:es6-error@4.0.0",
     "fs": "github:jspm/nodelibs-fs@0.2.0-alpha",
     "jquery": "npm:jquery@3.1.1",
     "knockout": "npm:knockout@3.4.0",
@@ -53,7 +54,8 @@ SystemJS.config({
     "semantic-ui-css": "npm:semantic-ui-css@2.2.4",
     "semantic-ui-dropdown": "npm:semantic-ui-dropdown@2.2.3",
     "semantic-ui-transition": "npm:semantic-ui-transition@2.2.3",
-    "uri": "github:medialize/URI.js@1.18.1"
+    "uri": "github:medialize/URI.js@1.18.1",
+    "validate.js": "npm:validate.js@0.11.1"
   },
   packages: {
     "github:Semantic-Org/Semantic-UI@2.2.4": {

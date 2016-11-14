@@ -1,4 +1,12 @@
 {
+  "npm:moment@2.15.0": {
+    "deps": {},
+    "peerDeps": {}
+  },
+  "npm:jquery@3.1.1": {
+    "deps": {},
+    "peerDeps": {}
+  },
   "npm:babel-runtime@5.8.38": {
     "deps": {},
     "peerDeps": {
@@ -6,13 +14,19 @@
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha"
     }
   },
-  "npm:moment@2.15.0": {
-    "deps": {},
-    "peerDeps": {}
-  },
   "npm:semantic-ui-dropdown@2.2.3": {
     "deps": {},
     "peerDeps": {}
+  },
+  "npm:validate.js@0.11.1": {
+    "deps": {},
+    "peerDeps": {}
+  },
+  "npm:es6-error@4.0.0": {
+    "deps": {},
+    "peerDeps": {
+      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha"
+    }
   },
   "npm:semantic-ui-transition@2.2.3": {
     "deps": {},
@@ -22,7 +36,21 @@
     "deps": {},
     "peerDeps": {}
   },
-  "github:medialize/URI.js@1.18.1": {
+  "npm:core-js@2.4.1": {
+    "deps": {},
+    "peerDeps": {
+      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
+      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
+      "process": "github:jspm/nodelibs-process@^0.2.0-alpha"
+    }
+  },
+  "npm:semantic-ui-css@2.2.4": {
+    "deps": {
+      "jquery": "npm:jquery"
+    },
+    "peerDeps": {}
+  },
+  "npm:systemjs-plugin-babel@0.0.16": {
     "deps": {},
     "peerDeps": {}
   },
@@ -37,43 +65,25 @@
     "deps": {},
     "peerDeps": {}
   },
-  "github:systemjs/plugin-css@0.1.31": {
-    "deps": {},
-    "peerDeps": {}
-  },
-  "npm:systemjs-plugin-babel@0.0.16": {
-    "deps": {},
-    "peerDeps": {}
-  },
-  "npm:semantic-ui-css@2.2.4": {
-    "deps": {
-      "jquery": "npm:jquery"
-    },
-    "peerDeps": {}
-  },
-  "npm:jquery@3.1.1": {
-    "deps": {},
-    "peerDeps": {}
-  },
-  "npm:core-js@2.4.1": {
-    "deps": {},
-    "peerDeps": {
-      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
-      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
-      "process": "github:jspm/nodelibs-process@^0.2.0-alpha"
-    }
-  },
   "github:jspm/nodelibs-path@0.2.0-alpha": {
     "deps": {},
     "peerDeps": {
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha"
     }
   },
-  "github:jspm/nodelibs-process@0.2.0-alpha": {
+  "github:jspm/nodelibs-fs@0.2.0-alpha": {
     "deps": {},
     "peerDeps": {}
   },
-  "github:jspm/nodelibs-fs@0.2.0-alpha": {
+  "github:medialize/URI.js@1.18.1": {
+    "deps": {},
+    "peerDeps": {}
+  },
+  "github:systemjs/plugin-css@0.1.31": {
+    "deps": {},
+    "peerDeps": {}
+  },
+  "github:jspm/nodelibs-process@0.2.0-alpha": {
     "deps": {},
     "peerDeps": {}
   }
