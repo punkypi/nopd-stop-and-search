@@ -13,6 +13,7 @@ import ViewModel from './view_model.js'
         <h2 class="ui header">
           <i class="car icon"></i>
           <div class="content" data-bind="text: title()"></div>
+          <a name="traffic_stop_count_in_date_range"></a>
         </h2>
         <div class="ui grid container">
           <div class="ui column row">

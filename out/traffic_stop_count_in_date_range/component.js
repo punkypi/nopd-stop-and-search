@@ -13112,7 +13112,7 @@ System.register('app/stop_and_search/request.js', ['npm:systemjs-plugin-babel@0.
         }, {
           key: 'responseWrapper',
           value: function responseWrapper(response) {
-            throw new NotImplementedError("BasicObject#responseWrapper(response) must be implemented in a subclass");
+            return response;
           }
         }, {
           key: 'response',
@@ -13151,6 +13151,11 @@ System.register('app/stop_and_search/request.js', ['npm:systemjs-plugin-babel@0.
           get: function get() {
             return URI("https://data.nola.gov/resource/nfft-hjwi");
           }
+        }, {
+          key: 'params',
+          get: function get() {
+            throw new NotImplementedError("BasicObject#params must be implemented in a subclass");
+          }
         }], [{
           key: 'name',
           get: function get() {
@@ -13165,10 +13170,10 @@ System.register('app/stop_and_search/request.js', ['npm:systemjs-plugin-babel@0.
     }
   };
 });
-System.register('app/traffic_violations_grouped_by_vehicle/request.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', 'uri', './vehicle_count.js', '../stop_and_search/request.js'], function (_export, _context) {
+System.register('app/traffic_violations_grouped_by_vehicle/request.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/possibleConstructorReturn.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/inherits.js', './vehicle_count.js', '../stop_and_search/request.js'], function (_export, _context) {
   "use strict";
 
-  var _classCallCheck, _possibleConstructorReturn, _createClass, _inherits, URI, VehicleCount, StopAndSearchRequest, _class;
+  var _classCallCheck, _possibleConstructorReturn, _createClass, _inherits, VehicleCount, StopAndSearchRequest, _class;
 
   return {
     setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
@@ -13179,8 +13184,6 @@ System.register('app/traffic_violations_grouped_by_vehicle/request.js', ['npm:sy
       _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
     }, function (_npmSystemjsPluginBabel0016BabelHelpersInheritsJs) {
       _inherits = _npmSystemjsPluginBabel0016BabelHelpersInheritsJs.default;
-    }, function (_uri) {
-      URI = _uri.default;
     }, function (_vehicle_countJs) {
       VehicleCount = _vehicle_countJs.default;
     }, function (_stop_and_searchRequestJs) {
@@ -13263,10 +13266,10 @@ System.register('app/traffic_violations_grouped_by_vehicle/request.js', ['npm:sy
     }
   };
 });
-System.register('app/traffic_violations_grouped_by_vehicle/view_model.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'knockout', '../date.js', './request.js'], function (_export, _context) {
+System.register('app/traffic_violations_grouped_by_vehicle/view_model.js', ['npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js', 'npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js', 'knockout', './request.js'], function (_export, _context) {
   "use strict";
 
-  var _classCallCheck, _createClass, Knockout, Date, Request, TrafficViolationsGroupedByVehicleViewModel;
+  var _classCallCheck, _createClass, Knockout, Request, TrafficViolationsGroupedByVehicleViewModel;
 
   return {
     setters: [function (_npmSystemjsPluginBabel0016BabelHelpersClassCallCheckJs) {
@@ -13275,8 +13278,6 @@ System.register('app/traffic_violations_grouped_by_vehicle/view_model.js', ['npm
       _createClass = _npmSystemjsPluginBabel0016BabelHelpersCreateClassJs.default;
     }, function (_knockout) {
       Knockout = _knockout.default;
-    }, function (_dateJs) {
-      Date = _dateJs.default;
     }, function (_requestJs) {
       Request = _requestJs.default;
     }],
@@ -25648,7 +25649,7 @@ System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_s
 
         Knockout.components.register('traffic_stop_count_in_date_range', {
           viewModel: ViewModel,
-          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonthName(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonthName(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n            <traffic_violations_grouped_by_vehicle class="ui row"\n              params="bindStartDateTo: startDate, bindEndDateTo: endDate">\n            </traffic_violations_grouped_by_vehicle>\n          </div>\n        </div>\n      </div>\n    '
+          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n          <a name="traffic_stop_count_in_date_range"></a>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonthName(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonthName(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n            <traffic_violations_grouped_by_vehicle class="ui row"\n              params="bindStartDateTo: startDate, bindEndDateTo: endDate">\n            </traffic_violations_grouped_by_vehicle>\n          </div>\n        </div>\n      </div>\n    '
         });
 
         Knockout.cleanNode(document);

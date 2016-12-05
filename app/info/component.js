@@ -11,6 +11,7 @@ import ViewModel from './view_model.js'
         <h2 class="ui header">
           <i class="info icon"></i>
           <div class="content" data-bind="text: title()"></div>
+          <a name="info"></a>
         </h2>
         <div class="ui grid container">
           <div class="one column row">
