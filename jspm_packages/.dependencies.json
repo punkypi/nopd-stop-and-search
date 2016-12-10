@@ -86,5 +86,9 @@
   "github:jspm/nodelibs-process@0.2.0-alpha": {
     "deps": {},
     "peerDeps": {}
+  },
+  "npm:immutable@3.8.1": {
+    "deps": {},
+    "peerDeps": {}
   }
 }

@@ -1,10 +1,10 @@
-import CoreArray from 'core-js/library/es6/array.js'
+import Immutable from 'immutable'
 import Knockout from 'knockout'
 import Month from '../month.js'
 
 export default class MonthSelectorViewModel {
   static monthNamesOfTheYear() {
-    return CoreArray.from([
+    return Immutable.Set.of(
       "January",
       "February",
       "March",
@@ -17,7 +17,7 @@ export default class MonthSelectorViewModel {
       "October",
       "November",
       "December"
-    ])
+    )
   }
 
   constructor({ label, bindSelectedMonthTo } = {}) {

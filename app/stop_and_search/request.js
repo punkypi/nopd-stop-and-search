@@ -4,7 +4,7 @@ import NotImplementedError from '../not_implemented_error.js'
 
 export default class extends BasicObject {
   static get name() {
-    return 'BasicObject'
+    return 'Request'
   }
 
   get host() {

@@ -45,6 +45,7 @@ SystemJS.config({
     "core-js": "npm:core-js@2.4.1",
     "es6-error": "npm:es6-error@4.0.0",
     "fs": "github:jspm/nodelibs-fs@0.2.0-alpha",
+    "immutable": "npm:immutable@3.8.1",
     "jquery": "npm:jquery@3.1.1",
     "knockout": "npm:knockout@3.4.0",
     "moment": "npm:moment@2.15.0",

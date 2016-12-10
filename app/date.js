@@ -1,4 +1,4 @@
-import CoreArray from 'core-js/library/es6/array.js'
+import Immutable from 'immutable'
 import Moment from 'moment'
 
 export default class Date {
@@ -15,7 +15,7 @@ export default class Date {
   }
 
   static monthNamesOfTheYear() {
-    return CoreArray.from([
+    return Immutable.Set.of(
       "January",
       "February",
       "March",
@@ -28,7 +28,7 @@ export default class Date {
       "October",
       "November",
       "December"
-    ])
+    )
   }
 
   static monthNumber(month) {
