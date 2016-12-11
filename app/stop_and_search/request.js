@@ -20,6 +20,10 @@ export default class extends BasicObject {
       "BasicObject#params must be implemented in a subclass")
   }
 
+  query() {
+    return this.uri().query()
+  }
+
   responseWrapper(response) {
     return response
   }
@@ -48,6 +52,7 @@ export default class extends BasicObject {
   }
 
   uri() {
-    return this.host.addQuery(this.params)
+    if (!this.filters) { return this.host.addQuery(this.params) }
+    return this.host.addQuery(this.filters).addQuery(this.params)
   }
 }

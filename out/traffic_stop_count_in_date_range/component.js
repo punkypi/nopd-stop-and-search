@@ -14071,7 +14071,10 @@ System.register('app/stop_and_search/request.js', ['npm:systemjs-plugin-babel@0.
         }, {
           key: 'uri',
           value: function uri() {
-            return this.host.addQuery(this.params);
+            if (!this.filters) {
+              return this.host.addQuery(this.params);
+            }
+            return this.host.addQuery(this.filters).addQuery(this.params);
           }
         }, {
           key: 'host',
