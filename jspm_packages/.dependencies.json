@@ -90,5 +90,9 @@
   "npm:immutable@3.8.1": {
     "deps": {},
     "peerDeps": {}
+  },
+  "github:systemjs/plugin-text@0.0.9": {
+    "deps": {},
+    "peerDeps": {}
   }
 }

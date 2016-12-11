@@ -1,15 +1,12 @@
 import Knockout from 'knockout'
+import View from './view.html!text'
 import ViewModel from './view_model.js'
 
 (function(){
   'use strict'
 
-  Knockout.components.register('message_editor', {
-    viewModel: ViewModel,
-    template: `
-      Message: <input data-bind="value: text" />
-      (length: <span data-bind="text: text().length"></span>)`
-  })
+  Knockout.components.register(
+    'message_editor', { template: View, viewModel: ViewModel })
 
   Knockout.cleanNode(document)
   Knockout.applyBindings()

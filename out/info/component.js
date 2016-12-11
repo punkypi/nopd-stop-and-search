@@ -4447,6 +4447,28 @@ var define = System.amdDefine;
 })();
 
 })();
+System.registerDynamic("github:systemjs/plugin-text@0.0.9.json", [], false, function() {
+  return {
+    "main": "text"
+  };
+});
+
+System.register("app/info/view.html!github:systemjs/plugin-text@0.0.9/text.js", [], function (_export, _context) {
+  "use strict";
+
+  var __useDefault;
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("__useDefault", __useDefault = true);
+
+      _export("__useDefault", __useDefault);
+
+      _export("default", "<!DOCTYPE html>\n<div id=\"about\" class=\"ui\">\n  <h2 class=\"ui header\">\n    <i class=\"info icon\"></i>\n    <div class=\"content\" data-bind=\"text: title()\"></div>\n    <a name=\"info\"></a>\n  </h2>\n  <div class=\"ui grid container\">\n    <div class=\"one column row\">\n      <div class=\"column\">\n        <h3 class=\"ui header\">\n          Data Source\n        </h3>\n      </div>\n    </div>\n    <div class=\"one column row\">\n      <div class=\"column\">\n        <p>\n          This page is backed by <a href=\"https://data.nola.gov\">\n          Data.NOLA.gov</a>'s <a href=\"http://tinyurl.com/h2sq7du\">\n          Stop and Search (Field Interviews)</a>. Thank you, NOPD, for\n          making this information public.\n        </p>\n\n        <p>\n          If you want to learn how to query the database yourself, check\n          out <a href=\"http://tinyurl.com/z9jjsjb\">\n          their very helpful Socrata powered API docs</a>.\n        </p>\n      </div>\n    </div>\n  </div>\n</div>\n");
+    }
+  };
+});
 System.register("npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js", [], function (_export, _context) {
   "use strict";
 
@@ -4535,13 +4557,15 @@ System.register("app/info/view_model.js", ["npm:systemjs-plugin-babel@0.0.16/bab
     }
   };
 });
-System.register('app/info/component.js', ['knockout', './view_model.js'], function (_export, _context) {
+System.register('app/info/component.js', ['knockout', './view.html!text', './view_model.js'], function (_export, _context) {
   "use strict";
 
-  var Knockout, ViewModel;
+  var Knockout, View, ViewModel;
   return {
     setters: [function (_knockout) {
       Knockout = _knockout.default;
+    }, function (_viewHtmlText) {
+      View = _viewHtmlText.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
     }],
@@ -4550,10 +4574,7 @@ System.register('app/info/component.js', ['knockout', './view_model.js'], functi
       (function () {
         'use strict';
 
-        Knockout.components.register('info', {
-          viewModel: ViewModel,
-          template: '\n      <div id="about" class="ui">\n        <h2 class="ui header">\n          <i class="info icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n          <a name="info"></a>\n        </h2>\n        <div class="ui grid container">\n          <div class="one column row">\n            <div class="column">\n              <h3 class="ui header">\n                Data Source\n              </h3>\n            </div>\n          </div>\n          <div class="one column row">\n            <div class="column"\n              <p>\n                This page is backed by <a href="https://data.nola.gov">\n                Data.NOLA.gov</a>\'s <a href="http://tinyurl.com/h2sq7du">\n                Stop and Search (Field Interviews)</a>. Thank you, NOPD, for\n                making this information public.\n              </p>\n\n              <p>\n                If you want to learn how to query the database yourself, check\n                out <a href="http://tinyurl.com/z9jjsjb">\n                their very helpful Socrata powered API docs</a>.\n              </p>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
-        });
+        Knockout.components.register('info', { template: View, viewModel: ViewModel });
 
         Knockout.cleanNode(document);
         Knockout.applyBindings();

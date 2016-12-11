@@ -1,4 +1,20 @@
 "bundle";
+System.register("app/optional_label/view.html!github:systemjs/plugin-text@0.0.9/text.js", [], function (_export, _context) {
+  "use strict";
+
+  var __useDefault;
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("__useDefault", __useDefault = true);
+
+      _export("__useDefault", __useDefault);
+
+      _export("default", "<!DOCTYPE html>\n<label data-bind=\"visible: textPresent(), text: text\">\n</label>\n");
+    }
+  };
+});
 System.register("app/optional_label/view_model.js", ["npm:systemjs-plugin-babel@0.0.16/babel-helpers/classCallCheck.js", "npm:systemjs-plugin-babel@0.0.16/babel-helpers/createClass.js", "knockout"], function (_export, _context) {
   "use strict";
 
@@ -38,13 +54,15 @@ System.register("app/optional_label/view_model.js", ["npm:systemjs-plugin-babel@
     }
   };
 });
-System.register('app/optional_label/component.js', ['knockout', './view_model.js'], function (_export, _context) {
+System.register('app/optional_label/component.js', ['knockout', './view.html!text', './view_model.js'], function (_export, _context) {
   "use strict";
 
-  var Knockout, ViewModel;
+  var Knockout, View, ViewModel;
   return {
     setters: [function (_knockout) {
       Knockout = _knockout.default;
+    }, function (_viewHtmlText) {
+      View = _viewHtmlText.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
     }],
@@ -53,14 +71,27 @@ System.register('app/optional_label/component.js', ['knockout', './view_model.js
       (function () {
         'use strict';
 
-        Knockout.components.register('optional_label', {
-          viewModel: ViewModel,
-          template: '\n      <label data-bind="visible: textPresent(), text: text">\n      </label>\n    '
-        });
+        Knockout.components.register('optional_label', { template: View, viewModel: ViewModel });
 
         Knockout.cleanNode(document);
         Knockout.applyBindings();
       })();
+    }
+  };
+});
+System.register("app/searchable_dropdown_selector/view.html!github:systemjs/plugin-text@0.0.9/text.js", [], function (_export, _context) {
+  "use strict";
+
+  var __useDefault;
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("__useDefault", __useDefault = true);
+
+      _export("__useDefault", __useDefault);
+
+      _export("default", "<!DOCTYPE html>\n<div class=\"ui field\">\n  <optional_label data-bind=\"visible: labelPresent()\"\n    params=\"text: label\">\n  </optional_label>\n  <div class=\"ui search selection dropdown\">\n    <input type=\"hidden\" data-bind=\"textInput: selectedOption\"/>\n    <i class=\"dropdown icon\"/>\n    <div class=\"default text\" data-bind=\"text: selectedOption\">\n    </div>\n    <div class=\"menu\" data-bind=\"foreach: options()\">\n      <div class=\"item\" data-bind=\"\n        attr: { 'data-value': value }, text: name\">\n      </div>\n    </div>\n  </div>\n</div>\n");
     }
   };
 });
@@ -10302,13 +10333,15 @@ System.register('app/searchable_dropdown_selector/view_model.js', ['npm:systemjs
     }
   };
 });
-System.register('app/searchable_dropdown_selector/component.js', ['../optional_label/component.js', 'knockout', './view_model.js'], function (_export, _context) {
+System.register('app/searchable_dropdown_selector/component.js', ['../optional_label/component.js', 'knockout', './view.html!text', './view_model.js'], function (_export, _context) {
   "use strict";
 
-  var Knockout, ViewModel;
+  var Knockout, View, ViewModel;
   return {
     setters: [function (_optional_labelComponentJs) {}, function (_knockout) {
       Knockout = _knockout.default;
+    }, function (_viewHtmlText) {
+      View = _viewHtmlText.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
     }],
@@ -10317,14 +10350,27 @@ System.register('app/searchable_dropdown_selector/component.js', ['../optional_l
       (function () {
         'use strict';
 
-        Knockout.components.register('searchable_dropdown_selector', {
-          viewModel: ViewModel,
-          template: '\n      <div class="ui field">\n        <optional_label data-bind="visible: labelPresent()"\n          params="text: label">\n        </optional_label>\n        <div class="ui search selection dropdown">\n          <input type="hidden" data-bind="textInput: selectedOption">\n          <i class="dropdown icon"/>\n          <div class="default text" data-bind="text: selectedOption">\n          </div>\n          <div class="menu" data-bind="foreach: options()">\n            <div class="item" data-bind="\n              attr: { \'data-value\': value }, text: name">\n            </div>\n          </div>\n        </div>\n      </div>\n    '
-        });
+        Knockout.components.register('searchable_dropdown_selector', { template: View, viewModel: ViewModel });
 
         Knockout.cleanNode(document);
         Knockout.applyBindings();
       })();
+    }
+  };
+});
+System.register("app/date_selector/view.html!github:systemjs/plugin-text@0.0.9/text.js", [], function (_export, _context) {
+  "use strict";
+
+  var __useDefault;
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("__useDefault", __useDefault = true);
+
+      _export("__useDefault", __useDefault);
+
+      _export("default", "<!DOCTYPE html>\n<searchable_dropdown_selector class=\"field\" params=\"\n  bindSelectedOptionTo: selectedYear,\n  bindOptionsTo: optionalYears,\n  defaultOption: defaultYear\n\">\n</searchable_dropdown_selector>\n<searchable_dropdown_selector class=\"field\" params=\"\n  bindSelectedOptionTo: selectedMonth,\n  bindOptionsTo: optionalMonths,\n  defaultOption: defaultMonth\n\">\n</searchable_dropdown_selector>\n<searchable_dropdown_selector class=\"field\" params=\"\n  bindSelectedOptionTo: selectedDay,\n  bindOptionsTo: optionalDays,\n  defaultOption: defaultDay\n\">\n</searchable_dropdown_selector>\n");
     }
   };
 });
@@ -10436,13 +10482,15 @@ System.register('app/date_selector/view_model.js', ['npm:systemjs-plugin-babel@0
     }
   };
 });
-System.register('app/date_selector/component.js', ['../searchable_dropdown_selector/component.js', 'knockout', './view_model.js'], function (_export, _context) {
+System.register('app/date_selector/component.js', ['../searchable_dropdown_selector/component.js', 'knockout', './view.html!text', './view_model.js'], function (_export, _context) {
   "use strict";
 
-  var Knockout, ViewModel;
+  var Knockout, View, ViewModel;
   return {
     setters: [function (_searchable_dropdown_selectorComponentJs) {}, function (_knockout) {
       Knockout = _knockout.default;
+    }, function (_viewHtmlText) {
+      View = _viewHtmlText.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
     }],
@@ -10451,14 +10499,27 @@ System.register('app/date_selector/component.js', ['../searchable_dropdown_selec
       (function () {
         'use strict';
 
-        Knockout.components.register('date_selector', {
-          viewModel: ViewModel,
-          template: '\n      <searchable_dropdown_selector class="field" params="\n        bindSelectedOptionTo: selectedYear,\n        bindOptionsTo: optionalYears,\n        defaultOption: defaultYear\n      ">\n      </searchable_dropdown_selector>\n      <searchable_dropdown_selector class="field" params="\n        bindSelectedOptionTo: selectedMonth,\n        bindOptionsTo: optionalMonths,\n        defaultOption: defaultMonth\n      ">\n      </searchable_dropdown_selector>\n      <searchable_dropdown_selector class="field" params="\n        bindSelectedOptionTo: selectedDay,\n        bindOptionsTo: optionalDays,\n        defaultOption: defaultDay\n      ">\n      </searchable_dropdown_selector>\n    '
-        });
+        Knockout.components.register('date_selector', { template: View, viewModel: ViewModel });
 
         Knockout.cleanNode(document);
         Knockout.applyBindings();
       })();
+    }
+  };
+});
+System.register("app/traffic_violations_grouped_by_vehicle/view.html!github:systemjs/plugin-text@0.0.9/text.js", [], function (_export, _context) {
+  "use strict";
+
+  var __useDefault;
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("__useDefault", __useDefault = true);
+
+      _export("__useDefault", __useDefault);
+
+      _export("default", "<!DOCTYPE html>\n<h2 class=\"ui header\">\n  <div class=\"content\" data-bind=\"text: title\"></div>\n</h2>\n\n<div id=\"results\" class=\"ui grid container\"\n  data-bind=\"foreach: result\">\n  <div class=\"row\">\n    <div class=\"one wide column\">\n    </div>\n    <div class=\"two wide column\">\n      <div class=\"ui horizontal statistic\">\n        <div class=\"value\" data-bind=\"text: count\"></div>\n        <div class=\"label\" data-bind=\"text: vehicleName\"></div>\n      </div>\n    </div>\n  </div>\n</div>\n");
     }
   };
 });
@@ -13971,6 +14032,11 @@ System.register('app/stop_and_search/request.js', ['npm:systemjs-plugin-babel@0.
             return this.response();
           }
         }, {
+          key: 'query',
+          value: function query() {
+            return uri().query();
+          }
+        }, {
           key: 'responseWrapper',
           value: function responseWrapper(response) {
             return response;
@@ -14209,13 +14275,15 @@ System.register('app/traffic_violations_grouped_by_vehicle/view_model.js', ['npm
     }
   };
 });
-System.register('app/traffic_violations_grouped_by_vehicle/component.js', ['knockout', './view_model.js'], function (_export, _context) {
+System.register('app/traffic_violations_grouped_by_vehicle/component.js', ['knockout', './view.html!text', './view_model.js'], function (_export, _context) {
   "use strict";
 
-  var Knockout, ViewModel;
+  var Knockout, View, ViewModel;
   return {
     setters: [function (_knockout) {
       Knockout = _knockout.default;
+    }, function (_viewHtmlText) {
+      View = _viewHtmlText.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
     }],
@@ -14224,14 +14292,33 @@ System.register('app/traffic_violations_grouped_by_vehicle/component.js', ['knoc
       (function () {
         'use strict';
 
-        Knockout.components.register('traffic_violations_grouped_by_vehicle', {
-          viewModel: ViewModel,
-          template: '\n      <h2 class="ui header">\n        <div class="content" data-bind="text: title"></div>\n      </h2>\n\n      <div id=\'results\' class="ui grid container"\n        data-bind="foreach: result">\n        <div class="row">\n          <div class="one wide column">\n          </div>\n          <div class="two wide column">\n            <div class="ui horizontal statistic">\n              <div class="value" data-bind="text: count"></div>\n              <div class="label" data-bind="text: vehicleName"></div>\n            </div>\n          </div>\n        </div>\n      </div>\n    '
-        });
+        Knockout.components.register('traffic_violations_grouped_by_vehicle', { template: View, viewModel: ViewModel });
 
         Knockout.cleanNode(document);
         Knockout.applyBindings();
       })();
+    }
+  };
+});
+System.registerDynamic("github:systemjs/plugin-text@0.0.9.json", [], false, function() {
+  return {
+    "main": "text"
+  };
+});
+
+System.register("app/traffic_stop_count_in_date_range/view.html!github:systemjs/plugin-text@0.0.9/text.js", [], function (_export, _context) {
+  "use strict";
+
+  var __useDefault;
+
+  return {
+    setters: [],
+    execute: function () {
+      _export("__useDefault", __useDefault = true);
+
+      _export("__useDefault", __useDefault);
+
+      _export("default", "<!DOCTYPE html>\n<div class=\"ui\">\n  <h2 class=\"ui header\">\n    <i class=\"car icon\"></i>\n    <div class=\"content\" data-bind=\"text: title()\"></div>\n    <a name=\"traffic_stop_count_in_date_range\"></a>\n  </h2>\n  <div class=\"ui grid container\">\n    <div class=\"ui column row\">\n      <div class=\"ten wide column\">\n        <div class=\"ui form\">\n          <div class=\"field\">\n            <label data-bind=\"text: startDateLabel()\"></label>\n            <date_selector class=\"fields\"\n              params=\"bindSelectedDateTo: startDate,\n                      defaultYear: defaultStartDateYear(),\n                      defaultMonth: defaultStartDateMonthName(),\n                      defaultDay: defaultStartDateDay(),\n                      optionalYears: optionalYears()\">\n            </date_selector>\n          </div>\n          <div class=\"field\">\n            <label data-bind=\"text: endDateLabel()\"></label>\n            <date_selector class=\"fields\"\n              params=\"bindSelectedDateTo: endDate,\n                      defaultYear: defaultEndDateYear(),\n                      defaultMonth: defaultEndDateMonthName(),\n                      defaultDay: defaultEndDateDay(),\n                      optionalYears: optionalYears()\">\n            </date_selector>\n          </div>\n        </div>\n      </div>\n      <div class=\"middle aligned center aligned six wide column\">\n        <div class=\"ui huge horizontal statistic\">\n          <div class=\"value\" data-bind=\"text: count\"></div>\n          <div class=\"label\">Total</div>\n        </div>\n      </div>\n    </div>\n    <traffic_violations_grouped_by_vehicle class=\"ui row\"\n      params=\"bindStartDateTo: startDate, bindEndDateTo: endDate\">\n    </traffic_violations_grouped_by_vehicle>\n  </div>\n</div>\n");
     }
   };
 });
@@ -29428,13 +29515,15 @@ System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:syst
     }
   };
 });
-System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_selector/component.js', '../traffic_violations_grouped_by_vehicle/component.js', 'knockout', './view_model.js'], function (_export, _context) {
+System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_selector/component.js', '../traffic_violations_grouped_by_vehicle/component.js', 'knockout', './view.html!text', './view_model.js'], function (_export, _context) {
   "use strict";
 
-  var Knockout, ViewModel;
+  var Knockout, View, ViewModel;
   return {
     setters: [function (_date_selectorComponentJs) {}, function (_traffic_violations_grouped_by_vehicleComponentJs) {}, function (_knockout) {
       Knockout = _knockout.default;
+    }, function (_viewHtmlText) {
+      View = _viewHtmlText.default;
     }, function (_view_modelJs) {
       ViewModel = _view_modelJs.default;
     }],
@@ -29443,10 +29532,7 @@ System.register('app/traffic_stop_count_in_date_range/component.js', ['../date_s
       (function () {
         'use strict';
 
-        Knockout.components.register('traffic_stop_count_in_date_range', {
-          viewModel: ViewModel,
-          template: '\n      <div class="ui">\n        <h2 class="ui header">\n          <i class="car icon"></i>\n          <div class="content" data-bind="text: title()"></div>\n          <a name="traffic_stop_count_in_date_range"></a>\n        </h2>\n        <div class="ui grid container">\n          <div class="ui column row">\n            <div class="ten wide column">\n              <div class="ui form">\n                <div class="field">\n                  <label data-bind="text: startDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: startDate,\n                            defaultYear: defaultStartDateYear(),\n                            defaultMonth: defaultStartDateMonthName(),\n                            defaultDay: defaultStartDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n                <div class="field">\n                  <label data-bind="text: endDateLabel()"></label>\n                  <date_selector class="fields"\n                    params="bindSelectedDateTo: endDate,\n                            defaultYear: defaultEndDateYear(),\n                            defaultMonth: defaultEndDateMonthName(),\n                            defaultDay: defaultEndDateDay(),\n                            optionalYears: optionalYears()">\n                  </date_selector>\n                </div>\n              </div>\n            </div>\n            <div class="middle aligned center aligned six wide column">\n              <div class="ui huge horizontal statistic">\n                <div class="value" data-bind="text: count"></div>\n                <div class="label">Total</div>\n              </div>\n            </div>\n          </div>\n            <traffic_violations_grouped_by_vehicle class="ui row"\n              params="bindStartDateTo: startDate, bindEndDateTo: endDate">\n            </traffic_violations_grouped_by_vehicle>\n          </div>\n        </div>\n      </div>\n    '
-        });
+        Knockout.components.register('traffic_stop_count_in_date_range', { template: View, viewModel: ViewModel });
 
         Knockout.cleanNode(document);
         Knockout.applyBindings();
