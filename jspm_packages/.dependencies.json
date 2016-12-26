@@ -32,10 +32,6 @@
     "deps": {},
     "peerDeps": {}
   },
-  "npm:knockout@3.4.0": {
-    "deps": {},
-    "peerDeps": {}
-  },
   "npm:core-js@2.4.1": {
     "deps": {},
     "peerDeps": {
@@ -92,6 +88,10 @@
     "peerDeps": {}
   },
   "github:systemjs/plugin-text@0.0.9": {
+    "deps": {},
+    "peerDeps": {}
+  },
+  "npm:knockout@3.4.1": {
     "deps": {},
     "peerDeps": {}
   }

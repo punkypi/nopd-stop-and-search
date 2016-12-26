@@ -47,7 +47,7 @@ SystemJS.config({
     "fs": "github:jspm/nodelibs-fs@0.2.0-alpha",
     "immutable": "npm:immutable@3.8.1",
     "jquery": "npm:jquery@3.1.1",
-    "knockout": "npm:knockout@3.4.0",
+    "knockout": "npm:knockout@3.4.1",
     "moment": "npm:moment@2.15.0",
     "path": "github:jspm/nodelibs-path@0.2.0-alpha",
     "process": "github:jspm/nodelibs-process@0.2.0-alpha",
@@ -65,9 +65,6 @@ SystemJS.config({
         "css": "github:systemjs/plugin-css@0.1.31",
         "jquery": "npm:jquery@2.2.4"
       }
-    },
-    "npm:knockout@3.4.0": {
-      "map": {}
     },
     "npm:semantic-ui-css@2.2.4": {
       "map": {

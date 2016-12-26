@@ -14034,7 +14034,7 @@ System.register('app/stop_and_search/request.js', ['npm:systemjs-plugin-babel@0.
         }, {
           key: 'query',
           value: function query() {
-            return uri().query();
+            return this.uri().query();
           }
         }, {
           key: 'responseWrapper',
@@ -14325,7 +14325,7 @@ System.register("app/traffic_stop_count_in_date_range/view.html!github:systemjs/
     }
   };
 });
-System.registerDynamic("npm:knockout@3.4.0.json", [], false, function() {
+System.registerDynamic("npm:knockout@3.4.1.json", [], false, function() {
   return {
     "main": "build/output/knockout-latest.debug.js",
     "format": "cjs",
@@ -14352,7 +14352,7 @@ var define = System.amdDefine;
         JSON = window["JSON"];
     (function(factory) {
       if (typeof define === 'function' && define['amd']) {
-        define("npm:knockout@3.4.0/build/output/knockout-latest.debug.js", ["exports", "require"], factory);
+        define("npm:knockout@3.4.1/build/output/knockout-latest.debug.js", ["exports", "require"], factory);
       } else if (typeof exports === 'object' && typeof module === 'object') {
         factory(module['exports'] || exports);
       } else {
@@ -14370,7 +14370,7 @@ var define = System.amdDefine;
       ko.exportProperty = function(owner, publicName, object) {
         owner[publicName] = object;
       };
-      ko.version = "3.4.0";
+      ko.version = "3.4.1";
       ko.exportSymbol('version', ko.version);
       ko.options = {
         'deferUpdates': false,
@@ -15718,6 +15718,7 @@ var define = System.amdDefine;
             cachedDiff = null,
             arrayChangeSubscription,
             pendingNotifications = 0,
+            underlyingNotifySubscribersFunction,
             underlyingBeforeSubscriptionAddFunction = target.beforeSubscriptionAdd,
             underlyingAfterSubscriptionRemoveFunction = target.afterSubscriptionRemove;
         target.beforeSubscriptionAdd = function(event) {
@@ -15731,6 +15732,10 @@ var define = System.amdDefine;
           if (underlyingAfterSubscriptionRemoveFunction)
             underlyingAfterSubscriptionRemoveFunction.call(target, event);
           if (event === arrayChangeEventName && !target.hasSubscriptionsForEvent(arrayChangeEventName)) {
+            if (underlyingNotifySubscribersFunction) {
+              target['notifySubscribers'] = underlyingNotifySubscribersFunction;
+              underlyingNotifySubscribersFunction = undefined;
+            }
             arrayChangeSubscription.dispose();
             trackingChanges = false;
           }
@@ -15740,7 +15745,7 @@ var define = System.amdDefine;
             return;
           }
           trackingChanges = true;
-          var underlyingNotifySubscribersFunction = target['notifySubscribers'];
+          underlyingNotifySubscribersFunction = target['notifySubscribers'];
           target['notifySubscribers'] = function(valueToNotify, event) {
             if (!event || event === defaultEvent) {
               ++pendingNotifications;
@@ -15991,7 +15996,8 @@ var define = System.amdDefine;
         evaluateImmediate: function(notifyChange) {
           var computedObservable = this,
               state = computedObservable[computedState],
-              disposeWhen = state.disposeWhen;
+              disposeWhen = state.disposeWhen,
+              changed = false;
           if (state.isBeingEvaluated) {
             return;
           }
@@ -16008,17 +16014,19 @@ var define = System.amdDefine;
           }
           state.isBeingEvaluated = true;
           try {
-            this.evaluateImmediate_CallReadWithDependencyDetection(notifyChange);
+            changed = this.evaluateImmediate_CallReadWithDependencyDetection(notifyChange);
           } finally {
             state.isBeingEvaluated = false;
           }
           if (!state.dependenciesCount) {
             computedObservable.dispose();
           }
+          return changed;
         },
         evaluateImmediate_CallReadWithDependencyDetection: function(notifyChange) {
           var computedObservable = this,
-              state = computedObservable[computedState];
+              state = computedObservable[computedState],
+              changed = false;
           var isInitial = state.pure ? undefined : !state.dependenciesCount,
               dependencyDetectionContext = {
                 computedObservable: computedObservable,
@@ -16039,15 +16047,19 @@ var define = System.amdDefine;
               computedObservable["notifySubscribers"](state.latestValue, "beforeChange");
             }
             state.latestValue = newValue;
+            if (DEBUG)
+              computedObservable._latestValue = newValue;
             if (state.isSleeping) {
               computedObservable.updateVersion();
             } else if (notifyChange) {
               computedObservable["notifySubscribers"](state.latestValue);
             }
+            changed = true;
           }
           if (isInitial) {
             computedObservable["notifySubscribers"](state.latestValue, "awake");
           }
+          return changed;
         },
         evaluateImmediate_CallReadThenEndDependencyDetection: function(state, dependencyDetectionContext) {
           try {
@@ -16105,7 +16117,9 @@ var define = System.amdDefine;
               state.dependencyTracking = null;
               state.dependenciesCount = 0;
               state.isStale = true;
-              computedObservable.evaluateImmediate();
+              if (computedObservable.evaluateImmediate()) {
+                computedObservable.updateVersion();
+              }
             } else {
               var dependeciesOrder = [];
               ko.utils.objectForEach(state.dependencyTracking, function(id, dependency) {
@@ -16683,7 +16697,7 @@ var define = System.amdDefine;
         ko['getBindingHandler'] = function(bindingKey) {
           return ko.bindingHandlers[bindingKey];
         };
-        ko.bindingContext = function(dataItemOrAccessor, parentContext, dataItemAlias, extendCallback) {
+        ko.bindingContext = function(dataItemOrAccessor, parentContext, dataItemAlias, extendCallback, options) {
           function updateContext() {
             var dataItemOrObservable = isFunc ? dataItemOrAccessor() : dataItemOrAccessor,
                 dataItem = ko.utils.unwrapObservable(dataItemOrObservable);
@@ -16691,9 +16705,7 @@ var define = System.amdDefine;
               if (parentContext._subscribable)
                 parentContext._subscribable();
               ko.utils.extend(self, parentContext);
-              if (subscribable) {
-                self._subscribable = subscribable;
-              }
+              self._subscribable = subscribable;
             } else {
               self['$parents'] = [];
               self['$root'] = dataItem;
@@ -16713,27 +16725,32 @@ var define = System.amdDefine;
           var self = this,
               isFunc = typeof(dataItemOrAccessor) == "function" && !ko.isObservable(dataItemOrAccessor),
               nodes,
-              subscribable = ko.dependentObservable(updateContext, null, {
-                disposeWhen: disposeWhen,
-                disposeWhenNodeIsRemoved: true
-              });
-          if (subscribable.isActive()) {
-            self._subscribable = subscribable;
-            subscribable['equalityComparer'] = null;
-            nodes = [];
-            subscribable._addNode = function(node) {
-              nodes.push(node);
-              ko.utils.domNodeDisposal.addDisposeCallback(node, function(node) {
-                ko.utils.arrayRemoveItem(nodes, node);
-                if (!nodes.length) {
-                  subscribable.dispose();
-                  self._subscribable = subscribable = undefined;
-                }
-              });
-            };
+              subscribable;
+          if (options && options['exportDependencies']) {
+            updateContext();
+          } else {
+            subscribable = ko.dependentObservable(updateContext, null, {
+              disposeWhen: disposeWhen,
+              disposeWhenNodeIsRemoved: true
+            });
+            if (subscribable.isActive()) {
+              self._subscribable = subscribable;
+              subscribable['equalityComparer'] = null;
+              nodes = [];
+              subscribable._addNode = function(node) {
+                nodes.push(node);
+                ko.utils.domNodeDisposal.addDisposeCallback(node, function(node) {
+                  ko.utils.arrayRemoveItem(nodes, node);
+                  if (!nodes.length) {
+                    subscribable.dispose();
+                    self._subscribable = subscribable = undefined;
+                  }
+                });
+              };
+            }
           }
         };
-        ko.bindingContext.prototype['createChildContext'] = function(dataItemOrAccessor, dataItemAlias, extendCallback) {
+        ko.bindingContext.prototype['createChildContext'] = function(dataItemOrAccessor, dataItemAlias, extendCallback, options) {
           return new ko.bindingContext(dataItemOrAccessor, this, dataItemAlias, function(self, parentContext) {
             self['$parentContext'] = parentContext;
             self['$parent'] = parentContext['$data'];
@@ -16741,13 +16758,16 @@ var define = System.amdDefine;
             self['$parents'].unshift(self['$parent']);
             if (extendCallback)
               extendCallback(self);
-          });
+          }, options);
         };
         ko.bindingContext.prototype['extend'] = function(properties) {
           return new ko.bindingContext(this._subscribable || this['$data'], this, null, function(self, parentContext) {
             self['$rawData'] = parentContext['$rawData'];
             ko.utils.extend(self, typeof(properties) == "function" ? properties() : properties);
           });
+        };
+        ko.bindingContext.prototype.createStaticChildContext = function(dataItemOrAccessor, dataItemAlias) {
+          return this['createChildContext'](dataItemOrAccessor, dataItemAlias, null, {"exportDependencies": true});
         };
         function makeValueAccessor(value) {
           return function() {
@@ -17647,7 +17667,8 @@ var define = System.amdDefine;
             var didDisplayOnLastUpdate,
                 savedNodes;
             ko.computed(function() {
-              var dataValue = ko.utils.unwrapObservable(valueAccessor()),
+              var rawValue = valueAccessor(),
+                  dataValue = ko.utils.unwrapObservable(rawValue),
                   shouldDisplay = !isNot !== !dataValue,
                   isFirstRender = !savedNodes,
                   needsRefresh = isFirstRender || isWith || (shouldDisplay !== didDisplayOnLastUpdate);
@@ -17659,7 +17680,7 @@ var define = System.amdDefine;
                   if (!isFirstRender) {
                     ko.virtualElements.setDomNodeChildren(element, ko.utils.cloneNodes(savedNodes));
                   }
-                  ko.applyBindingsToDescendants(makeContextCallback ? makeContextCallback(bindingContext, dataValue) : bindingContext, element);
+                  ko.applyBindingsToDescendants(makeContextCallback ? makeContextCallback(bindingContext, rawValue) : bindingContext, element);
                 } else {
                   ko.virtualElements.emptyNode(element);
                 }
@@ -17674,7 +17695,7 @@ var define = System.amdDefine;
       makeWithIfBinding('if');
       makeWithIfBinding('ifnot', false, true);
       makeWithIfBinding('with', true, false, function(bindingContext, dataValue) {
-        return bindingContext['createChildContext'](dataValue);
+        return bindingContext.createStaticChildContext(dataValue);
       });
       var captionPlaceholder = {};
       ko.bindingHandlers['options'] = {
@@ -18339,7 +18360,7 @@ var define = System.amdDefine;
             };
             var activelyDisposeWhenNodeIsRemoved = (firstTargetNode && renderMode == "replaceNode") ? firstTargetNode.parentNode : firstTargetNode;
             return ko.dependentObservable(function() {
-              var bindingContext = (dataOrBindingContext && (dataOrBindingContext instanceof ko.bindingContext)) ? dataOrBindingContext : new ko.bindingContext(ko.utils.unwrapObservable(dataOrBindingContext));
+              var bindingContext = (dataOrBindingContext && (dataOrBindingContext instanceof ko.bindingContext)) ? dataOrBindingContext : new ko.bindingContext(dataOrBindingContext, null, null, null, {"exportDependencies": true});
               var templateName = resolveTemplateName(template, bindingContext['$data'], bindingContext),
                   renderedNodesArray = executeTemplate(targetNodeOrNodeArray, renderMode, templateName, bindingContext, options);
               if (renderMode == "replaceNode") {
@@ -18409,7 +18430,6 @@ var define = System.amdDefine;
           },
           'update': function(element, valueAccessor, allBindings, viewModel, bindingContext) {
             var value = valueAccessor(),
-                dataValue,
                 options = ko.utils.unwrapObservable(value),
                 shouldDisplay = true,
                 templateComputed = null,
@@ -18423,7 +18443,6 @@ var define = System.amdDefine;
                 shouldDisplay = ko.utils.unwrapObservable(options['if']);
               if (shouldDisplay && 'ifnot' in options)
                 shouldDisplay = !ko.utils.unwrapObservable(options['ifnot']);
-              dataValue = ko.utils.unwrapObservable(options['data']);
             }
             if ('foreach' in options) {
               var dataArray = (shouldDisplay && options['foreach']) || [];
@@ -18431,7 +18450,7 @@ var define = System.amdDefine;
             } else if (!shouldDisplay) {
               ko.virtualElements.emptyNode(element);
             } else {
-              var innerBindingContext = ('data' in options) ? bindingContext['createChildContext'](dataValue, options['as']) : bindingContext;
+              var innerBindingContext = ('data' in options) ? bindingContext.createStaticChildContext(options['data'], options['as']) : bindingContext;
               templateComputed = ko.renderTemplate(templateName || element, innerBindingContext, options, element);
             }
             disposeOldComputedAndStoreNewOne(element, templateComputed);
