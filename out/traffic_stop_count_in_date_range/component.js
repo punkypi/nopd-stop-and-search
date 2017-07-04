@@ -29516,7 +29516,7 @@ System.register('app/traffic_stop_count_in_date_range/view_model.js', ['npm:syst
         }, {
           key: 'optionalYears',
           value: function optionalYears() {
-            return [2011, 2012, 2013, 2014, 2015, 2016];
+            return [2011, 2012, 2013, 2014, 2015, 2016, 2017];
           }
         }, {
           key: 'startDateLabel',
