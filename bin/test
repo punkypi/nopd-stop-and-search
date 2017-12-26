@@ -1,0 +1,3 @@
+#!/bin/bash
+htmlhint index.html app
+jshint app

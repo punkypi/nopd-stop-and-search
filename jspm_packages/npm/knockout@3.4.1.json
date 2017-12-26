@@ -1,0 +1,12 @@
+{
+  "main": "build/output/knockout-latest.debug.js",
+  "format": "cjs",
+  "meta": {
+    "*.json": {
+      "format": "json"
+    },
+    "build/*": {
+      "format": "amd"
+    }
+  }
+}

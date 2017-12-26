@@ -1,0 +1,1 @@
+module.exports = require("npm:semantic-ui-transition@2.2.3/index");

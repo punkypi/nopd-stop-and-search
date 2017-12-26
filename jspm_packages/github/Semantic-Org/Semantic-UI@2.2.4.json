@@ -1,0 +1,13 @@
+{
+  "main": "semantic",
+  "meta": {
+    "semantic.js": {
+      "deps": [
+        "jquery",
+        "./semantic.css!"
+      ],
+      "exports": "$",
+      "format": "global"
+    }
+  }
+}

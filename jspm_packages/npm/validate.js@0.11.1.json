@@ -1,0 +1,12 @@
+{
+  "main": "validate.js",
+  "format": "cjs",
+  "meta": {
+    "*.json": {
+      "format": "json"
+    },
+    "specs/vendor/promise-1.0.0.min.js": {
+      "format": "amd"
+    }
+  }
+}
