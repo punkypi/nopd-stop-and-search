@@ -1,1 +1,0 @@
-module.exports = require("npm:semantic-ui-dropdown@2.2.3/index");

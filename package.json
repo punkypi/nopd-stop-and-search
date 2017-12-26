@@ -1,88 +1,33 @@
 {
   "name": "stop_and_search",
-  "version": "0.0.0",
-  "description": "My tinkering with the https://data.nola.gov/resource/nfft-hjwi data set.",
-  "main": "stop_and_search.js",
-  "scripts": {
-    "test": "./bin/test"
+  "homepage": "http://punkypi.github.io/stop_and_search",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@blueprintjs/datetime": "^1.24.0",
+    "es6-error": "^4.0.2",
+    "immutable": "^3.8.2",
+    "moment": "^2.19.1",
+    "normalize.css": "^7.0.0",
+    "react": "^16.0.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.0.0",
+    "react-scripts": "1.0.14",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.75.1",
+    "soda-js": "^0.2.3",
+    "urijs": "^1.19.0",
+    "validate.js": "^0.12.0"
   },
-  "keywords": [],
-  "author": "punkypi",
-  "license": "GPL-3.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/punkypi/stop_and_search.git"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "express": "^4.14.0",
-    "htmlhint": "^0.9.13",
-    "jshint": "^2.9.3",
-    "jspm": "^0.17.0-beta.29"
-  },
-  "jspm": {
-    "dependencies": {
-      "core-js": "npm:core-js@^2.4.1",
-      "es6-error": "npm:es6-error@^4.0.0",
-      "immutable": "npm:immutable@^3.8.1",
-      "jquery": "npm:jquery@^3.1.1",
-      "knockout": "npm:knockout@^3.4.0",
-      "moment": "npm:moment@^2.15.0",
-      "semantic-ui": "github:Semantic-Org/Semantic-UI@^2.2.4",
-      "semantic-ui-css": "npm:semantic-ui-css@^2.2.4",
-      "semantic-ui-dropdown": "npm:semantic-ui-dropdown@^2.2.3",
-      "semantic-ui-transition": "npm:semantic-ui-transition@^2.2.3",
-      "text": "github:systemjs/plugin-text@^0.0.9",
-      "uri": "github:medialize/URI.js@^1.18.1",
-      "validate.js": "npm:validate.js@^0.11.1"
-    },
-    "devDependencies": {
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.16"
-    },
-    "peerDependencies": {
-      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
-      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
-      "process": "github:jspm/nodelibs-process@^0.2.0-alpha"
-    },
-    "overrides": {
-      "github:Semantic-Org/Semantic-UI@2.2.4": {
-        "directories": {
-          "lib": "dist"
-        },
-        "main": "semantic",
-        "registry": "jspm",
-        "dependencies": {
-          "jquery": "^2.1.4",
-          "css": "*"
-        },
-        "peerDependencies": {},
-        "meta": {
-          "semantic.js": {
-            "deps": [
-              "jquery",
-              "./semantic.css!"
-            ],
-            "exports": "$",
-            "format": "global"
-          }
-        }
-      },
-      "npm:babel-runtime@5.8.38": {
-        "main": false,
-        "dependencies": {},
-        "optionalDependencies": {
-          "core-js": "^1.2.0"
-        }
-      },
-      "npm:jquery@2.2.4": {
-        "format": "amd"
-      },
-      "npm:jquery@3.1.1": {
-        "format": "amd"
-      },
-      "npm:moment@2.15.0": {
-        "jspmNodeConversion": false
-      }
-    }
+    "gh-pages": "^1.1.0"
   }
 }
