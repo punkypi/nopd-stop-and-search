@@ -1,3 +1,4 @@
+import NullLabel from './NullLabel'
 import React, { Component } from 'react'
 import { Container, Statistic } from 'semantic-ui-react'
 
@@ -37,10 +38,7 @@ export default class VehicleGroupStatistic extends Component {
         </Container>)
     }
     else {
-      return(
-        <Container textAlign='left'>
-          NOT PROVIDED
-        </Container>)
+      return(<NullLabel/>)
     }
   }
 
