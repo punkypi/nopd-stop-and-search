@@ -14,6 +14,7 @@ export default class App extends Component {
         <Grid.Row>
           <Grid.Column>
             <AppHeader/>
+            <br/>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>

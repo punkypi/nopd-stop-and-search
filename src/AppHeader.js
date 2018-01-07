@@ -1,11 +1,12 @@
 import 'semantic-ui-css/semantic.min.css'
 import React, { Component } from 'react'
-import { Header } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 
 export default class AppHeader extends Component {
   render() {
     return(
-      <Header as='h1' className='AppHeader'
-        content='NOLA Stop and Search Data'/>)
+      <Menu className='AppHeader' fixed='top' inverted>
+        <Menu.Item content='NOLA Stop and Search Data' header/>
+      </Menu>)
   }
 }
