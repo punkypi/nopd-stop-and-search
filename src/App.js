@@ -3,6 +3,7 @@ import 'semantic-ui-css/semantic.min.css'
 import './App.css'
 import React, { Component } from 'react'
 import { Grid } from 'semantic-ui-react'
+import AboutUs from './AboutUs'
 import AppBody from './AppBody.js'
 import AppHeader from './AppHeader.js'
 import AppFooter from './AppFooter.js'
@@ -16,11 +17,9 @@ export default class App extends Component {
         <AppBody>
           <TrafficViolations/>
         </AppBody>
-        <Grid.Row>
-          <Grid.Column>
-            <AppFooter/>
-          </Grid.Column>
-        </Grid.Row>
+        <AppFooter>
+          <AboutUs/>
+        </AppFooter>
       </Grid>
     )
   }
