@@ -11,7 +11,7 @@ export default class AppHeader extends Component {
   render() {
     return(
       <div id='about_us' className='ui'>
-        <Header as='h2' content={ this.title } icon='info'/>
+        <Header as='h2' content={ this.props.title } icon='info'/>
         <Grid container>
           <Grid.Row columns={1}>
             <Grid.Column>
