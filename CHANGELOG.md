@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.2] - 2018-01-15
+### Fixed
+- Bug causing `TrafficViolations`' `DateRangeForm` to overlap with
+  the "total" statistic.
+
 ## [1.9.1] - 2018-01-14
 ### Fixed
 - Incorrect reference to `this.title` in `AboutUs`, now `this.props.title`.

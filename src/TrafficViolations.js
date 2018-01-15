@@ -60,11 +60,11 @@ export default class TrafficViolations extends Component {
         <Header as='h2' content='Traffic Violations' icon='car'/>
         <Grid container stackable>
           <Grid.Row>
-            <Grid.Column width={4}>
+            <Grid.Column computer={6} largeScreen={4} tablet={8}>
               <DateRangeForm startDate={this.startDate} endDate={this.endDate}
                 onChange={this.onDateRangeChange} />
             </Grid.Column>
-            <Grid.Column textAlign='center' verticalAlign='middle' width={6}>
+            <Grid.Column computer={6} largeScreen={6} tablet={6} textAlign='center' verticalAlign='middle'>
               <div className='ui huge horizontal statistic'>
                 <div className='value'>{this.count}</div>
                 <div className='label'>Total</div>
