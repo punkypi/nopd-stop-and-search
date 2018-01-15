@@ -2,11 +2,12 @@ import 'semantic-ui-css/semantic.min.css'
 import React, { Component } from 'react'
 import { Grid, Header } from 'semantic-ui-react'
 
+// Information on the data source this app uses.
 export default class AppHeader extends Component {
   render() {
     return(
       <div id='about_us' className='ui'>
-        <Header as='h2' content='Info' icon='info'/>
+        <Header as='h2' content={ this.props.title } icon='info'/>
         <Grid container>
           <Grid.Row columns={1}>
             <Grid.Column>
