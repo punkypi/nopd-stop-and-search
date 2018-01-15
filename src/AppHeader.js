@@ -7,6 +7,7 @@ export default class AppHeader extends Component {
     return(
       <Menu className='AppHeader' fixed='top' inverted>
         <Menu.Item content='NOLA Stop and Search Data' header/>
+        { this.props.children }
       </Menu>)
   }
 }
