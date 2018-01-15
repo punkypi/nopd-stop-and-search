@@ -1,9 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "NOLA SAS",
+  "name": "NOLA Stop and Search Data",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "fleur_de_lis_blue.ico",
       "sizes": "192x192",
       "type": "image/png"
     }

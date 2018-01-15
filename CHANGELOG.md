@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2018-01-15
+### Changed
+- `public/manifest.json` `"short_name"` now `"NOLA SAS"`.
+- `public/manifest.json` `"name"` now `"NOLA Stop and Search Data"`.
+### Fixed
+- `public/manifest.json` `192x192` icon now `fleur_de_lis_blue.ico`.
+### Removed
+- Starter `create-recate-app` doc-comments in `public/index.html`.
+
 ## [1.9.3] - 2018-01-15
 ### Fixed
 - `VehicleGroupStatistics` columns overlapping at different screen sizes.
