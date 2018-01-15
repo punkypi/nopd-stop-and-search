@@ -11,12 +11,7 @@ export default class App extends Component {
   render() {
     return(
       <Grid container>
-        <Grid.Row>
-          <Grid.Column>
-            <AppHeader/>
-            <br/>
-          </Grid.Column>
-        </Grid.Row>
+        <AppHeader title='NOLA Stop and Search Data'/>
         <Grid.Row>
           <Grid.Column>
             <AppBody/>
