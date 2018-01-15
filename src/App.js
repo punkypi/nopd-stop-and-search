@@ -13,7 +13,7 @@ export default class App extends Component {
   render() {
     return(
       <Grid container>
-        <AppHeader title='NOLA Stop and Search Data'/>
+        <AppHeader/>
         <AppBody>
           <TrafficViolations/>
         </AppBody>
