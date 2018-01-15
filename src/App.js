@@ -6,17 +6,16 @@ import { Grid } from 'semantic-ui-react'
 import AppBody from './AppBody.js'
 import AppHeader from './AppHeader.js'
 import AppFooter from './AppFooter.js'
+import TrafficViolations from './TrafficViolations.js'
 
 export default class App extends Component {
   render() {
     return(
       <Grid container>
         <AppHeader title='NOLA Stop and Search Data'/>
-        <Grid.Row>
-          <Grid.Column>
-            <AppBody/>
-          </Grid.Column>
-        </Grid.Row>
+        <AppBody>
+          <TrafficViolations/>
+        </AppBody>
         <Grid.Row>
           <Grid.Column>
             <AppFooter/>

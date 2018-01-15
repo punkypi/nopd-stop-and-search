@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
-import TrafficViolations from './TrafficViolations.js'
+import { Grid } from 'semantic-ui-react'
 
 export default class AppBody extends Component {
   render() {
-    return(<TrafficViolations/>)
+    return(
+      <Grid.Row>
+        <Grid.Column>
+          { this.props.children }
+        </Grid.Column>
+      </Grid.Row>)
   }
 }
