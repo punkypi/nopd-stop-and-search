@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2018-01-27
+### Added
+- `App.defaultProps`.
+- `App.propTypes`.
+- `App#endDate`, for an app-wide end date.
+- `App#onDateRangeChange`, for when the user updates the app's date range.
+- `App#startDate`, for an app-wide start date.
+- `DateRangeFiler.js`, for menu-embeded date range forms.
+- `src/TextColors.css` for `color` styling shortcuts.
+### Changed
+- `AppHeader` is now `stackable` and wraps its children in `stackable`
+  `Menu.Item` tags.
+- `TrafficViolations` now does not manage internal date range state and updates
+  its traffic information when its date range via props changes.
+
 ## [1.10.0] - 2018-01-15
 ### Changed
 - `public/manifest.json` `"short_name"` now `"NOLA SAS"`.

@@ -1,40 +1,42 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Container, Grid, Header } from 'semantic-ui-react'
 import Date from './Date'
-import DateRangeForm from './DateRangeForm'
 import TVCountInRangeRequest from './TrafficViolationCountInRangeRequest'
 import TVVehicleGroupsInRangeRequest from
   './TrafficViolationVehicleGroupsInRangeRequest'
+import VehicleGroup from './VehicleGroup'
 import VehicleGroupStatistics from './VehicleGroupStatistics'
 
 export default class TrafficViolations extends Component {
+  static defaultProps = {
+    count: '...',
+    endDate: Date.now(),
+    startDate: Date.startOfMonth(),
+    vehicleGroups: []
+  }
+
+  static propTypes = {
+    count: PropTypes.string,
+    endDate: PropTypes.instanceOf(Date).isRequired,
+    startDate: PropTypes.instanceOf(Date).isRequired,
+    vehicleGroups: PropTypes.arrayOf(PropTypes.instanceOf(VehicleGroup))
+  }
+
   constructor(props) {
     super(props)
-    this.state = {
-      count: '...', endDate: Date.now(), startDate: Date.startOfMonth(),
-      vehicleGroups: [] }
-    this.updateInfo(this.startDate, this.endDate)
+    this.state = { count: props.count, vehicleGroups: props.vehicleGroups }
+    this.updateInfo(props.startDate, props.endDate)
+  }
+
+  // (see https://tinyurl.com/y93edy52)
+  componentWillReceiveProps(newProps) {
+    this.updateInfo(newProps.startDate, newProps.endDate)
   }
 
   get count() {
-    if (!this.startDate || !this.endDate) { return '...' }
+    if (!this.props.startDate || !this.props.endDate) { return '...' }
     return this.state.count
-  }
-
-  get endDate() {
-    return this.state.endDate
-  }
-
-  // Needs to be binded to `this`
-  // (see https://reactjs.org/docs/handling-events.html).
-  onDateRangeChange = (selectedRange) => {
-    const [newStartDate, newEndDate] = selectedRange
-    this.updateInfo(newStartDate, newEndDate)
-    this.setState({ endDate: newEndDate, startDate: newStartDate })
-  }
-
-  get startDate() {
-    return this.state.startDate
   }
 
   updateInfo(startDate, endDate) {
@@ -55,23 +57,21 @@ export default class TrafficViolations extends Component {
   }
 
   render() {
+    const count = this.count
+    const vehicleGroups = this.vehicleGroups
     return(
       <Container className='TrafficViolations'>
         <Header as='h2' content='Traffic Violations' icon='car'/>
         <Grid container stackable>
           <Grid.Row>
-            <Grid.Column computer={6} largeScreen={4} tablet={8}>
-              <DateRangeForm startDate={this.startDate} endDate={this.endDate}
-                onChange={this.onDateRangeChange} />
-            </Grid.Column>
-            <Grid.Column computer={6} largeScreen={6} tablet={6} textAlign='center' verticalAlign='middle'>
+            <Grid.Column textAlign='center' verticalAlign='middle'>
               <div className='ui huge horizontal statistic'>
-                <div className='value'>{this.count}</div>
+                <div className='value'>{count}</div>
                 <div className='label'>Total</div>
               </div>
             </Grid.Column>
           </Grid.Row>
-          <VehicleGroupStatistics vehicleGroups={this.vehicleGroups}/>
+          <VehicleGroupStatistics vehicleGroups={vehicleGroups}/>
         </Grid>
       </Container>)
   }

@@ -1,7 +1,7 @@
 import 'semantic-ui-css/semantic.min.css'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Grid, Menu } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 
 export default class AppHeader extends Component {
   static defaultProps = { title: 'NOLA Stop and Search Data' }
@@ -9,15 +9,11 @@ export default class AppHeader extends Component {
 
   render() {
     return(
-      <Grid.Row>
-        <Grid.Column>
-          <Menu className='AppHeader' fixed='top' inverted>
-            <Menu.Item content={ this.props.title } header/>
-            { this.props.children }
-          </Menu>
-          <br/>
-        </Grid.Column>
-      </Grid.Row>
+      <Menu className='AppHeader' inverted stackable>
+        <Menu.Item content={ this.props.title } header/>
+        { React.Children.map(this.props.children,
+          (child, i) => (<Menu.Item content={ child } />)) }
+      </Menu>
     )
   }
 }
