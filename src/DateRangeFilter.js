@@ -1,13 +1,14 @@
 import '@blueprintjs/core/dist/blueprint.css'
 import '@blueprintjs/datetime/dist/blueprint-datetime.css'
 import 'react-addons-css-transition-group'
+import './DateRangeFilter.css'
 import './TextColors.css'
 import Date from './Date'
 import { DateRangeInput } from '@blueprintjs/datetime'
 import React, { Component } from 'react'
-import { Form, Label } from 'semantic-ui-react'
+import { Label } from 'semantic-ui-react'
 
-export default class DateRangeForm extends Component {
+export default class DateRangeFilter extends Component {
   get endDate() {
     return this.props.endDate
   }
@@ -25,18 +26,28 @@ export default class DateRangeForm extends Component {
 
   render() {
     return(
-      <Form className='black-text'>
-        <Form.Field
-          allowSingleDayRange='true' className='field'
-          control={DateRangeInput} contiguousCalendarMonths='false'
+      <div className='DateRangeFilter'>
+        <DateRangeInput
+          allowSingleDayRange='true'
+          className='black-text'
+          contiguousCalendarMonths='false'
           endInputProps={{
-            rightElement: <Label attached='top right' tag>End</Label> }}
+            rightElement:
+            <Label attached='top right' className='EndLabel' tag>
+              End
+            </Label>
+          }}
           onChange={this.onChange}
+          required
           startInputProps={{
-            rightElement: <Label attached='top right' tag>Start</Label>
+            rightElement:
+            <Label attached='top right' className='StartLabel' tag>
+              Start
+            </Label>
           }}
           value={[this.startDate.toJSDate(), this.endDate.toJSDate()]}/>
-      </Form>)
+      </div>
+    )
   }
 
   get startDate() {

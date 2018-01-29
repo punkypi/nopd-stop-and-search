@@ -10,6 +10,11 @@ and this project adheres to
 - `public/favicon.ico`, a copy of `public/fleur_de_lis_blue.ico`.
 ### Changed
 - `public/manifest.json` now points to `public/favicon.ico` again.
+- `DateRangeFilter` input field tags now same color as `public/favicon.ico`
+  (`#3e46b3`).
+### Fixed
+- `DateRangeFilter` input fields no longer extend outside of `Menu.Item`.
+- `DateRangeFilter` "End" tag point no longer extends into "E".
 
 ## [1.11.0] - 2018-01-27
 ### Added

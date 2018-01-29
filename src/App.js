@@ -41,8 +41,7 @@ export default class App extends Component {
   }
 
   render() {
-    const endDate = this.state.endDate
-    const startDate = this.state.startDate
+    const { endDate, startDate } = this.state
     return(
       <div>
         <AppHeader>

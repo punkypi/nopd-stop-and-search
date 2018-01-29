@@ -1,0 +1,19 @@
+.DateRangeFilter .EndLabel,
+.DateRangeFilter .StartLabel {
+  border-bottom-left-radius: 0px !important;
+  padding-left: 1.1em !important;
+}
+
+.DateRangeFilter .pt-control-group .pt-input-group {
+  width: 51%;
+}
+
+.DateRangeFilter .pt-control-group .pt-input-group + .pt-input-group {
+  width: 49%;
+}
+
+.DateRangeFilter .pt-control-group .pt-input-group .label,
+.DateRangeFilter .pt-control-group .pt-input-group .pt-icon {
+  background-color: #3e46b3;
+  color: rgba(255, 255, 255, .9);
+}
