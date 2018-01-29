@@ -8,6 +8,7 @@ and this project adheres to
 ## [1.12.0] - 2018-01-28
 ### Added
 - `public/favicon.ico`, a copy of `public/fleur_de_lis_blue.ico`.
+- `Image` of `public/favicon.ico` to `AppHeader`.
 ### Changed
 - `public/manifest.json` now points to `public/favicon.ico` again.
 - `DateRangeFilter` input field tags now same color as `public/favicon.ico`
