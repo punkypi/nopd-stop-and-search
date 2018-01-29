@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.13.0] - 2018-01-29
+### Added
+- "Favorite Colours" list to `src/App.css`.
+- `favicon.ico` to `AppHeader` menu header.
+### Changed
+- `public/fleur_de_lis_blue.ico` now a lighter shade of blue (copied to
+  `public/favicon.ico`).
+
 ## [1.12.0] - 2018-01-28
 ### Added
 - `public/favicon.ico`, a copy of `public/fleur_de_lis_blue.ico`.

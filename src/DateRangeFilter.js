@@ -33,7 +33,7 @@ export default class DateRangeFilter extends Component {
           contiguousCalendarMonths='false'
           endInputProps={{
             rightElement:
-            <Label attached='top right' className='EndLabel' tag>
+            <Label attached='top right' className='EndLabel' color='blue' tag>
               End
             </Label>
           }}
@@ -41,7 +41,7 @@ export default class DateRangeFilter extends Component {
           required
           startInputProps={{
             rightElement:
-            <Label attached='top right' className='StartLabel' tag>
+            <Label attached='top right' className='StartLabel' color='blue' tag>
               Start
             </Label>
           }}

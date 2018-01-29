@@ -13,7 +13,7 @@ export default class AppHeader extends Component {
     return(
       <Menu className='AppHeader' inverted stackable>
         <Menu.Item header>
-          <Image avatar src='/favicon.ico'/>
+          <Image avatar src={`${process.env.PUBLIC_URL}/favicon.ico`}/>
           { title }
         </Menu.Item>
         { React.Children.map(children, (child, i) =>
