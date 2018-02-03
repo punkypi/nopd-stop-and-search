@@ -1,6 +1,6 @@
-import NullLabel from './NullLabel'
+import './VehicleGroupStatistic.css'
 import React, { Component } from 'react'
-import { Container, Statistic } from 'semantic-ui-react'
+import { Statistic } from 'semantic-ui-react'
 
 export default class VehicleGroupStatistic extends Component {
   constructor(props) {
@@ -17,29 +17,25 @@ export default class VehicleGroupStatistic extends Component {
   }
 
   get label() {
+    let content
     if (this.make && this.model) {
-      return(
-        <Container textAlign='left'>
+      content =
+        <div>
           {this.make}
           <br/>
           {this.model}
-        </Container>)
+        </div>
     }
     else if (this.make && !this.model) {
-      return(
-        <Container textAlign='left'>
-          {this.make}
-        </Container>)
+      content = this.make
     }
     else if (!this.make && this.model) {
-      return(
-        <Container textAlign='left'>
-          {this.model}
-        </Container>)
+      content = this.model
     }
     else {
-      return(<NullLabel/>)
+      content = 'Not Provided'
     }
+    return(<Statistic.Label content={content}/>)
   }
 
   get make() {
@@ -51,11 +47,12 @@ export default class VehicleGroupStatistic extends Component {
   }
 
   render() {
+    const count = this.count
+    const key = this.key
+    const label = this.label
     return(
-      <Statistic horizontal
-        key={this.key}
-        label={this.label}
-        value={this.count}/>)
+      <Statistic className='VehicleGroupStatistic'
+        horizontal inverted key={key} label={label} value={count}/>)
     }
 
   get vehicleGroup() {

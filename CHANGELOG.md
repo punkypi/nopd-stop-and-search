@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.14.0] - 2018-02-03
+### Added
+- `src/VehicleGroupStatistic.css`, for custom styling.
+### Changed
+- `body` `background-color` now inverted.
+- `src/AboutUs.js` now inverted.
+- `src/App.js` now inverted.
+- `src/AppBody.js` now inverted.
+- `src/AppFooter.js` now inverted.
+- `src/AppHeader.js` now inverted.
+- `src/TrafficViolations.js` now inverted.
+- `src/VehicleGroupStatistic.js` now inverted.
+- `src/VehicleGroupStatistics.js` now inverted.
+### Removed
+- `src/NullLabel.js`, no longer needed.
+
 ## [1.13.0] - 2018-01-29
 ### Added
 - "Favorite Colours" list to `src/App.css`.

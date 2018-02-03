@@ -9,16 +9,17 @@ export default class AppHeader extends Component {
   static propTypes = { title: PropTypes.string }
 
   render() {
+    const { title } = this.props
     return(
       <div id='about_us' className='ui'>
-        <Header as='h2' content={ this.props.title } icon='info'/>
-        <Grid container>
-          <Grid.Row columns={1}>
+        <Header as='h2' color='blue' content={title} icon='info' inverted/>
+        <Grid container inverted>
+          <Grid.Row color='black' columns={1}>
             <Grid.Column>
-              <Header as='h3' content='Data Source'/>
+              <Header as='h3' color='blue' content='Data Source' inverted/>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns={1}>
+          <Grid.Row color='black' columns={1}>
             <Grid.Column>
               <p>
                 This page is backed by <a href='https://data.nola.gov'>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Container, Grid, Header } from 'semantic-ui-react'
+import { Container, Grid, Header, Statistic } from 'semantic-ui-react'
 import Date from './Date'
 import TVCountInRangeRequest from './TrafficViolationCountInRangeRequest'
 import TVVehicleGroupsInRangeRequest from
@@ -39,6 +39,25 @@ export default class TrafficViolations extends Component {
     return this.state.count
   }
 
+  render() {
+    const count = this.count
+    const vehicleGroups = this.vehicleGroups
+    return(
+      <Container className='TrafficViolations'>
+        <Header as='h2' color='blue' content='Traffic Violations'
+          icon='car' inverted/>
+        <Grid container inverted stackable>
+          <Grid.Row color='black'>
+            <Grid.Column textAlign='center' verticalAlign='middle'>
+              <Statistic horizontal inverted label='Total' size='huge'
+                value={count}/>
+            </Grid.Column>
+          </Grid.Row>
+          <VehicleGroupStatistics vehicleGroups={vehicleGroups}/>
+        </Grid>
+      </Container>)
+  }
+
   updateInfo(startDate, endDate) {
     new TVCountInRangeRequest({
       startDate: startDate, endDate: endDate,
@@ -54,25 +73,5 @@ export default class TrafficViolations extends Component {
 
   get vehicleGroups() {
     return this.state.vehicleGroups
-  }
-
-  render() {
-    const count = this.count
-    const vehicleGroups = this.vehicleGroups
-    return(
-      <Container className='TrafficViolations'>
-        <Header as='h2' content='Traffic Violations' icon='car'/>
-        <Grid container stackable>
-          <Grid.Row>
-            <Grid.Column textAlign='center' verticalAlign='middle'>
-              <div className='ui huge horizontal statistic'>
-                <div className='value'>{count}</div>
-                <div className='label'>Total</div>
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-          <VehicleGroupStatistics vehicleGroups={vehicleGroups}/>
-        </Grid>
-      </Container>)
   }
 }

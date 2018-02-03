@@ -5,10 +5,25 @@ import './DateRangeFilter.css'
 import './TextColors.css'
 import Date from './Date'
 import { DateRangeInput } from '@blueprintjs/datetime'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Label } from 'semantic-ui-react'
 
 export default class DateRangeFilter extends Component {
+  static InputLabel = class extends Component {
+    static propTypes = { label: PropTypes.string.isRequired }
+
+    render() {
+      const className = `InputLabel ${this.props.className}`
+      const label = this.props.label
+      return(
+        <Label attached='top right' className={className} color='black' tag>
+          {label}
+        </Label>
+      )
+    }
+  }
+
   get endDate() {
     return this.props.endDate
   }
@@ -25,26 +40,17 @@ export default class DateRangeFilter extends Component {
   }
 
   render() {
+    const InputLabel = this.constructor.InputLabel
     return(
       <div className='DateRangeFilter'>
         <DateRangeInput
           allowSingleDayRange='true'
           className='black-text'
           contiguousCalendarMonths='false'
-          endInputProps={{
-            rightElement:
-            <Label attached='top right' className='EndLabel' color='blue' tag>
-              End
-            </Label>
-          }}
+          endInputProps={{ rightElement: <InputLabel label='End'/> }}
           onChange={this.onChange}
           required
-          startInputProps={{
-            rightElement:
-            <Label attached='top right' className='StartLabel' color='blue' tag>
-              Start
-            </Label>
-          }}
+          startInputProps={{ rightElement: <InputLabel label='Start'/> }}
           value={[this.startDate.toJSDate(), this.endDate.toJSDate()]}/>
       </div>
     )

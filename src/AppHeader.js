@@ -11,9 +11,9 @@ export default class AppHeader extends Component {
   render() {
     const { children, title } = this.props
     return(
-      <Menu className='AppHeader' inverted stackable>
+      <Menu className='AppHeader' color='blue' inverted stackable>
         <Menu.Item header>
-          <Image avatar src={`${process.env.PUBLIC_URL}/favicon.ico`}/>
+          <Image avatar src={`${process.env.PUBLIC_URL}/fleur_de_lis_black.ico`}/>
           { title }
         </Menu.Item>
         { React.Children.map(children, (child, i) =>

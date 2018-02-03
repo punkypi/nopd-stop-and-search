@@ -1,6 +1,10 @@
 /* Favorite Colours:
-  black: #1b1c1d
-  dark blue: #3e46b3
-  light blue: #2185d0
-  white: rgba(255, 255, 255, .9)
+  black on light backgound: #1b1c1d
+  dark blue on light backgound: #3e46b3
+  light blue on light backgound: #2185d0
+  light blue on dark background: #54c8ff
+  white on dark background: rgba(255, 255, 255, .9)
 */
+body {
+  background-color: #1b1c1d;
+}

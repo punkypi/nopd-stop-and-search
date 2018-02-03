@@ -1,5 +1,4 @@
-.DateRangeFilter .EndLabel,
-.DateRangeFilter .StartLabel {
+.DateRangeFilter .InputLabel {
   border-bottom-left-radius: 0px !important;
   padding-left: 1.1em !important;
 }

@@ -48,7 +48,7 @@ export default class App extends Component {
           <DateRangeFilter endDate={endDate}
             onChange={this.onDateRangeChange} startDate={startDate}/>
         </AppHeader>
-        <Grid container stackable>
+        <Grid container inverted stackable>
           <AppBody>
             <TrafficViolations endDate={endDate} startDate={startDate}/>
           </AppBody>
