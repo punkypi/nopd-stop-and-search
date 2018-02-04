@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.15.0] - 2018-02-03
+### Added
+- Search input to `VehicleGroupStatistics`, users can now search for data in
+  `VehicleGroup#count`, `#make`, or `#model`.
+- `VehicleGroupStatistics.searchableData`, the `VehicleGroup` properties a user
+  may search through.
+- `VehicleGroupStatistics#onSearchChange(event)`, updates `#searchTerm` when
+  the user edits the search input.
+- `VehicleGroupStatistics#searchTerm`, the user's current search input value.
+- `VehicleGroupStatistics#searchableData`, a convenience reference to
+  `.searchableData`.
+### Changed
+- `VehicleGroupStatistics#vehicleGroups` now filters in any `VehicleGroup`
+  instances including the `#searchTerm` in the data white listed in
+  `#searchableData`.
+
 ## [1.14.0] - 2018-02-03
 ### Added
 - `src/VehicleGroupStatistic.css`, for custom styling.
