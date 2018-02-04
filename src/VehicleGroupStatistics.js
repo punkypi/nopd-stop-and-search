@@ -4,11 +4,19 @@ import { Grid, Header, Input, Menu } from 'semantic-ui-react'
 import VehicleGroup from './VehicleGroup'
 import VehicleGroupStatistic from './VehicleGroupStatistic'
 
+/**
+ * A display of VehicleGroup data.
+ * @param {Object} props
+ * @param {VehicleGroup[]} props.vehicleGroup the vehicle group data to display
+ */
 export default class VehicleGroupStatistics extends Component {
   static propTypes =
     { vehicleGroups: PropTypes.arrayOf(PropTypes.instanceOf(VehicleGroup)) }
 
-  // Which VehicleGroup properties the user can search through
+  /**
+   * @type {string[]}
+   *  which VehicleGroup properties the user can search through
+   */
   static searchableData = ['count', 'make', 'model']
 
   constructor(props) {
@@ -16,12 +24,20 @@ export default class VehicleGroupStatistics extends Component {
     this.state = { searchTerm: '' }
   }
 
-  // Needs to be binded to `this`
-  // (see https://reactjs.org/docs/handling-events.html).
+  /**
+   * Needs to be binded to `this`.
+   * @see {@link https://reactjs.org/docs/handling-events.html}
+   * @method
+   * @param {SyntheticEvent} event
+   *  https://reactjs.org/docs/events.html
+   */
   onSearchChange = (event) => {
     this.setState({ searchTerm: event.target.value })
   }
 
+  /**
+   * {@link https://reactjs.org/docs/react-component.html#render}
+   */
   render() {
     const onSearchChange = this.onSearchChange
     const vehicleGroups = this.vehicleGroups
@@ -51,7 +67,8 @@ export default class VehicleGroupStatistics extends Component {
   }
 
   /**
-   * @return {string} what data the user wants to filter in
+   * @return {string}
+   *  what data the user wants to filter in
    */
   get searchTerm() {
     return this.state.searchTerm.toLowerCase() || ''
@@ -59,12 +76,19 @@ export default class VehicleGroupStatistics extends Component {
 
   /**
    * @see .searchableData
-   * @return {string[]} which VehicleGroup data the user may filter through
+   * @return {string[]}
+   *  which VehicleGroup data the user may filter through
    */
   get searchableData() {
     return this.constructor.searchableData
   }
 
+  /**
+   * If {@link VehicleGroupStatistics#searchTerm} isn't empty, filters in
+   * matching {@link VehicleGroup}.
+   * @return {VehicleGroup[]}
+   *  which VehicleGroup to display
+   */
   get vehicleGroups() {
     if (!this.searchTerm) { return this.props.vehicleGroups }
     return this.props.vehicleGroups.filter((vehicleGroup) => {

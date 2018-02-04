@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2018-02-04
+### Added
+- `documentation` lib.
+- `./bin/doc` to generate `src/**` `HTML` documentation in `docs/index.html`.
+- `./bin/doc_server` to generate and watch `src/**` `HTML` documentation at
+  `localhost:4001`.
+### Changed
+- `VehicleGroupStatistics` documented.
+
 ## [1.15.0] - 2018-02-03
 ### Added
 - Search input to `VehicleGroupStatistics`, users can now search for data in
