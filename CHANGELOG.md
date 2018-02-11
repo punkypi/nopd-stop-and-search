@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.17.0] - 2018-02-11
+### Added
+- `VehicleGroupStatistics.defaultProps`.
+- `VehicleGroupStatistics#hidden()`, what is the current hidden state.
+- `VehicleGroupStatistics#hideButtonText`, what the Hide button currently says.
+- `VehicleGroupStatistics#onHideButtonClick(event)`, handles hiding/unhiding.
+### Changed
+- `VehicleGroupStatistics` can now be hidden via a menu button.
+
 ## [1.16.0] - 2018-02-04
 ### Added
 - `documentation` lib.
