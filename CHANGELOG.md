@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.18.0] - 2018-02-12
+### Added
+- `lodash` (https://lodash.com/docs).
+- `kind-of` (https://github.com/jonschlinkert/kind-of).
+- `VehicleGroupStatistics#visible` property, opposite of `#hidden`.
+### Changed
+- Documented `App`.
+- Documented `TrafficViolations`.
+
 ## [1.17.0] - 2018-02-11
 ### Added
 - `VehicleGroupStatistics.defaultProps`.

@@ -1,3 +1,4 @@
+import DefaultTo from 'lodash/defaultTo'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Button, Grid, Header, Input, Menu } from 'semantic-ui-react'
@@ -7,7 +8,8 @@ import VehicleGroupStatistic from './VehicleGroupStatistic'
 /**
  * A display of VehicleGroup data.
  * @param {Object} props
- * @param {VehicleGroup[]} props.vehicleGroup the vehicle group data to display
+ * @param {VehicleGroup[]} props.vehicleGroup
+ *  the vehicle group data to display
  */
 export default class VehicleGroupStatistics extends Component {
   static defaultProps = { hidden: false, searchTerm: '' }
@@ -30,11 +32,8 @@ export default class VehicleGroupStatistics extends Component {
    * @return {boolean}
    *  if the component is "hidden"
    */
-  hidden() {
-    if (this.state && typeof this.state.hidden !== 'undefined') {
-      return this.state.hidden
-    }
-    return false
+  get hidden() {
+    return DefaultTo(this.state.hidden, false)
   }
 
   /**
@@ -42,11 +41,8 @@ export default class VehicleGroupStatistics extends Component {
    *  the "Hide" button's visible text
    */
   get hideButtonText() {
-    if (this.hidden()) {
-      return 'Show'
-    } else {
-      return 'Hide'
-    }
+    if (this.hidden) { return 'Show' }
+    return 'Hide'
   }
 
   /**
@@ -57,7 +53,7 @@ export default class VehicleGroupStatistics extends Component {
    *  https://reactjs.org/docs/events.html
    */
   onHideButtonClick = (event) => {
-    this.setState({ hidden: !this.state.hidden })
+    this.setState({ hidden: !this.hidden })
   }
 
   /**
@@ -75,12 +71,8 @@ export default class VehicleGroupStatistics extends Component {
    * {@link https://reactjs.org/docs/react-component.html#render}
    */
   render() {
-    const hidden = this.hidden()
-    const hideButtonText = this.hideButtonText
-    const onHideButtonClick = this.onHideButtonClick
-    const onSearchChange = this.onSearchChange
-    const vehicleGroups = this.vehicleGroups
-    const visible = !hidden
+    const { hideButtonText, onHideButtonClick, onSearchChange, vehicleGroups,
+      visible } = this
     return(
       <Grid.Row color='black'>
         <Grid.Column width={16}>
@@ -119,7 +111,7 @@ export default class VehicleGroupStatistics extends Component {
    *  what data the user wants to filter in
    */
   get searchTerm() {
-    return this.state.searchTerm.toLowerCase() || ''
+    return DefaultTo(this.state.searchTerm, '').toLowerCase()
   }
 
   /**
@@ -139,10 +131,17 @@ export default class VehicleGroupStatistics extends Component {
    */
   get vehicleGroups() {
     if (!this.searchTerm) { return this.props.vehicleGroups }
-    return this.props.vehicleGroups.filter((vehicleGroup) => {
-      return this.searchableData.map(datum => vehicleGroup[datum])
-        .map(datum => String(datum).toLowerCase())
-        .some(datum => datum.includes(this.searchTerm))
-    })
+    return this.props.vehicleGroups.filter(vehicleGroup =>
+      this.searchableData.some(datum =>
+        String(vehicleGroup[datum]).toLowerCase().includes(this.searchTerm)))
+  }
+
+  /**
+   * @see #hidden
+   * @return {boolean}
+   *  if the component is not "hidden"
+   */
+  get visible() {
+    return !this.hidden
   }
 }

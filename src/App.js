@@ -12,6 +12,14 @@ import Date from './Date'
 import DateRangeFilter from './DateRangeFilter'
 import TrafficViolations from './TrafficViolations'
 
+/**
+ * A display of NOLA Stop and Search data.
+ * @param {Object} props
+ * @param {Date} props.endDate
+ *  the inclusive end of the date range
+ * @param {Date} props.startDate
+ *  the inclusive start of the date range
+ */
 export default class App extends Component {
   static defaultProps = { endDate: Date.now(), startDate: Date.startOfMonth() }
 
@@ -25,28 +33,37 @@ export default class App extends Component {
     this.state = { endDate: props.endDate, startDate: props.startDate }
   }
 
+  /**
+   * @return {Date}
+   *  the inclusive end of the date range
+   */
   get endDate() {
     return this.state.endDate
   }
 
-  // Needs to be binded to `this`
-  // (see https://reactjs.org/docs/handling-events.html).
+  /**
+   * Needs to be binded to `this`.
+   * @see {@link https://reactjs.org/docs/handling-events.html}
+   * @see {@link http://blueprintjs.com/docs/v1/#datetime/daterangepicker}
+   * @method
+   * @param {Date[]} selectedRange
+   *  the current date range, boundaries may be null
+   */
   onDateRangeChange = (selectedRange) => {
     const [newStartDate, newEndDate] = selectedRange
     this.setState({ endDate: newEndDate, startDate: newStartDate })
   }
 
-  get startDate() {
-    return this.state.startDate
-  }
-
+  /**
+   * {@link https://reactjs.org/docs/react-component.html#render}
+   */
   render() {
-    const { endDate, startDate } = this.state
+    const { endDate, onDateRangeChange, startDate } = this
     return(
       <div>
         <AppHeader>
           <DateRangeFilter endDate={endDate}
-            onChange={this.onDateRangeChange} startDate={startDate}/>
+            onChange={onDateRangeChange} startDate={startDate}/>
         </AppHeader>
         <Grid container inverted stackable>
           <AppBody>
@@ -57,5 +74,13 @@ export default class App extends Component {
           </AppFooter>
         </Grid>
       </div>)
+  }
+
+  /**
+   * @return {Date}
+   *  the inclusive start of the date range
+   */
+  get startDate() {
+    return this.state.startDate
   }
 }

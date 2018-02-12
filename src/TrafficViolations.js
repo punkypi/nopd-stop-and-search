@@ -8,6 +8,18 @@ import TVVehicleGroupsInRangeRequest from
 import VehicleGroup from './VehicleGroup'
 import VehicleGroupStatistics from './VehicleGroupStatistics'
 
+/**
+ * A display of Traffic Violation data.
+ * @param {Object} props
+ * @param {string} props.count
+ *  how many total traffic violations there are
+ * @param {Date} props.endDate
+ *  the inclusive end of the date range
+ * @param {Date} props.startDate
+ *  the inclusive start of the date range
+ * @param {VehicleGroup[]} props.vehicleGroups
+ *  a collection of vehicle group data
+ */
 export default class TrafficViolations extends Component {
   static defaultProps = {
     count: '...',
@@ -29,19 +41,28 @@ export default class TrafficViolations extends Component {
     this.updateInfo(props.startDate, props.endDate)
   }
 
-  // (see https://tinyurl.com/y93edy52)
+  /**
+   * @see {@link https://tinyurl.com/y93edy52}
+   * @param {Object} newProps
+   */
   componentWillReceiveProps(newProps) {
     this.updateInfo(newProps.startDate, newProps.endDate)
   }
 
+  /**
+   * @return {string}
+   *  how many total traffic violations there are in the date range
+   */
   get count() {
     if (!this.props.startDate || !this.props.endDate) { return '...' }
     return this.state.count
   }
 
+  /**
+   * {@link https://reactjs.org/docs/react-component.html#render}
+   */
   render() {
-    const count = this.count
-    const vehicleGroups = this.vehicleGroups
+    const { count, vehicleGroups } = this
     return(
       <Container className='TrafficViolations'>
         <Header as='h2' color='blue' content='Traffic Violations'
@@ -58,19 +79,29 @@ export default class TrafficViolations extends Component {
       </Container>)
   }
 
+  /**
+   * Asynchronously updates {@link #count} and {@link #vehicleGroups}.
+   * @param {Date} startDate
+   *  the inclusive start of the date range
+   * @param {Date} endDate
+   *  the inclusive end of the date range
+   */
   updateInfo(startDate, endDate) {
     new TVCountInRangeRequest({
       startDate: startDate, endDate: endDate,
-      onSuccess: (count) => {
-        this.setState((prevState, props) => ({ count: count }))
-      }}).submit()
+      onSuccess: (count) => { this.setState({ count: count }) }
+    }).submit()
     new TVVehicleGroupsInRangeRequest({
       startDate: startDate, endDate: endDate,
       onSuccess: (vehicleGroups) => {
-        this.setState((prevState, props) => ({ vehicleGroups: vehicleGroups }))
-      }}).submit()
+        this.setState({ vehicleGroups: vehicleGroups }) }
+    }).submit()
   }
 
+  /**
+   * @return {VehicleGroup[]}
+   *  a collection vehicle group data
+   */
   get vehicleGroups() {
     return this.state.vehicleGroups
   }
