@@ -1,13 +1,13 @@
-// taken from:
-// http://www.justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
-// Use to mix in classes/modules into other classes/modules.
-//
-// @example
-//  import mix from './Mix'
-//
-//  class Cat mix(Animal).with(Mammal, Predator) {
-//    ...
-//  }
+/**
+ * Use to mix in classes/modules into other classes/modules.
+ * @see {@link https://tinyurl.com/y9az9hcc}
+ * @example
+ *  import mix from './Mix'
+ *
+ *  class Cat extends mix(Animal).with(Mammal, Predator) {
+ *   ...
+ *  }
+ */
 class MixinBuilder {
   constructor(superclass) {
     this.superclass = superclass
@@ -18,4 +18,4 @@ class MixinBuilder {
   }
 }
 
-export default mix = (superclass) => new MixinBuilder(superclass)
+export default (superclass) => new MixinBuilder(superclass)

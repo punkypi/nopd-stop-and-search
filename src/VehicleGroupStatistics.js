@@ -1,7 +1,9 @@
-import DefaultTo from 'lodash/defaultTo'
+import defaultTo from 'lodash/defaultTo'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Button, Grid, Header, Input, Menu } from 'semantic-ui-react'
+import Hideable from './Hideable'
+import mix from './Mix'
 import VehicleGroup from './VehicleGroup'
 import VehicleGroupStatistic from './VehicleGroupStatistic'
 
@@ -11,8 +13,9 @@ import VehicleGroupStatistic from './VehicleGroupStatistic'
  * @param {VehicleGroup[]} props.vehicleGroup
  *  the vehicle group data to display
  */
-export default class VehicleGroupStatistics extends Component {
-  static defaultProps = { hidden: false, searchTerm: '' }
+export default class VehicleGroupStatistics extends mix(Component)
+  .with(Hideable) {
+  static defaultProps = { searchTerm: '', vehicleGroups: [] }
 
   static propTypes =
     { vehicleGroups: PropTypes.arrayOf(PropTypes.instanceOf(VehicleGroup)) }
@@ -25,15 +28,7 @@ export default class VehicleGroupStatistics extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { hidden: props.hidden, searchTerm: props.searchTerm }
-  }
-
-  /**
-   * @return {boolean}
-   *  if the component is "hidden"
-   */
-  get hidden() {
-    return DefaultTo(this.state.hidden, false)
+    this.state = { searchTerm: props.searchTerm }
   }
 
   /**
@@ -53,7 +48,7 @@ export default class VehicleGroupStatistics extends Component {
    *  https://reactjs.org/docs/events.html
    */
   onHideButtonClick = (event) => {
-    this.setState({ hidden: !this.hidden })
+    this.toggleVisibilty()
   }
 
   /**
@@ -111,7 +106,7 @@ export default class VehicleGroupStatistics extends Component {
    *  what data the user wants to filter in
    */
   get searchTerm() {
-    return DefaultTo(this.state.searchTerm, '').toLowerCase()
+    return defaultTo(this.state.searchTerm, '').toLowerCase()
   }
 
   /**
@@ -134,14 +129,5 @@ export default class VehicleGroupStatistics extends Component {
     return this.props.vehicleGroups.filter(vehicleGroup =>
       this.searchableData.some(datum =>
         String(vehicleGroup[datum]).toLowerCase().includes(this.searchTerm)))
-  }
-
-  /**
-   * @see #hidden
-   * @return {boolean}
-   *  if the component is not "hidden"
-   */
-  get visible() {
-    return !this.hidden
   }
 }

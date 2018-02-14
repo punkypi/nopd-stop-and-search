@@ -8,6 +8,12 @@ and this project adheres to
 ## [1.19.0] - 2018-02-13
 ### Added
 - `./bin/dev_server` shortcut for running `yarn start`.
+- `Hideable` mixin, to contain sharable hidden/visibility logic.
+### Changed
+- `VehicleGroupStatistics` now mixes in `Hideable`.
+### Removed
+- `VehicleGroupStatistics#hidden`, now mixed in from `Hideable`.
+- `VehicleGroupStatistics#visible`, now mixed in from `Hideable`.
 
 ## [1.18.0] - 2018-02-12
 ### Added
