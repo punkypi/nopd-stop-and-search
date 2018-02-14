@@ -8,6 +8,8 @@ and this project adheres to
 ## [1.20.0] - 2018-02-14
 ### Added
 - `./bin/deploy` shortcut for `yarn deploy`.
+### Changed
+- Documented `hideable` constructor.
 
 ## [1.19.0] - 2018-02-13
 ### Added

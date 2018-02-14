@@ -4,6 +4,9 @@ import isObject from 'lodash/isObject'
 /**
  * Adds a "hideable" API to the mixin target. Allowing them to be hidden,
  * made visible, or just toggled between the two.
+ * @param {Object} props
+ * @param {boolean} [props.hidden=false]
+ *  if the component should be considered "hidden"
  */
 export default (superclass) => class extends superclass {
   constructor(props) {
