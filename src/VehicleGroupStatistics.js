@@ -21,7 +21,7 @@ export default class VehicleGroupStatistics extends mix(Component)
    * {@link https://tinyurl.com/y99x855j}
    */
   static get defaultProps() {
-   return { searchTerm: '', sortBy: 'count', sortDirection: 'asc',
+   return { searchTerm: '', sortBy: 'count', sortDirection: 'desc',
      vehicleGroups: [] }
   }
 
