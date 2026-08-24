@@ -24,8 +24,15 @@ export default class AppHeader extends Component {
               <p>
                 This page is backed by <a href='https://data.nola.gov'>
                 Data.NOLA.gov</a>'s <a href='http://tinyurl.com/h2sq7du'>
-                Stop and Search (Field Interviews)</a>. Thank you, NOPD, for
-                making this information public.
+                Stop and Search (Field Interviews)</a>.
+              </p>
+              <p>
+                Unfortunately there doesn't
+                seem to have been any new event data added since Nov 2025
+                (though there have been updates to the dataset since). As of
+                Aug 2026, the dataset's event date range is from 1999-2025
+                (NOTE: the density varries, some months/years may have fewer/no events
+                compared to others).
               </p>
 
               <p>

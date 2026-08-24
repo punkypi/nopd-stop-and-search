@@ -11,6 +11,7 @@ import AppFooter from './AppFooter'
 import Date from './Date'
 import DateRangeFilter from './DateRangeFilter'
 import TrafficViolations from './TrafficViolations'
+import MostRecentEventDateRequest from './MostRecentEventDateRequest'
 
 /**
  * A display of NOLA Stop and Search data.
@@ -31,6 +32,15 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = { endDate: props.endDate, startDate: props.startDate }
+  }
+
+  componentDidMount() {
+    new MostRecentEventDateRequest({
+      onSuccess: (maxEventDate) => {
+        const latestDate = Date.fromDBString(maxEventDate)
+        this.setState({ endDate: latestDate, startDate: latestDate.startOfMonth() })
+      }
+    }).submit()
   }
 
   /**

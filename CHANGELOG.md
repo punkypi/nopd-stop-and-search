@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.22.0 - 2026-08-24
+### Added
+- `MostRecentEventDateRequest` does what it says, gets the most recent event date.
+- `Date.fromDBString(dbString)` helper method to convert DB date strings to a `Date` object.
+### Changed
+- `App` now changes date selection after component load to the latest month with
+  event data in it. If none found, then the current month is still the default range.
+- `AboutUs` component now explains the latest event data is from 2025.
+
 ## [1.21.0] - 2018-02-18
 ### Changed
 - `VehicleGroupStatistics` can now be sorted by count, make, or model, in

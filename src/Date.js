@@ -13,6 +13,11 @@ export default class Date {
     return this.now().endOfMonth()
   }
 
+  static fromDBString(dbString) {
+    const moment = new Moment(dbString)
+    return new Date({ year: moment.year(), month: moment.month() + 1, day: moment.date() })
+  }
+
   static monthNamesOfTheYear() {
     return Immutable.Set.of(
       'January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August',

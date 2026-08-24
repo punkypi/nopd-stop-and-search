@@ -42,16 +42,21 @@ export default class DateRangeFilter extends Component {
   render() {
     const InputLabel = this.constructor.InputLabel
     return(
-      <div className='DateRangeFilter'>
-        <DateRangeInput
-          allowSingleDayRange='true'
-          className='black-text'
-          contiguousCalendarMonths='false'
-          endInputProps={{ rightElement: <InputLabel label='End'/> }}
-          onChange={this.onChange}
-          required
-          startInputProps={{ rightElement: <InputLabel label='Start'/> }}
-          value={[this.startDate.toJSDate(), this.endDate.toJSDate()]}/>
+      <div>
+        <div className='DateRangeFilter'>
+          <DateRangeInput
+            allowSingleDayRange='true'
+            className='black-text'
+            contiguousCalendarMonths='false'
+            endInputProps={{ rightElement: <InputLabel label='End'/> }}
+            onChange={this.onChange}
+            required
+            startInputProps={{ rightElement: <InputLabel label='Start'/> }}
+            value={[this.startDate.toJSDate(), this.endDate.toJSDate()]}/>
+        </div>
+        <p>
+          (Latest month with event data, if dataset not empty.)
+        </p>
       </div>
     )
   }
