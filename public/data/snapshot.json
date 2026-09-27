@@ -1,0 +1,673 @@
+{
+  "bakedAt": "2026-09-27T00:25:28.394Z",
+  "domain": "data.nola.gov",
+  "dataset": "nfft-hjwi",
+  "earliestEventDate": {
+    "year": 1991,
+    "month": 7,
+    "day": 24
+  },
+  "latestEventDate": {
+    "year": 2025,
+    "month": 11,
+    "day": 9
+  },
+  "totalViolations": 440051,
+  "defaultRange": {
+    "start": {
+      "year": 2025,
+      "month": 11,
+      "day": 1
+    },
+    "end": {
+      "year": 2025,
+      "month": 11,
+      "day": 30
+    }
+  },
+  "defaultRangeCount": 366,
+  "defaultRangeVehicleGroups": [
+    {
+      "make": "NISSAN",
+      "model": "OTHER",
+      "count": 21,
+      "makeAndModel": "NISSAN OTHER"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "OTHER",
+      "count": 14,
+      "makeAndModel": "CHEVROLET OTHER"
+    },
+    {
+      "make": "NISSAN",
+      "model": "ALTIMA",
+      "count": 12,
+      "makeAndModel": "NISSAN ALTIMA"
+    },
+    {
+      "make": "INFINITY",
+      "model": "OTHER",
+      "count": 11,
+      "makeAndModel": "INFINITY OTHER"
+    },
+    {
+      "make": "HONDA",
+      "model": "ACCORD",
+      "count": 11,
+      "makeAndModel": "HONDA ACCORD"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "COROLLA",
+      "count": 11,
+      "makeAndModel": "TOYOTA COROLLA"
+    },
+    {
+      "make": "NISSAN",
+      "model": "SENTRA",
+      "count": 10,
+      "makeAndModel": "NISSAN SENTRA"
+    },
+    {
+      "make": "FORD",
+      "model": "F150 PICKUP",
+      "count": 10,
+      "makeAndModel": "FORD F150 PICKUP"
+    },
+    {
+      "make": "NISSAN",
+      "model": "MURANO",
+      "count": 9,
+      "makeAndModel": "NISSAN MURANO"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "CAMRY",
+      "count": 9,
+      "makeAndModel": "TOYOTA CAMRY"
+    },
+    {
+      "make": "JEEP",
+      "model": "OTHER",
+      "count": 8,
+      "makeAndModel": "JEEP OTHER"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "AVALANCHE",
+      "count": 8,
+      "makeAndModel": "CHEVROLET AVALANCHE"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "MALIBU",
+      "count": 7,
+      "makeAndModel": "CHEVROLET MALIBU"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "HIGHLANDER",
+      "count": 7,
+      "makeAndModel": "TOYOTA HIGHLANDER"
+    },
+    {
+      "make": "FORD",
+      "model": "OTHER",
+      "count": 6,
+      "makeAndModel": "FORD OTHER"
+    },
+    {
+      "make": "HONDA",
+      "model": "CRV",
+      "count": 6,
+      "makeAndModel": "HONDA CRV"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "SILVERADO",
+      "count": 6,
+      "makeAndModel": "CHEVROLET SILVERADO"
+    },
+    {
+      "make": "CADILLAC",
+      "model": "OTHER",
+      "count": 6,
+      "makeAndModel": "CADILLAC OTHER"
+    },
+    {
+      "make": "MAZDA",
+      "model": "OTHER",
+      "count": 5,
+      "makeAndModel": "MAZDA OTHER"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "RAV4",
+      "count": 5,
+      "makeAndModel": "TOYOTA RAV4"
+    },
+    {
+      "make": "BMW",
+      "model": "OTHER",
+      "count": 5,
+      "makeAndModel": "BMW OTHER"
+    },
+    {
+      "make": "HYUNDAI",
+      "model": "SANTA FE",
+      "count": 5,
+      "makeAndModel": "HYUNDAI SANTA FE"
+    },
+    {
+      "make": "BUICK",
+      "model": "OTHER",
+      "count": 5,
+      "makeAndModel": "BUICK OTHER"
+    },
+    {
+      "make": "ACURA",
+      "model": "OTHER",
+      "count": 5,
+      "makeAndModel": "ACURA OTHER"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "CAMARO",
+      "count": 4,
+      "makeAndModel": "CHEVROLET CAMARO"
+    },
+    {
+      "make": "HYUNDAI",
+      "model": "OTHER",
+      "count": 4,
+      "makeAndModel": "HYUNDAI OTHER"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "TUNDRA",
+      "count": 4,
+      "makeAndModel": "TOYOTA TUNDRA"
+    },
+    {
+      "make": "VOLKSWAGEN (VW)",
+      "model": "OTHER",
+      "count": 4,
+      "makeAndModel": "VOLKSWAGEN (VW) OTHER"
+    },
+    {
+      "make": "HONDA",
+      "model": "CIVIC",
+      "count": 4,
+      "makeAndModel": "HONDA CIVIC"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "OTHER",
+      "count": 4,
+      "makeAndModel": "TOYOTA OTHER"
+    },
+    {
+      "make": "FORD",
+      "model": "MUSTANG",
+      "count": 4,
+      "makeAndModel": "FORD MUSTANG"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "TAHOE",
+      "count": 4,
+      "makeAndModel": "CHEVROLET TAHOE"
+    },
+    {
+      "make": "NISSAN",
+      "model": "MAXIMA",
+      "count": 4,
+      "makeAndModel": "NISSAN MAXIMA"
+    },
+    {
+      "make": "HYUNDAI",
+      "model": "ELANTRA",
+      "count": 4,
+      "makeAndModel": "HYUNDAI ELANTRA"
+    },
+    {
+      "make": "GMC - GENERAL MOTORS CORP.",
+      "model": "YUKON",
+      "count": 3,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP. YUKON"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "TACOMA",
+      "count": 3,
+      "makeAndModel": "TOYOTA TACOMA"
+    },
+    {
+      "make": "DODGE",
+      "model": "CHARGER",
+      "count": 3,
+      "makeAndModel": "DODGE CHARGER"
+    },
+    {
+      "make": "JEEP",
+      "model": "GRAND CHEROKEE",
+      "count": 3,
+      "makeAndModel": "JEEP GRAND CHEROKEE"
+    },
+    {
+      "make": "GMC - GENERAL MOTORS CORP.",
+      "model": "OTHER",
+      "count": 3,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP. OTHER"
+    },
+    {
+      "make": "DODGE",
+      "model": "RAM",
+      "count": 3,
+      "makeAndModel": "DODGE RAM"
+    },
+    {
+      "make": "JEEP",
+      "model": "WRANGLER",
+      "count": 3,
+      "makeAndModel": "JEEP WRANGLER"
+    },
+    {
+      "make": "CHRYSLER",
+      "model": "OTHER",
+      "count": 3,
+      "makeAndModel": "CHRYSLER OTHER"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "OTHER",
+      "count": 3,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) OTHER"
+    },
+    {
+      "make": "MERCEDES-BENZ",
+      "model": "OTHER",
+      "count": 3,
+      "makeAndModel": "MERCEDES-BENZ OTHER"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "",
+      "count": 3,
+      "makeAndModel": "CHEVROLET"
+    },
+    {
+      "make": "FORD",
+      "model": "FOCUS",
+      "count": 3,
+      "makeAndModel": "FORD FOCUS"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "FORTE",
+      "count": 3,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) FORTE"
+    },
+    {
+      "make": "FORD",
+      "model": "ESCAPE",
+      "count": 3,
+      "makeAndModel": "FORD ESCAPE"
+    },
+    {
+      "make": "LEXUS",
+      "model": "OTHER",
+      "count": 3,
+      "makeAndModel": "LEXUS OTHER"
+    },
+    {
+      "make": "FORD",
+      "model": "VAN",
+      "count": 3,
+      "makeAndModel": "FORD VAN"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "SUBURBAN",
+      "count": 2,
+      "makeAndModel": "CHEVROLET SUBURBAN"
+    },
+    {
+      "make": "DODGE",
+      "model": "GRAND CARAVAN",
+      "count": 2,
+      "makeAndModel": "DODGE GRAND CARAVAN"
+    },
+    {
+      "make": "HONDA",
+      "model": "PILOT",
+      "count": 2,
+      "makeAndModel": "HONDA PILOT"
+    },
+    {
+      "make": "TESLA",
+      "model": "MODEL Y",
+      "count": 2,
+      "makeAndModel": "TESLA MODEL Y"
+    },
+    {
+      "make": "MITSUBISHI",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "MITSUBISHI OTHER"
+    },
+    {
+      "make": "LINCOLN",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "LINCOLN OTHER"
+    },
+    {
+      "make": "OTHER",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "OTHER OTHER"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "4RUNNER",
+      "count": 2,
+      "makeAndModel": "TOYOTA 4RUNNER"
+    },
+    {
+      "make": "FORD",
+      "model": "EXPEDITION",
+      "count": 2,
+      "makeAndModel": "FORD EXPEDITION"
+    },
+    {
+      "make": "BMW",
+      "model": "328 I",
+      "count": 2,
+      "makeAndModel": "BMW 328 I"
+    },
+    {
+      "make": "",
+      "model": "",
+      "count": 2,
+      "makeAndModel": "Not Supplied"
+    },
+    {
+      "make": "NISSAN",
+      "model": "PICKUP",
+      "count": 2,
+      "makeAndModel": "NISSAN PICKUP"
+    },
+    {
+      "make": "GMC - GENERAL MOTORS CORP.",
+      "model": "ENVOY",
+      "count": 2,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP. ENVOY"
+    },
+    {
+      "make": "AUDI",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "AUDI OTHER"
+    },
+    {
+      "make": "ACURA",
+      "model": "MDX",
+      "count": 2,
+      "makeAndModel": "ACURA MDX"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "K5",
+      "count": 2,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) K5"
+    },
+    {
+      "make": "FORD",
+      "model": "EXPLORER",
+      "count": 2,
+      "makeAndModel": "FORD EXPLORER"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "OPTIMA",
+      "count": 2,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) OPTIMA"
+    },
+    {
+      "make": "HONDA",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "HONDA OTHER"
+    },
+    {
+      "make": "SUBARU",
+      "model": "LEGACY",
+      "count": 1,
+      "makeAndModel": "SUBARU LEGACY"
+    },
+    {
+      "make": "HYUNDAI",
+      "model": "SONATA",
+      "count": 1,
+      "makeAndModel": "HYUNDAI SONATA"
+    },
+    {
+      "make": "SUBARU",
+      "model": "OUTBACK",
+      "count": 1,
+      "makeAndModel": "SUBARU OUTBACK"
+    },
+    {
+      "make": "BUICK",
+      "model": "ELECTRA",
+      "count": 1,
+      "makeAndModel": "BUICK ELECTRA"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "CADENZA",
+      "count": 1,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) CADENZA"
+    },
+    {
+      "make": "BMW",
+      "model": "325 I",
+      "count": 1,
+      "makeAndModel": "BMW 325 I"
+    },
+    {
+      "make": "SUBARU",
+      "model": "FORESTER",
+      "count": 1,
+      "makeAndModel": "SUBARU FORESTER"
+    },
+    {
+      "make": "MITSUBISHI",
+      "model": "OUTLANDER",
+      "count": 1,
+      "makeAndModel": "MITSUBISHI OUTLANDER"
+    },
+    {
+      "make": "HONDA",
+      "model": "INSIGHT",
+      "count": 1,
+      "makeAndModel": "HONDA INSIGHT"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "ASTRO",
+      "count": 1,
+      "makeAndModel": "CHEVROLET ASTRO"
+    },
+    {
+      "make": "SUZUKI",
+      "model": "GRAND VITARA",
+      "count": 1,
+      "makeAndModel": "SUZUKI GRAND VITARA"
+    },
+    {
+      "make": "VOLVO",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "VOLVO OTHER"
+    },
+    {
+      "make": "DODGE",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "DODGE OTHER"
+    },
+    {
+      "make": "FORD",
+      "model": "WINDSTAR",
+      "count": 1,
+      "makeAndModel": "FORD WINDSTAR"
+    },
+    {
+      "make": "AUDI",
+      "model": "A4",
+      "count": 1,
+      "makeAndModel": "AUDI A4"
+    },
+    {
+      "make": "NISSAN",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "NISSAN"
+    },
+    {
+      "make": "LEXUS",
+      "model": "ES250",
+      "count": 1,
+      "makeAndModel": "LEXUS ES250"
+    },
+    {
+      "make": "DODGE",
+      "model": "CARAVAN",
+      "count": 1,
+      "makeAndModel": "DODGE CARAVAN"
+    },
+    {
+      "make": "HYUNDAI",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "HYUNDAI"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "OPIRUS",
+      "count": 1,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) OPIRUS"
+    },
+    {
+      "make": "GMC - GENERAL MOTORS CORP.",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP."
+    },
+    {
+      "make": "HARLEY-DAVIDSON",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "HARLEY-DAVIDSON OTHER"
+    },
+    {
+      "make": "PORSCHE",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "PORSCHE OTHER"
+    },
+    {
+      "make": "BUICK",
+      "model": "OPEL",
+      "count": 1,
+      "makeAndModel": "BUICK OPEL"
+    },
+    {
+      "make": "JEEP",
+      "model": "CHEROKEE",
+      "count": 1,
+      "makeAndModel": "JEEP CHEROKEE"
+    },
+    {
+      "make": "GMC - GENERAL MOTORS CORP.",
+      "model": "ACADIA",
+      "count": 1,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP. ACADIA"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "SOUL",
+      "count": 1,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) SOUL"
+    },
+    {
+      "make": "FORD",
+      "model": "TAURUS",
+      "count": 1,
+      "makeAndModel": "FORD TAURUS"
+    },
+    {
+      "make": "NISSAN",
+      "model": "PATHFINDER",
+      "count": 1,
+      "makeAndModel": "NISSAN PATHFINDER"
+    },
+    {
+      "make": "HONDA",
+      "model": "ODYSSEY",
+      "count": 1,
+      "makeAndModel": "HONDA ODYSSEY"
+    },
+    {
+      "make": "MERCEDES-BENZ",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "MERCEDES-BENZ"
+    },
+    {
+      "make": "GMC - GENERAL MOTORS CORP.",
+      "model": "SIERRA",
+      "count": 1,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP. SIERRA"
+    },
+    {
+      "make": "RAMBLER",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "RAMBLER OTHER"
+    },
+    {
+      "make": "TESLA",
+      "model": "MODEL 3",
+      "count": 1,
+      "makeAndModel": "TESLA MODEL 3"
+    },
+    {
+      "make": "JEEP",
+      "model": "LIBERTY",
+      "count": 1,
+      "makeAndModel": "JEEP LIBERTY"
+    },
+    {
+      "make": "BUICK",
+      "model": "REGAL",
+      "count": 1,
+      "makeAndModel": "BUICK REGAL"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE)"
+    },
+    {
+      "make": "SUBARU",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "SUBARU OTHER"
+    }
+  ]
+}

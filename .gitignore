@@ -1,16 +1,17 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # production
-/build
+/dist
 
 # testing
 /coverage
 
-# documentation
-/docs
-
 # dependencies
 /node_modules
+
+# tooling caches
+/node_modules/.tmp
+*.tsbuildinfo
 
 # misc
 .DS_Store

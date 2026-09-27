@@ -1,0 +1,115 @@
+import { flushPromises, mount } from '@vue/test-utils'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+import App from './App.vue'
+import { calendarDay } from './lib/dates'
+import type { DataSnapshot } from './lib/snapshot'
+
+const SNAPSHOT: DataSnapshot = {
+  bakedAt: '2026-09-26T23:50:14.661Z',
+  domain: 'data.nola.gov',
+  dataset: 'nfft-hjwi',
+  earliestEventDate: calendarDay(1991, 7, 24),
+  latestEventDate: calendarDay(2025, 11, 9),
+  totalViolations: 440051,
+  defaultRange: { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 30) },
+  defaultRangeCount: 366,
+  defaultRangeVehicleGroups: [
+    { make: 'NISSAN', model: 'ALTIMA', count: 21, makeAndModel: 'NISSAN ALTIMA' },
+    { make: 'CHEVROLET', model: 'OTHER', count: 14, makeAndModel: 'CHEVROLET OTHER' },
+    { make: '', model: '', count: 3, makeAndModel: 'Not Supplied' }
+  ]
+}
+
+/** Serves the baked snapshot; any other request fails the test loudly. */
+function stubSnapshotFetch(snapshot: DataSnapshot | null) {
+  return vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input)
+    if (url.includes('data/snapshot.json')) {
+      if (!snapshot) return new Response('missing', { status: 404 })
+      return new Response(JSON.stringify(snapshot), { status: 200 })
+    }
+    throw new Error(`Unexpected request while the snapshot covers this range: ${url}`)
+  })
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.restoreAllMocks()
+})
+
+describe('App', () => {
+  it('renders the baked total and vehicle rows with no API request', async () => {
+    const fetchMock = stubSnapshotFetch(SNAPSHOT)
+    vi.stubGlobal('fetch', fetchMock)
+
+    const wrapper = mount(App, { attachTo: document.body })
+    await flushPromises()
+    await flushPromises()
+
+    const text = wrapper.text()
+    expect(text).toContain('NOLA Stop and Search Data')
+    expect(text).toContain('366')
+    expect(text).toContain('November 1, 2025')
+    expect(text).toContain('November 30, 2025')
+    // The table rendered real rows through naive-ui.
+    expect(text).toContain('NISSAN')
+    expect(text).toContain('ALTIMA')
+
+    // Only the snapshot was fetched; Socrata was never contacted. Anything
+    // more would mean the page queried a range before knowing the real default.
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(String(fetchMock.mock.calls[0]![0])).toContain('data/snapshot.json')
+
+    // How the figures were obtained is not the viewer's concern, so no wording
+    // about snapshots or caching belongs on the page.
+    expect(text).not.toMatch(/snapshot/i)
+    expect(text).not.toMatch(/build-time/i)
+    expect(text).not.toMatch(/API request/i)
+
+    wrapper.unmount()
+  })
+
+  it('shows dataset provenance drawn from the snapshot rather than hard-coded prose', async () => {
+    vi.stubGlobal('fetch', stubSnapshotFetch(SNAPSHOT))
+
+    const wrapper = mount(App, { attachTo: document.body })
+    await flushPromises()
+    await flushPromises()
+
+    // 1991 is the real first event; the old copy claimed 1999.
+    expect(wrapper.text()).toContain('July 24, 1991')
+    expect(wrapper.text()).toContain('November 9, 2025')
+    expect(wrapper.text()).toContain('440,051')
+
+    wrapper.unmount()
+  })
+
+  it('falls back to live queries silently when the snapshot is missing', async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input)
+      if (url.includes('data/snapshot.json')) return new Response('missing', { status: 404 })
+      const isCount = new URL(url).searchParams.get('$select')?.startsWith('count(*)')
+      return new Response(JSON.stringify(isCount ? [{ total: '5' }] : []), { status: 200 })
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const wrapper = mount(App, { attachTo: document.body })
+    await flushPromises()
+    await flushPromises()
+
+    // The page works, showing the live figures for the current month.
+    const text = wrapper.text()
+    expect(text).toContain('NOLA Stop and Search Data')
+    expect(text).toContain('5')
+
+    // Nothing about the internal fallback reaches the page; a viewer has no use
+    // for it and nothing they could do about it. It goes to the console instead.
+    expect(text).not.toMatch(/snapshot/i)
+    expect(text).not.toMatch(/live data/i)
+    expect(warn).toHaveBeenCalled()
+
+    wrapper.unmount()
+  })
+})

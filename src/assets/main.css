@@ -1,0 +1,48 @@
+@import 'tailwindcss';
+
+/**
+ * Palette carried over from the original app's App.css, which documented these
+ * as the project's colours:
+ *   black on light background:      #1b1c1d
+ *   dark blue on light background:  #3e46b3
+ *   light blue on light background: #2185d0
+ *   light blue on dark background:  #54c8ff
+ *   white on dark background:       rgba(255, 255, 255, .9)
+ */
+@theme {
+  --color-nola-ink: #1b1c1d;
+  --color-nola-surface: #232526;
+  --color-nola-border: #34383a;
+  --color-nola-blue: #2185d0;
+  --color-nola-blue-bright: #54c8ff;
+  --color-nola-indigo: #3e46b3;
+  --color-nola-text: rgb(255 255 255 / 0.9);
+  --color-nola-muted: rgb(255 255 255 / 0.55);
+}
+
+/* The design is dark-only, matching the original, so the ground is declared
+   once rather than varying by preference. */
+html {
+  color-scheme: dark;
+  background-color: var(--color-nola-ink);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--color-nola-ink);
+  color: var(--color-nola-text);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Tabular figures keep the count column from jittering as rows re-sort. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

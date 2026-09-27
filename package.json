@@ -1,37 +1,46 @@
 {
   "name": "stop_and_search",
-  "homepage": "http://punkypi.github.io/stop_and_search",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
-  "dependencies": {
-    "@blueprintjs/datetime": "^1.24.0",
-    "documentation": "^5.3.5",
-    "es6-error": "^4.0.2",
-    "immutable": "^3.8.2",
-    "kind-of": "^6.0.2",
-    "lodash": "^4.17.5",
-    "moment": "^2.19.1",
-    "normalize.css": "^7.0.0",
-    "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-addons-css-transition-group": "^15.6.2",
-    "react-dom": "^16.0.0",
-    "react-scripts": "1.0.14",
-    "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.75.1",
-    "soda-js": "^0.2.3",
-    "urijs": "^1.19.0",
-    "validate.js": "^0.12.0"
+  "type": "module",
+  "homepage": "https://punkypi.github.io/stop_and_search",
+  "engines": {
+    "node": ">=26"
   },
   "scripts": {
-    "build": "react-scripts build",
-    "deploy": "gh-pages -d build",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "start": "react-scripts start",
-    "test": "react-scripts test --env=jsdom"
+    "dev": "vite",
+    "bake": "node scripts/bake-data.mjs",
+    "typecheck": "vue-tsc --build",
+    "build": "npm run bake && npm run typecheck && vite build",
+    "build:nobake": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "naive-ui": "^2.45.3",
+    "vue": "^3.5.43"
   },
   "devDependencies": {
-    "gh-pages": "^1.1.0"
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.0.0",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.9.0",
+    "@vue/test-utils": "^2.5.1",
+    "eslint": "^10.11.0",
+    "eslint-plugin-vue": "^10.11.1",
+    "globals": "^17.12.0",
+    "jiti": "^2.7.0",
+    "jsdom": "^30.1.1",
+    "prettier": "^3.9.9",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2",
+    "vue-tsc": "^3.3.11"
   }
 }

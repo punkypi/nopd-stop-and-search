@@ -5,6 +5,53 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.0 - 2026-09-26
+### Changed
+- Rewrote the app on Vue 3 + Vite + TypeScript, replacing React 16 and
+  create-react-app. `react-scripts` 1.0.14 had been unmaintained for years and
+  create-react-app itself is deprecated.
+- Replaced Semantic UI React with naive-ui. Semantic UI React is unmaintained,
+  and its icon fonts alone accounted for over 1 MB of the published payload.
+- Replaced `@blueprintjs/datetime`'s `DateRangeInput` with naive-ui's date
+  picker.
+- Replaced `moment` with native `Date` and `Intl`; replaced the `Date` class with
+  plain `CalendarDay` values in `src/lib/dates.ts`.
+- Replaced `soda-js` with a small `fetch`-based SoQL client in
+  `src/lib/socrata.ts`, dropping the app token from the client entirely.
+- Replaced the `TrafficViolation*Request` class hierarchy with async functions in
+  `src/lib/trafficViolations.ts`.
+- The default date range now comes from a snapshot baked at build time, so the
+  first paint makes no API request. Other ranges are still queried live.
+- Provenance figures in the about panel are read from the snapshot instead of
+  being written into the prose, which had drifted: it claimed event data began in
+  1999 when the earliest record is from 1991.
+- Deployment moved from a `gh-pages` branch to GitHub Actions publishing the
+  build artifact directly to GitHub Pages.
+- CI moved from CircleCI to GitHub Actions.
+- Node 26 is now required, up from Node 7.
+
+### Fixed
+- Inclusive date ranges now cover their final day. `toDBString` compared against
+  midnight, so every stop recorded after 00:00:00 on a range's last day was
+  omitted from both the total and the vehicle breakdown.
+- The vehicle table no longer keys rows on `Math.random()`, which defeated list
+  reconciliation on every re-render.
+- The page no longer fires a query for the current month on startup only to
+  discard it once the real default range is known.
+- A slow response for an earlier date range can no longer overwrite the figures
+  for a newer one; superseded requests are aborted.
+
+### Removed
+- `Mix` and `Hideable`. Vue composables and a plain `ref` cover what the mixin
+  machinery existed to share.
+- `SearchableDropdown`, `OptionalLabel`, `DateRangeForm`, `Month`,
+  `NotImplementedError`, `RuntimeError`, `ValidationError`, `URI`, `Validate`,
+  and `registerServiceWorker` — all unused or superseded.
+- `immutable`, `lodash`, `kind-of`, `es6-error`, `urijs`, `validate.js`,
+  `prop-types`, `documentation`, `normalize.css`, and `react-addons-css-transition-group`.
+- `.jshintrc`, `.htmlhintrc`, and `circle.yml`.
+- `./bin/deploy`, `./bin/doc`, and `./bin/doc_server`.
+
 ## 1.23.0 - 2026-08-24
 ### Changed
 - `VehicleGroupStatistics` now defaults to "descending" sort.

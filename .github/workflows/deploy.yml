@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+# Pages is served straight from the build artifact, so there is no longer a
+# gh-pages branch holding compiled output.
+on:
+  push:
+    branches: [main, master]
+  # The dataset is refreshed upstream every so often; re-bake monthly so the
+  # published snapshot keeps up without anyone touching the code.
+  schedule:
+    - cron: '17 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# A queued deploy should replace an older one rather than pile up, but never
+# cancel a deploy that is already publishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      # Refreshes public/data/snapshot.json from data.nola.gov. Non-fatal: if
+      # the API is unreachable the committed snapshot is used instead.
+      - name: Bake dataset snapshot
+        run: npm run bake
+        env:
+          SOCRATA_APP_TOKEN: ${{ secrets.SOCRATA_APP_TOKEN }}
+
+      - name: Build
+        run: npm run build:nobake
+        env:
+          # e.g. /stop_and_search/ — configure-pages derives it from the repo.
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
