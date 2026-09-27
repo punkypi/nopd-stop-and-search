@@ -40,6 +40,12 @@ and this project adheres to
   discard it once the real default range is known.
 - A slow response for an earlier date range can no longer overwrite the figures
   for a newer one; superseded requests are aborted.
+- Assets resolved against the base URL 404d on GitHub Pages while working
+  locally. `actions/configure-pages` reports its `base_path` without a trailing
+  slash and Vite passes `base` through to `import.meta.env.BASE_URL` verbatim, so
+  interpolation produced `/stop_and_searchdata/snapshot.json`. That broke the
+  favicon and the baked snapshot, which silently fell the page back to querying
+  the current month, where there is no event data.
 - Returning visitors were served the old React page from cache. The previous
   build registered a service worker that precached `index.html` and served it
   cache-first, so removing it was not enough; `public/service-worker.js` now

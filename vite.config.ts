@@ -10,8 +10,15 @@ import { defineConfig } from 'vitest/config'
  * so every asset URL needs that repository-name prefix. Deploys driven by the
  * Pages workflow set BASE_PATH; `npm run dev` and `vite preview` leave it unset
  * and serve from the root.
+ *
+ * The trailing slash is forced on because `actions/configure-pages` reports its
+ * `base_path` output without one, and Vite surfaces `base` verbatim through
+ * `import.meta.env.BASE_URL`. Without this, anything resolved against that value
+ * came out as `/stop_and_searchdata/snapshot.json` and 404d in production while
+ * working locally.
  */
-const base = process.env.BASE_PATH ?? '/'
+const rawBase = process.env.BASE_PATH ?? '/'
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`
 
 export default defineConfig({
   base,

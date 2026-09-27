@@ -6,6 +6,7 @@
  * the JavaScript bundle and can be re-baked without a rebuild of the app code.
  */
 
+import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
 import type { DateRange, VehicleGroup } from './trafficViolations'
 
@@ -25,11 +26,11 @@ export interface DataSnapshot {
 }
 
 /**
- * `BASE_URL` carries the `/stop_and_search/` prefix on GitHub Pages and `/`
- * during local development, so the snapshot resolves correctly in both.
+ * Resolved against the app's base URL so it works both from the repository
+ * subpath on GitHub Pages and from the root in development.
  */
 export function snapshotUrl(): string {
-  return `${import.meta.env.BASE_URL}data/snapshot.json`
+  return withBase('data/snapshot.json')
 }
 
 export async function loadSnapshot(signal?: AbortSignal): Promise<DataSnapshot> {

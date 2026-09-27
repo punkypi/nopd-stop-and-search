@@ -7,13 +7,14 @@
  * the original app did it.
  */
 import { NAlert, NConfigProvider, NSpin, darkTheme, type GlobalThemeOverrides } from 'naive-ui'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import AboutPanel from '@/components/AboutPanel.vue'
 import DateRangeFilter from '@/components/DateRangeFilter.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
 import ViolationTotal from '@/components/ViolationTotal.vue'
 import { useViolationData } from '@/composables/useViolationData'
+import { withBase } from '@/lib/basePath'
 import { endOfMonth, startOfMonth, today } from '@/lib/dates'
 import { loadSnapshot, type DataSnapshot } from '@/lib/snapshot'
 import type { DateRange } from '@/lib/trafficViolations'
@@ -58,7 +59,7 @@ onMounted(async () => {
   }
 })
 
-const headerIcon = computed(() => `${import.meta.env.BASE_URL}fleur_de_lis_blue.ico`)
+const headerIcon = withBase('fleur_de_lis_blue.ico')
 </script>
 
 <template>
