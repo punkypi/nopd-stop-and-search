@@ -43,6 +43,14 @@ export default defineConfigWithVueTs(
     }
   },
 
+  // Runs in a ServiceWorkerGlobalScope, not a window or Node.
+  {
+    files: ['public/service-worker.js'],
+    languageOptions: {
+      globals: { ...globals.serviceworker }
+    }
+  },
+
   // Must stay last so it can switch off anything stylistic above it.
   skipFormatting
 )
