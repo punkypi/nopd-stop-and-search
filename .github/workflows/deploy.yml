@@ -35,11 +35,11 @@ jobs:
 
       - run: npm ci
 
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Test
-        run: npm test
+      # The same gate `npm run verify` runs locally: lint, typecheck, test. One
+      # command in both places means CI cannot enforce something a contributor
+      # has no way to reproduce. Lint in particular used to run in neither.
+      - name: Verify
+        run: npm run verify
 
       - name: Configure Pages
         id: pages

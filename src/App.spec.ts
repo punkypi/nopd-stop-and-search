@@ -18,7 +18,12 @@ const SNAPSHOT: DataSnapshot = {
     { make: 'NISSAN', model: 'ALTIMA', count: 21, makeAndModel: 'NISSAN ALTIMA' },
     { make: 'CHEVROLET', model: 'OTHER', count: 14, makeAndModel: 'CHEVROLET OTHER' },
     { make: '', model: '', count: 3, makeAndModel: 'Not Supplied' }
-  ]
+  ],
+  defaultRangeStopLocations: [
+    { latitude: 29.9511, longitude: -90.0715, count: 21, address: 'Canal St & N Rampart St' },
+    { latitude: 30.0046, longitude: -90.1082, count: 4, address: 'Canal Blvd & Harrison Av' }
+  ],
+  defaultRangeLocationsTruncated: false
 }
 
 /** Serves the baked snapshot; any other request fails the test loudly. */

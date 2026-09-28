@@ -1,12 +1,40 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 2.0.0 - 2026-09-26
+## 2.1.0 - 2026-09-27
+
+### Added
+
+- A map of where stops happened, drawn with Leaflet over Esri's dark basemap.
+  Stops are grouped by coordinate server-side and drawn as circles whose **area**
+  is proportional to the count; clicking one names the block or intersection.
+  Radius scales on the square root so a location with ten times the stops does
+  not appear a hundred times heavier.
+- The map states how much of the selected range it accounts for, e.g. "352 of
+  366 stops have a recorded location, at 172 places". Coordinates were only
+  recorded from 2018 onward and roughly 63% of all rows carry a placeholder
+  `0, 0`, so the map is routinely a subset of the headline total and now says by
+  how much.
+- Stop locations for the default range are baked into the snapshot, so the map
+  paints on first load without an API request like the rest of the page.
+- `bin/soql`, a shell front end to the dataset's SoQL API, so checking real
+  values before designing a feature does not mean hand-encoding a URL.
+- `npm run verify`, running lint, typecheck and test as one gate.
+
 ### Changed
+
+- CI now runs `npm run verify` in place of separate typecheck and test steps.
+  Lint had not been enforced anywhere, locally or in CI.
+
+## 2.0.0 - 2026-09-26
+
+### Changed
+
 - Rewrote the app on Vue 3 + Vite + TypeScript, replacing React 16 and
   create-react-app. `react-scripts` 1.0.14 had been unmaintained for years and
   create-react-app itself is deprecated.
@@ -31,6 +59,7 @@ and this project adheres to
 - Node 26 is now required, up from Node 7.
 
 ### Fixed
+
 - Inclusive date ranges now cover their final day. `toDBString` compared against
   midnight, so every stop recorded after 00:00:00 on a range's last day was
   omitted from both the total and the vehicle breakdown.
@@ -52,6 +81,7 @@ and this project adheres to
   replaces it with one that clears the caches, unregisters itself, and reloads.
 
 ### Removed
+
 - `Mix` and `Hideable`. Vue composables and a plain `ref` cover what the mixin
   machinery existed to share.
 - `SearchableDropdown`, `OptionalLabel`, `DateRangeForm`, `Month`,
@@ -63,68 +93,100 @@ and this project adheres to
 - `./bin/deploy`, `./bin/doc`, and `./bin/doc_server`.
 
 ## 1.23.0 - 2026-08-24
+
 ### Changed
+
 - `VehicleGroupStatistics` now defaults to "descending" sort.
 
 ## 1.22.0 - 2026-08-24
+
 ### Added
+
 - `MostRecentEventDateRequest` does what it says, gets the most recent event date.
 - `Date.fromDBString(dbString)` helper method to convert DB date strings to a `Date` object.
+
 ### Changed
+
 - `App` now changes date selection after component load to the latest month with
   event data in it. If none found, then the current month is still the default range.
 - `AboutUs` component now explains the latest event data is from 2025.
 
 ## [1.21.0] - 2018-02-18
+
 ### Changed
+
 - `VehicleGroupStatistics` can now be sorted by count, make, or model, in
   ascending or descending order.
 
 ## [1.20.0] - 2018-02-14
+
 ### Added
+
 - `./bin/deploy` shortcut for `yarn deploy`.
+
 ### Changed
+
 - Documented `hideable` constructor.
 
 ## [1.19.0] - 2018-02-13
+
 ### Added
+
 - `./bin/dev_server` shortcut for running `yarn start`.
 - `Hideable` mixin, to contain sharable hidden/visibility logic.
+
 ### Changed
+
 - `VehicleGroupStatistics` now mixes in `Hideable`.
+
 ### Removed
+
 - `VehicleGroupStatistics#hidden`, now mixed in from `Hideable`.
 - `VehicleGroupStatistics#visible`, now mixed in from `Hideable`.
 
 ## [1.18.0] - 2018-02-12
+
 ### Added
+
 - `lodash` (https://lodash.com/docs).
 - `kind-of` (https://github.com/jonschlinkert/kind-of).
 - `VehicleGroupStatistics#visible` property, opposite of `#hidden`.
+
 ### Changed
+
 - Documented `App`.
 - Documented `TrafficViolations`.
 
 ## [1.17.0] - 2018-02-11
+
 ### Added
+
 - `VehicleGroupStatistics.defaultProps`.
 - `VehicleGroupStatistics#hidden()`, what is the current hidden state.
 - `VehicleGroupStatistics#hideButtonText`, what the Hide button currently says.
 - `VehicleGroupStatistics#onHideButtonClick(event)`, handles hiding/unhiding.
+
 ### Changed
+
 - `VehicleGroupStatistics` can now be hidden via a menu button.
 
 ## [1.16.0] - 2018-02-04
+
 ### Added
+
 - `documentation` lib.
 - `./bin/doc` to generate `src/**` `HTML` documentation in `docs/index.html`.
 - `./bin/doc_server` to generate and watch `src/**` `HTML` documentation at
   `localhost:4001`.
+
 ### Changed
+
 - `VehicleGroupStatistics` documented.
 
 ## [1.15.0] - 2018-02-03
+
 ### Added
+
 - Search input to `VehicleGroupStatistics`, users can now search for data in
   `VehicleGroup#count`, `#make`, or `#model`.
 - `VehicleGroupStatistics.searchableData`, the `VehicleGroup` properties a user
@@ -134,15 +196,21 @@ and this project adheres to
 - `VehicleGroupStatistics#searchTerm`, the user's current search input value.
 - `VehicleGroupStatistics#searchableData`, a convenience reference to
   `.searchableData`.
+
 ### Changed
+
 - `VehicleGroupStatistics#vehicleGroups` now filters in any `VehicleGroup`
   instances including the `#searchTerm` in the data white listed in
   `#searchableData`.
 
 ## [1.14.0] - 2018-02-03
+
 ### Added
+
 - `src/VehicleGroupStatistic.css`, for custom styling.
+
 ### Changed
+
 - `body` `background-color` now inverted.
 - `src/AboutUs.js` now inverted.
 - `src/App.js` now inverted.
@@ -152,31 +220,45 @@ and this project adheres to
 - `src/TrafficViolations.js` now inverted.
 - `src/VehicleGroupStatistic.js` now inverted.
 - `src/VehicleGroupStatistics.js` now inverted.
+
 ### Removed
+
 - `src/NullLabel.js`, no longer needed.
 
 ## [1.13.0] - 2018-01-29
+
 ### Added
+
 - "Favorite Colours" list to `src/App.css`.
 - `favicon.ico` to `AppHeader` menu header.
+
 ### Changed
+
 - `public/fleur_de_lis_blue.ico` now a lighter shade of blue (copied to
   `public/favicon.ico`).
 
 ## [1.12.0] - 2018-01-28
+
 ### Added
+
 - `public/favicon.ico`, a copy of `public/fleur_de_lis_blue.ico`.
 - `Image` of `public/favicon.ico` to `AppHeader`.
+
 ### Changed
+
 - `public/manifest.json` now points to `public/favicon.ico` again.
 - `DateRangeFilter` input field tags now same color as `public/favicon.ico`
   (`#3e46b3`).
+
 ### Fixed
+
 - `DateRangeFilter` input fields no longer extend outside of `Menu.Item`.
 - `DateRangeFilter` "End" tag point no longer extends into "E".
 
 ## [1.11.0] - 2018-01-27
+
 ### Added
+
 - `App.defaultProps`.
 - `App.propTypes`.
 - `App#endDate`, for an app-wide end date.
@@ -184,81 +266,123 @@ and this project adheres to
 - `App#startDate`, for an app-wide start date.
 - `DateRangeFiler.js`, for menu-embeded date range forms.
 - `src/TextColors.css` for `color` styling shortcuts.
+
 ### Changed
+
 - `AppHeader` is now `stackable` and wraps its children in `stackable`
   `Menu.Item` tags.
 - `TrafficViolations` now does not manage internal date range state and updates
   its traffic information when its date range via props changes.
 
 ## [1.10.0] - 2018-01-15
+
 ### Changed
+
 - `public/manifest.json` `"short_name"` now `"NOLA SAS"`.
 - `public/manifest.json` `"name"` now `"NOLA Stop and Search Data"`.
+
 ### Fixed
+
 - `public/manifest.json` `192x192` icon now `fleur_de_lis_blue.ico`.
+
 ### Removed
+
 - Starter `create-recate-app` doc-comments in `public/index.html`.
 
 ## [1.9.3] - 2018-01-15
+
 ### Fixed
+
 - `VehicleGroupStatistics` columns overlapping at different screen sizes.
 
 ## [1.9.2] - 2018-01-15
+
 ### Fixed
+
 - Bug causing `TrafficViolations`' `DateRangeForm` to overlap with
   the "total" statistic.
 
 ## [1.9.1] - 2018-01-14
+
 ### Fixed
+
 - Incorrect reference to `this.title` in `AboutUs`, now `this.props.title`.
 
 ## [1.9.0] - 2018-01-14
+
 ### Changed
+
 - `AppHeader` component's `title` defaults to `'NOLA Stop and Search Data'`
   when not given.
 
 ## [1.8.0] - 2018-01-14
+
 ### Added
+
 - `prop-types` library.
+
 ### Changed
+
 - `AboutUs` component's `title` defaults to `'About Us'` when not given.
 
 ## [1.7.0] - 2018-01-14
+
 ### Changed
+
 - `AboutUs` component now accepts a `title` prop.
 
 ## [1.6.0] - 2018-01-14
+
 ### Added
+
 - `AboutUs` component created from `AppFooter`'s `#info` element.
+
 ### Changed
+
 - `AppFooter` component now renders children components.
+
 ### Fixed
+
 - Typo in `src/AppFooter.js` (was `AppHeader`, now `AppFooter`).
 
 ## [1.5.0] - 2018-01-14
+
 ### Changed
+
 - `AppBody` component now renders children components.
 
 ## [1.4.0] - 2018-01-14
+
 ### Changed
+
 - `AppHeader` component now accepts a `title` prop.
 
 ## [1.3.0] - 2018-01-14
+
 ### Changed
+
 - `AppHeader` component now renders children components.
 
 ## [1.2.0] - 2018-01-14
+
 ### Added
+
 - `public/fleur_de_lis_black.ico`.
 - `public/fleur_de_lis_blue.ico`.
+
 ### Changed
+
 - `public/index.html` show uses `fluer_de_lis_blue.ico` as its shortcut icon.
 
 ## [1.1.0] - 2018-01-07
+
 ### Changed
+
 - `AppHeader` now has a fixed, inverted `SemanticUI` `Menu` instead of `Header`.
 
 ## [1.0.0] - 2017-12-29
+
 ### Added
+
 - `NullLabel` renders a "NOT PROVIDED" label (when information was not
   supplied to the S.A.S. database).

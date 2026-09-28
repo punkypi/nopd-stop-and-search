@@ -34,6 +34,20 @@ const TIMEOUT_MS = Number(process.env.BAKE_TIMEOUT_MS ?? 60_000)
 
 const TRAFFIC_VIOLATION_WHERE = "stopdescription = 'TRAFFIC VIOLATION'"
 const MAX_GROUPS = 50_000
+const MAX_LOCATIONS = 25_000
+
+/**
+ * Mirrors NOLA_BOUNDS in src/lib/stopLocations.ts. Keep the two in step.
+ *
+ * Duplicated rather than imported because this script runs as plain Node against
+ * the repository, with no Vite resolution for the `@` alias or for TypeScript —
+ * the same reason `vehicleGroup` below is a copy of `buildVehicleGroup`.
+ */
+const BOUNDS = { minLatitude: 28.8, maxLatitude: 30.4, minLongitude: -90.6, maxLongitude: -89.5 }
+
+const COORDINATE_WHERE =
+  `latitude between ${BOUNDS.minLatitude} and ${BOUNDS.maxLatitude} ` +
+  `AND longitude between ${BOUNDS.minLongitude} and ${BOUNDS.maxLongitude}`
 
 function soqlUrl(params) {
   const search = new URLSearchParams()
@@ -86,6 +100,18 @@ function rangeWhere(range) {
   )
 }
 
+/** Mirrors buildStopLocation in src/lib/stopLocations.ts. Returns null when unplottable. */
+function stopLocation(latitude, longitude, count, address) {
+  const lat = Number(latitude)
+  const lon = Number(longitude)
+  const stops = Number(count)
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null
+  if (lat < BOUNDS.minLatitude || lat > BOUNDS.maxLatitude) return null
+  if (lon < BOUNDS.minLongitude || lon > BOUNDS.maxLongitude) return null
+  if (!Number.isFinite(stops) || stops <= 0) return null
+  return { latitude: lat, longitude: lon, count: stops, address: (address ?? '').trim() }
+}
+
 function vehicleGroup(make, model, count) {
   const trimmedMake = (make ?? '').trim()
   const trimmedModel = (model ?? '').trim()
@@ -116,7 +142,7 @@ async function bake() {
   const defaultRange = { start: startOfMonth(latest), end: endOfMonth(latest) }
   const where = rangeWhere(defaultRange)
 
-  const [[countRow], groupRows] = await Promise.all([
+  const [[countRow], groupRows, locationRows] = await Promise.all([
     query({ select: 'count(*) as total', where }),
     query({
       select: 'vehiclemake, vehiclemodel, count(*) as total',
@@ -124,8 +150,21 @@ async function bake() {
       group: 'vehiclemake, vehiclemodel',
       order: 'total desc',
       limit: MAX_GROUPS
+    }),
+    query({
+      select: 'latitude, longitude, count(*) as total, max(blockaddress) as address',
+      where: `${where} AND ${COORDINATE_WHERE}`,
+      group: 'latitude, longitude',
+      order: 'total desc',
+      // One past the cap, so hitting it is detectable without a second query.
+      limit: MAX_LOCATIONS + 1
     })
   ])
+
+  const locationsTruncated = locationRows.length > MAX_LOCATIONS
+  const stopLocations = (locationsTruncated ? locationRows.slice(0, MAX_LOCATIONS) : locationRows)
+    .map((row) => stopLocation(row.latitude, row.longitude, row.total, row.address))
+    .filter((location) => location !== null)
 
   const snapshot = {
     bakedAt: new Date().toISOString(),
@@ -138,7 +177,9 @@ async function bake() {
     defaultRangeCount: Number(countRow?.total ?? 0),
     defaultRangeVehicleGroups: groupRows.map((row) =>
       vehicleGroup(row.vehiclemake, row.vehiclemodel, Number(row.total ?? 0))
-    )
+    ),
+    defaultRangeStopLocations: stopLocations,
+    defaultRangeLocationsTruncated: locationsTruncated
   }
 
   await mkdir(OUT_DIR, { recursive: true })
@@ -150,6 +191,8 @@ async function bake() {
       `  default range ${isoDate(defaultRange.start)} .. ${isoDate(defaultRange.end)}\n` +
       `  in range      ${snapshot.defaultRangeCount.toLocaleString('en-US')} stops, ` +
       `${snapshot.defaultRangeVehicleGroups.length.toLocaleString('en-US')} make/model pairs\n` +
+      `  located       ${stopLocations.length.toLocaleString('en-US')} distinct coordinates` +
+      `${locationsTruncated ? ' (capped)' : ''}\n` +
       `  wrote         public/data/snapshot.json\n`
   )
 }

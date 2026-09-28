@@ -46,3 +46,69 @@ body {
 .tabular {
   font-variant-numeric: tabular-nums;
 }
+
+/**
+ * Leaflet's own chrome, restyled for the dark page.
+ *
+ * Leaflet ships light-mode defaults — white popups, white zoom buttons — which
+ * glare against this palette. These live here rather than in a scoped block on
+ * StopMap.vue because Leaflet builds its popups and controls itself, outside the
+ * subtree Vue stamps a scope attribute onto, so a scoped selector would never
+ * match them.
+ */
+.leaflet-container {
+  /* Shows through while tiles load, and around the edges of the world. */
+  background-color: var(--color-nola-ink);
+  font-family: inherit;
+}
+
+/**
+ * Esri's dark basemap is lighter than this page's background, so untouched it
+ * reads as a bright panel punched into the layout. Dimming only the tile pane
+ * settles it against the surrounding card while leaving the circles, controls
+ * and popups — which live in sibling panes — at full strength.
+ */
+.leaflet-tile-pane {
+  filter: brightness(0.72) contrast(1.08);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background-color: var(--color-nola-surface);
+  color: var(--color-nola-text);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.5);
+}
+
+.leaflet-popup-content {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--color-nola-muted);
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover {
+  color: var(--color-nola-text);
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: var(--color-nola-surface);
+  border-bottom-color: var(--color-nola-border);
+  color: var(--color-nola-text);
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--color-nola-border);
+}
+
+.leaflet-control-attribution {
+  background-color: rgb(27 28 29 / 0.8);
+  color: var(--color-nola-muted);
+  font-size: 0.6875rem;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-nola-blue-bright);
+}

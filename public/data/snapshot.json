@@ -1,5 +1,5 @@
 {
-  "bakedAt": "2026-09-27T00:25:28.394Z",
+  "bakedAt": "2026-09-27T23:20:31.172Z",
   "domain": "data.nola.gov",
   "dataset": "nfft-hjwi",
   "earliestEventDate": {
@@ -669,5 +669,1040 @@
       "count": 1,
       "makeAndModel": "SUBARU OTHER"
     }
-  ]
+  ],
+  "defaultRangeStopLocations": [
+    {
+      "latitude": 30.04244008,
+      "longitude": -89.99920018,
+      "count": 32,
+      "address": "008XX Lincoln Beach Blvd"
+    },
+    {
+      "latitude": 29.97968083,
+      "longitude": -90.02943626,
+      "count": 24,
+      "address": "France St & N Dorgenois St"
+    },
+    {
+      "latitude": 29.9890374,
+      "longitude": -90.08283758,
+      "count": 23,
+      "address": "003XX De Saix Blvd"
+    },
+    {
+      "latitude": 29.92261652,
+      "longitude": -89.99895812,
+      "count": 17,
+      "address": "052XX Macarthur Blvd"
+    },
+    {
+      "latitude": 30.04913666,
+      "longitude": -89.9844286,
+      "count": 13,
+      "address": "100XX Lincoln Beach Blvd"
+    },
+    {
+      "latitude": 29.9998456,
+      "longitude": -90.11330713,
+      "count": 8,
+      "address": "Polk St & Milne Blvd"
+    },
+    {
+      "latitude": 30.03712099,
+      "longitude": -90.0156472,
+      "count": 7,
+      "address": "067XX Stars And Stripes Blvd"
+    },
+    {
+      "latitude": 29.95627481,
+      "longitude": -90.06774648,
+      "count": 7,
+      "address": "Conti St & Bourbon St"
+    },
+    {
+      "latitude": 29.95337886,
+      "longitude": -90.08538638,
+      "count": 6,
+      "address": "019XX Lafayette St"
+    },
+    {
+      "latitude": 29.97517913,
+      "longitude": -90.07912245,
+      "count": 4,
+      "address": "Orchid St & N Broad St"
+    },
+    {
+      "latitude": 29.9304365,
+      "longitude": -90.10258672,
+      "count": 4,
+      "address": "Napoleon Av & Danneel St"
+    },
+    {
+      "latitude": 29.96103853,
+      "longitude": -90.11512656,
+      "count": 4,
+      "address": "S Carrollton Av & Earhart Blvd"
+    },
+    {
+      "latitude": 29.9941349,
+      "longitude": -90.10945746,
+      "count": 4,
+      "address": "Canal Blvd & Florida Blvd"
+    },
+    {
+      "latitude": 29.97325792,
+      "longitude": -90.057338,
+      "count": 4,
+      "address": "N Claiborne Av & Elysian Fields Av"
+    },
+    {
+      "latitude": 30.01948118,
+      "longitude": -90.10647068,
+      "count": 3,
+      "address": "Canal Blvd & Allen Toussaint Blvd"
+    },
+    {
+      "latitude": 29.98946335,
+      "longitude": -90.1055489,
+      "count": 3,
+      "address": "Navarre Av & Marshal Foch St"
+    },
+    {
+      "latitude": 29.95448194,
+      "longitude": -90.07078272,
+      "count": 3,
+      "address": "Canal St & Dauphine St"
+    },
+    {
+      "latitude": 29.92932906,
+      "longitude": -90.03251156,
+      "count": 3,
+      "address": "General De Gaulle Dr & Shirley Dr"
+    },
+    {
+      "latitude": 29.95221509,
+      "longitude": -90.06980582,
+      "count": 3,
+      "address": "St Charles Av & Common St"
+    },
+    {
+      "latitude": 30.01703508,
+      "longitude": -90.11493475,
+      "count": 3,
+      "address": "069XX Pontchartrain Blvd"
+    },
+    {
+      "latitude": 29.96561395,
+      "longitude": -90.08721038,
+      "count": 3,
+      "address": "N Broad St & Canal St"
+    },
+    {
+      "latitude": 30.00460902,
+      "longitude": -90.10822086,
+      "count": 3,
+      "address": "Harrison Av & Canal Blvd"
+    },
+    {
+      "latitude": 30.0043853,
+      "longitude": -90.10579442,
+      "count": 3,
+      "address": "Harrison Av & Memphis St"
+    },
+    {
+      "latitude": 29.93710931,
+      "longitude": -90.11076626,
+      "count": 2,
+      "address": "Jefferson Av & Magnolia St"
+    },
+    {
+      "latitude": 29.99561373,
+      "longitude": -90.10926903,
+      "count": 2,
+      "address": "Canal Blvd & I-610 W Onramp"
+    },
+    {
+      "latitude": 29.99731689,
+      "longitude": -90.11346909,
+      "count": 2,
+      "address": "Milne Blvd & Brooks St"
+    },
+    {
+      "latitude": 30.00103441,
+      "longitude": -90.10864232,
+      "count": 2,
+      "address": "Germain St & Canal Blvd"
+    },
+    {
+      "latitude": 30.04303457,
+      "longitude": -89.97988277,
+      "count": 2,
+      "address": "Read Blvd & Morrison Rd"
+    },
+    {
+      "latitude": 29.95362665,
+      "longitude": -90.07038693,
+      "count": 2,
+      "address": "008XX Canal St"
+    },
+    {
+      "latitude": 29.92748249,
+      "longitude": -90.11734958,
+      "count": 2,
+      "address": "014XX Nashville Av"
+    },
+    {
+      "latitude": 30.00503343,
+      "longitude": -90.11031393,
+      "count": 2,
+      "address": "Harrison Av & Louisville St"
+    },
+    {
+      "latitude": 29.96984585,
+      "longitude": -90.05208581,
+      "count": 2,
+      "address": "St Roch Av & Marais St"
+    },
+    {
+      "latitude": 29.9551087,
+      "longitude": -90.06410941,
+      "count": 2,
+      "address": "005XX Decatur St"
+    },
+    {
+      "latitude": 29.97450574,
+      "longitude": -90.10077345,
+      "count": 2,
+      "address": "Canal St & S Carrollton Av"
+    },
+    {
+      "latitude": 29.97131374,
+      "longitude": -90.03653506,
+      "count": 2,
+      "address": "N Claiborne Av & Independence St"
+    },
+    {
+      "latitude": 29.92331695,
+      "longitude": -90.01763965,
+      "count": 2,
+      "address": "General De Gaulle Dr & Halsey Av"
+    },
+    {
+      "latitude": 29.97133777,
+      "longitude": -90.0294801,
+      "count": 2,
+      "address": "001XX Poland Av"
+    },
+    {
+      "latitude": 29.98969717,
+      "longitude": -90.10811685,
+      "count": 2,
+      "address": "Vicksburg St & Navarre Av"
+    },
+    {
+      "latitude": 29.95230669,
+      "longitude": -90.12450165,
+      "count": 2,
+      "address": "S Carrollton Av & Cohn St"
+    },
+    {
+      "latitude": 29.9558613,
+      "longitude": -90.08097119,
+      "count": 2,
+      "address": "S Claiborne Av & Gravier St"
+    },
+    {
+      "latitude": 29.92932379,
+      "longitude": -90.0791293,
+      "count": 2,
+      "address": "023XX Camp St"
+    },
+    {
+      "latitude": 29.98097416,
+      "longitude": -90.1139527,
+      "count": 2,
+      "address": "Metairie Rd & Pontchartrain Blvd"
+    },
+    {
+      "latitude": 29.95658305,
+      "longitude": -90.12158688,
+      "count": 1,
+      "address": "S Claiborne Av & Dublin St"
+    },
+    {
+      "latitude": 29.95666049,
+      "longitude": -90.11952925,
+      "count": 1,
+      "address": "Nelson St & S Carrollton Av"
+    },
+    {
+      "latitude": 29.95869149,
+      "longitude": -90.06186618,
+      "count": 1,
+      "address": "005XX Dumaine St"
+    },
+    {
+      "latitude": 29.95878257,
+      "longitude": -90.11725233,
+      "count": 1,
+      "address": "S Carrollton Av & Walmsley Av"
+    },
+    {
+      "latitude": 29.95911296,
+      "longitude": -90.07805383,
+      "count": 1,
+      "address": "Canal St & S Claiborne Av"
+    },
+    {
+      "latitude": 29.95964068,
+      "longitude": -90.06310404,
+      "count": 1,
+      "address": "009XX Royal St"
+    },
+    {
+      "latitude": 29.96025746,
+      "longitude": -90.12610772,
+      "count": 1,
+      "address": "087XX S Claiborne Av"
+    },
+    {
+      "latitude": 29.96172303,
+      "longitude": -90.09059462,
+      "count": 1,
+      "address": "S Broad St & Tulane Av"
+    },
+    {
+      "latitude": 29.96375705,
+      "longitude": -90.08882338,
+      "count": 1,
+      "address": "S Broad St & Palmyra St"
+    },
+    {
+      "latitude": 29.96384608,
+      "longitude": -90.11213534,
+      "count": 1,
+      "address": "Edinburgh St & S Carrollton Av"
+    },
+    {
+      "latitude": 29.96543754,
+      "longitude": -90.0873548,
+      "count": 1,
+      "address": "Canal St & S Broad St"
+    },
+    {
+      "latitude": 29.96565904,
+      "longitude": -90.11021536,
+      "count": 1,
+      "address": "S Carrollton Av & Washington Av"
+    },
+    {
+      "latitude": 29.96613639,
+      "longitude": -90.01527933,
+      "count": 1,
+      "address": "Flood St & N Claiborne Av"
+    },
+    {
+      "latitude": 29.96664052,
+      "longitude": -90.08874359,
+      "count": 1,
+      "address": "Canal St & N White St"
+    },
+    {
+      "latitude": 29.96725317,
+      "longitude": -90.08577902,
+      "count": 1,
+      "address": "Bienville Av & N Broad St"
+    },
+    {
+      "latitude": 29.96738558,
+      "longitude": -90.04333791,
+      "count": 1,
+      "address": "031XX St Claude Av"
+    },
+    {
+      "latitude": 29.96825225,
+      "longitude": -90.06152914,
+      "count": 1,
+      "address": "Henriette Delille St & St Anthony St"
+    },
+    {
+      "latitude": 29.96868725,
+      "longitude": -90.04820958,
+      "count": 1,
+      "address": "St Claude Av & St Ferdinand St"
+    },
+    {
+      "latitude": 29.96876152,
+      "longitude": -90.05327247,
+      "count": 1,
+      "address": "St Claude Av & Spain St"
+    },
+    {
+      "latitude": 29.96889901,
+      "longitude": -90.05099575,
+      "count": 1,
+      "address": "St Claude Av & Music St"
+    },
+    {
+      "latitude": 29.96893032,
+      "longitude": -90.02968294,
+      "count": 1,
+      "address": "044XX N Robertson St"
+    },
+    {
+      "latitude": 29.96901706,
+      "longitude": -90.10660999,
+      "count": 1,
+      "address": "S Carrollton Av & Tulane Av"
+    },
+    {
+      "latitude": 29.97077867,
+      "longitude": -90.08295446,
+      "count": 1,
+      "address": "Orleans Av & N Broad St"
+    },
+    {
+      "latitude": 29.97126486,
+      "longitude": -90.04123446,
+      "count": 1,
+      "address": "N Robertson St & Louisa St"
+    },
+    {
+      "latitude": 29.97157152,
+      "longitude": -90.05721396,
+      "count": 1,
+      "address": "N Villere St & Elysian Fields Av"
+    },
+    {
+      "latitude": 29.97165064,
+      "longitude": -90.04299099,
+      "count": 1,
+      "address": "Clouet St & N Robertson St"
+    },
+    {
+      "latitude": 29.97169854,
+      "longitude": -90.11814328,
+      "count": 1,
+      "address": "009XX Airline Hwy"
+    },
+    {
+      "latitude": 29.97192742,
+      "longitude": -90.12187507,
+      "count": 1,
+      "address": "Airline Hwy & Cherry St"
+    },
+    {
+      "latitude": 29.97197293,
+      "longitude": -90.10317477,
+      "count": 1,
+      "address": "Banks St & S Carrollton Av"
+    },
+    {
+      "latitude": 29.9720906,
+      "longitude": -90.10335713,
+      "count": 1,
+      "address": "S Carrollton Av & Banks St"
+    },
+    {
+      "latitude": 29.97210191,
+      "longitude": -90.08155962,
+      "count": 1,
+      "address": "N Broad St & Dumaine St"
+    },
+    {
+      "latitude": 29.97263423,
+      "longitude": -90.05639907,
+      "count": 1,
+      "address": "022XX N Robertson St"
+    },
+    {
+      "latitude": 29.97385574,
+      "longitude": -90.09940153,
+      "count": 1,
+      "address": "Canal St & N Pierce St"
+    },
+    {
+      "latitude": 29.97454777,
+      "longitude": -90.10042011,
+      "count": 1,
+      "address": "N Carrollton Av & Canal St"
+    },
+    {
+      "latitude": 29.97681208,
+      "longitude": -90.09801759,
+      "count": 1,
+      "address": "N Carrollton Av & Conti St"
+    },
+    {
+      "latitude": 29.97757218,
+      "longitude": -90.09748476,
+      "count": 1,
+      "address": "N Carrollton Av & St Louis St"
+    },
+    {
+      "latitude": 29.97809953,
+      "longitude": -90.06723759,
+      "count": 1,
+      "address": "A P Tureaud Av & N Galvez St"
+    },
+    {
+      "latitude": 29.98107913,
+      "longitude": -90.11399165,
+      "count": 1,
+      "address": "City Park Av & Pontchartrain Blvd"
+    },
+    {
+      "latitude": 29.98334044,
+      "longitude": -90.09130541,
+      "count": 1,
+      "address": "Claiborne Dr & N Carrollton Av"
+    },
+    {
+      "latitude": 29.98345269,
+      "longitude": -90.07174552,
+      "count": 1,
+      "address": "N Broad St & St Bernard Av"
+    },
+    {
+      "latitude": 29.98430402,
+      "longitude": -90.08997195,
+      "count": 1,
+      "address": "Wisner Blvd & Lelong Av"
+    },
+    {
+      "latitude": 29.98569872,
+      "longitude": -90.07614133,
+      "count": 1,
+      "address": "018XX Gentilly Blvd"
+    },
+    {
+      "latitude": 29.98870904,
+      "longitude": -90.07499543,
+      "count": 1,
+      "address": "De Saix Blv & St Bernard Av"
+    },
+    {
+      "latitude": 29.98915972,
+      "longitude": -90.1021247,
+      "count": 1,
+      "address": "Orleans Av & Navarre Av"
+    },
+    {
+      "latitude": 29.98945025,
+      "longitude": -90.07516024,
+      "count": 1,
+      "address": "003XX St Bernard Av"
+    },
+    {
+      "latitude": 29.99107918,
+      "longitude": -90.07628353,
+      "count": 1,
+      "address": "St Bernard Av & Florida Av"
+    },
+    {
+      "latitude": 29.9914234,
+      "longitude": -90.06572222,
+      "count": 1,
+      "address": "Allen St & Humanity St"
+    },
+    {
+      "latitude": 29.99179954,
+      "longitude": -90.10963999,
+      "count": 1,
+      "address": "Homedale St & Canal Blvd"
+    },
+    {
+      "latitude": 29.9923555,
+      "longitude": -90.04293964,
+      "count": 1,
+      "address": "Almonaster Av & Higgins Blvd"
+    },
+    {
+      "latitude": 29.99432807,
+      "longitude": -90.11159628,
+      "count": 1,
+      "address": "Florida Blvd & Woodlawn Pl"
+    },
+    {
+      "latitude": 29.99512148,
+      "longitude": -90.10932482,
+      "count": 1,
+      "address": "Canal Blvd & I-610 E"
+    },
+    {
+      "latitude": 29.99717267,
+      "longitude": -90.06150561,
+      "count": 1,
+      "address": "Norman Mayer Av & Gentilly Blvd"
+    },
+    {
+      "latitude": 29.99910201,
+      "longitude": -90.10743394,
+      "count": 1,
+      "address": "Polk St & Vicksburg St"
+    },
+    {
+      "latitude": 29.99922933,
+      "longitude": -90.10884868,
+      "count": 1,
+      "address": "Canal Blvd & Polk St"
+    },
+    {
+      "latitude": 29.99948399,
+      "longitude": -90.11175394,
+      "count": 1,
+      "address": "004XX Polk St"
+    },
+    {
+      "latitude": 29.99970344,
+      "longitude": -90.11623462,
+      "count": 1,
+      "address": "Pontchartrain Blvd & Veterans Blvd"
+    },
+    {
+      "latitude": 30.00013187,
+      "longitude": -90.1087455,
+      "count": 1,
+      "address": "060XX Canal Blvd"
+    },
+    {
+      "latitude": 30.00188881,
+      "longitude": -90.11607133,
+      "count": 1,
+      "address": "061XX Pontchartrain Blvd"
+    },
+    {
+      "latitude": 30.00230265,
+      "longitude": -90.11604076,
+      "count": 1,
+      "address": "16th St & Pontchartrain Blvd"
+    },
+    {
+      "latitude": 30.00298138,
+      "longitude": -90.05015376,
+      "count": 1,
+      "address": "Franklin Av & Gentilly Blvd"
+    },
+    {
+      "latitude": 30.00372581,
+      "longitude": -90.10832694,
+      "count": 1,
+      "address": "062XX Canal Blvd"
+    },
+    {
+      "latitude": 30.00477517,
+      "longitude": -90.11585596,
+      "count": 1,
+      "address": "Pontchartrain Blvd & 22nd St"
+    },
+    {
+      "latitude": 30.00484278,
+      "longitude": -90.108192,
+      "count": 1,
+      "address": "Harrison Av & Canal Blvd"
+    },
+    {
+      "latitude": 30.00488585,
+      "longitude": -90.11138654,
+      "count": 1,
+      "address": "Harrison Av & Colbert St"
+    },
+    {
+      "latitude": 30.00517285,
+      "longitude": -90.11463888,
+      "count": 1,
+      "address": "West End Blvd & Harrison Av"
+    },
+    {
+      "latitude": 30.00653072,
+      "longitude": -90.11453726,
+      "count": 1,
+      "address": "West End Blvd & Fremont St"
+    },
+    {
+      "latitude": 30.00773383,
+      "longitude": -90.10785274,
+      "count": 1,
+      "address": "064XX Canal Blvd"
+    },
+    {
+      "latitude": 30.00780718,
+      "longitude": -90.11443676,
+      "count": 1,
+      "address": "West End Blvd & Bragg St"
+    },
+    {
+      "latitude": 30.00807685,
+      "longitude": -90.11561455,
+      "count": 1,
+      "address": "Pontchartrain Blvd & 30th St"
+    },
+    {
+      "latitude": 30.01032494,
+      "longitude": -90.11424705,
+      "count": 1,
+      "address": "Smith St & West End Blvd"
+    },
+    {
+      "latitude": 30.01140452,
+      "longitude": -90.11840634,
+      "count": 1,
+      "address": "35th St & Fleur De Lis Dr"
+    },
+    {
+      "latitude": 30.01159951,
+      "longitude": -90.11415469,
+      "count": 1,
+      "address": "Porteous St & West End Blvd"
+    },
+    {
+      "latitude": 30.01182147,
+      "longitude": -90.00267988,
+      "count": 1,
+      "address": "073XX Chef Menteur Hwy"
+    },
+    {
+      "latitude": 30.01184447,
+      "longitude": -90.10288545,
+      "count": 1,
+      "address": "Filmore Av & Marshal Foch St"
+    },
+    {
+      "latitude": 30.01496063,
+      "longitude": -90.10700273,
+      "count": 1,
+      "address": "068XX Canal Blvd"
+    },
+    {
+      "latitude": 30.01939878,
+      "longitude": -90.11502035,
+      "count": 1,
+      "address": "001XX No Hammond Hwy"
+    },
+    {
+      "latitude": 30.01987176,
+      "longitude": -90.11079756,
+      "count": 1,
+      "address": "Milne Blvd & Allen Toussaint Blvd"
+    },
+    {
+      "latitude": 30.0218964,
+      "longitude": -90.06129607,
+      "count": 1,
+      "address": "Elysian Fields Av & Allen Toussaint Blvd"
+    },
+    {
+      "latitude": 30.02389116,
+      "longitude": -89.98891033,
+      "count": 1,
+      "address": "Crowder Blv & Dwyer Rd"
+    },
+    {
+      "latitude": 30.02563042,
+      "longitude": -90.02604147,
+      "count": 1,
+      "address": "058XX Morrison Rd"
+    },
+    {
+      "latitude": 30.02988563,
+      "longitude": -90.02590402,
+      "count": 1,
+      "address": "077XX Downman Rd"
+    },
+    {
+      "latitude": 30.03716622,
+      "longitude": -89.9932353,
+      "count": 1,
+      "address": "Benson Ct & Morrison Rd"
+    },
+    {
+      "latitude": 30.03819696,
+      "longitude": -89.97709215,
+      "count": 1,
+      "address": "Read Blvd & N I-10 Service Rd"
+    },
+    {
+      "latitude": 30.03865377,
+      "longitude": -89.9550572,
+      "count": 1,
+      "address": "Bullard Av & Lake Forest Blvd"
+    },
+    {
+      "latitude": 30.04727391,
+      "longitude": -89.96219907,
+      "count": 1,
+      "address": "Bullard Av & N I-10 Service Rd"
+    },
+    {
+      "latitude": 30.054452,
+      "longitude": -89.95902499,
+      "count": 1,
+      "address": "125XX N Lake Carmel Dr"
+    },
+    {
+      "latitude": 30.07432211,
+      "longitude": -89.86203646,
+      "count": 1,
+      "address": "Chef Menteur Hwy & Ridgeway Blvd"
+    },
+    {
+      "latitude": 29.92049999,
+      "longitude": -90.12567302,
+      "count": 1,
+      "address": "Henry Clay Av & Laurel St"
+    },
+    {
+      "latitude": 30.07641149,
+      "longitude": -89.92305991,
+      "count": 1,
+      "address": "I-10 W & Michoud Blvd"
+    },
+    {
+      "latitude": 29.92079766,
+      "longitude": -90.10159997,
+      "count": 1,
+      "address": "Magazine St & Napoleon Av"
+    },
+    {
+      "latitude": 29.92503936,
+      "longitude": -90.00293316,
+      "count": 1,
+      "address": "006XX Herald St"
+    },
+    {
+      "latitude": 29.92639013,
+      "longitude": -90.1021757,
+      "count": 1,
+      "address": "Napoleon Av & St Charles Av"
+    },
+    {
+      "latitude": 29.92661811,
+      "longitude": -90.02584064,
+      "count": 1,
+      "address": "003XX General De Gaulle Dr"
+    },
+    {
+      "latitude": 29.92804291,
+      "longitude": -90.0292123,
+      "count": 1,
+      "address": "General De Gaulle Dr & Life Center Dr"
+    },
+    {
+      "latitude": 29.92820054,
+      "longitude": -90.09132094,
+      "count": 1,
+      "address": "Louisiana Av & St Charles Av"
+    },
+    {
+      "latitude": 29.9342197,
+      "longitude": -90.07771106,
+      "count": 1,
+      "address": "St Andrew St & Prytania St"
+    },
+    {
+      "latitude": 29.93437875,
+      "longitude": -90.02094002,
+      "count": 1,
+      "address": "033XX Wall Blvd"
+    },
+    {
+      "latitude": 29.93461844,
+      "longitude": -90.08082588,
+      "count": 1,
+      "address": "016XX Jackson Av"
+    },
+    {
+      "latitude": 29.93646954,
+      "longitude": -90.03925712,
+      "count": 1,
+      "address": "Us 90B W & Gen De Gaulle Exit"
+    },
+    {
+      "latitude": 29.93920977,
+      "longitude": -90.09516113,
+      "count": 1,
+      "address": "027XX 7th St"
+    },
+    {
+      "latitude": 29.93998629,
+      "longitude": -90.10470415,
+      "count": 1,
+      "address": "S Claiborne Av & Jena St"
+    },
+    {
+      "latitude": 29.94041072,
+      "longitude": -90.10360603,
+      "count": 1,
+      "address": "Napoleon Av & S Claiborne Av"
+    },
+    {
+      "latitude": 29.94045687,
+      "longitude": -90.09725228,
+      "count": 1,
+      "address": "002XX Louisiana Av"
+    },
+    {
+      "latitude": 29.94142905,
+      "longitude": -90.03685111,
+      "count": 1,
+      "address": "013XX Behrman Av"
+    },
+    {
+      "latitude": 29.94268245,
+      "longitude": -90.11198049,
+      "count": 1,
+      "address": "S Claiborne Av & Nashville Av"
+    },
+    {
+      "latitude": 29.94284231,
+      "longitude": -90.09363063,
+      "count": 1,
+      "address": "4th St & S Claiborne Av"
+    },
+    {
+      "latitude": 29.94305222,
+      "longitude": -90.07121397,
+      "count": 1,
+      "address": "Andrew Higgins Dr & Camp St"
+    },
+    {
+      "latitude": 29.94309606,
+      "longitude": -90.13434508,
+      "count": 1,
+      "address": "S Carrollton Av & St Charles Av"
+    },
+    {
+      "latitude": 29.94415629,
+      "longitude": -90.08098569,
+      "count": 1,
+      "address": "013XX Simon Bolivar Av"
+    },
+    {
+      "latitude": 29.94421381,
+      "longitude": -90.09117505,
+      "count": 1,
+      "address": "1st St & S Claiborne Av"
+    },
+    {
+      "latitude": 29.94463026,
+      "longitude": -90.07969281,
+      "count": 1,
+      "address": "Simon Bolivar Av & Clio St"
+    },
+    {
+      "latitude": 29.94496011,
+      "longitude": -90.08994834,
+      "count": 1,
+      "address": "S Claiborne Av & Jackson Av"
+    },
+    {
+      "latitude": 29.94496522,
+      "longitude": -90.06747395,
+      "count": 1,
+      "address": "Julia St & Tchoupitoulas St"
+    },
+    {
+      "latitude": 29.94684898,
+      "longitude": -90.08953289,
+      "count": 1,
+      "address": "Martin Luther King Jr Blvd & S Derbigny St"
+    },
+    {
+      "latitude": 29.948087,
+      "longitude": -90.06421912,
+      "count": 1,
+      "address": "Poydras St & Convention Center Blvd"
+    },
+    {
+      "latitude": 29.94830025,
+      "longitude": -90.08348884,
+      "count": 1,
+      "address": "Us 90B E & Earhart Blvd"
+    },
+    {
+      "latitude": 29.95088968,
+      "longitude": -90.10086827,
+      "count": 1,
+      "address": "S Broad St & Washington Av"
+    },
+    {
+      "latitude": 29.95198241,
+      "longitude": -90.06711284,
+      "count": 1,
+      "address": "Canal St & Decatur St"
+    },
+    {
+      "latitude": 29.95250176,
+      "longitude": -90.07541644,
+      "count": 1,
+      "address": "Perdido St & Loyola Av"
+    },
+    {
+      "latitude": 29.95266504,
+      "longitude": -90.06455317,
+      "count": 1,
+      "address": "002XX Bienville St"
+    },
+    {
+      "latitude": 29.95368602,
+      "longitude": -90.07005941,
+      "count": 1,
+      "address": "Canal S & Carondelet St"
+    },
+    {
+      "latitude": 29.95415268,
+      "longitude": -90.07393223,
+      "count": 1,
+      "address": "Common St & S Rampart St"
+    },
+    {
+      "latitude": 29.95428167,
+      "longitude": -90.07128913,
+      "count": 1,
+      "address": "009XX Canal St"
+    },
+    {
+      "latitude": 29.9545321,
+      "longitude": -90.10266722,
+      "count": 1,
+      "address": "Washington Av & S Salcedo St"
+    },
+    {
+      "latitude": 29.95518416,
+      "longitude": -90.09116878,
+      "count": 1,
+      "address": "I-10 E & Howard Av"
+    },
+    {
+      "latitude": 29.95540312,
+      "longitude": -90.06693362,
+      "count": 1,
+      "address": "003XX Royal St"
+    },
+    {
+      "latitude": 29.95585115,
+      "longitude": -90.12068781,
+      "count": 1,
+      "address": "S Carrollton Av & S Claiborne Av"
+    },
+    {
+      "latitude": 29.95596985,
+      "longitude": -90.06729956,
+      "count": 1,
+      "address": "007XX Conti St"
+    },
+    {
+      "latitude": 29.9562795,
+      "longitude": -90.0678828,
+      "count": 1,
+      "address": "008XX Conti St"
+    },
+    {
+      "latitude": 29.95657622,
+      "longitude": -90.0681921,
+      "count": 1,
+      "address": "008XX Conti St"
+    }
+  ],
+  "defaultRangeLocationsTruncated": false
 }

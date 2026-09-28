@@ -2,8 +2,8 @@
 
 A small static site over New Orleans' public
 [Stop and Search (Field Interviews)](https://data.nola.gov/d/nfft-hjwi) dataset,
-showing how many traffic stops were recorded in a date range and which vehicle
-makes and models turn up in them.
+showing how many traffic stops were recorded in a date range, where in the city
+they happened, and which vehicle makes and models turn up in them.
 
 Live at <https://punkypi.github.io/stop_and_search>.
 
@@ -14,6 +14,7 @@ Live at <https://punkypi.github.io/stop_and_search>.
 | Build      | Vite 8                                    |
 | UI         | Vue 3 (Composition API, `<script setup>`) |
 | Components | naive-ui (MIT)                            |
+| Maps       | Leaflet (BSD-2), Esri dark basemap tiles  |
 | Styling    | Tailwind CSS 4                            |
 | Types      | TypeScript, checked with `vue-tsc`        |
 | Tests      | Vitest + `@vue/test-utils` (jsdom)        |
@@ -41,6 +42,8 @@ npm run dev
 | `npm run test:watch`   | Run tests in watch mode                                |
 | `npm run typecheck`    | `vue-tsc` over `.ts` and `.vue`                        |
 | `npm run lint`         | ESLint                                                 |
+| `npm run verify`       | Lint, typecheck and test — the same gate CI runs       |
+| `bin/soql`             | Query the dataset from the shell (`bin/soql --help`)   |
 
 ## How the data works
 
@@ -54,9 +57,21 @@ There are two paths to a number on the page:
 1. **The default range** (the month containing the newest event) is read from
    `public/data/snapshot.json`, produced at build time by
    `scripts/bake-data.mjs`. First paint needs no API request at all.
-2. **Any other range** the user picks is queried live from the browser. An
-   in-flight request is aborted when the range changes again, so a slow earlier
-   response cannot land after a faster later one.
+2. **Any other range** the user picks is queried live from the browser — three
+   requests in parallel, for the total, the vehicle breakdown and the map. They
+   share one abort signal, so a slow earlier response cannot land after a faster
+   later one.
+
+The map aggregates the same way. Stops are grouped by coordinate server-side, so
+a month arrives as ~170 rows rather than ~350, and each circle's area is
+proportional to the stops recorded at that point.
+
+Coordinates are a partial record and the page says so. Around 63% of
+traffic-violation rows carry a placeholder `0, 0` instead of a location, because
+the dataset only began recording coordinates in 2018; those rows are filtered out
+in the query. Positions are also snapped to the nearest intersection or block
+rather than an exact address, which is why the map aggregates instead of
+plotting one pin per stop.
 
 Baking is deliberately non-fatal. If data.nola.gov is unreachable during a
 build, the committed snapshot is reused and the build continues with a warning.

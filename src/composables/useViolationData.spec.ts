@@ -4,6 +4,7 @@ import { ref } from 'vue'
 
 import { calendarDay } from '@/lib/dates'
 import type { DataSnapshot } from '@/lib/snapshot'
+import type { StopLocation } from '@/lib/stopLocations'
 import type { DateRange, VehicleGroup } from '@/lib/trafficViolations'
 
 import { useViolationData } from './useViolationData'
@@ -17,6 +18,10 @@ const BAKED_GROUPS: VehicleGroup[] = [
   { make: 'NISSAN', model: 'ALTIMA', count: 12, makeAndModel: 'NISSAN ALTIMA' }
 ]
 
+const BAKED_LOCATIONS: StopLocation[] = [
+  { latitude: 29.9511, longitude: -90.0715, count: 9, address: 'Canal St & N Rampart St' }
+]
+
 function snapshotFixture(): DataSnapshot {
   return {
     bakedAt: '2026-09-26T23:50:14.661Z',
@@ -27,18 +32,26 @@ function snapshotFixture(): DataSnapshot {
     totalViolations: 440051,
     defaultRange: DEFAULT_RANGE,
     defaultRangeCount: 366,
-    defaultRangeVehicleGroups: BAKED_GROUPS
+    defaultRangeVehicleGroups: BAKED_GROUPS,
+    defaultRangeStopLocations: BAKED_LOCATIONS,
+    defaultRangeLocationsTruncated: false
   }
 }
 
-/** Responds to the count query and the group query with fixed values. */
+/** Responds to each of the three range queries — count, vehicles, locations — with fixed values. */
 function stubFetch() {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = new URL(String(input))
     const select = url.searchParams.get('$select') ?? ''
-    const body = select.startsWith('count(*)')
-      ? [{ total: '99' }]
-      : [{ vehiclemake: 'FORD', vehiclemodel: 'F150', total: '7' }]
+    let body: unknown
+    if (select.startsWith('count(*)')) body = [{ total: '99' }]
+    else if (select.startsWith('latitude')) {
+      body = [
+        { latitude: '29.95', longitude: '-90.07', total: '4', address: 'Poydras St & S Peters St' },
+        // Outside NOLA_BOUNDS: the ungeocoded placeholder, which must be dropped.
+        { latitude: '0.0', longitude: '0.0', total: '3', address: '' }
+      ]
+    } else body = [{ vehiclemake: 'FORD', vehiclemodel: 'F150', total: '7' }]
     return new Response(JSON.stringify(body), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -59,12 +72,13 @@ describe('useViolationData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, loading } = useViolationData(range, snapshot)
+    const { count, vehicleGroups, stopLocations, loading } = useViolationData(range, snapshot)
     await flushPromises()
 
     expect(fetchMock).not.toHaveBeenCalled()
     expect(count.value).toBe(366)
     expect(vehicleGroups.value).toEqual(BAKED_GROUPS)
+    expect(stopLocations.value).toEqual(BAKED_LOCATIONS)
     expect(loading.value).toBe(false)
   })
 
@@ -73,7 +87,7 @@ describe('useViolationData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups } = useViolationData(range, snapshot)
+    const { count, vehicleGroups, stopLocations } = useViolationData(range, snapshot)
     await flushPromises()
 
     range.value = { start: calendarDay(2025, 10, 1), end: calendarDay(2025, 10, 31) }
@@ -82,6 +96,10 @@ describe('useViolationData', () => {
     expect(fetchMock).toHaveBeenCalled()
     expect(count.value).toBe(99)
     expect(vehicleGroups.value[0]?.makeAndModel).toBe('FORD F150')
+    // The 0,0 placeholder row was discarded; only the real coordinate survives.
+    expect(stopLocations.value).toEqual([
+      { latitude: 29.95, longitude: -90.07, count: 4, address: 'Poydras St & S Peters St' }
+    ])
   })
 
   it('queries live when no snapshot is available at all', async () => {
@@ -123,12 +141,13 @@ describe('useViolationData', () => {
     })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, error, vehicleGroups } = useViolationData(range, snapshot)
+    const { count, error, vehicleGroups, stopLocations } = useViolationData(range, snapshot)
     await flushPromises()
 
     expect(error.value).toBeTruthy()
     expect(count.value).toBeNull()
     expect(vehicleGroups.value).toEqual([])
+    expect(stopLocations.value).toEqual([])
   })
 
   it('discards a superseded response so the newest range wins', async () => {
@@ -140,13 +159,19 @@ describe('useViolationData', () => {
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
         const url = new URL(String(input))
         const isCount = (url.searchParams.get('$select') ?? '').startsWith('count(*)')
-        const mine = callIndex++ < 2
+        // Three queries per range now: count, vehicles, locations.
+        const mine = callIndex++ < 3
         if (mine) {
           await new Promise((resolve) => setTimeout(resolve, 40))
           if (init?.signal?.aborted) throw new DOMException('aborted', 'AbortError')
         }
         const total = mine ? '111' : '222'
-        const body = isCount ? [{ total }] : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
+        const select = url.searchParams.get('$select') ?? ''
+        const body = isCount
+          ? [{ total }]
+          : select.startsWith('latitude')
+            ? []
+            : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
         return new Response(JSON.stringify(body), { status: 200 })
       })
     )

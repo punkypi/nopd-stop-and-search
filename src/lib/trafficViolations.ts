@@ -8,6 +8,7 @@
 
 import { compare, fromSocrataTimestamp, isValid, toSoQLTimestamp, type CalendarDay } from './dates'
 import { runQuery, soqlString, type SocrataOptions } from './socrata'
+import { buildStopLocation, NOLA_BOUNDS, type StopLocation } from './stopLocations'
 
 /** The `stopdescription` value that marks a traffic stop. */
 const TRAFFIC_VIOLATION = 'TRAFFIC VIOLATION'
@@ -114,4 +115,76 @@ export async function fetchVehicleGroups(
   return rows.map((row) =>
     buildVehicleGroup(row.vehiclemake ?? '', row.vehiclemodel ?? '', Number(row.total ?? 0))
   )
+}
+
+/**
+ * Upper bound on distinct coordinates returned for the map. All-time holds
+ * ~20,700, and a single year ~5,600, so no range a viewer can pick should reach
+ * this. It exists so a dataset that grows or a filter that regresses degrades
+ * into a partial map rather than an unbounded download, and `truncated` makes
+ * that visible rather than silent.
+ */
+const MAX_LOCATIONS = 25_000
+
+export interface StopLocationsResult {
+  /** Busiest coordinate first. */
+  locations: StopLocation[]
+  /** True when `MAX_LOCATIONS` was reached and the quietest coordinates were dropped. */
+  truncated: boolean
+}
+
+/**
+ * Restricts a query to rows that can actually be placed on a map.
+ *
+ * Applied in SoQL rather than after the fact because the ungeocoded rows are the
+ * majority: filtering server-side is the difference between grouping 165,000
+ * rows and grouping 440,000, and it keeps the placeholder coordinates off the
+ * wire entirely. See `NOLA_BOUNDS`.
+ */
+function coordinateWhere(): string {
+  return (
+    `latitude between ${NOLA_BOUNDS.minLatitude} and ${NOLA_BOUNDS.maxLatitude} ` +
+    `AND longitude between ${NOLA_BOUNDS.minLongitude} and ${NOLA_BOUNDS.maxLongitude}`
+  )
+}
+
+/**
+ * Located traffic stops in the range, one row per distinct coordinate.
+ *
+ * Grouped server-side like the vehicle breakdown, so a month comes back as ~170
+ * rows instead of ~350. `max(blockaddress)` supplies the popup label: a coordinate
+ * occasionally carries two spellings of the same corner, and `max` picks one of
+ * them deterministically instead of splitting the point into two circles.
+ */
+export async function fetchStopLocations(
+  range: DateRange,
+  options: SocrataOptions = {}
+): Promise<StopLocationsResult> {
+  const rows = await runQuery<{
+    latitude?: string
+    longitude?: string
+    total?: string
+    address?: string
+  }>(
+    {
+      select: 'latitude, longitude, count(*) as total, max(blockaddress) as address',
+      where: `${rangeWhere(range)} AND ${coordinateWhere()}`,
+      group: 'latitude, longitude',
+      order: 'total desc',
+      // One past the cap, so hitting it is detectable without a second query.
+      limit: MAX_LOCATIONS + 1
+    },
+    options
+  )
+
+  const truncated = rows.length > MAX_LOCATIONS
+  const kept = truncated ? rows.slice(0, MAX_LOCATIONS) : rows
+
+  const locations = kept
+    .map((row) =>
+      buildStopLocation(row.latitude ?? '', row.longitude ?? '', row.total ?? '', row.address)
+    )
+    .filter((location): location is StopLocation => location !== null)
+
+  return { locations, truncated }
 }

@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Run a SoQL query against the project's Socrata dataset and print the JSON.
+#
+# Exists so that checking the data is a first-class, repeatable step rather than
+# a hand-assembled curl with percent-encoding done by eye. Field names and
+# coverage in this dataset are rarely what you would guess, so any new panel
+# should start by looking at real values and real counts.
+#
+#   bin/soql --select 'count(*) as total' --where "stopdescription = 'TRAFFIC VIOLATION'"
+#   bin/soql --select 'subjectrace, count(*) as total' --group subjectrace --order 'total desc'
+#   bin/soql --columns          # list the dataset's fields and types
+#
+# SOCRATA_APP_TOKEN is optional; it raises the rate limit and is not a credential.
+set -euo pipefail
+
+DOMAIN="${SOCRATA_DOMAIN:-data.nola.gov}"
+DATASET="${SOCRATA_DATASET:-nfft-hjwi}"
+
+declare -a PARAMS=()
+COLUMNS=0
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --columns) COLUMNS=1; shift ;;
+    --select|--where|--group|--order|--limit|--offset|--q)
+      [ $# -ge 2 ] || { echo "error: $1 needs a value" >&2; exit 2; }
+      PARAMS+=("\$${1#--}=$2"); shift 2 ;;
+    -h|--help) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) echo "error: unknown argument '$1'" >&2; exit 2 ;;
+  esac
+done
+
+if [ "$COLUMNS" -eq 1 ]; then
+  curl -sS --max-time 60 "https://${DOMAIN}/api/views/${DATASET}.json" |
+    python3 -c 'import json, sys
+meta = json.load(sys.stdin)
+print(meta.get("name", ""))
+for column in meta.get("columns", []):
+    name = column["fieldName"]
+    kind = column["dataTypeName"]
+    print("  {:<24} {}".format(name, kind))'
+  exit 0
+fi
+
+[ ${#PARAMS[@]} -gt 0 ] || { echo "error: give at least one of --select/--where/--group/--order/--limit" >&2; exit 2; }
+
+QUERY=$(printf '%s\n' "${PARAMS[@]}" | python3 -c '
+import sys, urllib.parse
+pairs = []
+for line in sys.stdin.read().splitlines():
+    key, _, value = line.partition("=")
+    pairs.append((key, value))
+print(urllib.parse.urlencode(pairs))')
+
+declare -a HEADERS=(-H 'Accept: application/json')
+[ -n "${SOCRATA_APP_TOKEN:-}" ] && HEADERS+=(-H "X-App-Token: ${SOCRATA_APP_TOKEN}")
+
+curl -sS --max-time 60 "${HEADERS[@]}" "https://${DOMAIN}/resource/${DATASET}.json?${QUERY}" |
+  python3 -m json.tool

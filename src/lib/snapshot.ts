@@ -8,6 +8,7 @@
 
 import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
+import type { StopLocation } from './stopLocations'
 import type { DateRange, VehicleGroup } from './trafficViolations'
 
 export interface DataSnapshot {
@@ -23,6 +24,10 @@ export interface DataSnapshot {
   defaultRange: DateRange
   defaultRangeCount: number
   defaultRangeVehicleGroups: VehicleGroup[]
+  /** Distinct coordinates in the default range, busiest first. */
+  defaultRangeStopLocations: StopLocation[]
+  /** True when the default range hit the location cap. Effectively never, for one month. */
+  defaultRangeLocationsTruncated: boolean
 }
 
 /**

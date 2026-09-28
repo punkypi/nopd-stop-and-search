@@ -84,6 +84,13 @@ const bakedAtLabel = computed(() => {
           with a low count usually means sparse reporting rather than a quiet month.
         </p>
 
+        <p class="text-nola-muted">
+          Locations are recorded at the nearest intersection or block rather than an exact address,
+          and only from 2018 onward — earlier stops carry no coordinates at all. The map therefore
+          covers a subset of any range that reaches back before then, and says how large a subset it
+          is.
+        </p>
+
         <p>
           To query it yourself, see
           <a

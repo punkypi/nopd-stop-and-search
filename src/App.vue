@@ -11,6 +11,7 @@ import { onMounted, ref } from 'vue'
 
 import AboutPanel from '@/components/AboutPanel.vue'
 import DateRangeFilter from '@/components/DateRangeFilter.vue'
+import StopMap from '@/components/StopMap.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
 import ViolationTotal from '@/components/ViolationTotal.vue'
 import { useViolationData } from '@/composables/useViolationData'
@@ -42,7 +43,8 @@ const snapshot = ref<DataSnapshot | null>(null)
  */
 const range = ref<DateRange | null>(null)
 
-const { count, vehicleGroups, loading, error } = useViolationData(range, snapshot)
+const { count, vehicleGroups, stopLocations, locationsTruncated, loading, error } =
+  useViolationData(range, snapshot)
 
 onMounted(async () => {
   try {
@@ -88,6 +90,13 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
 
       <template v-if="range">
         <ViolationTotal :count="count" :range="range" :loading="loading" />
+
+        <StopMap
+          :locations="stopLocations"
+          :range-total="count"
+          :truncated="locationsTruncated"
+          :loading="loading"
+        />
 
         <VehicleGroupTable :vehicle-groups="vehicleGroups" :loading="loading" />
       </template>
