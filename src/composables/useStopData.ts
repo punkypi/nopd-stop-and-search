@@ -1,5 +1,5 @@
 /**
- * Supplies the traffic-violation figures for whichever date range is selected.
+ * Supplies the stop figures for whichever date range is selected.
  *
  * This replaces the imperative `updateInfo()` / `componentWillReceiveProps`
  * dance in the original `TrafficViolations` component. A `watch` on the range
@@ -17,15 +17,15 @@ import { readonly, ref, shallowRef, watch, type Ref } from 'vue'
 import { isSameRange, type DataSnapshot } from '@/lib/snapshot'
 import type { StopLocation } from '@/lib/stopLocations'
 import {
+  fetchStopCount,
   fetchStopLocations,
   fetchVehicleGroups,
-  fetchViolationCount,
   isValidRange,
   type DateRange,
   type VehicleGroup
-} from '@/lib/trafficViolations'
+} from '@/lib/stops'
 
-export function useViolationData(range: Ref<DateRange | null>, snapshot: Ref<DataSnapshot | null>) {
+export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnapshot | null>) {
   const count = ref<number | null>(null)
   const vehicleGroups = shallowRef<VehicleGroup[]>([])
   const stopLocations = shallowRef<StopLocation[]>([])
@@ -59,7 +59,7 @@ export function useViolationData(range: Ref<DateRange | null>, snapshot: Ref<Dat
 
     try {
       const [nextCount, nextGroups, nextLocations] = await Promise.all([
-        fetchViolationCount(current, { signal: controller.signal }),
+        fetchStopCount(current, { signal: controller.signal }),
         fetchVehicleGroups(current, { signal: controller.signal }),
         fetchStopLocations(current, { signal: controller.signal })
       ])

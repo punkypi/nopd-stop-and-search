@@ -5,9 +5,9 @@ import { ref } from 'vue'
 import { calendarDay } from '@/lib/dates'
 import type { DataSnapshot } from '@/lib/snapshot'
 import type { StopLocation } from '@/lib/stopLocations'
-import type { DateRange, VehicleGroup } from '@/lib/trafficViolations'
+import type { DateRange, VehicleGroup } from '@/lib/stops'
 
-import { useViolationData } from './useViolationData'
+import { useStopData } from './useStopData'
 
 const DEFAULT_RANGE: DateRange = {
   start: calendarDay(2025, 11, 1),
@@ -29,7 +29,12 @@ function snapshotFixture(): DataSnapshot {
     dataset: 'nfft-hjwi',
     earliestEventDate: calendarDay(1991, 7, 24),
     latestEventDate: calendarDay(2025, 11, 9),
-    totalViolations: 440051,
+    totalStops: 720425,
+    stopTypes: [
+      { description: 'TRAFFIC VIOLATION', count: 440051 },
+      { description: 'CALL FOR SERVICE', count: 98277 },
+      { description: 'SUSPECT PERSON', count: 76540 }
+    ],
     defaultRange: DEFAULT_RANGE,
     defaultRangeCount: 366,
     defaultRangeVehicleGroups: BAKED_GROUPS,
@@ -66,13 +71,13 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-describe('useViolationData', () => {
+describe('useStopData', () => {
   it('answers the default range from the snapshot without any network request', async () => {
     const fetchMock = stubFetch()
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations, loading } = useViolationData(range, snapshot)
+    const { count, vehicleGroups, stopLocations, loading } = useStopData(range, snapshot)
     await flushPromises()
 
     expect(fetchMock).not.toHaveBeenCalled()
@@ -87,7 +92,7 @@ describe('useViolationData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations } = useViolationData(range, snapshot)
+    const { count, vehicleGroups, stopLocations } = useStopData(range, snapshot)
     await flushPromises()
 
     range.value = { start: calendarDay(2025, 10, 1), end: calendarDay(2025, 10, 31) }
@@ -107,7 +112,7 @@ describe('useViolationData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(null)
 
-    const { count } = useViolationData(range, snapshot)
+    const { count } = useStopData(range, snapshot)
     await flushPromises()
 
     expect(fetchMock).toHaveBeenCalled()
@@ -119,7 +124,7 @@ describe('useViolationData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { error } = useViolationData(range, snapshot)
+    const { error } = useStopData(range, snapshot)
     await flushPromises()
     fetchMock.mockClear()
 
@@ -141,7 +146,7 @@ describe('useViolationData', () => {
     })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, error, vehicleGroups, stopLocations } = useViolationData(range, snapshot)
+    const { count, error, vehicleGroups, stopLocations } = useStopData(range, snapshot)
     await flushPromises()
 
     expect(error.value).toBeTruthy()
@@ -178,7 +183,7 @@ describe('useViolationData', () => {
 
     const range = ref<DateRange>({ start: calendarDay(2025, 9, 1), end: calendarDay(2025, 9, 30) })
     const snapshot = ref<DataSnapshot | null>(null)
-    const { count } = useViolationData(range, snapshot)
+    const { count } = useStopData(range, snapshot)
 
     range.value = { start: calendarDay(2025, 8, 1), end: calendarDay(2025, 8, 31) }
     await flushPromises()

@@ -6,6 +6,38 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.0.0 - 2026-09-27
+
+### Added
+
+- `stopTypes` in the baked snapshot: how the whole record divides by kind of
+  stop. The About panel lists it with each kind's share, so the composition is
+  named from data rather than asserted in prose.
+- The About panel states that the kinds of stop are not interchangeable. Search
+  rate conditional on a stop runs 8.7% for Black drivers against 4.4% for white
+  drivers among traffic stops, but 16.7% against 11.3% pooled across every kind,
+  so a pooled figure compresses the difference and needs its mix shown beside it.
+- The vehicle breakdown states how much of a range recorded a vehicle at all,
+  e.g. "371 of 404 stops in this range recorded a vehicle". A stop of someone on
+  foot has no car to record, which the traffic-only filter used to hide.
+- `vehicleCoverage` in `src/lib/stops.ts`, with unit tests, and a component test
+  covering the vehicle panel's disclosure copy.
+
+### Changed
+
+- The page now covers every kind of stop the record holds rather than only
+  traffic violations. The filter hid 280,374 of the dataset's 720,425 stops,
+  among them the `SUSPECT PERSON` and `CITIZEN CONTACT` categories that the
+  phrase "stop and search" most describes.
+- Raised the map's coordinate cap from 25,000 to 45,000. All of time holds 37,773
+  distinct in-bounds coordinates; the old cap was chosen while queries were still
+  traffic-only and all-time held roughly 20,700, so leaving it would have
+  silently truncated the map for any range covering the whole dataset.
+- The headline panel reads "Recorded Stops" in place of "Traffic Violations".
+- Renamed `src/lib/trafficViolations.ts` to `src/lib/stops.ts`,
+  `useViolationData` to `useStopData` and `ViolationTotal` to `StopTotal`. The
+  snapshot's `totalViolations` field is now `totalStops`.
+
 ## 2.1.0 - 2026-09-27
 
 ### Added

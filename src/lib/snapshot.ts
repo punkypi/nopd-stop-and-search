@@ -9,7 +9,7 @@
 import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
 import type { StopLocation } from './stopLocations'
-import type { DateRange, VehicleGroup } from './trafficViolations'
+import type { DateRange, StopTypeCount, VehicleGroup } from './stops'
 
 export interface DataSnapshot {
   /** ISO instant the snapshot was produced. */
@@ -18,8 +18,17 @@ export interface DataSnapshot {
   dataset: string
   earliestEventDate: CalendarDay
   latestEventDate: CalendarDay
-  /** Traffic stops across the whole dataset, not just the default range. */
-  totalViolations: number
+  /** Stops of every kind across the whole dataset, not just the default range. */
+  totalStops: number
+  /**
+   * How the whole dataset divides by kind of stop, most frequent first.
+   *
+   * Baked because the About panel has to name the composition rather than assert
+   * it in prose: the previous copy hard-coded a date range and had drifted three
+   * decades out of date. Pooling these types is also what the panel warns
+   * against, so the figures behind that warning cannot be hand-written.
+   */
+  stopTypes: StopTypeCount[]
   /** The month containing the newest event — what the app opens on. */
   defaultRange: DateRange
   defaultRangeCount: number

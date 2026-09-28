@@ -32,9 +32,11 @@ const DATASET = process.env.SOCRATA_DATASET ?? 'nfft-hjwi'
 const APP_TOKEN = process.env.SOCRATA_APP_TOKEN
 const TIMEOUT_MS = Number(process.env.BAKE_TIMEOUT_MS ?? 60_000)
 
-const TRAFFIC_VIOLATION_WHERE = "stopdescription = 'TRAFFIC VIOLATION'"
 const MAX_GROUPS = 50_000
-const MAX_LOCATIONS = 25_000
+/** Keep in step with MAX_LOCATIONS in src/lib/stops.ts, which explains the value. */
+const MAX_LOCATIONS = 45_000
+/** The dataset holds 12 kinds of stop; the rest is slack. */
+const MAX_STOP_TYPES = 500
 
 /**
  * Mirrors NOLA_BOUNDS in src/lib/stopLocations.ts. Keep the two in step.
@@ -92,10 +94,16 @@ function isoDate({ year, month, day }) {
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 }
 
-/** Inclusive on both ends: the upper bound has to carry an end-of-day time. */
+/**
+ * Inclusive on both ends: the upper bound has to carry an end-of-day time.
+ *
+ * No stop-type clause. Queries used to narrow to TRAFFIC VIOLATION, which left
+ * 280,374 of the dataset's stops off the page entirely; the kinds of stop are
+ * reported now instead. See the header comment in src/lib/stops.ts.
+ */
 function rangeWhere(range) {
   return (
-    `${TRAFFIC_VIOLATION_WHERE} AND eventdate between ` +
+    'eventdate between ' +
     `'${isoDate(range.start)}T00:00:00.000' and '${isoDate(range.end)}T23:59:59.999'`
   )
 }
@@ -127,14 +135,13 @@ async function bake() {
   process.stdout.write(`Baking ${DATASET} from ${DOMAIN}\n`)
 
   const [bounds] = await query({
-    select: 'min(eventdate) as earliest, max(eventdate) as latest, count(*) as total',
-    where: TRAFFIC_VIOLATION_WHERE
+    select: 'min(eventdate) as earliest, max(eventdate) as latest, count(*) as total'
   })
 
   const latest = toCalendarDay(bounds?.latest)
   const earliest = toCalendarDay(bounds?.earliest)
   if (!latest || !earliest) {
-    throw new Error('Dataset reported no traffic violation events')
+    throw new Error('Dataset reported no events')
   }
 
   // The default view is the whole month containing the newest event, which is
@@ -142,7 +149,7 @@ async function bake() {
   const defaultRange = { start: startOfMonth(latest), end: endOfMonth(latest) }
   const where = rangeWhere(defaultRange)
 
-  const [[countRow], groupRows, locationRows] = await Promise.all([
+  const [[countRow], groupRows, locationRows, stopTypeRows] = await Promise.all([
     query({ select: 'count(*) as total', where }),
     query({
       select: 'vehiclemake, vehiclemodel, count(*) as total',
@@ -158,6 +165,14 @@ async function bake() {
       order: 'total desc',
       // One past the cap, so hitting it is detectable without a second query.
       limit: MAX_LOCATIONS + 1
+    }),
+    // All-time rather than range-scoped: this is provenance, telling a reader what
+    // the whole record is made of before they read any single range out of it.
+    query({
+      select: 'stopdescription, count(*) as total',
+      group: 'stopdescription',
+      order: 'total desc',
+      limit: MAX_STOP_TYPES
     })
   ])
 
@@ -172,7 +187,11 @@ async function bake() {
     dataset: DATASET,
     earliestEventDate: earliest,
     latestEventDate: latest,
-    totalViolations: Number(bounds?.total ?? 0),
+    totalStops: Number(bounds?.total ?? 0),
+    stopTypes: stopTypeRows.map((row) => ({
+      description: (row.stopdescription ?? '').trim(),
+      count: Number(row.total ?? 0)
+    })),
     defaultRange,
     defaultRangeCount: Number(countRow?.total ?? 0),
     defaultRangeVehicleGroups: groupRows.map((row) =>
@@ -187,7 +206,8 @@ async function bake() {
 
   process.stdout.write(
     `  events        ${isoDate(earliest)} .. ${isoDate(latest)}\n` +
-      `  total stops   ${snapshot.totalViolations.toLocaleString('en-US')}\n` +
+      `  total stops   ${snapshot.totalStops.toLocaleString('en-US')} ` +
+      `across ${snapshot.stopTypes.length} kinds of stop\n` +
       `  default range ${isoDate(defaultRange.start)} .. ${isoDate(defaultRange.end)}\n` +
       `  in range      ${snapshot.defaultRangeCount.toLocaleString('en-US')} stops, ` +
       `${snapshot.defaultRangeVehicleGroups.length.toLocaleString('en-US')} make/model pairs\n` +

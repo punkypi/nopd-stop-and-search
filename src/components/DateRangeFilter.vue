@@ -10,7 +10,7 @@ import { NDatePicker } from 'naive-ui'
 import { computed } from 'vue'
 
 import { fromTimestamp, toTimestamp, type CalendarDay } from '@/lib/dates'
-import type { DateRange } from '@/lib/trafficViolations'
+import type { DateRange } from '@/lib/stops'
 
 const props = defineProps<{
   range: DateRange

@@ -11,7 +11,7 @@
 import { NButton, NDataTable, NEmpty, NInput, type DataTableColumns } from 'naive-ui'
 import { computed, h, ref } from 'vue'
 
-import type { VehicleGroup } from '@/lib/trafficViolations'
+import { vehicleCoverage, type VehicleGroup } from '@/lib/stops'
 
 const props = defineProps<{
   vehicleGroups: readonly VehicleGroup[]
@@ -33,6 +33,14 @@ const filtered = computed<VehicleGroup[]>(() => {
 const totalInFilter = computed(() =>
   filtered.value.reduce((runningTotal, group) => runningTotal + group.count, 0)
 )
+
+/**
+ * Computed over every group rather than the filtered ones: this states what the
+ * table can cover at all, which the search box does not change.
+ */
+const coverage = computed(() => vehicleCoverage(props.vehicleGroups))
+
+const rangeStops = computed(() => coverage.value.withVehicle + coverage.value.withoutVehicle)
 
 const numberFormat = new Intl.NumberFormat('en-US')
 
@@ -101,6 +109,16 @@ const columns = computed<DataTableColumns<VehicleGroup>>(() => [
         make/model {{ filtered.length === 1 ? 'pair' : 'pairs' }},
         {{ numberFormat.format(totalInFilter) }} stops
         <span v-if="searchTerm.trim()">matching “{{ searchTerm.trim() }}”</span>
+      </p>
+
+      <!-- Once stops of every kind are counted, most of this panel's shortfall is
+           stops that never involved a car. Saying so is what keeps the make/model
+           totals from reading as a count of all stops. -->
+      <p v-if="coverage.withoutVehicle > 0" class="text-nola-muted px-2 pb-2 text-xs">
+        {{ numberFormat.format(coverage.withVehicle) }} of
+        {{ numberFormat.format(rangeStops) }} stops in this range recorded a vehicle. The rest,
+        including every stop of someone on foot, are counted in the total above but cannot appear
+        here.
       </p>
 
       <NDataTable

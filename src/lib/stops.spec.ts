@@ -4,10 +4,11 @@ import { calendarDay } from './dates'
 import {
   buildVehicleGroup,
   fetchLatestEventDate,
+  fetchStopCount,
   fetchVehicleGroups,
-  fetchViolationCount,
-  isValidRange
-} from './trafficViolations'
+  isValidRange,
+  vehicleCoverage
+} from './stops'
 
 /** Stubs `fetch`, returning `rows`, and hands back the URL that was requested. */
 function stubFetch(rows: unknown) {
@@ -81,7 +82,7 @@ describe('fetchLatestEventDate', () => {
     await expect(fetchLatestEventDate()).resolves.toEqual(calendarDay(2025, 11, 9))
   })
 
-  it('returns null when the dataset holds no traffic stops', async () => {
+  it('returns null when the dataset holds no events', async () => {
     stubFetch([{}])
     await expect(fetchLatestEventDate()).resolves.toBeNull()
   })
@@ -92,40 +93,41 @@ describe('fetchLatestEventDate', () => {
   })
 })
 
-describe('fetchViolationCount', () => {
+describe('fetchStopCount', () => {
   const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 9) }
 
   it('coerces the count to a number', async () => {
     stubFetch([{ total: '4021' }])
-    await expect(fetchViolationCount(range)).resolves.toBe(4021)
+    await expect(fetchStopCount(range)).resolves.toBe(4021)
   })
 
   it('asks Socrata to aggregate rather than counting client-side', async () => {
     const { requestedUrl } = stubFetch([{ total: '1' }])
-    await fetchViolationCount(range)
+    await fetchStopCount(range)
     expect(requestedUrl().searchParams.get('$select')).toBe('count(*) as total')
   })
 
   it('covers the whole final day of the range', async () => {
     const { requestedUrl } = stubFetch([{ total: '1' }])
-    await fetchViolationCount(range)
+    await fetchStopCount(range)
     const where = requestedUrl().searchParams.get('$where') ?? ''
     expect(where).toContain("'2025-11-01T00:00:00.000'")
     // Midnight here would silently drop every stop made on Nov 9th.
     expect(where).toContain("'2025-11-09T23:59:59.999'")
   })
 
-  it('filters to traffic violations', async () => {
+  it('counts every kind of stop, not just traffic violations', async () => {
     const { requestedUrl } = stubFetch([{ total: '1' }])
-    await fetchViolationCount(range)
-    expect(requestedUrl().searchParams.get('$where')).toContain(
-      "stopdescription = 'TRAFFIC VIOLATION'"
-    )
+    await fetchStopCount(range)
+    // Narrowing here hid 280,374 of the dataset's 720,425 stops, among them the
+    // pedestrian stops the dataset is named for. Stop type is reported now rather
+    // than silently applied, so no query may reintroduce the filter.
+    expect(requestedUrl().searchParams.get('$where')).not.toMatch(/stopdescription/i)
   })
 
   it('defaults a missing total to zero', async () => {
     stubFetch([])
-    await expect(fetchViolationCount(range)).resolves.toBe(0)
+    await expect(fetchStopCount(range)).resolves.toBe(0)
   })
 })
 
@@ -157,5 +159,29 @@ describe('fetchVehicleGroups', () => {
     const groups = await fetchVehicleGroups(range)
     expect(groups[0]).toMatchObject({ make: '', model: '', count: 7 })
     expect(groups[0]?.makeAndModel).toBe('Not Supplied')
+  })
+})
+
+describe('vehicleCoverage', () => {
+  it('separates stops that named a vehicle from those that named none', () => {
+    expect(
+      vehicleCoverage([
+        buildVehicleGroup('FORD', 'F150', 31),
+        buildVehicleGroup('TOYT', '', 12),
+        buildVehicleGroup('', 'ALTIMA', 4),
+        buildVehicleGroup('', '', 99)
+      ])
+    ).toEqual({ withVehicle: 47, withoutVehicle: 99 })
+  })
+
+  it('counts a whitespace-only make and model as no vehicle', () => {
+    expect(vehicleCoverage([buildVehicleGroup('  ', ' ', 5)])).toEqual({
+      withVehicle: 0,
+      withoutVehicle: 5
+    })
+  })
+
+  it('reports zeroes for an empty range rather than dividing by nothing', () => {
+    expect(vehicleCoverage([])).toEqual({ withVehicle: 0, withoutVehicle: 0 })
   })
 })

@@ -12,13 +12,13 @@ import { onMounted, ref } from 'vue'
 import AboutPanel from '@/components/AboutPanel.vue'
 import DateRangeFilter from '@/components/DateRangeFilter.vue'
 import StopMap from '@/components/StopMap.vue'
+import StopTotal from '@/components/StopTotal.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
-import ViolationTotal from '@/components/ViolationTotal.vue'
-import { useViolationData } from '@/composables/useViolationData'
+import { useStopData } from '@/composables/useStopData'
 import { withBase } from '@/lib/basePath'
 import { endOfMonth, startOfMonth, today } from '@/lib/dates'
 import { loadSnapshot, type DataSnapshot } from '@/lib/snapshot'
-import type { DateRange } from '@/lib/trafficViolations'
+import type { DateRange } from '@/lib/stops'
 
 /** Maps the project's palette onto naive-ui's dark theme. */
 const themeOverrides: GlobalThemeOverrides = {
@@ -43,8 +43,10 @@ const snapshot = ref<DataSnapshot | null>(null)
  */
 const range = ref<DateRange | null>(null)
 
-const { count, vehicleGroups, stopLocations, locationsTruncated, loading, error } =
-  useViolationData(range, snapshot)
+const { count, vehicleGroups, stopLocations, locationsTruncated, loading, error } = useStopData(
+  range,
+  snapshot
+)
 
 onMounted(async () => {
   try {
@@ -89,7 +91,7 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
       </NAlert>
 
       <template v-if="range">
-        <ViolationTotal :count="count" :range="range" :loading="loading" />
+        <StopTotal :count="count" :range="range" :loading="loading" />
 
         <StopMap
           :locations="stopLocations"

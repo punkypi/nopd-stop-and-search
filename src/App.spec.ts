@@ -11,7 +11,12 @@ const SNAPSHOT: DataSnapshot = {
   dataset: 'nfft-hjwi',
   earliestEventDate: calendarDay(1991, 7, 24),
   latestEventDate: calendarDay(2025, 11, 9),
-  totalViolations: 440051,
+  totalStops: 720425,
+  stopTypes: [
+    { description: 'TRAFFIC VIOLATION', count: 440051 },
+    { description: 'CALL FOR SERVICE', count: 98277 },
+    { description: 'SUSPECT PERSON', count: 76540 }
+  ],
   defaultRange: { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 30) },
   defaultRangeCount: 366,
   defaultRangeVehicleGroups: [
@@ -85,7 +90,7 @@ describe('App', () => {
     // 1991 is the real first event; the old copy claimed 1999.
     expect(wrapper.text()).toContain('July 24, 1991')
     expect(wrapper.text()).toContain('November 9, 2025')
-    expect(wrapper.text()).toContain('440,051')
+    expect(wrapper.text()).toContain('720,425')
 
     wrapper.unmount()
   })

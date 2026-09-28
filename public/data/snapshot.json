@@ -1,5 +1,5 @@
 {
-  "bakedAt": "2026-09-27T23:20:31.172Z",
+  "bakedAt": "2026-09-28T03:52:04.901Z",
   "domain": "data.nola.gov",
   "dataset": "nfft-hjwi",
   "earliestEventDate": {
@@ -10,9 +10,59 @@
   "latestEventDate": {
     "year": 2025,
     "month": 11,
-    "day": 9
+    "day": 10
   },
-  "totalViolations": 440051,
+  "totalStops": 720425,
+  "stopTypes": [
+    {
+      "description": "TRAFFIC VIOLATION",
+      "count": 440051
+    },
+    {
+      "description": "CALL FOR SERVICE",
+      "count": 98277
+    },
+    {
+      "description": "SUSPECT PERSON",
+      "count": 76540
+    },
+    {
+      "description": "CRIMINAL VIOLATION",
+      "count": 38862
+    },
+    {
+      "description": "OTHER",
+      "count": 28016
+    },
+    {
+      "description": "CITIZEN CONTACT",
+      "count": 17565
+    },
+    {
+      "description": "SUSPECT VEHICLE",
+      "count": 8942
+    },
+    {
+      "description": "FLAGGED DOWN",
+      "count": 6211
+    },
+    {
+      "description": "JUVENILE VIOLATION",
+      "count": 3842
+    },
+    {
+      "description": "PRESENT AT CRIME SCENE",
+      "count": 1043
+    },
+    {
+      "description": "PUBLIC SAFETY RIDE",
+      "count": 633
+    },
+    {
+      "description": "VEHICLE NON-PURSUIT",
+      "count": 443
+    }
+  ],
   "defaultRange": {
     "start": {
       "year": 2025,
@@ -25,8 +75,14 @@
       "day": 30
     }
   },
-  "defaultRangeCount": 366,
+  "defaultRangeCount": 404,
   "defaultRangeVehicleGroups": [
+    {
+      "make": "",
+      "model": "",
+      "count": 33,
+      "makeAndModel": "Not Supplied"
+    },
     {
       "make": "NISSAN",
       "model": "OTHER",
@@ -36,7 +92,7 @@
     {
       "make": "CHEVROLET",
       "model": "OTHER",
-      "count": 14,
+      "count": 15,
       "makeAndModel": "CHEVROLET OTHER"
     },
     {
@@ -46,10 +102,22 @@
       "makeAndModel": "NISSAN ALTIMA"
     },
     {
+      "make": "TOYOTA",
+      "model": "COROLLA",
+      "count": 12,
+      "makeAndModel": "TOYOTA COROLLA"
+    },
+    {
       "make": "INFINITY",
       "model": "OTHER",
       "count": 11,
       "makeAndModel": "INFINITY OTHER"
+    },
+    {
+      "make": "FORD",
+      "model": "F150 PICKUP",
+      "count": 11,
+      "makeAndModel": "FORD F150 PICKUP"
     },
     {
       "make": "HONDA",
@@ -58,28 +126,10 @@
       "makeAndModel": "HONDA ACCORD"
     },
     {
-      "make": "TOYOTA",
-      "model": "COROLLA",
-      "count": 11,
-      "makeAndModel": "TOYOTA COROLLA"
-    },
-    {
       "make": "NISSAN",
       "model": "SENTRA",
       "count": 10,
       "makeAndModel": "NISSAN SENTRA"
-    },
-    {
-      "make": "FORD",
-      "model": "F150 PICKUP",
-      "count": 10,
-      "makeAndModel": "FORD F150 PICKUP"
-    },
-    {
-      "make": "NISSAN",
-      "model": "MURANO",
-      "count": 9,
-      "makeAndModel": "NISSAN MURANO"
     },
     {
       "make": "TOYOTA",
@@ -88,16 +138,22 @@
       "makeAndModel": "TOYOTA CAMRY"
     },
     {
-      "make": "JEEP",
-      "model": "OTHER",
-      "count": 8,
-      "makeAndModel": "JEEP OTHER"
+      "make": "NISSAN",
+      "model": "MURANO",
+      "count": 9,
+      "makeAndModel": "NISSAN MURANO"
     },
     {
       "make": "CHEVROLET",
       "model": "AVALANCHE",
       "count": 8,
       "makeAndModel": "CHEVROLET AVALANCHE"
+    },
+    {
+      "make": "JEEP",
+      "model": "OTHER",
+      "count": 8,
+      "makeAndModel": "JEEP OTHER"
     },
     {
       "make": "CHEVROLET",
@@ -110,12 +166,6 @@
       "model": "HIGHLANDER",
       "count": 7,
       "makeAndModel": "TOYOTA HIGHLANDER"
-    },
-    {
-      "make": "FORD",
-      "model": "OTHER",
-      "count": 6,
-      "makeAndModel": "FORD OTHER"
     },
     {
       "make": "HONDA",
@@ -136,22 +186,16 @@
       "makeAndModel": "CADILLAC OTHER"
     },
     {
-      "make": "MAZDA",
+      "make": "FORD",
       "model": "OTHER",
-      "count": 5,
-      "makeAndModel": "MAZDA OTHER"
+      "count": 6,
+      "makeAndModel": "FORD OTHER"
     },
     {
-      "make": "TOYOTA",
-      "model": "RAV4",
-      "count": 5,
-      "makeAndModel": "TOYOTA RAV4"
-    },
-    {
-      "make": "BMW",
+      "make": "VOLKSWAGEN (VW)",
       "model": "OTHER",
       "count": 5,
-      "makeAndModel": "BMW OTHER"
+      "makeAndModel": "VOLKSWAGEN (VW) OTHER"
     },
     {
       "make": "HYUNDAI",
@@ -160,10 +204,10 @@
       "makeAndModel": "HYUNDAI SANTA FE"
     },
     {
-      "make": "BUICK",
+      "make": "MAZDA",
       "model": "OTHER",
       "count": 5,
-      "makeAndModel": "BUICK OTHER"
+      "makeAndModel": "MAZDA OTHER"
     },
     {
       "make": "ACURA",
@@ -172,40 +216,34 @@
       "makeAndModel": "ACURA OTHER"
     },
     {
-      "make": "CHEVROLET",
-      "model": "CAMARO",
-      "count": 4,
-      "makeAndModel": "CHEVROLET CAMARO"
+      "make": "BMW",
+      "model": "OTHER",
+      "count": 5,
+      "makeAndModel": "BMW OTHER"
     },
     {
-      "make": "HYUNDAI",
+      "make": "BUICK",
       "model": "OTHER",
-      "count": 4,
-      "makeAndModel": "HYUNDAI OTHER"
+      "count": 5,
+      "makeAndModel": "BUICK OTHER"
     },
     {
       "make": "TOYOTA",
-      "model": "TUNDRA",
-      "count": 4,
-      "makeAndModel": "TOYOTA TUNDRA"
-    },
-    {
-      "make": "VOLKSWAGEN (VW)",
-      "model": "OTHER",
-      "count": 4,
-      "makeAndModel": "VOLKSWAGEN (VW) OTHER"
-    },
-    {
-      "make": "HONDA",
-      "model": "CIVIC",
-      "count": 4,
-      "makeAndModel": "HONDA CIVIC"
+      "model": "RAV4",
+      "count": 5,
+      "makeAndModel": "TOYOTA RAV4"
     },
     {
       "make": "TOYOTA",
       "model": "OTHER",
       "count": 4,
       "makeAndModel": "TOYOTA OTHER"
+    },
+    {
+      "make": "HONDA",
+      "model": "CIVIC",
+      "count": 4,
+      "makeAndModel": "HONDA CIVIC"
     },
     {
       "make": "FORD",
@@ -226,34 +264,34 @@
       "makeAndModel": "NISSAN MAXIMA"
     },
     {
+      "make": "CHEVROLET",
+      "model": "CAMARO",
+      "count": 4,
+      "makeAndModel": "CHEVROLET CAMARO"
+    },
+    {
+      "make": "HYUNDAI",
+      "model": "OTHER",
+      "count": 4,
+      "makeAndModel": "HYUNDAI OTHER"
+    },
+    {
+      "make": "TOYOTA",
+      "model": "TUNDRA",
+      "count": 4,
+      "makeAndModel": "TOYOTA TUNDRA"
+    },
+    {
       "make": "HYUNDAI",
       "model": "ELANTRA",
       "count": 4,
       "makeAndModel": "HYUNDAI ELANTRA"
     },
     {
-      "make": "GMC - GENERAL MOTORS CORP.",
-      "model": "YUKON",
-      "count": 3,
-      "makeAndModel": "GMC - GENERAL MOTORS CORP. YUKON"
-    },
-    {
       "make": "TOYOTA",
       "model": "TACOMA",
       "count": 3,
       "makeAndModel": "TOYOTA TACOMA"
-    },
-    {
-      "make": "DODGE",
-      "model": "CHARGER",
-      "count": 3,
-      "makeAndModel": "DODGE CHARGER"
-    },
-    {
-      "make": "JEEP",
-      "model": "GRAND CHEROKEE",
-      "count": 3,
-      "makeAndModel": "JEEP GRAND CHEROKEE"
     },
     {
       "make": "GMC - GENERAL MOTORS CORP.",
@@ -263,39 +301,15 @@
     },
     {
       "make": "DODGE",
+      "model": "CHARGER",
+      "count": 3,
+      "makeAndModel": "DODGE CHARGER"
+    },
+    {
+      "make": "DODGE",
       "model": "RAM",
       "count": 3,
       "makeAndModel": "DODGE RAM"
-    },
-    {
-      "make": "JEEP",
-      "model": "WRANGLER",
-      "count": 3,
-      "makeAndModel": "JEEP WRANGLER"
-    },
-    {
-      "make": "CHRYSLER",
-      "model": "OTHER",
-      "count": 3,
-      "makeAndModel": "CHRYSLER OTHER"
-    },
-    {
-      "make": "KIA (4-WHEEL AUTOMOBILE)",
-      "model": "OTHER",
-      "count": 3,
-      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) OTHER"
-    },
-    {
-      "make": "MERCEDES-BENZ",
-      "model": "OTHER",
-      "count": 3,
-      "makeAndModel": "MERCEDES-BENZ OTHER"
-    },
-    {
-      "make": "CHEVROLET",
-      "model": "",
-      "count": 3,
-      "makeAndModel": "CHEVROLET"
     },
     {
       "make": "FORD",
@@ -304,10 +318,16 @@
       "makeAndModel": "FORD FOCUS"
     },
     {
-      "make": "KIA (4-WHEEL AUTOMOBILE)",
-      "model": "FORTE",
+      "make": "MERCEDES-BENZ",
+      "model": "OTHER",
       "count": 3,
-      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) FORTE"
+      "makeAndModel": "MERCEDES-BENZ OTHER"
+    },
+    {
+      "make": "HONDA",
+      "model": "PILOT",
+      "count": 3,
+      "makeAndModel": "HONDA PILOT"
     },
     {
       "make": "FORD",
@@ -316,10 +336,10 @@
       "makeAndModel": "FORD ESCAPE"
     },
     {
-      "make": "LEXUS",
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
       "model": "OTHER",
       "count": 3,
-      "makeAndModel": "LEXUS OTHER"
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) OTHER"
     },
     {
       "make": "FORD",
@@ -328,88 +348,46 @@
       "makeAndModel": "FORD VAN"
     },
     {
-      "make": "CHEVROLET",
-      "model": "SUBURBAN",
-      "count": 2,
-      "makeAndModel": "CHEVROLET SUBURBAN"
-    },
-    {
-      "make": "DODGE",
-      "model": "GRAND CARAVAN",
-      "count": 2,
-      "makeAndModel": "DODGE GRAND CARAVAN"
-    },
-    {
-      "make": "HONDA",
-      "model": "PILOT",
-      "count": 2,
-      "makeAndModel": "HONDA PILOT"
-    },
-    {
-      "make": "TESLA",
-      "model": "MODEL Y",
-      "count": 2,
-      "makeAndModel": "TESLA MODEL Y"
-    },
-    {
-      "make": "MITSUBISHI",
+      "make": "CHRYSLER",
       "model": "OTHER",
-      "count": 2,
-      "makeAndModel": "MITSUBISHI OTHER"
+      "count": 3,
+      "makeAndModel": "CHRYSLER OTHER"
     },
     {
-      "make": "LINCOLN",
-      "model": "OTHER",
-      "count": 2,
-      "makeAndModel": "LINCOLN OTHER"
+      "make": "JEEP",
+      "model": "GRAND CHEROKEE",
+      "count": 3,
+      "makeAndModel": "JEEP GRAND CHEROKEE"
     },
     {
-      "make": "OTHER",
-      "model": "OTHER",
-      "count": 2,
-      "makeAndModel": "OTHER OTHER"
-    },
-    {
-      "make": "TOYOTA",
-      "model": "4RUNNER",
-      "count": 2,
-      "makeAndModel": "TOYOTA 4RUNNER"
-    },
-    {
-      "make": "FORD",
-      "model": "EXPEDITION",
-      "count": 2,
-      "makeAndModel": "FORD EXPEDITION"
-    },
-    {
-      "make": "BMW",
-      "model": "328 I",
-      "count": 2,
-      "makeAndModel": "BMW 328 I"
-    },
-    {
-      "make": "",
-      "model": "",
-      "count": 2,
-      "makeAndModel": "Not Supplied"
-    },
-    {
-      "make": "NISSAN",
-      "model": "PICKUP",
-      "count": 2,
-      "makeAndModel": "NISSAN PICKUP"
+      "make": "JEEP",
+      "model": "WRANGLER",
+      "count": 3,
+      "makeAndModel": "JEEP WRANGLER"
     },
     {
       "make": "GMC - GENERAL MOTORS CORP.",
-      "model": "ENVOY",
-      "count": 2,
-      "makeAndModel": "GMC - GENERAL MOTORS CORP. ENVOY"
+      "model": "YUKON",
+      "count": 3,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP. YUKON"
     },
     {
-      "make": "AUDI",
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "FORTE",
+      "count": 3,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) FORTE"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "",
+      "count": 3,
+      "makeAndModel": "CHEVROLET"
+    },
+    {
+      "make": "LEXUS",
       "model": "OTHER",
-      "count": 2,
-      "makeAndModel": "AUDI OTHER"
+      "count": 3,
+      "makeAndModel": "LEXUS OTHER"
     },
     {
       "make": "ACURA",
@@ -424,10 +402,28 @@
       "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) K5"
     },
     {
-      "make": "FORD",
-      "model": "EXPLORER",
+      "make": "TOYOTA",
+      "model": "4RUNNER",
       "count": 2,
-      "makeAndModel": "FORD EXPLORER"
+      "makeAndModel": "TOYOTA 4RUNNER"
+    },
+    {
+      "make": "DODGE",
+      "model": "GRAND CARAVAN",
+      "count": 2,
+      "makeAndModel": "DODGE GRAND CARAVAN"
+    },
+    {
+      "make": "TESLA",
+      "model": "MODEL Y",
+      "count": 2,
+      "makeAndModel": "TESLA MODEL Y"
+    },
+    {
+      "make": "CHEVROLET",
+      "model": "SUBURBAN",
+      "count": 2,
+      "makeAndModel": "CHEVROLET SUBURBAN"
     },
     {
       "make": "KIA (4-WHEEL AUTOMOBILE)",
@@ -436,10 +432,142 @@
       "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) OPTIMA"
     },
     {
+      "make": "GMC - GENERAL MOTORS CORP.",
+      "model": "ENVOY",
+      "count": 2,
+      "makeAndModel": "GMC - GENERAL MOTORS CORP. ENVOY"
+    },
+    {
+      "make": "BMW",
+      "model": "328 I",
+      "count": 2,
+      "makeAndModel": "BMW 328 I"
+    },
+    {
+      "make": "AUDI",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "AUDI OTHER"
+    },
+    {
+      "make": "OTHER",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "OTHER OTHER"
+    },
+    {
+      "make": "LINCOLN",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "LINCOLN OTHER"
+    },
+    {
+      "make": "FORD",
+      "model": "EXPLORER",
+      "count": 2,
+      "makeAndModel": "FORD EXPLORER"
+    },
+    {
       "make": "HONDA",
       "model": "OTHER",
       "count": 2,
       "makeAndModel": "HONDA OTHER"
+    },
+    {
+      "make": "NISSAN",
+      "model": "PICKUP",
+      "count": 2,
+      "makeAndModel": "NISSAN PICKUP"
+    },
+    {
+      "make": "FORD",
+      "model": "EXPEDITION",
+      "count": 2,
+      "makeAndModel": "FORD EXPEDITION"
+    },
+    {
+      "make": "MITSUBISHI",
+      "model": "OTHER",
+      "count": 2,
+      "makeAndModel": "MITSUBISHI OTHER"
+    },
+    {
+      "make": "SUBARU",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "SUBARU OTHER"
+    },
+    {
+      "make": "BUICK",
+      "model": "ELECTRA",
+      "count": 1,
+      "makeAndModel": "BUICK ELECTRA"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "CADENZA",
+      "count": 1,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) CADENZA"
+    },
+    {
+      "make": "SUZUKI",
+      "model": "GRAND VITARA",
+      "count": 1,
+      "makeAndModel": "SUZUKI GRAND VITARA"
+    },
+    {
+      "make": "AUDI",
+      "model": "A4",
+      "count": 1,
+      "makeAndModel": "AUDI A4"
+    },
+    {
+      "make": "HYUNDAI",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "HYUNDAI"
+    },
+    {
+      "make": "HARLEY-DAVIDSON",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "HARLEY-DAVIDSON OTHER"
+    },
+    {
+      "make": "JEEP",
+      "model": "CHEROKEE",
+      "count": 1,
+      "makeAndModel": "JEEP CHEROKEE"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "SOUL",
+      "count": 1,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) SOUL"
+    },
+    {
+      "make": "MERCEDES-BENZ",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "MERCEDES-BENZ"
+    },
+    {
+      "make": "RAMBLER",
+      "model": "OTHER",
+      "count": 1,
+      "makeAndModel": "RAMBLER OTHER"
+    },
+    {
+      "make": "BUICK",
+      "model": "REGAL",
+      "count": 1,
+      "makeAndModel": "BUICK REGAL"
+    },
+    {
+      "make": "KIA (4-WHEEL AUTOMOBILE)",
+      "model": "",
+      "count": 1,
+      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE)"
     },
     {
       "make": "SUBARU",
@@ -458,18 +586,6 @@
       "model": "OUTBACK",
       "count": 1,
       "makeAndModel": "SUBARU OUTBACK"
-    },
-    {
-      "make": "BUICK",
-      "model": "ELECTRA",
-      "count": 1,
-      "makeAndModel": "BUICK ELECTRA"
-    },
-    {
-      "make": "KIA (4-WHEEL AUTOMOBILE)",
-      "model": "CADENZA",
-      "count": 1,
-      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) CADENZA"
     },
     {
       "make": "BMW",
@@ -502,12 +618,6 @@
       "makeAndModel": "CHEVROLET ASTRO"
     },
     {
-      "make": "SUZUKI",
-      "model": "GRAND VITARA",
-      "count": 1,
-      "makeAndModel": "SUZUKI GRAND VITARA"
-    },
-    {
       "make": "VOLVO",
       "model": "OTHER",
       "count": 1,
@@ -524,12 +634,6 @@
       "model": "WINDSTAR",
       "count": 1,
       "makeAndModel": "FORD WINDSTAR"
-    },
-    {
-      "make": "AUDI",
-      "model": "A4",
-      "count": 1,
-      "makeAndModel": "AUDI A4"
     },
     {
       "make": "NISSAN",
@@ -550,12 +654,6 @@
       "makeAndModel": "DODGE CARAVAN"
     },
     {
-      "make": "HYUNDAI",
-      "model": "",
-      "count": 1,
-      "makeAndModel": "HYUNDAI"
-    },
-    {
       "make": "KIA (4-WHEEL AUTOMOBILE)",
       "model": "OPIRUS",
       "count": 1,
@@ -566,12 +664,6 @@
       "model": "",
       "count": 1,
       "makeAndModel": "GMC - GENERAL MOTORS CORP."
-    },
-    {
-      "make": "HARLEY-DAVIDSON",
-      "model": "OTHER",
-      "count": 1,
-      "makeAndModel": "HARLEY-DAVIDSON OTHER"
     },
     {
       "make": "PORSCHE",
@@ -586,22 +678,22 @@
       "makeAndModel": "BUICK OPEL"
     },
     {
-      "make": "JEEP",
-      "model": "CHEROKEE",
-      "count": 1,
-      "makeAndModel": "JEEP CHEROKEE"
-    },
-    {
       "make": "GMC - GENERAL MOTORS CORP.",
       "model": "ACADIA",
       "count": 1,
       "makeAndModel": "GMC - GENERAL MOTORS CORP. ACADIA"
     },
     {
-      "make": "KIA (4-WHEEL AUTOMOBILE)",
-      "model": "SOUL",
+      "make": "BICYCLE",
+      "model": "OTHER",
       "count": 1,
-      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE) SOUL"
+      "makeAndModel": "BICYCLE OTHER"
+    },
+    {
+      "make": "ACURA",
+      "model": "INTEGRA",
+      "count": 1,
+      "makeAndModel": "ACURA INTEGRA"
     },
     {
       "make": "FORD",
@@ -622,22 +714,10 @@
       "makeAndModel": "HONDA ODYSSEY"
     },
     {
-      "make": "MERCEDES-BENZ",
-      "model": "",
-      "count": 1,
-      "makeAndModel": "MERCEDES-BENZ"
-    },
-    {
       "make": "GMC - GENERAL MOTORS CORP.",
       "model": "SIERRA",
       "count": 1,
       "makeAndModel": "GMC - GENERAL MOTORS CORP. SIERRA"
-    },
-    {
-      "make": "RAMBLER",
-      "model": "OTHER",
-      "count": 1,
-      "makeAndModel": "RAMBLER OTHER"
     },
     {
       "make": "TESLA",
@@ -650,24 +730,6 @@
       "model": "LIBERTY",
       "count": 1,
       "makeAndModel": "JEEP LIBERTY"
-    },
-    {
-      "make": "BUICK",
-      "model": "REGAL",
-      "count": 1,
-      "makeAndModel": "BUICK REGAL"
-    },
-    {
-      "make": "KIA (4-WHEEL AUTOMOBILE)",
-      "model": "",
-      "count": 1,
-      "makeAndModel": "KIA (4-WHEEL AUTOMOBILE)"
-    },
-    {
-      "make": "SUBARU",
-      "model": "OTHER",
-      "count": 1,
-      "makeAndModel": "SUBARU OTHER"
     }
   ],
   "defaultRangeStopLocations": [
@@ -708,22 +770,40 @@
       "address": "Polk St & Milne Blvd"
     },
     {
-      "latitude": 30.03712099,
-      "longitude": -90.0156472,
-      "count": 7,
-      "address": "067XX Stars And Stripes Blvd"
-    },
-    {
       "latitude": 29.95627481,
       "longitude": -90.06774648,
       "count": 7,
       "address": "Conti St & Bourbon St"
     },
     {
+      "latitude": 30.03712099,
+      "longitude": -90.0156472,
+      "count": 7,
+      "address": "067XX Stars And Stripes Blvd"
+    },
+    {
       "latitude": 29.95337886,
       "longitude": -90.08538638,
       "count": 6,
       "address": "019XX Lafayette St"
+    },
+    {
+      "latitude": 29.9941349,
+      "longitude": -90.10945746,
+      "count": 4,
+      "address": "Canal Blvd & Florida Blvd"
+    },
+    {
+      "latitude": 29.98623305,
+      "longitude": -90.05675948,
+      "count": 4,
+      "address": "027XX Marigny St"
+    },
+    {
+      "latitude": 29.97325792,
+      "longitude": -90.057338,
+      "count": 4,
+      "address": "N Claiborne Av & Elysian Fields Av"
     },
     {
       "latitude": 29.97517913,
@@ -744,28 +824,10 @@
       "address": "S Carrollton Av & Earhart Blvd"
     },
     {
-      "latitude": 29.9941349,
-      "longitude": -90.10945746,
-      "count": 4,
-      "address": "Canal Blvd & Florida Blvd"
-    },
-    {
-      "latitude": 29.97325792,
-      "longitude": -90.057338,
-      "count": 4,
-      "address": "N Claiborne Av & Elysian Fields Av"
-    },
-    {
       "latitude": 30.01948118,
       "longitude": -90.10647068,
       "count": 3,
       "address": "Canal Blvd & Allen Toussaint Blvd"
-    },
-    {
-      "latitude": 29.98946335,
-      "longitude": -90.1055489,
-      "count": 3,
-      "address": "Navarre Av & Marshal Foch St"
     },
     {
       "latitude": 29.95448194,
@@ -774,28 +836,10 @@
       "address": "Canal St & Dauphine St"
     },
     {
-      "latitude": 29.92932906,
-      "longitude": -90.03251156,
+      "latitude": 30.0043853,
+      "longitude": -90.10579442,
       "count": 3,
-      "address": "General De Gaulle Dr & Shirley Dr"
-    },
-    {
-      "latitude": 29.95221509,
-      "longitude": -90.06980582,
-      "count": 3,
-      "address": "St Charles Av & Common St"
-    },
-    {
-      "latitude": 30.01703508,
-      "longitude": -90.11493475,
-      "count": 3,
-      "address": "069XX Pontchartrain Blvd"
-    },
-    {
-      "latitude": 29.96561395,
-      "longitude": -90.08721038,
-      "count": 3,
-      "address": "N Broad St & Canal St"
+      "address": "Harrison Av & Memphis St"
     },
     {
       "latitude": 30.00460902,
@@ -804,112 +848,40 @@
       "address": "Harrison Av & Canal Blvd"
     },
     {
-      "latitude": 30.0043853,
-      "longitude": -90.10579442,
+      "latitude": 29.95949298,
+      "longitude": -90.06331558,
       "count": 3,
-      "address": "Harrison Av & Memphis St"
+      "address": "008XX Royal St"
     },
     {
-      "latitude": 29.93710931,
-      "longitude": -90.11076626,
-      "count": 2,
-      "address": "Jefferson Av & Magnolia St"
+      "latitude": 29.95221509,
+      "longitude": -90.06980582,
+      "count": 3,
+      "address": "St Charles Av & Common St"
     },
     {
-      "latitude": 29.99561373,
-      "longitude": -90.10926903,
-      "count": 2,
-      "address": "Canal Blvd & I-610 W Onramp"
+      "latitude": 29.98946335,
+      "longitude": -90.1055489,
+      "count": 3,
+      "address": "Navarre Av & Marshal Foch St"
     },
     {
-      "latitude": 29.99731689,
-      "longitude": -90.11346909,
-      "count": 2,
-      "address": "Milne Blvd & Brooks St"
+      "latitude": 30.01703508,
+      "longitude": -90.11493475,
+      "count": 3,
+      "address": "069XX Pontchartrain Blvd"
     },
     {
-      "latitude": 30.00103441,
-      "longitude": -90.10864232,
-      "count": 2,
-      "address": "Germain St & Canal Blvd"
+      "latitude": 29.92932906,
+      "longitude": -90.03251156,
+      "count": 3,
+      "address": "General De Gaulle Dr & Shirley Dr"
     },
     {
-      "latitude": 30.04303457,
-      "longitude": -89.97988277,
-      "count": 2,
-      "address": "Read Blvd & Morrison Rd"
-    },
-    {
-      "latitude": 29.95362665,
-      "longitude": -90.07038693,
-      "count": 2,
-      "address": "008XX Canal St"
-    },
-    {
-      "latitude": 29.92748249,
-      "longitude": -90.11734958,
-      "count": 2,
-      "address": "014XX Nashville Av"
-    },
-    {
-      "latitude": 30.00503343,
-      "longitude": -90.11031393,
-      "count": 2,
-      "address": "Harrison Av & Louisville St"
-    },
-    {
-      "latitude": 29.96984585,
-      "longitude": -90.05208581,
-      "count": 2,
-      "address": "St Roch Av & Marais St"
-    },
-    {
-      "latitude": 29.9551087,
-      "longitude": -90.06410941,
-      "count": 2,
-      "address": "005XX Decatur St"
-    },
-    {
-      "latitude": 29.97450574,
-      "longitude": -90.10077345,
-      "count": 2,
-      "address": "Canal St & S Carrollton Av"
-    },
-    {
-      "latitude": 29.97131374,
-      "longitude": -90.03653506,
-      "count": 2,
-      "address": "N Claiborne Av & Independence St"
-    },
-    {
-      "latitude": 29.92331695,
-      "longitude": -90.01763965,
-      "count": 2,
-      "address": "General De Gaulle Dr & Halsey Av"
-    },
-    {
-      "latitude": 29.97133777,
-      "longitude": -90.0294801,
-      "count": 2,
-      "address": "001XX Poland Av"
-    },
-    {
-      "latitude": 29.98969717,
-      "longitude": -90.10811685,
-      "count": 2,
-      "address": "Vicksburg St & Navarre Av"
-    },
-    {
-      "latitude": 29.95230669,
-      "longitude": -90.12450165,
-      "count": 2,
-      "address": "S Carrollton Av & Cohn St"
-    },
-    {
-      "latitude": 29.9558613,
-      "longitude": -90.08097119,
-      "count": 2,
-      "address": "S Claiborne Av & Gravier St"
+      "latitude": 29.96561395,
+      "longitude": -90.08721038,
+      "count": 3,
+      "address": "N Broad St & Canal St"
     },
     {
       "latitude": 29.92932379,
@@ -918,10 +890,154 @@
       "address": "023XX Camp St"
     },
     {
+      "latitude": 29.92598062,
+      "longitude": -90.10513174,
+      "count": 2,
+      "address": "046XX St Charles Av"
+    },
+    {
+      "latitude": 29.9558613,
+      "longitude": -90.08097119,
+      "count": 2,
+      "address": "S Claiborne Av & Gravier St"
+    },
+    {
+      "latitude": 29.97450574,
+      "longitude": -90.10077345,
+      "count": 2,
+      "address": "Canal St & S Carrollton Av"
+    },
+    {
+      "latitude": 29.95230669,
+      "longitude": -90.12450165,
+      "count": 2,
+      "address": "S Carrollton Av & Cohn St"
+    },
+    {
+      "latitude": 29.96984585,
+      "longitude": -90.05208581,
+      "count": 2,
+      "address": "St Roch Av & Marais St"
+    },
+    {
+      "latitude": 29.92748249,
+      "longitude": -90.11734958,
+      "count": 2,
+      "address": "014XX Nashville Av"
+    },
+    {
+      "latitude": 30.00103441,
+      "longitude": -90.10864232,
+      "count": 2,
+      "address": "Germain St & Canal Blvd"
+    },
+    {
+      "latitude": 30.00503343,
+      "longitude": -90.11031393,
+      "count": 2,
+      "address": "Harrison Av & Louisville St"
+    },
+    {
+      "latitude": 29.99561373,
+      "longitude": -90.10926903,
+      "count": 2,
+      "address": "Canal Blvd & I-610 W Onramp"
+    },
+    {
+      "latitude": 29.9551087,
+      "longitude": -90.06410941,
+      "count": 2,
+      "address": "005XX Decatur St"
+    },
+    {
+      "latitude": 29.95362665,
+      "longitude": -90.07038693,
+      "count": 2,
+      "address": "008XX Canal St"
+    },
+    {
+      "latitude": 29.99731689,
+      "longitude": -90.11346909,
+      "count": 2,
+      "address": "Milne Blvd & Brooks St"
+    },
+    {
+      "latitude": 29.93710931,
+      "longitude": -90.11076626,
+      "count": 2,
+      "address": "Jefferson Av & Magnolia St"
+    },
+    {
       "latitude": 29.98097416,
       "longitude": -90.1139527,
       "count": 2,
       "address": "Metairie Rd & Pontchartrain Blvd"
+    },
+    {
+      "latitude": 30.04303457,
+      "longitude": -89.97988277,
+      "count": 2,
+      "address": "Read Blvd & Morrison Rd"
+    },
+    {
+      "latitude": 29.92331695,
+      "longitude": -90.01763965,
+      "count": 2,
+      "address": "General De Gaulle Dr & Halsey Av"
+    },
+    {
+      "latitude": 29.97131374,
+      "longitude": -90.03653506,
+      "count": 2,
+      "address": "N Claiborne Av & Independence St"
+    },
+    {
+      "latitude": 29.97133777,
+      "longitude": -90.0294801,
+      "count": 2,
+      "address": "001XX Poland Av"
+    },
+    {
+      "latitude": 29.94830025,
+      "longitude": -90.08348884,
+      "count": 2,
+      "address": "Us 90B E & Earhart Blvd"
+    },
+    {
+      "latitude": 29.98969717,
+      "longitude": -90.10811685,
+      "count": 2,
+      "address": "Vicksburg St & Navarre Av"
+    },
+    {
+      "latitude": 29.95556877,
+      "longitude": -90.06828658,
+      "count": 1,
+      "address": "003XX Bourbon St"
+    },
+    {
+      "latitude": 29.95585115,
+      "longitude": -90.12068781,
+      "count": 1,
+      "address": "S Carrollton Av & S Claiborne Av"
+    },
+    {
+      "latitude": 29.95596985,
+      "longitude": -90.06729956,
+      "count": 1,
+      "address": "007XX Conti St"
+    },
+    {
+      "latitude": 29.9562795,
+      "longitude": -90.0678828,
+      "count": 1,
+      "address": "008XX Conti St"
+    },
+    {
+      "latitude": 29.95657622,
+      "longitude": -90.0681921,
+      "count": 1,
+      "address": "008XX Conti St"
     },
     {
       "latitude": 29.95658305,
@@ -934,6 +1050,18 @@
       "longitude": -90.11952925,
       "count": 1,
       "address": "Nelson St & S Carrollton Av"
+    },
+    {
+      "latitude": 29.95683961,
+      "longitude": -90.06703826,
+      "count": 1,
+      "address": "004XX Bourbon St"
+    },
+    {
+      "latitude": 29.95743311,
+      "longitude": -90.06671644,
+      "count": 1,
+      "address": "005XX Bourbon St"
     },
     {
       "latitude": 29.95869149,
@@ -972,6 +1100,18 @@
       "address": "S Broad St & Tulane Av"
     },
     {
+      "latitude": 29.96263197,
+      "longitude": -90.08241172,
+      "count": 1,
+      "address": "022XX Canal St"
+    },
+    {
+      "latitude": 29.96351512,
+      "longitude": -90.08955474,
+      "count": 1,
+      "address": "003XX S Broad St"
+    },
+    {
       "latitude": 29.96375705,
       "longitude": -90.08882338,
       "count": 1,
@@ -1002,6 +1142,12 @@
       "address": "Flood St & N Claiborne Av"
     },
     {
+      "latitude": 29.96648316,
+      "longitude": -90.05798873,
+      "count": 1,
+      "address": "Frenchmen St & Burgundy St"
+    },
+    {
       "latitude": 29.96664052,
       "longitude": -90.08874359,
       "count": 1,
@@ -1018,6 +1164,12 @@
       "longitude": -90.04333791,
       "count": 1,
       "address": "031XX St Claude Av"
+    },
+    {
+      "latitude": 29.96792575,
+      "longitude": -90.08644696,
+      "count": 1,
+      "address": "027XX Bienville Av"
     },
     {
       "latitude": 29.96825225,
@@ -1134,6 +1286,12 @@
       "address": "N Carrollton Av & Conti St"
     },
     {
+      "latitude": 29.97684142,
+      "longitude": -90.07795488,
+      "count": 1,
+      "address": "014XX N Broad St"
+    },
+    {
       "latitude": 29.97757218,
       "longitude": -90.09748476,
       "count": 1,
@@ -1144,6 +1302,12 @@
       "longitude": -90.06723759,
       "count": 1,
       "address": "A P Tureaud Av & N Galvez St"
+    },
+    {
+      "latitude": 29.97827204,
+      "longitude": -90.0710552,
+      "count": 1,
+      "address": "016XX N Tonti St"
     },
     {
       "latitude": 29.98107913,
@@ -1290,6 +1454,12 @@
       "address": "062XX Canal Blvd"
     },
     {
+      "latitude": 30.00409392,
+      "longitude": -90.10425026,
+      "count": 1,
+      "address": "008XX Harrison Av"
+    },
+    {
       "latitude": 30.00477517,
       "longitude": -90.11585596,
       "count": 1,
@@ -1306,6 +1476,12 @@
       "longitude": -90.11138654,
       "count": 1,
       "address": "Harrison Av & Colbert St"
+    },
+    {
+      "latitude": 30.00490436,
+      "longitude": -90.02546352,
+      "count": 1,
+      "address": "I-10 E After Johnny Jackson Onramp"
     },
     {
       "latitude": 30.00517285,
@@ -1374,6 +1550,12 @@
       "address": "068XX Canal Blvd"
     },
     {
+      "latitude": 30.01723159,
+      "longitude": -89.99460008,
+      "count": 1,
+      "address": "045XX Bonita Dr"
+    },
+    {
       "latitude": 30.01939878,
       "longitude": -90.11502035,
       "count": 1,
@@ -1402,6 +1584,12 @@
       "longitude": -90.02604147,
       "count": 1,
       "address": "058XX Morrison Rd"
+    },
+    {
+      "latitude": 30.02645669,
+      "longitude": -89.99734722,
+      "count": 1,
+      "address": "068XX E Coronet Ct"
     },
     {
       "latitude": 30.02988563,
@@ -1446,10 +1634,10 @@
       "address": "Chef Menteur Hwy & Ridgeway Blvd"
     },
     {
-      "latitude": 29.92049999,
-      "longitude": -90.12567302,
+      "latitude": 29.90308187,
+      "longitude": -90.00070667,
       "count": 1,
-      "address": "Henry Clay Av & Laurel St"
+      "address": "003XX Silver Maple Ct"
     },
     {
       "latitude": 30.07641149,
@@ -1458,10 +1646,34 @@
       "address": "I-10 W & Michoud Blvd"
     },
     {
+      "latitude": 29.91670129,
+      "longitude": -90.10885551,
+      "count": 1,
+      "address": "049XX Tchoupitoulas St"
+    },
+    {
+      "latitude": 29.92049999,
+      "longitude": -90.12567302,
+      "count": 1,
+      "address": "Henry Clay Av & Laurel St"
+    },
+    {
       "latitude": 29.92079766,
       "longitude": -90.10159997,
       "count": 1,
       "address": "Magazine St & Napoleon Av"
+    },
+    {
+      "latitude": 29.92248676,
+      "longitude": -90.03203231,
+      "count": 1,
+      "address": "Sabine St & Indiana St"
+    },
+    {
+      "latitude": 29.92388664,
+      "longitude": -90.13127994,
+      "count": 1,
+      "address": "065XX Magazine St"
     },
     {
       "latitude": 29.92503936,
@@ -1548,6 +1760,12 @@
       "address": "013XX Behrman Av"
     },
     {
+      "latitude": 29.94200529,
+      "longitude": -90.07321596,
+      "count": 1,
+      "address": "Us 90B W & St Charles Av"
+    },
+    {
       "latitude": 29.94268245,
       "longitude": -90.11198049,
       "count": 1,
@@ -1602,6 +1820,12 @@
       "address": "Julia St & Tchoupitoulas St"
     },
     {
+      "latitude": 29.94572132,
+      "longitude": -90.09021833,
+      "count": 1,
+      "address": "021XX S Claiborne Av"
+    },
+    {
       "latitude": 29.94684898,
       "longitude": -90.08953289,
       "count": 1,
@@ -1614,10 +1838,10 @@
       "address": "Poydras St & Convention Center Blvd"
     },
     {
-      "latitude": 29.94830025,
-      "longitude": -90.08348884,
+      "latitude": 29.94904158,
+      "longitude": -90.09372524,
       "count": 1,
-      "address": "Us 90B E & Earhart Blvd"
+      "address": "035XX Martin Luther King Jr Blvd"
     },
     {
       "latitude": 29.95088968,
@@ -1650,6 +1874,12 @@
       "address": "Canal S & Carondelet St"
     },
     {
+      "latitude": 29.95384807,
+      "longitude": -90.063961,
+      "count": 1,
+      "address": "002XX Conti St"
+    },
+    {
       "latitude": 29.95415268,
       "longitude": -90.07393223,
       "count": 1,
@@ -1660,6 +1890,12 @@
       "longitude": -90.07128913,
       "count": 1,
       "address": "009XX Canal St"
+    },
+    {
+      "latitude": 29.95430545,
+      "longitude": -90.07096351,
+      "count": 1,
+      "address": "Baronne St & Canal St"
     },
     {
       "latitude": 29.9545321,
@@ -1678,30 +1914,6 @@
       "longitude": -90.06693362,
       "count": 1,
       "address": "003XX Royal St"
-    },
-    {
-      "latitude": 29.95585115,
-      "longitude": -90.12068781,
-      "count": 1,
-      "address": "S Carrollton Av & S Claiborne Av"
-    },
-    {
-      "latitude": 29.95596985,
-      "longitude": -90.06729956,
-      "count": 1,
-      "address": "007XX Conti St"
-    },
-    {
-      "latitude": 29.9562795,
-      "longitude": -90.0678828,
-      "count": 1,
-      "address": "008XX Conti St"
-    },
-    {
-      "latitude": 29.95657622,
-      "longitude": -90.0681921,
-      "count": 1,
-      "address": "008XX Conti St"
     }
   ],
   "defaultRangeLocationsTruncated": false
