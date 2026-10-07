@@ -32,12 +32,14 @@ const SNAPSHOT: DataSnapshot = {
   ],
   defaultRangeLocationsTruncated: false,
   // Sparse, as the real baked data is — 1992-1998 absent rather than zero.
+  // locatedCount mirrors the real pattern too: coordinates aren't reliable
+  // until 2018, so 2010's count is real but its located share is a sliver.
   yearlyStopCounts: [
-    { year: 1991, count: 2 },
-    { year: 1999, count: 4 },
-    { year: 2010, count: 62006 },
-    { year: 2024, count: 27168 },
-    { year: 2025, count: 26629 }
+    { year: 1991, count: 2, locatedCount: 0 },
+    { year: 1999, count: 4, locatedCount: 0 },
+    { year: 2010, count: 62006, locatedCount: 1 },
+    { year: 2024, count: 27168, locatedCount: 26229 },
+    { year: 2025, count: 26629, locatedCount: 25288 }
   ]
 }
 

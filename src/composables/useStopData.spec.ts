@@ -40,7 +40,7 @@ function snapshotFixture(): DataSnapshot {
     defaultRangeVehicleGroups: BAKED_GROUPS,
     defaultRangeStopLocations: BAKED_LOCATIONS,
     defaultRangeLocationsTruncated: false,
-    yearlyStopCounts: [{ year: 2025, count: 26629 }]
+    yearlyStopCounts: [{ year: 2025, count: 26629, locatedCount: 25288 }]
   }
 }
 

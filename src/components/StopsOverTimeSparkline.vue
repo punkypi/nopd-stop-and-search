@@ -11,6 +11,13 @@
  * exists so that's visible before anyone picks a range, not a fact buried in
  * a caveat paragraph underneath the numbers.
  *
+ * A second, later cliff lives inside each bar: the bright cap is the share of
+ * that year's stops with a usable coordinate. 2010 already has 62,006 stops
+ * on record but only 1 located one — coordinates don't become reliable until
+ * 2018, eight years after the stop-count jump. A reader who clicks an early
+ * bar and finds the map nearly empty should be able to see why beforehand,
+ * not discover it as a surprise after picking.
+ *
  * Deliberately simple: one bar per year, baked once from the whole dataset,
  * never re-queried as the date picker moves. A finer-grained, range-scoped
  * time series (daily buckets for a short range, monthly for a long one) is
@@ -21,7 +28,13 @@ import { computed } from 'vue'
 
 import { calendarDay, earlierOf, laterOf, type CalendarDay } from '@/lib/dates'
 import type { DateRange } from '@/lib/stops'
-import { barHeight, fillYearGaps, maxYearlyCount, type YearlyStopCount } from '@/lib/stopsOverTime'
+import {
+  barHeight,
+  fillYearGaps,
+  locatedSegmentHeight,
+  maxYearlyCount,
+  type YearlyStopCount
+} from '@/lib/stopsOverTime'
 
 const props = defineProps<{
   yearlyCounts: readonly YearlyStopCount[]
@@ -58,8 +71,24 @@ const numberFormat = new Intl.NumberFormat('en-US')
  */
 const CHART_HEIGHT_PX = 56
 
-function barHeightPx(count: number): number {
+function totalHeightPx(count: number): number {
   return (barHeight(count, maxCount.value) / 100) * CHART_HEIGHT_PX
+}
+
+/** Height of the bright "has a location" cap drawn at the top of the bar. */
+function locatedCapHeightPx(year: YearlyStopCount): number {
+  return locatedSegmentHeight(totalHeightPx(year.count), year.count, year.locatedCount)
+}
+
+/** Where that cap's bottom edge sits, so it lands flush against the top of the full bar. */
+function locatedCapBottomPx(year: YearlyStopCount): number {
+  return totalHeightPx(year.count) - locatedCapHeightPx(year)
+}
+
+function barTitle(year: YearlyStopCount): string {
+  const stops = `${numberFormat.format(year.count)} stops`
+  if (year.count === 0) return `${year.year}: ${stops}`
+  return `${year.year}: ${stops} (${numberFormat.format(year.locatedCount)} with a recorded location)`
 }
 
 /** A full calendar year, clamped to what the dataset actually covers. */
@@ -89,20 +118,26 @@ function isSelectedYear(year: number): boolean {
         v-for="year in years"
         :key="year.year"
         type="button"
-        class="group relative flex-1 cursor-pointer"
-        :title="`${year.year}: ${numberFormat.format(year.count)} stops`"
+        class="group relative h-full flex-1 cursor-pointer border-b-2"
+        :class="isSelectedYear(year.year) ? 'border-nola-blue-bright' : 'border-transparent'"
+        :title="barTitle(year)"
         @click="selectYear(year.year)"
       >
         <span
-          class="block w-full rounded-t transition-colors"
-          :class="
-            isSelectedYear(year.year)
-              ? 'bg-nola-blue-bright'
-              : 'bg-nola-border group-hover:bg-nola-blue'
-          "
+          class="bg-nola-border group-hover:bg-nola-blue absolute bottom-0 w-full rounded-t transition-colors"
           :style="{
-            height: `${barHeightPx(year.count)}px`,
+            height: `${totalHeightPx(year.count)}px`,
             minHeight: year.count > 0 ? '2px' : '0'
+          }"
+        />
+        <!-- The share of this year's stops with a usable coordinate, capping
+             the top of the bar above. Flush at 0px height for most years
+             before 2018 — that's the point. -->
+        <span
+          class="bg-nola-blue-bright absolute w-full rounded-t"
+          :style="{
+            height: `${locatedCapHeightPx(year)}px`,
+            bottom: `${locatedCapBottomPx(year)}px`
           }"
         />
       </button>
@@ -111,7 +146,9 @@ function isSelectedYear(year: number): boolean {
     <p class="text-nola-muted w-full text-xs">
       Fewer than 700 stops are on record across all of 1991–2009 combined, against tens of thousands
       most years since 2010 — that's when NOPD's electronic field-interview system started being
-      populated, not a two-decade quiet spell. Click a year to view it.
+      populated, not a two-decade quiet spell. Locations lag even further behind: the bright cap on
+      each bar is the share with a usable coordinate, and that share stays under 1% until 2018 —
+      2010 alone logged 62,006 stops but just one with a location. Click a year to view it.
     </p>
   </section>
 </template>

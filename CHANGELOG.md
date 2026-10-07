@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.1.2] - 2026-10-07
+
+### Added
+
+- Location coverage, per year, on the "Stops by year" sparkline — a bright
+  cap at the top of each bar showing the share of that year's stops with a
+  usable coordinate. A second, later cliff from the stop-count one: 2010
+  already has 62,006 stops on record but only 1 located, and the share stays
+  under 1% until 2018. A reader who clicks an early year and finds the map
+  nearly empty can now see why beforehand instead of discovering it as a
+  surprise. Each bar's tooltip states the located count too, not just the
+  total.
+
 ## [3.1.1] - 2026-10-07
 
 ### Fixed

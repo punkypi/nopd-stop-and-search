@@ -15,11 +15,18 @@
 export interface YearlyStopCount {
   year: number
   count: number
+  /**
+   * How many of that year's stops have a usable coordinate. A separate, later
+   * cliff from `count` itself: 2010 already has 62,006 stops on record but
+   * only 1 located one, and coordinates don't become reliable until 2018 —
+   * eight years after the stop-count jump. See `locatedSegmentHeight`.
+   */
+  locatedCount: number
 }
 
 /**
  * Fills in every year between `earliestYear` and `latestYear` that `rows`
- * doesn't cover, as `{ count: 0 }`.
+ * doesn't cover, as `{ count: 0, locatedCount: 0 }`.
  *
  * Needed because Socrata's `GROUP BY` simply omits a year with no rows rather
  * than returning it with a zero — 1992 through 1998 and 2006 are missing
@@ -33,10 +40,11 @@ export function fillYearGaps(
   earliestYear: number,
   latestYear: number
 ): YearlyStopCount[] {
-  const counts = new Map(rows.map((row) => [row.year, row.count]))
+  const byYear = new Map(rows.map((row) => [row.year, row]))
   const filled: YearlyStopCount[] = []
   for (let year = earliestYear; year <= latestYear; year++) {
-    filled.push({ year, count: counts.get(year) ?? 0 })
+    const row = byYear.get(year)
+    filled.push({ year, count: row?.count ?? 0, locatedCount: row?.locatedCount ?? 0 })
   }
   return filled
 }
@@ -73,4 +81,29 @@ export function barHeight(count: number, maxCount: number): number {
 /** The busiest year's count, or 0 when `rows` is empty. */
 export function maxYearlyCount(rows: readonly YearlyStopCount[]): number {
   return rows.reduce((highest, row) => Math.max(highest, row.count), 0)
+}
+
+/**
+ * How much of a bar's own height, in pixels, represents stops that actually
+ * have a location — drawn as a brighter cap at the top of the bar rather than
+ * stated only in a caption underneath it.
+ *
+ * This is a plain proportion of `barHeightPx` (the bar's total height, as
+ * computed by the caller from `barHeight`), not a second independent scale:
+ * a year with half its stops located gets a cap covering half the bar,
+ * whatever that bar's own height happens to be. `locatedCount` is clamped to
+ * `count` defensively — the two numbers come from the same baked row and
+ * should never disagree, but a cap taller than its own bar would be a
+ * stranger bug to debug than a clamp here.
+ */
+export function locatedSegmentHeight(
+  barHeightPx: number,
+  count: number,
+  locatedCount: number
+): number {
+  if (!Number.isFinite(barHeightPx) || barHeightPx <= 0) return 0
+  if (!Number.isFinite(count) || count <= 0) return 0
+  if (!Number.isFinite(locatedCount) || locatedCount <= 0) return 0
+  const share = Math.min(locatedCount / count, 1)
+  return barHeightPx * share
 }

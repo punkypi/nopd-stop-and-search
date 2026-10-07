@@ -1,5 +1,5 @@
 {
-  "bakedAt": "2026-10-07T21:22:13.094Z",
+  "bakedAt": "2026-10-07T22:10:52.802Z",
   "domain": "data.nola.gov",
   "dataset": "nfft-hjwi",
   "earliestEventDate": {
@@ -37092,111 +37092,138 @@
   "yearlyStopCounts": [
     {
       "year": 1991,
-      "count": 2
+      "count": 2,
+      "locatedCount": 0
     },
     {
       "year": 1999,
-      "count": 4
+      "count": 4,
+      "locatedCount": 0
     },
     {
       "year": 2000,
-      "count": 2
+      "count": 2,
+      "locatedCount": 2
     },
     {
       "year": 2001,
-      "count": 3
+      "count": 3,
+      "locatedCount": 1
     },
     {
       "year": 2002,
-      "count": 3
+      "count": 3,
+      "locatedCount": 2
     },
     {
       "year": 2003,
-      "count": 1
+      "count": 1,
+      "locatedCount": 0
     },
     {
       "year": 2004,
-      "count": 5
+      "count": 5,
+      "locatedCount": 2
     },
     {
       "year": 2005,
-      "count": 1
+      "count": 1,
+      "locatedCount": 1
     },
     {
       "year": 2007,
-      "count": 51
+      "count": 51,
+      "locatedCount": 1
     },
     {
       "year": 2008,
-      "count": 252
+      "count": 252,
+      "locatedCount": 1
     },
     {
       "year": 2009,
-      "count": 290
+      "count": 290,
+      "locatedCount": 3
     },
     {
       "year": 2010,
-      "count": 62006
+      "count": 62006,
+      "locatedCount": 1
     },
     {
       "year": 2011,
-      "count": 86630
+      "count": 86630,
+      "locatedCount": 2
     },
     {
       "year": 2012,
-      "count": 65358
+      "count": 65358,
+      "locatedCount": 7
     },
     {
       "year": 2013,
-      "count": 39416
+      "count": 39416,
+      "locatedCount": 4
     },
     {
       "year": 2014,
-      "count": 54672
+      "count": 54672,
+      "locatedCount": 16
     },
     {
       "year": 2015,
-      "count": 68820
+      "count": 68820,
+      "locatedCount": 19
     },
     {
       "year": 2016,
-      "count": 47866
+      "count": 47866,
+      "locatedCount": 16
     },
     {
       "year": 2017,
-      "count": 56392
+      "count": 56392,
+      "locatedCount": 332
     },
     {
       "year": 2018,
-      "count": 60957
+      "count": 60957,
+      "locatedCount": 60181
     },
     {
       "year": 2019,
-      "count": 51818
+      "count": 51818,
+      "locatedCount": 51395
     },
     {
       "year": 2020,
-      "count": 17948
+      "count": 17948,
+      "locatedCount": 17708
     },
     {
       "year": 2021,
-      "count": 25132
+      "count": 25132,
+      "locatedCount": 23911
     },
     {
       "year": 2022,
-      "count": 14659
+      "count": 14659,
+      "locatedCount": 13555
     },
     {
       "year": 2023,
-      "count": 14340
+      "count": 14340,
+      "locatedCount": 13056
     },
     {
       "year": 2024,
-      "count": 27168
+      "count": 27168,
+      "locatedCount": 25589
     },
     {
       "year": 2025,
-      "count": 26629
+      "count": 26629,
+      "locatedCount": 25288
     }
   ]
 }

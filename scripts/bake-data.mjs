@@ -189,9 +189,15 @@ async function bake() {
     // one row per year that has at least one stop — Socrata's GROUP BY omits a
     // year with none rather than returning it with a zero, so the gaps (1992-98,
     // 2006) are filled in client-side by fillYearGaps in src/lib/stopsOverTime.ts,
-    // not here.
+    // not here. `located` is how many of that year's stops have a usable
+    // coordinate — computed alongside `total` rather than as a second query, so
+    // the sparkline can show location coverage per year, not just stop volume.
+    // 2010 has 62,006 stops and exactly 1 located; coordinates don't become
+    // reliable until 2018, years after the stop-count cliff.
     query({
-      select: 'date_extract_y(eventdate) as yr, count(*) as total',
+      select:
+        'date_extract_y(eventdate) as yr, count(*) as total, ' +
+        `sum(case(${COORDINATE_WHERE}, 1, true, 0)) as located`,
       group: 'yr',
       order: 'yr'
     })
@@ -222,7 +228,8 @@ async function bake() {
     defaultRangeLocationsTruncated: locationsTruncated,
     yearlyStopCounts: yearlyRows.map((row) => ({
       year: Number(row.yr),
-      count: Number(row.total ?? 0)
+      count: Number(row.total ?? 0),
+      locatedCount: Number(row.located ?? 0)
     }))
   }
 
