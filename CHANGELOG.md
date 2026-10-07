@@ -6,6 +6,38 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.1.0 - 2026-10-07
+
+### Changed
+
+- The default view is now the dataset's latest 12 months, not "the month
+  containing the newest event." The old default was structurally broken: the
+  newest month always lags in reporting, so it opened every visitor on a
+  near-empty window (404 stops in November 2025, against 2,000-4,000 in a
+  typical month).
+
+### Added
+
+- "Quick ranges": always-visible preset buttons (Latest Month, Latest 30
+  Days, Latest 90 Days, Latest 12 Months, Calendar Year, All Time) next to the
+  date picker. Named "Latest," not "Last" — a relative label implying "as of
+  right now" goes stale the moment real time passes the data, which it
+  already has by about eleven months in this environment. Every preset shows
+  its resolved calendar span as a subtitle, so nobody has to take the label on
+  faith.
+- A "Stops by year" sparkline next to the date picker, covering the whole
+  34-year record. It exists because the record's reporting density turned out
+  to be far more uneven than month-to-month lag: fewer than 700 stops are on
+  record across all of 1991-2009 combined (1992-1998 and 2006 have zero rows),
+  against 39,000+ most years since 2010 — not two quiet decades, but when
+  NOPD's electronic field-interview system started being populated. The chart
+  makes that visible before anyone picks a date; clicking a year filters to it.
+- `src/lib/dateRangePresets.ts` and `src/lib/stopsOverTime.ts`, both pure and
+  unit-tested, plus `subtractDays`, `startOfYear`, `laterOf`, `earlierOf` and
+  `toMonthYearString` in `src/lib/dates.ts`.
+- A paragraph in the About panel stating what a date-filtered figure actually
+  claims: the record for that window, not a claim about what happened then.
+
 ## 3.0.0 - 2026-09-27
 
 ### Added

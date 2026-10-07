@@ -17,8 +17,10 @@ const SNAPSHOT: DataSnapshot = {
     { description: 'CALL FOR SERVICE', count: 98277 },
     { description: 'SUSPECT PERSON', count: 76540 }
   ],
-  defaultRange: { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 30) },
-  defaultRangeCount: 366,
+  // A year-wide window ending at latestEventDate, matching what
+  // DATE_RANGE_PRESETS['latest-12-months'] actually resolves to.
+  defaultRange: { start: calendarDay(2024, 11, 10), end: calendarDay(2025, 11, 9) },
+  defaultRangeCount: 30392,
   defaultRangeVehicleGroups: [
     { make: 'NISSAN', model: 'ALTIMA', count: 21, makeAndModel: 'NISSAN ALTIMA' },
     { make: 'CHEVROLET', model: 'OTHER', count: 14, makeAndModel: 'CHEVROLET OTHER' },
@@ -28,7 +30,15 @@ const SNAPSHOT: DataSnapshot = {
     { latitude: 29.9511, longitude: -90.0715, count: 21, address: 'Canal St & N Rampart St' },
     { latitude: 30.0046, longitude: -90.1082, count: 4, address: 'Canal Blvd & Harrison Av' }
   ],
-  defaultRangeLocationsTruncated: false
+  defaultRangeLocationsTruncated: false,
+  // Sparse, as the real baked data is — 1992-1998 absent rather than zero.
+  yearlyStopCounts: [
+    { year: 1991, count: 2 },
+    { year: 1999, count: 4 },
+    { year: 2010, count: 62006 },
+    { year: 2024, count: 27168 },
+    { year: 2025, count: 26629 }
+  ]
 }
 
 /** Serves the baked snapshot; any other request fails the test loudly. */
@@ -59,9 +69,9 @@ describe('App', () => {
 
     const text = wrapper.text()
     expect(text).toContain('NOLA Stop and Search Data')
-    expect(text).toContain('366')
-    expect(text).toContain('November 1, 2025')
-    expect(text).toContain('November 30, 2025')
+    expect(text).toContain('30,392')
+    expect(text).toContain('November 10, 2024')
+    expect(text).toContain('November 9, 2025')
     // The table rendered real rows through naive-ui.
     expect(text).toContain('NISSAN')
     expect(text).toContain('ALTIMA')

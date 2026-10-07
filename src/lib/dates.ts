@@ -87,13 +87,50 @@ export function endOfMonth(date: CalendarDay): CalendarDay {
   return calendarDay(date.year, date.month, daysInMonth(date))
 }
 
+export function startOfYear(date: CalendarDay): CalendarDay {
+  return calendarDay(date.year, 1, 1)
+}
+
 export function monthName(date: CalendarDay): string {
   return MONTH_FORMATTER.format(toNativeDate(date))
+}
+
+/** `Nov 2025` — short month and year, for a date-range preset's subtitle. */
+const MONTH_YEAR_FORMATTER = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
+export function toMonthYearString(date: CalendarDay): string {
+  return MONTH_YEAR_FORMATTER.format(toNativeDate(date))
 }
 
 /** Negative when `a` is earlier than `b`, positive when later, 0 when the same day. */
 export function compare(a: CalendarDay, b: CalendarDay): number {
   return toTimestamp(a) - toTimestamp(b)
+}
+
+/** `n` days before `date`. Negative `n` moves forward instead. */
+export function subtractDays(date: CalendarDay, n: number): CalendarDay {
+  const native = toNativeDate(date)
+  native.setDate(native.getDate() - n)
+  return fromNativeDate(native)
+}
+
+/**
+ * The later of two days. Used to clamp a date-range preset's computed start so
+ * it never reaches earlier than the dataset actually goes — a preset like
+ * "Latest 12 Months" would otherwise ask for a start before `earliestEventDate`
+ * on a dataset that doesn't have a year of history yet.
+ */
+export function laterOf(a: CalendarDay, b: CalendarDay): CalendarDay {
+  return compare(a, b) >= 0 ? a : b
+}
+
+/**
+ * The earlier of two days. `laterOf`'s counterpart, for clamping the *end* of
+ * a computed range — e.g. a sparkline year bar's December 31st needs clamping
+ * to `latestEventDate` for the current year, which doesn't have a full year of
+ * data yet.
+ */
+export function earlierOf(a: CalendarDay, b: CalendarDay): CalendarDay {
+  return compare(a, b) <= 0 ? a : b
 }
 
 /** ISO-8601 calendar date, e.g. `2025-11-09`. Zero-padded. */

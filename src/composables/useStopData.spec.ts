@@ -39,7 +39,8 @@ function snapshotFixture(): DataSnapshot {
     defaultRangeCount: 366,
     defaultRangeVehicleGroups: BAKED_GROUPS,
     defaultRangeStopLocations: BAKED_LOCATIONS,
-    defaultRangeLocationsTruncated: false
+    defaultRangeLocationsTruncated: false,
+    yearlyStopCounts: [{ year: 2025, count: 26629 }]
   }
 }
 

@@ -127,6 +127,13 @@ const bakedAtLabel = computed(() => {
         </p>
 
         <p class="text-nola-muted">
+          Picking a date range narrows the page to what the record holds for that window, not a
+          claim about what actually happened then — the "Stops by year" chart above the date picker
+          shows how unevenly that record was kept over the dataset's 34 years, and why the page
+          opens on a recent, well-reported window by default rather than the whole span.
+        </p>
+
+        <p class="text-nola-muted">
           Locations are recorded at the nearest intersection or block rather than an exact address,
           and only from 2018 onward — earlier stops carry no coordinates at all. The map therefore
           covers a subset of any range that reaches back before then, and says how large a subset it

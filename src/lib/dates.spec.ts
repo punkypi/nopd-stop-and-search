@@ -4,14 +4,19 @@ import {
   calendarDay,
   compare,
   daysInMonth,
+  earlierOf,
   endOfMonth,
   fromSocrataTimestamp,
   fromTimestamp,
   isValid,
+  laterOf,
   monthName,
   startOfMonth,
+  startOfYear,
+  subtractDays,
   toDisplayString,
   toISODate,
+  toMonthYearString,
   toSoQLTimestamp,
   toTimestamp
 } from './dates'
@@ -65,6 +70,64 @@ describe('month boundaries', () => {
   })
 })
 
+describe('startOfYear', () => {
+  it('finds January 1st regardless of month or day', () => {
+    expect(startOfYear(calendarDay(2025, 11, 9))).toEqual(calendarDay(2025, 1, 1))
+    expect(startOfYear(calendarDay(2025, 1, 1))).toEqual(calendarDay(2025, 1, 1))
+  })
+})
+
+describe('subtractDays', () => {
+  it('steps back within a month', () => {
+    expect(subtractDays(calendarDay(2025, 11, 9), 5)).toEqual(calendarDay(2025, 11, 4))
+  })
+
+  it('crosses a month boundary', () => {
+    expect(subtractDays(calendarDay(2025, 11, 9), 10)).toEqual(calendarDay(2025, 10, 30))
+  })
+
+  it('crosses a year boundary', () => {
+    expect(subtractDays(calendarDay(2025, 1, 5), 10)).toEqual(calendarDay(2024, 12, 26))
+  })
+
+  it('crosses a leap-year February correctly', () => {
+    // 2024 is a leap year, so there are 366 days between these two dates.
+    expect(subtractDays(calendarDay(2025, 1, 1), 366)).toEqual(calendarDay(2024, 1, 1))
+  })
+
+  it('treats a negative n as moving forward', () => {
+    expect(subtractDays(calendarDay(2025, 11, 9), -1)).toEqual(calendarDay(2025, 11, 10))
+  })
+})
+
+describe('laterOf', () => {
+  it('picks whichever day comes later', () => {
+    const early = calendarDay(2025, 1, 1)
+    const late = calendarDay(2025, 11, 9)
+    expect(laterOf(early, late)).toEqual(late)
+    expect(laterOf(late, early)).toEqual(late)
+  })
+
+  it('returns the same day when both are equal', () => {
+    const day = calendarDay(2025, 11, 9)
+    expect(laterOf(day, { ...day })).toEqual(day)
+  })
+})
+
+describe('earlierOf', () => {
+  it('picks whichever day comes earlier', () => {
+    const early = calendarDay(2025, 1, 1)
+    const late = calendarDay(2025, 11, 9)
+    expect(earlierOf(early, late)).toEqual(early)
+    expect(earlierOf(late, early)).toEqual(early)
+  })
+
+  it('returns the same day when both are equal', () => {
+    const day = calendarDay(2025, 11, 9)
+    expect(earlierOf(day, { ...day })).toEqual(day)
+  })
+})
+
 describe('formatting', () => {
   it('zero-pads the ISO form', () => {
     expect(toISODate(calendarDay(2025, 1, 5))).toBe('2025-01-05')
@@ -76,6 +139,10 @@ describe('formatting', () => {
 
   it('renders a human-facing string', () => {
     expect(toDisplayString(calendarDay(2025, 11, 9))).toBe('November 9, 2025')
+  })
+
+  it('renders a compact month-and-year string', () => {
+    expect(toMonthYearString(calendarDay(2025, 11, 9))).toBe('Nov 2025')
   })
 })
 

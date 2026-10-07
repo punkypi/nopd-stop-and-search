@@ -2,16 +2,18 @@
 /**
  * NOLA Stop and Search data, a single page.
  *
- * The page opens on the month containing the most recent event, which is read
- * from the build-time snapshot rather than discovered with a live query the way
- * the original app did it.
+ * Opens on the dataset's latest 12 months (see `DATE_RANGE_PRESETS` in
+ * `@/lib/dateRangePresets`), read from the build-time snapshot rather than
+ * discovered with a live query the way the original app did it.
  */
 import { NAlert, NConfigProvider, NSpin, darkTheme, type GlobalThemeOverrides } from 'naive-ui'
 import { onMounted, ref } from 'vue'
 
 import AboutPanel from '@/components/AboutPanel.vue'
 import DateRangeFilter from '@/components/DateRangeFilter.vue'
+import DateRangePresets from '@/components/DateRangePresets.vue'
 import StopMap from '@/components/StopMap.vue'
+import StopsOverTimeSparkline from '@/components/StopsOverTimeSparkline.vue'
 import StopTotal from '@/components/StopTotal.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
 import { useStopData } from '@/composables/useStopData'
@@ -91,6 +93,21 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
       </NAlert>
 
       <template v-if="range">
+        <StopsOverTimeSparkline
+          :yearly-counts="snapshot?.yearlyStopCounts ?? []"
+          :range="range"
+          :earliest="snapshot?.earliestEventDate ?? null"
+          :latest="snapshot?.latestEventDate ?? null"
+          @update:range="range = $event"
+        />
+
+        <DateRangePresets
+          :range="range"
+          :earliest="snapshot?.earliestEventDate ?? null"
+          :latest="snapshot?.latestEventDate ?? null"
+          @update:range="range = $event"
+        />
+
         <StopTotal :count="count" :range="range" :loading="loading" />
 
         <StopMap

@@ -9,10 +9,10 @@
  * a third-party API on the critical path of every page load, for data that
  * changes at most monthly.
  *
- * What is baked is only the *default* view (the most recent month holding
- * events). Custom date ranges are still queried live from the browser, because
- * pre-computing every possible range is not possible. So the page is instant on
- * load, and remains fully interactive afterwards.
+ * What is baked is only the *default* view (the dataset's latest 12 months —
+ * see `defaultRange` below). Custom date ranges are still queried live from the
+ * browser, because pre-computing every possible range is not possible. So the
+ * page is instant on load, and remains fully interactive afterwards.
  *
  * Failure is non-fatal on purpose. A deploy should not break because
  * data.nola.gov had a bad minute; if the fetch fails and a previous snapshot is
@@ -81,13 +81,17 @@ function toCalendarDay(timestamp) {
   return { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]) }
 }
 
-function startOfMonth(day) {
-  return { year: day.year, month: day.month, day: 1 }
+/** Mirrors subtractDays in src/lib/dates.ts. `n` days before `day`. */
+function subtractDays(day, n) {
+  const native = new Date(day.year, day.month - 1, day.day)
+  native.setDate(native.getDate() - n)
+  return { year: native.getFullYear(), month: native.getMonth() + 1, day: native.getDate() }
 }
 
-function endOfMonth(day) {
-  // Day 0 of the next month is the last day of this one.
-  return { year: day.year, month: day.month, day: new Date(day.year, day.month, 0).getDate() }
+/** Mirrors laterOf in src/lib/dates.ts. The later of two days, compared as plain numbers. */
+function laterOf(a, b) {
+  const asNumber = (d) => d.year * 10000 + d.month * 100 + d.day
+  return asNumber(a) >= asNumber(b) ? a : b
 }
 
 function isoDate({ year, month, day }) {
@@ -144,12 +148,19 @@ async function bake() {
     throw new Error('Dataset reported no events')
   }
 
-  // The default view is the whole month containing the newest event, which is
-  // what the app opened on before.
-  const defaultRange = { start: startOfMonth(latest), end: endOfMonth(latest) }
+  // The default view is the latest 12 months on record, anchored to the
+  // dataset's own newest event rather than the wall clock — this script can run
+  // long after the data it's baking stops being current. Mirrors
+  // DATE_RANGE_PRESETS['latest-12-months'] in src/lib/dateRangePresets.ts; keep
+  // the two in step. Clamped to `earliest` so a young dataset (or a narrow test
+  // fixture) never asks for a start before its own first event.
+  const defaultRange = {
+    start: laterOf(subtractDays(latest, 364), earliest),
+    end: latest
+  }
   const where = rangeWhere(defaultRange)
 
-  const [[countRow], groupRows, locationRows, stopTypeRows] = await Promise.all([
+  const [[countRow], groupRows, locationRows, stopTypeRows, yearlyRows] = await Promise.all([
     query({ select: 'count(*) as total', where }),
     query({
       select: 'vehiclemake, vehiclemodel, count(*) as total',
@@ -173,6 +184,16 @@ async function bake() {
       group: 'stopdescription',
       order: 'total desc',
       limit: MAX_STOP_TYPES
+    }),
+    // Backs the reporting-volume sparkline next to the date picker. All-time,
+    // one row per year that has at least one stop — Socrata's GROUP BY omits a
+    // year with none rather than returning it with a zero, so the gaps (1992-98,
+    // 2006) are filled in client-side by fillYearGaps in src/lib/stopsOverTime.ts,
+    // not here.
+    query({
+      select: 'date_extract_y(eventdate) as yr, count(*) as total',
+      group: 'yr',
+      order: 'yr'
     })
   ])
 
@@ -198,7 +219,11 @@ async function bake() {
       vehicleGroup(row.vehiclemake, row.vehiclemodel, Number(row.total ?? 0))
     ),
     defaultRangeStopLocations: stopLocations,
-    defaultRangeLocationsTruncated: locationsTruncated
+    defaultRangeLocationsTruncated: locationsTruncated,
+    yearlyStopCounts: yearlyRows.map((row) => ({
+      year: Number(row.yr),
+      count: Number(row.total ?? 0)
+    }))
   }
 
   await mkdir(OUT_DIR, { recursive: true })
@@ -213,6 +238,7 @@ async function bake() {
       `${snapshot.defaultRangeVehicleGroups.length.toLocaleString('en-US')} make/model pairs\n` +
       `  located       ${stopLocations.length.toLocaleString('en-US')} distinct coordinates` +
       `${locationsTruncated ? ' (capped)' : ''}\n` +
+      `  yearly        ${snapshot.yearlyStopCounts.length.toLocaleString('en-US')} years with at least one stop\n` +
       `  wrote         public/data/snapshot.json\n`
   )
 }

@@ -10,6 +10,7 @@ import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
 import type { StopLocation } from './stopLocations'
 import type { DateRange, StopTypeCount, VehicleGroup } from './stops'
+import type { YearlyStopCount } from './stopsOverTime'
 
 export interface DataSnapshot {
   /** ISO instant the snapshot was produced. */
@@ -29,14 +30,25 @@ export interface DataSnapshot {
    * against, so the figures behind that warning cannot be hand-written.
    */
   stopTypes: StopTypeCount[]
-  /** The month containing the newest event — what the app opens on. */
+  /**
+   * The latest 12 months the record has, anchored to `latestEventDate` — not
+   * the wall clock, which may be long past it by the time this is read. This
+   * is what the app opens on.
+   */
   defaultRange: DateRange
   defaultRangeCount: number
   defaultRangeVehicleGroups: VehicleGroup[]
   /** Distinct coordinates in the default range, busiest first. */
   defaultRangeStopLocations: StopLocation[]
-  /** True when the default range hit the location cap. Effectively never, for one month. */
+  /** True when the default range hit the location cap. Not expected at 12 months' width. */
   defaultRangeLocationsTruncated: boolean
+  /**
+   * Stops per year, whole record, sparse — a year with zero stops is simply
+   * absent rather than present with a zero. Backs the reporting-volume
+   * sparkline; see `fillYearGaps` in `src/lib/stopsOverTime.ts` for why the
+   * gaps are filled there and not here.
+   */
+  yearlyStopCounts: YearlyStopCount[]
 }
 
 /**
