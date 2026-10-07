@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 3.1.1 - 2026-10-07
+## [3.1.1] - 2026-10-07
 
 ### Fixed
 
@@ -17,7 +17,7 @@ and this project adheres to
   the whole chart a large blank card. Heights are now computed in pixels
   directly instead of relying on percentage resolution.
 
-## 3.1.0 - 2026-10-07
+## [3.1.0] - 2026-10-07
 
 ### Changed
 
@@ -49,7 +49,7 @@ and this project adheres to
 - A paragraph in the About panel stating what a date-filtered figure actually
   claims: the record for that window, not a claim about what happened then.
 
-## 3.0.0 - 2026-09-27
+## [3.0.0] - 2026-09-27
 
 ### Added
 
@@ -81,7 +81,7 @@ and this project adheres to
   `useViolationData` to `useStopData` and `ViolationTotal` to `StopTotal`. The
   snapshot's `totalViolations` field is now `totalStops`.
 
-## 2.1.0 - 2026-09-27
+## [2.1.0] - 2026-09-27
 
 ### Added
 
@@ -106,7 +106,7 @@ and this project adheres to
 - CI now runs `npm run verify` in place of separate typecheck and test steps.
   Lint had not been enforced anywhere, locally or in CI.
 
-## 2.0.0 - 2026-09-26
+## [2.0.0] - 2026-09-26
 
 ### Changed
 
@@ -167,13 +167,13 @@ and this project adheres to
 - `.jshintrc`, `.htmlhintrc`, and `circle.yml`.
 - `./bin/deploy`, `./bin/doc`, and `./bin/doc_server`.
 
-## 1.23.0 - 2026-08-24
+## [1.23.0] - 2026-08-24
 
 ### Changed
 
 - `VehicleGroupStatistics` now defaults to "descending" sort.
 
-## 1.22.0 - 2026-08-24
+## [1.22.0] - 2026-08-24
 
 ### Added
 
