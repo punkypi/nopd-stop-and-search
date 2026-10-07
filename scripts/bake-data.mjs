@@ -160,48 +160,59 @@ async function bake() {
   }
   const where = rangeWhere(defaultRange)
 
-  const [[countRow], groupRows, locationRows, stopTypeRows, yearlyRows] = await Promise.all([
-    query({ select: 'count(*) as total', where }),
-    query({
-      select: 'vehiclemake, vehiclemodel, count(*) as total',
-      where,
-      group: 'vehiclemake, vehiclemodel',
-      order: 'total desc',
-      limit: MAX_GROUPS
-    }),
-    query({
-      select: 'latitude, longitude, count(*) as total, max(blockaddress) as address',
-      where: `${where} AND ${COORDINATE_WHERE}`,
-      group: 'latitude, longitude',
-      order: 'total desc',
-      // One past the cap, so hitting it is detectable without a second query.
-      limit: MAX_LOCATIONS + 1
-    }),
-    // All-time rather than range-scoped: this is provenance, telling a reader what
-    // the whole record is made of before they read any single range out of it.
-    query({
-      select: 'stopdescription, count(*) as total',
-      group: 'stopdescription',
-      order: 'total desc',
-      limit: MAX_STOP_TYPES
-    }),
-    // Backs the reporting-volume sparkline next to the date picker. All-time,
-    // one row per year that has at least one stop — Socrata's GROUP BY omits a
-    // year with none rather than returning it with a zero, so the gaps (1992-98,
-    // 2006) are filled in client-side by fillYearGaps in src/lib/stopsOverTime.ts,
-    // not here. `located` is how many of that year's stops have a usable
-    // coordinate — computed alongside `total` rather than as a second query, so
-    // the sparkline can show location coverage per year, not just stop volume.
-    // 2010 has 62,006 stops and exactly 1 located; coordinates don't become
-    // reliable until 2018, years after the stop-count cliff.
-    query({
-      select:
-        'date_extract_y(eventdate) as yr, count(*) as total, ' +
-        `sum(case(${COORDINATE_WHERE}, 1, true, 0)) as located`,
-      group: 'yr',
-      order: 'yr'
-    })
-  ])
+  const [[countRow], groupRows, locationRows, stopTypeRows, yearlyRows, districtRows] =
+    await Promise.all([
+      query({ select: 'count(*) as total', where }),
+      query({
+        select: 'vehiclemake, vehiclemodel, count(*) as total',
+        where,
+        group: 'vehiclemake, vehiclemodel',
+        order: 'total desc',
+        limit: MAX_GROUPS
+      }),
+      query({
+        select: 'latitude, longitude, count(*) as total, max(blockaddress) as address',
+        where: `${where} AND ${COORDINATE_WHERE}`,
+        group: 'latitude, longitude',
+        order: 'total desc',
+        // One past the cap, so hitting it is detectable without a second query.
+        limit: MAX_LOCATIONS + 1
+      }),
+      // All-time rather than range-scoped: this is provenance, telling a reader what
+      // the whole record is made of before they read any single range out of it.
+      query({
+        select: 'stopdescription, count(*) as total',
+        group: 'stopdescription',
+        order: 'total desc',
+        limit: MAX_STOP_TYPES
+      }),
+      // Backs the reporting-volume sparkline next to the date picker. All-time,
+      // one row per year that has at least one stop — Socrata's GROUP BY omits a
+      // year with none rather than returning it with a zero, so the gaps (1992-98,
+      // 2006) are filled in client-side by fillYearGaps in src/lib/stopsOverTime.ts,
+      // not here. `located` is how many of that year's stops have a usable
+      // coordinate — computed alongside `total` rather than as a second query, so
+      // the sparkline can show location coverage per year, not just stop volume.
+      // 2010 has 62,006 stops and exactly 1 located; coordinates don't become
+      // reliable until 2018, years after the stop-count cliff.
+      query({
+        select:
+          'date_extract_y(eventdate) as yr, count(*) as total, ' +
+          `sum(case(${COORDINATE_WHERE}, 1, true, 0)) as located`,
+        group: 'yr',
+        order: 'yr'
+      }),
+      // Backs the district breakdown — the primary spatial panel, shown for every
+      // range. Unlike coordinates, `district` is populated for all 720,425 stops
+      // dataset-wide, confirmed live, so this query needs no coordinate filter and
+      // no fallback for a thin or ungeocoded range.
+      query({
+        select: 'district, count(*) as total',
+        where,
+        group: 'district',
+        order: 'total desc'
+      })
+    ])
 
   const locationsTruncated = locationRows.length > MAX_LOCATIONS
   const stopLocations = (locationsTruncated ? locationRows.slice(0, MAX_LOCATIONS) : locationRows)
@@ -226,6 +237,12 @@ async function bake() {
     ),
     defaultRangeStopLocations: stopLocations,
     defaultRangeLocationsTruncated: locationsTruncated,
+    // Mirrors buildDistrictCount in src/lib/stops.ts. No `?? ''`/filter needed —
+    // `district` has no nulls dataset-wide, confirmed live.
+    defaultRangeDistrictCounts: districtRows.map((row) => ({
+      district: (row.district ?? '').trim(),
+      count: Number(row.total ?? 0)
+    })),
     yearlyStopCounts: yearlyRows.map((row) => ({
       year: Number(row.yr),
       count: Number(row.total ?? 0),
@@ -246,6 +263,7 @@ async function bake() {
       `  located       ${stopLocations.length.toLocaleString('en-US')} distinct coordinates` +
       `${locationsTruncated ? ' (capped)' : ''}\n` +
       `  yearly        ${snapshot.yearlyStopCounts.length.toLocaleString('en-US')} years with at least one stop\n` +
+      `  districts     ${snapshot.defaultRangeDistrictCounts.length.toLocaleString('en-US')} in range\n` +
       `  wrote         public/data/snapshot.json\n`
   )
 }

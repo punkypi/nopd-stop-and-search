@@ -2,7 +2,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { calendarDay } from './dates'
 import {
+  buildDistrictCount,
   buildVehicleGroup,
+  fetchDistrictCounts,
   fetchLatestEventDate,
   fetchStopCount,
   fetchVehicleGroups,
@@ -159,6 +161,38 @@ describe('fetchVehicleGroups', () => {
     const groups = await fetchVehicleGroups(range)
     expect(groups[0]).toMatchObject({ make: '', model: '', count: 7 })
     expect(groups[0]?.makeAndModel).toBe('Not Supplied')
+  })
+})
+
+describe('buildDistrictCount', () => {
+  it('trims whitespace from the raw district value', () => {
+    expect(buildDistrictCount(' 3 ', 10372)).toEqual({ district: '3', count: 10372 })
+  })
+})
+
+describe('fetchDistrictCounts', () => {
+  const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 9) }
+
+  it('groups server-side by district, busiest first', async () => {
+    const { requestedUrl } = stubFetch([])
+    await fetchDistrictCounts(range)
+    const params = requestedUrl().searchParams
+    expect(params.get('$select')).toBe('district, count(*) as total')
+    expect(params.get('$group')).toBe('district')
+    expect(params.get('$order')).toBe('total desc')
+  })
+
+  it('maps rows into district counts', async () => {
+    // Measured live, current default range: district 3 busiest, district 4 quietest.
+    stubFetch([
+      { district: '3', total: '10372' },
+      { district: '4', total: '1290' }
+    ])
+    const counts = await fetchDistrictCounts(range)
+    expect(counts).toEqual([
+      { district: '3', count: 10372 },
+      { district: '4', count: 1290 }
+    ])
   })
 })
 

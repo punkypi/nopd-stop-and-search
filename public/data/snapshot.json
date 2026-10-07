@@ -1,5 +1,5 @@
 {
-  "bakedAt": "2026-10-07T22:10:52.802Z",
+  "bakedAt": "2026-10-07T23:32:45.694Z",
   "domain": "data.nola.gov",
   "dataset": "nfft-hjwi",
   "earliestEventDate": {
@@ -37089,6 +37089,40 @@
     }
   ],
   "defaultRangeLocationsTruncated": false,
+  "defaultRangeDistrictCounts": [
+    {
+      "district": "3",
+      "count": 10372
+    },
+    {
+      "district": "7",
+      "count": 4095
+    },
+    {
+      "district": "1",
+      "count": 3355
+    },
+    {
+      "district": "6",
+      "count": 3250
+    },
+    {
+      "district": "8",
+      "count": 3135
+    },
+    {
+      "district": "2",
+      "count": 2782
+    },
+    {
+      "district": "5",
+      "count": 2113
+    },
+    {
+      "district": "4",
+      "count": 1290
+    }
+  ],
   "yearlyStopCounts": [
     {
       "year": 1991,

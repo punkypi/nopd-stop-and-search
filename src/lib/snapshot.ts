@@ -9,7 +9,7 @@
 import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
 import type { StopLocation } from './stopLocations'
-import type { DateRange, StopTypeCount, VehicleGroup } from './stops'
+import type { DateRange, DistrictCount, StopTypeCount, VehicleGroup } from './stops'
 import type { YearlyStopCount } from './stopsOverTime'
 
 export interface DataSnapshot {
@@ -42,6 +42,12 @@ export interface DataSnapshot {
   defaultRangeStopLocations: StopLocation[]
   /** True when the default range hit the location cap. Not expected at 12 months' width. */
   defaultRangeLocationsTruncated: boolean
+  /**
+   * Stops in the default range by district, busiest first — the primary
+   * spatial view. Unlike `defaultRangeStopLocations`, this needs no coverage
+   * disclosure: `district` is populated for every stop in the dataset.
+   */
+  defaultRangeDistrictCounts: DistrictCount[]
   /**
    * Stops per year, whole record, sparse — a year with zero stops is simply
    * absent rather than present with a zero. Backs the reporting-volume

@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-10-07
+
+### Added
+
+- "By District" — stops grouped by NOPD's 8 police districts, now the
+  predominant spatial panel. `district` is populated for all 720,425 stops,
+  confirmed live back to 1991, with none of the coordinate field's own
+  reliability problem: 2010 has only 1 located stop out of 62,006, but a
+  complete, real 8-way district split.
+- `fetchDistrictCounts`/`DistrictCount` in `src/lib/stops.ts`, and
+  `locatedShare`/`isLocationCoverageReliable` in `src/lib/stopLocations.ts` —
+  the first reuses this session's recurring "how much of this range does X
+  cover" shape (see `vehicleCoverage`); the second is new.
+
+### Changed
+
+- The intersection map now renders only when the selected range's own
+  location coverage clears 50% (`LOCATION_COVERAGE_THRESHOLD`) — previously
+  it rendered unconditionally, including for ranges like 2010 where it showed
+  a single point against 62,006 real stops. District carries the "where"
+  question below that line instead, with a caption explaining why the map
+  isn't there rather than a near-empty one standing in its place.
+
 ## [3.1.2] - 2026-10-07
 
 ### Added

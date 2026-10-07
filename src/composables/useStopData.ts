@@ -17,11 +17,13 @@ import { readonly, ref, shallowRef, watch, type Ref } from 'vue'
 import { isSameRange, type DataSnapshot } from '@/lib/snapshot'
 import type { StopLocation } from '@/lib/stopLocations'
 import {
+  fetchDistrictCounts,
   fetchStopCount,
   fetchStopLocations,
   fetchVehicleGroups,
   isValidRange,
   type DateRange,
+  type DistrictCount,
   type VehicleGroup
 } from '@/lib/stops'
 
@@ -30,6 +32,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
   const vehicleGroups = shallowRef<VehicleGroup[]>([])
   const stopLocations = shallowRef<StopLocation[]>([])
   const locationsTruncated = ref(false)
+  const districtCounts = shallowRef<DistrictCount[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -47,6 +50,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       // rather than the whole default range falling back to a live query.
       stopLocations.value = baked.defaultRangeStopLocations ?? []
       locationsTruncated.value = baked.defaultRangeLocationsTruncated ?? false
+      districtCounts.value = baked.defaultRangeDistrictCounts ?? []
       loading.value = false
       error.value = null
       return
@@ -58,10 +62,11 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     error.value = null
 
     try {
-      const [nextCount, nextGroups, nextLocations] = await Promise.all([
+      const [nextCount, nextGroups, nextLocations, nextDistricts] = await Promise.all([
         fetchStopCount(current, { signal: controller.signal }),
         fetchVehicleGroups(current, { signal: controller.signal }),
-        fetchStopLocations(current, { signal: controller.signal })
+        fetchStopLocations(current, { signal: controller.signal }),
+        fetchDistrictCounts(current, { signal: controller.signal })
       ])
       // A newer range superseded this one mid-flight; discard the result.
       if (controller.signal.aborted) return
@@ -69,6 +74,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       vehicleGroups.value = nextGroups
       stopLocations.value = nextLocations.locations
       locationsTruncated.value = nextLocations.truncated
+      districtCounts.value = nextDistricts
     } catch (cause) {
       if (controller.signal.aborted) return
       error.value = cause instanceof Error ? cause.message : 'Could not load data'
@@ -76,6 +82,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       vehicleGroups.value = []
       stopLocations.value = []
       locationsTruncated.value = false
+      districtCounts.value = []
     } finally {
       if (inFlight === controller) {
         inFlight = null
@@ -102,6 +109,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     vehicleGroups,
     stopLocations,
     locationsTruncated: readonly(locationsTruncated),
+    districtCounts,
     loading: readonly(loading),
     error: readonly(error)
   }

@@ -26,11 +26,24 @@ const SNAPSHOT: DataSnapshot = {
     { make: 'CHEVROLET', model: 'OTHER', count: 14, makeAndModel: 'CHEVROLET OTHER' },
     { make: '', model: '', count: 3, makeAndModel: 'Not Supplied' }
   ],
+  // Summing close to the real default range's 28,828 of 30,392 located (94.9%)
+  // — comfortably above LOCATION_COVERAGE_THRESHOLD, so the map renders here
+  // the same way it does for the real default range.
   defaultRangeStopLocations: [
-    { latitude: 29.9511, longitude: -90.0715, count: 21, address: 'Canal St & N Rampart St' },
-    { latitude: 30.0046, longitude: -90.1082, count: 4, address: 'Canal Blvd & Harrison Av' }
+    { latitude: 29.9511, longitude: -90.0715, count: 18000, address: 'Canal St & N Rampart St' },
+    { latitude: 30.0046, longitude: -90.1082, count: 10828, address: 'Canal Blvd & Harrison Av' }
   ],
   defaultRangeLocationsTruncated: false,
+  defaultRangeDistrictCounts: [
+    { district: '3', count: 10372 },
+    { district: '7', count: 4095 },
+    { district: '1', count: 3355 },
+    { district: '6', count: 3250 },
+    { district: '8', count: 3135 },
+    { district: '2', count: 2782 },
+    { district: '5', count: 2113 },
+    { district: '4', count: 1290 }
+  ],
   // Sparse, as the real baked data is — 1992-1998 absent rather than zero.
   // locatedCount mirrors the real pattern too: coordinates aren't reliable
   // until 2018, so 2010's count is real but its located share is a sliver.
@@ -131,6 +144,61 @@ describe('App', () => {
     expect(text).not.toMatch(/snapshot/i)
     expect(text).not.toMatch(/live data/i)
     expect(warn).toHaveBeenCalled()
+
+    wrapper.unmount()
+  })
+
+  it('shows both the district breakdown and the map for a well-located range', async () => {
+    vi.stubGlobal('fetch', stubSnapshotFetch(SNAPSHOT))
+
+    const wrapper = mount(App, { attachTo: document.body })
+    await flushPromises()
+    await flushPromises()
+
+    const text = wrapper.text()
+    // DistrictBreakdown, always shown.
+    expect(text).toContain('By District')
+    expect(text).toContain('District 3')
+    // StopMap, shown because the fixture's default range is well-located
+    // (28,828 of 30,392 — matches the real range this mirrors).
+    expect(text).toContain('Where Stops Happened')
+    expect(text).toContain('companion to the map below')
+
+    wrapper.unmount()
+  })
+
+  it('hides the map and explains why when a live range has little location data', async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = new URL(String(input))
+      if (url.pathname.includes('snapshot.json')) {
+        return new Response('missing', { status: 404 })
+      }
+      const select = url.searchParams.get('$select') ?? ''
+      // Mirrors 2010 live: 62,006 stops, 1 located, a real district spread.
+      if (select.startsWith('count(*)')) return new Response(JSON.stringify([{ total: '62006' }]))
+      if (select.startsWith('latitude')) {
+        return new Response(
+          JSON.stringify([{ latitude: '29.95', longitude: '-90.07', total: '1', address: '' }])
+        )
+      }
+      if (select.startsWith('district')) {
+        return new Response(JSON.stringify([{ district: '8', total: '16685' }]))
+      }
+      return new Response(JSON.stringify([]))
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const wrapper = mount(App, { attachTo: document.body })
+    await flushPromises()
+    await flushPromises()
+
+    const text = wrapper.text()
+    expect(text).toContain('By District')
+    expect(text).toContain('District 8')
+    // The map section never rendered at all, not just an empty-looking one.
+    expect(text).not.toContain('Where Stops Happened')
+    expect(text).toContain("map isn't shown for it")
 
     wrapper.unmount()
   })

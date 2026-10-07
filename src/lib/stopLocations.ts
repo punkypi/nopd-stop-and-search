@@ -105,6 +105,44 @@ export function totalPlottedStops(locations: readonly StopLocation[]): number {
   return locations.reduce((running, location) => running + location.count, 0)
 }
 
+/**
+ * Below this share of a range's stops carrying a usable coordinate, the
+ * intersection map is not shown at all — see `isLocationCoverageReliable`.
+ *
+ * The real transition is close to a step function, not a ramp: 2017 sits at
+ * 0.6% located (332 of 56,392), 2018 at 98.7% (60,181 of 60,957). A threshold
+ * anywhere in that wide gap produces the same practical behavior, so 50% is
+ * chosen for being an unambiguous "most of this range" bar rather than for
+ * precision the data doesn't need.
+ */
+export const LOCATION_COVERAGE_THRESHOLD = 0.5
+
+/**
+ * Share of `rangeTotal` that `locations` accounts for, or `null` when
+ * `rangeTotal` is unknown or zero — there's nothing to take a share of.
+ */
+export function locatedShare(
+  rangeTotal: number | null,
+  locations: readonly StopLocation[]
+): number | null {
+  if (rangeTotal === null || rangeTotal <= 0) return null
+  return totalPlottedStops(locations) / rangeTotal
+}
+
+/**
+ * True once `locatedShare` clears `LOCATION_COVERAGE_THRESHOLD`. This is what
+ * decides whether `StopMap` renders at all for the current range — below it,
+ * `district` (reliable for the whole dataset, unlike coordinates) carries the
+ * "where" question instead. See `DistrictBreakdown.vue`.
+ */
+export function isLocationCoverageReliable(
+  rangeTotal: number | null,
+  locations: readonly StopLocation[]
+): boolean {
+  const share = locatedShare(rangeTotal, locations)
+  return share !== null && share >= LOCATION_COVERAGE_THRESHOLD
+}
+
 /** Leaflet's `fitBounds` corner form: `[[south, west], [north, east]]`. */
 export type BoundsTuple = [[number, number], [number, number]]
 

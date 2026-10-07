@@ -5,6 +5,8 @@ import {
   buildStopLocation,
   escapeHtml,
   hasUsableCoordinates,
+  isLocationCoverageReliable,
+  locatedShare,
   markerRadius,
   maxStopCount,
   MAX_MARKER_RADIUS,
@@ -105,6 +107,42 @@ describe('maxStopCount and totalPlottedStops', () => {
   it('handle an empty set', () => {
     expect(maxStopCount([])).toBe(0)
     expect(totalPlottedStops([])).toBe(0)
+  })
+})
+
+describe('locatedShare and isLocationCoverageReliable', () => {
+  // Measured live against the real dataset — the actual numbers behind this
+  // feature, not invented ones. The transition is a near step function:
+  // 2017 at 0.6% located, 2018 at 98.7%.
+  const year2017 = [location(29.95, -90.07, 332)] // of 56,392 stops total
+  const year2018 = [location(29.95, -90.07, 60181)] // of 60,957 stops total
+  const defaultRange = [location(29.95, -90.07, 28828)] // of 30,392 stops total
+
+  it('computes the real share for a year before coordinates were reliable', () => {
+    expect(locatedShare(56392, year2017)).toBeCloseTo(0.0059, 3)
+    expect(isLocationCoverageReliable(56392, year2017)).toBe(false)
+  })
+
+  it('computes the real share for a year after coordinates became reliable', () => {
+    expect(locatedShare(60957, year2018)).toBeCloseTo(0.987, 3)
+    expect(isLocationCoverageReliable(60957, year2018)).toBe(true)
+  })
+
+  it('is reliable for the current default range', () => {
+    expect(locatedShare(30392, defaultRange)).toBeCloseTo(0.949, 3)
+    expect(isLocationCoverageReliable(30392, defaultRange)).toBe(true)
+  })
+
+  it('treats an unknown or zero range total as nothing to take a share of', () => {
+    expect(locatedShare(null, year2018)).toBeNull()
+    expect(locatedShare(0, year2018)).toBeNull()
+    expect(isLocationCoverageReliable(null, year2018)).toBe(false)
+    expect(isLocationCoverageReliable(0, year2018)).toBe(false)
+  })
+
+  it('treats no located stops at all as unreliable, not an error', () => {
+    expect(locatedShare(1000, [])).toBe(0)
+    expect(isLocationCoverageReliable(1000, [])).toBe(false)
   })
 })
 

@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import { calendarDay } from '@/lib/dates'
 import type { DataSnapshot } from '@/lib/snapshot'
 import type { StopLocation } from '@/lib/stopLocations'
-import type { DateRange, VehicleGroup } from '@/lib/stops'
+import type { DateRange, DistrictCount, VehicleGroup } from '@/lib/stops'
 
 import { useStopData } from './useStopData'
 
@@ -20,6 +20,11 @@ const BAKED_GROUPS: VehicleGroup[] = [
 
 const BAKED_LOCATIONS: StopLocation[] = [
   { latitude: 29.9511, longitude: -90.0715, count: 9, address: 'Canal St & N Rampart St' }
+]
+
+const BAKED_DISTRICTS: DistrictCount[] = [
+  { district: '3', count: 10372 },
+  { district: '4', count: 1290 }
 ]
 
 function snapshotFixture(): DataSnapshot {
@@ -40,11 +45,12 @@ function snapshotFixture(): DataSnapshot {
     defaultRangeVehicleGroups: BAKED_GROUPS,
     defaultRangeStopLocations: BAKED_LOCATIONS,
     defaultRangeLocationsTruncated: false,
+    defaultRangeDistrictCounts: BAKED_DISTRICTS,
     yearlyStopCounts: [{ year: 2025, count: 26629, locatedCount: 25288 }]
   }
 }
 
-/** Responds to each of the three range queries — count, vehicles, locations — with fixed values. */
+/** Responds to each of the four range queries — count, vehicles, locations, districts — with fixed values. */
 function stubFetch() {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = new URL(String(input))
@@ -57,7 +63,8 @@ function stubFetch() {
         // Outside NOLA_BOUNDS: the ungeocoded placeholder, which must be dropped.
         { latitude: '0.0', longitude: '0.0', total: '3', address: '' }
       ]
-    } else body = [{ vehiclemake: 'FORD', vehiclemodel: 'F150', total: '7' }]
+    } else if (select.startsWith('district')) body = [{ district: '3', total: '10' }]
+    else body = [{ vehiclemake: 'FORD', vehiclemodel: 'F150', total: '7' }]
     return new Response(JSON.stringify(body), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -78,13 +85,17 @@ describe('useStopData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations, loading } = useStopData(range, snapshot)
+    const { count, vehicleGroups, stopLocations, districtCounts, loading } = useStopData(
+      range,
+      snapshot
+    )
     await flushPromises()
 
     expect(fetchMock).not.toHaveBeenCalled()
     expect(count.value).toBe(366)
     expect(vehicleGroups.value).toEqual(BAKED_GROUPS)
     expect(stopLocations.value).toEqual(BAKED_LOCATIONS)
+    expect(districtCounts.value).toEqual(BAKED_DISTRICTS)
     expect(loading.value).toBe(false)
   })
 
@@ -93,7 +104,7 @@ describe('useStopData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations } = useStopData(range, snapshot)
+    const { count, vehicleGroups, stopLocations, districtCounts } = useStopData(range, snapshot)
     await flushPromises()
 
     range.value = { start: calendarDay(2025, 10, 1), end: calendarDay(2025, 10, 31) }
@@ -106,6 +117,7 @@ describe('useStopData', () => {
     expect(stopLocations.value).toEqual([
       { latitude: 29.95, longitude: -90.07, count: 4, address: 'Poydras St & S Peters St' }
     ])
+    expect(districtCounts.value).toEqual([{ district: '3', count: 10 }])
   })
 
   it('queries live when no snapshot is available at all', async () => {
@@ -147,13 +159,17 @@ describe('useStopData', () => {
     })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, error, vehicleGroups, stopLocations } = useStopData(range, snapshot)
+    const { count, error, vehicleGroups, stopLocations, districtCounts } = useStopData(
+      range,
+      snapshot
+    )
     await flushPromises()
 
     expect(error.value).toBeTruthy()
     expect(count.value).toBeNull()
     expect(vehicleGroups.value).toEqual([])
     expect(stopLocations.value).toEqual([])
+    expect(districtCounts.value).toEqual([])
   })
 
   it('discards a superseded response so the newest range wins', async () => {
@@ -165,8 +181,8 @@ describe('useStopData', () => {
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
         const url = new URL(String(input))
         const isCount = (url.searchParams.get('$select') ?? '').startsWith('count(*)')
-        // Three queries per range now: count, vehicles, locations.
-        const mine = callIndex++ < 3
+        // Four queries per range now: count, vehicles, locations, districts.
+        const mine = callIndex++ < 4
         if (mine) {
           await new Promise((resolve) => setTimeout(resolve, 40))
           if (init?.signal?.aborted) throw new DOMException('aborted', 'AbortError')
@@ -177,7 +193,9 @@ describe('useStopData', () => {
           ? [{ total }]
           : select.startsWith('latitude')
             ? []
-            : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
+            : select.startsWith('district')
+              ? [{ district: '1', total }]
+              : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
         return new Response(JSON.stringify(body), { status: 200 })
       })
     )
