@@ -46,8 +46,20 @@ const maxCount = computed(() => maxYearlyCount(years.value))
 
 const numberFormat = new Intl.NumberFormat('en-US')
 
-function heightPercent(count: number): number {
-  return barHeight(count, maxCount.value)
+/**
+ * The chart area's fixed height in pixels, matched by `h-[THIS]px` on the
+ * container below.
+ *
+ * Bars are given an explicit pixel height here rather than a CSS percentage.
+ * A percentage height only resolves against an ancestor with a *definite*
+ * height, and a flex item sized by `items-end` (content-sized, not stretched)
+ * never has one — every bar silently computed to 0px against it. Converting
+ * `barHeight`'s 0-100 scale to pixels up front sidesteps that entirely.
+ */
+const CHART_HEIGHT_PX = 56
+
+function barHeightPx(count: number): number {
+  return (barHeight(count, maxCount.value) / 100) * CHART_HEIGHT_PX
 }
 
 /** A full calendar year, clamped to what the dataset actually covers. */
@@ -66,13 +78,13 @@ function isSelectedYear(year: number): boolean {
 <template>
   <section
     v-if="bounds"
-    class="border-nola-border bg-nola-surface flex flex-col gap-1 rounded-lg border px-4 py-3"
+    class="border-nola-border bg-nola-surface flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border px-4 py-2"
   >
-    <p class="text-nola-muted text-xs font-semibold tracking-wide uppercase">
-      Stops by year, whole record
+    <p class="text-nola-muted shrink-0 text-xs font-semibold tracking-wide uppercase">
+      Stops by year
     </p>
 
-    <div class="flex h-16 items-end gap-px">
+    <div class="flex h-14 flex-1 items-end gap-px">
       <button
         v-for="year in years"
         :key="year.year"
@@ -89,14 +101,14 @@ function isSelectedYear(year: number): boolean {
               : 'bg-nola-border group-hover:bg-nola-blue'
           "
           :style="{
-            height: `${heightPercent(year.count)}%`,
+            height: `${barHeightPx(year.count)}px`,
             minHeight: year.count > 0 ? '2px' : '0'
           }"
         />
       </button>
     </div>
 
-    <p class="text-nola-muted text-xs">
+    <p class="text-nola-muted w-full text-xs">
       Fewer than 700 stops are on record across all of 1991–2009 combined, against tens of thousands
       most years since 2010 — that's when NOPD's electronic field-interview system started being
       populated, not a two-decade quiet spell. Click a year to view it.

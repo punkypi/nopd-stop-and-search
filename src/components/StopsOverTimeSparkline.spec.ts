@@ -73,6 +73,34 @@ describe('StopsOverTimeSparkline', () => {
     wrapper.unmount()
   })
 
+  it('gives the busiest year a real, nonzero pixel height — not a CSS percentage with nothing to resolve against', () => {
+    // A `height: X%` bar needs its ancestor to have a *definite* height, which
+    // an `items-end` flex item sized by its own content never has — every bar
+    // silently rendered at 0px in production until this asserted the real
+    // pixel value.
+    const wrapper = mountSparkline({ start: calendarDay(2025, 1, 1), end: LATEST })
+    const bars = wrapper.findAll('button[title]')
+    const busiest = bars.find((bar) => bar.attributes('title')?.startsWith('2010:'))!
+    const heightPx = Number(
+      busiest
+        .find('span')
+        .attributes('style')
+        ?.match(/height:\s*([\d.]+)px/)?.[1]
+    )
+    expect(heightPx).toBeGreaterThan(10)
+    wrapper.unmount()
+  })
+
+  it('renders a true zero-stop year with no visible bar', () => {
+    const wrapper = mountSparkline({ start: calendarDay(2025, 1, 1), end: LATEST })
+    const bars = wrapper.findAll('button[title]')
+    const emptyYear = bars.find((bar) => bar.attributes('title')?.startsWith('1993:'))!
+    expect(emptyYear.attributes('title')).toContain('0 stops')
+    const style = emptyYear.find('span').attributes('style') ?? ''
+    expect(style).toMatch(/height:\s*0px/)
+    wrapper.unmount()
+  })
+
   it('renders nothing when the dataset bounds are not known yet', () => {
     const wrapper = mountSparkline(
       { start: calendarDay(2025, 1, 1), end: calendarDay(2025, 1, 31) },

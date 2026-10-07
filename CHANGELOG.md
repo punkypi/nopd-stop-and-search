@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.1.1 - 2026-10-07
+
+### Fixed
+
+- The "Stops by year" sparkline's bars never actually rendered — each one set
+  `height` as a CSS percentage, which only resolves against an ancestor with a
+  _definite_ height, and the flex container sizing them (`items-end`, sized by
+  its own content) never had one. Every bar silently computed to 0px, leaving
+  the whole chart a large blank card. Heights are now computed in pixels
+  directly instead of relying on percentage resolution.
+
 ## 3.1.0 - 2026-10-07
 
 ### Changed
