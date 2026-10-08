@@ -42,6 +42,9 @@ export interface DataSnapshot {
   defaultRangeStopLocations: StopLocation[]
   /** True when the default range hit the location cap. Not expected at 12 months' width. */
   defaultRangeLocationsTruncated: boolean
+  /** Stops excluded because their own recorded address disagreed with itself
+   *  about where it is — see `consistentLocations` in `src/lib/stopLocations.ts`. */
+  defaultRangeAddressInconsistentCount: number
   /**
    * Stops in the default range by district, busiest first — the primary
    * spatial view. Unlike `defaultRangeStopLocations`, this needs no coverage

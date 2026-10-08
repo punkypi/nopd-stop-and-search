@@ -143,6 +143,95 @@ export function isLocationCoverageReliable(
   return share !== null && share >= LOCATION_COVERAGE_THRESHOLD
 }
 
+/**
+ * Past this many distinct locations, circles overlap into a blob with no
+ * internal structure — measured at ~2,200 (a quarter) already losing
+ * legibility and ~5,000+ (a year) fully merged, against ~700 (a month)
+ * staying legible. Checked against whatever subset is about to be drawn as
+ * circles, which in `DistrictMap` is one district's locations, not the
+ * whole range — a single busy district can fail this even where the
+ * city-wide total would have too.
+ */
+export const MAX_LEGIBLE_LOCATIONS = 1500
+
+export function isLegibleDensity(locations: readonly StopLocation[]): boolean {
+  return locations.length <= MAX_LEGIBLE_LOCATIONS
+}
+
+/** Meters between two coordinates — an equirectangular approximation, fine
+ *  at parish scale, no need for great-circle precision here. */
+function metersBetween(a: StopLocation, b: StopLocation): number {
+  const metersPerDegreeLat = 111_320
+  const metersPerDegreeLon = 111_320 * Math.cos((((a.latitude + b.latitude) / 2) * Math.PI) / 180)
+  const dLat = (a.latitude - b.latitude) * metersPerDegreeLat
+  const dLon = (a.longitude - b.longitude) * metersPerDegreeLon
+  return Math.sqrt(dLat * dLat + dLon * dLon)
+}
+
+/**
+ * Past this distance from every other coordinate recorded under the same
+ * address, a location is isolated rather than just spread within a block —
+ * wider than a single New Orleans block (typically 100-150m) plausibly
+ * explains. Measured live on the default range: 200m isolates 3.8% of
+ * located stops (1,094 of 28,829); all-time, only 1.0% (2,399 of 231,094) —
+ * a real example is "053XX Canal Blvd", where 9 of its 10 recorded
+ * coordinates cluster within 165m of each other and 1 sits in Lafourche
+ * Parish, 65km away. There's no clean step function here the way
+ * `LOCATION_COVERAGE_THRESHOLD` has one — this is a judgment call grounded
+ * in block length, not a measured cliff.
+ */
+export const MAX_ADDRESS_COORDINATE_SPREAD_METERS = 200
+
+/**
+ * Locations isolated from every other coordinate sharing their address.
+ *
+ * Flagging *whole addresses* the first time this was tried threw away good
+ * data along with bad: "053XX Canal Blvd"'s 9 well-clustered coordinates
+ * would all have been excluded over the 1 real outlier among them. Judging
+ * each location against its own siblings instead keeps the 9 and drops only
+ * the 1 that actually disagrees with the rest.
+ */
+function computeIsolatedLocations(locations: readonly StopLocation[]): Set<StopLocation> {
+  const byAddress = new Map<string, StopLocation[]>()
+  for (const location of locations) {
+    if (!location.address) continue
+    const group = byAddress.get(location.address)
+    if (group) group.push(location)
+    else byAddress.set(location.address, [location])
+  }
+
+  const isolated = new Set<StopLocation>()
+  for (const group of byAddress.values()) {
+    if (group.length <= 1) continue
+    for (const candidate of group) {
+      const hasNearbySibling = group.some(
+        (sibling) =>
+          sibling !== candidate &&
+          metersBetween(candidate, sibling) < MAX_ADDRESS_COORDINATE_SPREAD_METERS
+      )
+      if (!hasNearbySibling) isolated.add(candidate)
+    }
+  }
+  return isolated
+}
+
+/**
+ * `locations`, minus any isolated from every other coordinate recorded
+ * under the same address — see `computeIsolatedLocations`. A location with
+ * no recorded address, or whose address appears nowhere else in the batch,
+ * always passes through unchanged.
+ */
+export function consistentLocations(locations: readonly StopLocation[]): StopLocation[] {
+  const isolated = computeIsolatedLocations(locations)
+  return locations.filter((location) => !isolated.has(location))
+}
+
+/** The complement of `consistentLocations` — what it excluded. */
+export function inconsistentAddressLocations(locations: readonly StopLocation[]): StopLocation[] {
+  const isolated = computeIsolatedLocations(locations)
+  return locations.filter((location) => isolated.has(location))
+}
+
 /** Leaflet's `fitBounds` corner form: `[[south, west], [north, east]]`. */
 export type BoundsTuple = [[number, number], [number, number]]
 
@@ -156,6 +245,54 @@ export type BoundsTuple = [[number, number], [number, number]]
  */
 export const MIN_BOUNDS_SPAN = 0.02
 
+/**
+ * Share of total plotted stops the box must still contain after outliers are
+ * dropped. A handful of real, far-flung locations — confirmed via `bin/soql`,
+ * e.g. an I-10 ramp near the Twin Span with 357 stops of its own — otherwise
+ * drag the box out far enough that the dense core, where nearly everything
+ * happens, gets squeezed into a sliver. Those locations still get a circle;
+ * they just don't get to decide the initial framing.
+ */
+export const CORE_COVERAGE_SHARE = 0.97
+
+/** The locations nearest the stop-weighted centroid that still account for
+ *  `CORE_COVERAGE_SHARE` of the total, used to frame the view without
+ *  letting a distant outlier drag it. */
+function coreLocations(locations: readonly StopLocation[]): readonly StopLocation[] {
+  const total = totalPlottedStops(locations)
+  if (total <= 0) return locations
+
+  let weightedLat = 0
+  let weightedLon = 0
+  for (const location of locations) {
+    weightedLat += location.latitude * location.count
+    weightedLon += location.longitude * location.count
+  }
+  const centroidLat = weightedLat / total
+  const centroidLon = weightedLon / total
+
+  const sorted = [...locations].sort(
+    (a, b) =>
+      squaredDistance(a, centroidLat, centroidLon) - squaredDistance(b, centroidLat, centroidLon)
+  )
+
+  const threshold = total * CORE_COVERAGE_SHARE
+  const core: StopLocation[] = []
+  let running = 0
+  for (const location of sorted) {
+    core.push(location)
+    running += location.count
+    if (running >= threshold) break
+  }
+  return core
+}
+
+function squaredDistance(location: StopLocation, latitude: number, longitude: number): number {
+  const dLat = location.latitude - latitude
+  const dLon = location.longitude - longitude
+  return dLat * dLat + dLon * dLon
+}
+
 export function boundingBox(locations: readonly StopLocation[]): BoundsTuple | null {
   if (locations.length === 0) return null
 
@@ -164,7 +301,7 @@ export function boundingBox(locations: readonly StopLocation[]): BoundsTuple | n
   let west = Infinity
   let east = -Infinity
 
-  for (const location of locations) {
+  for (const location of coreLocations(locations)) {
     south = Math.min(south, location.latitude)
     north = Math.max(north, location.latitude)
     west = Math.min(west, location.longitude)

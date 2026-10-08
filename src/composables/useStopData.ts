@@ -32,6 +32,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
   const vehicleGroups = shallowRef<VehicleGroup[]>([])
   const stopLocations = shallowRef<StopLocation[]>([])
   const locationsTruncated = ref(false)
+  const addressInconsistentCount = ref(0)
   const districtCounts = shallowRef<DistrictCount[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -50,6 +51,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       // rather than the whole default range falling back to a live query.
       stopLocations.value = baked.defaultRangeStopLocations ?? []
       locationsTruncated.value = baked.defaultRangeLocationsTruncated ?? false
+      addressInconsistentCount.value = baked.defaultRangeAddressInconsistentCount ?? 0
       districtCounts.value = baked.defaultRangeDistrictCounts ?? []
       loading.value = false
       error.value = null
@@ -74,6 +76,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       vehicleGroups.value = nextGroups
       stopLocations.value = nextLocations.locations
       locationsTruncated.value = nextLocations.truncated
+      addressInconsistentCount.value = nextLocations.addressInconsistentCount
       districtCounts.value = nextDistricts
     } catch (cause) {
       if (controller.signal.aborted) return
@@ -82,6 +85,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       vehicleGroups.value = []
       stopLocations.value = []
       locationsTruncated.value = false
+      addressInconsistentCount.value = 0
       districtCounts.value = []
     } finally {
       if (inFlight === controller) {
@@ -109,6 +113,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     vehicleGroups,
     stopLocations,
     locationsTruncated: readonly(locationsTruncated),
+    addressInconsistentCount: readonly(addressInconsistentCount),
     districtCounts,
     loading: readonly(loading),
     error: readonly(error)

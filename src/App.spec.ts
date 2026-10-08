@@ -34,6 +34,7 @@ const SNAPSHOT: DataSnapshot = {
     { latitude: 30.0046, longitude: -90.1082, count: 10828, address: 'Canal Blvd & Harrison Av' }
   ],
   defaultRangeLocationsTruncated: false,
+  defaultRangeAddressInconsistentCount: 0,
   defaultRangeDistrictCounts: [
     { district: '3', count: 10372 },
     { district: '7', count: 4095 },
@@ -56,13 +57,43 @@ const SNAPSHOT: DataSnapshot = {
   ]
 }
 
-/** Serves the baked snapshot; any other request fails the test loudly. */
+/** A single feature is enough: these tests only check that DistrictMap renders
+ *  its surrounding copy, not the real boundary shapes. */
+const DISTRICT_BOUNDARIES_FIXTURE = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: { district: '3' },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [-90.08, 29.94],
+            [-90.06, 29.94],
+            [-90.06, 29.96],
+            [-90.08, 29.96],
+            [-90.08, 29.94]
+          ]
+        ]
+      }
+    }
+  ]
+}
+
+/**
+ * Serves the baked snapshot and the district boundaries `DistrictMap` loads
+ * independently of it; any other request fails the test loudly.
+ */
 function stubSnapshotFetch(snapshot: DataSnapshot | null) {
   return vi.fn(async (input: RequestInfo | URL) => {
     const url = String(input)
     if (url.includes('data/snapshot.json')) {
       if (!snapshot) return new Response('missing', { status: 404 })
       return new Response(JSON.stringify(snapshot), { status: 200 })
+    }
+    if (url.includes('nopd-districts.geojson')) {
+      return new Response(JSON.stringify(DISTRICT_BOUNDARIES_FIXTURE), { status: 200 })
     }
     throw new Error(`Unexpected request while the snapshot covers this range: ${url}`)
   })
@@ -91,10 +122,13 @@ describe('App', () => {
     expect(text).toContain('NISSAN')
     expect(text).toContain('ALTIMA')
 
-    // Only the snapshot was fetched; Socrata was never contacted. Anything
-    // more would mean the page queried a range before knowing the real default.
-    expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(String(fetchMock.mock.calls[0]![0])).toContain('data/snapshot.json')
+    // Only the snapshot and the static district shapes were fetched; Socrata
+    // was never contacted. Anything more would mean the page queried a range
+    // before knowing the real default.
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    const requested = fetchMock.mock.calls.map((call) => String(call[0]))
+    expect(requested.some((url) => url.includes('data/snapshot.json'))).toBe(true)
+    expect(requested.some((url) => url.includes('nopd-districts.geojson'))).toBe(true)
 
     // How the figures were obtained is not the viewer's concern, so no wording
     // about snapshots or caching belongs on the page.
@@ -148,7 +182,7 @@ describe('App', () => {
     wrapper.unmount()
   })
 
-  it('shows both the district breakdown and the map for a well-located range', async () => {
+  it('shows the district breakdown and invites drilling into the map for a well-located range', async () => {
     vi.stubGlobal('fetch', stubSnapshotFetch(SNAPSHOT))
 
     const wrapper = mount(App, { attachTo: document.body })
@@ -159,15 +193,15 @@ describe('App', () => {
     // DistrictBreakdown, always shown.
     expect(text).toContain('By District')
     expect(text).toContain('District 3')
-    // StopMap, shown because the fixture's default range is well-located
-    // (28,828 of 30,392 — matches the real range this mirrors).
+    // DistrictMap, always shown too — the fixture's default range is
+    // well-located (28,828 of 30,392), so it invites drilling in.
     expect(text).toContain('Where Stops Happened')
-    expect(text).toContain('companion to the map below')
+    expect(text).toContain('Click a district')
 
     wrapper.unmount()
   })
 
-  it('hides the map and explains why when a live range has little location data', async () => {
+  it('shows the district breakdown and explains why drilling in is unavailable when a live range has little location data', async () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const url = new URL(String(input))
       if (url.pathname.includes('snapshot.json')) {
@@ -196,9 +230,9 @@ describe('App', () => {
     const text = wrapper.text()
     expect(text).toContain('By District')
     expect(text).toContain('District 8')
-    // The map section never rendered at all, not just an empty-looking one.
-    expect(text).not.toContain('Where Stops Happened')
-    expect(text).toContain("map isn't shown for it")
+    // The map still renders, choropleth-only, with the reason drilling in isn't offered.
+    expect(text).toContain('Where Stops Happened')
+    expect(text).toContain("aren't recorded reliably enough")
 
     wrapper.unmount()
   })

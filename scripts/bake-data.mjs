@@ -19,7 +19,7 @@
  * present, this keeps the old one and warns.
  */
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -31,6 +31,14 @@ const DATASET = process.env.SOCRATA_DATASET ?? 'nfft-hjwi'
 /** Optional: a rate-limit identifier, not a credential. Requests work without it. */
 const APP_TOKEN = process.env.SOCRATA_APP_TOKEN
 const TIMEOUT_MS = Number(process.env.BAKE_TIMEOUT_MS ?? 60_000)
+
+/**
+ * NOPD's 8 police district boundaries. Same `data.nola.gov` host as the main
+ * dataset, but a different resource and endpoint shape (GeoJSON, not SoQL),
+ * and baked independently below since the polygons don't change with the
+ * selected range — see `loadDistrictBoundaries` in src/lib/districtBoundaries.ts.
+ */
+const DISTRICTS_URL = `https://${DOMAIN}/resource/e2he-xim8.geojson`
 
 const MAX_GROUPS = 50_000
 /** Keep in step with MAX_LOCATIONS in src/lib/stops.ts, which explains the value. */
@@ -124,6 +132,49 @@ function stopLocation(latitude, longitude, count, address) {
   return { latitude: lat, longitude: lon, count: stops, address: (address ?? '').trim() }
 }
 
+/** Keep in step with MAX_ADDRESS_COORDINATE_SPREAD_METERS in src/lib/stopLocations.ts. */
+const MAX_ADDRESS_COORDINATE_SPREAD_METERS = 200
+
+/** Mirrors metersBetween in src/lib/stopLocations.ts. */
+function metersBetween(a, b) {
+  const metersPerDegreeLat = 111_320
+  const metersPerDegreeLon = 111_320 * Math.cos((((a.latitude + b.latitude) / 2) * Math.PI) / 180)
+  const dLat = (a.latitude - b.latitude) * metersPerDegreeLat
+  const dLon = (a.longitude - b.longitude) * metersPerDegreeLon
+  return Math.sqrt(dLat * dLat + dLon * dLon)
+}
+
+/** Mirrors consistentLocations/inconsistentAddressLocations in src/lib/stopLocations.ts. */
+function partitionByAddressConsistency(locations) {
+  const byAddress = new Map()
+  for (const location of locations) {
+    if (!location.address) continue
+    const group = byAddress.get(location.address)
+    if (group) group.push(location)
+    else byAddress.set(location.address, [location])
+  }
+
+  const isolated = new Set()
+  for (const group of byAddress.values()) {
+    if (group.length <= 1) continue
+    for (const candidate of group) {
+      const hasNearbySibling = group.some(
+        (sibling) =>
+          sibling !== candidate &&
+          metersBetween(candidate, sibling) < MAX_ADDRESS_COORDINATE_SPREAD_METERS
+      )
+      if (!hasNearbySibling) isolated.add(candidate)
+    }
+  }
+
+  return {
+    consistent: locations.filter((location) => !isolated.has(location)),
+    inconsistentCount: locations
+      .filter((location) => isolated.has(location))
+      .reduce((sum, l) => sum + l.count, 0)
+  }
+}
+
 function vehicleGroup(make, model, count) {
   const trimmedMake = (make ?? '').trim()
   const trimmedModel = (model ?? '').trim()
@@ -214,10 +265,13 @@ async function bake() {
       })
     ])
 
-  const locationsTruncated = locationRows.length > MAX_LOCATIONS
-  const stopLocations = (locationsTruncated ? locationRows.slice(0, MAX_LOCATIONS) : locationRows)
+  const builtLocations = locationRows
     .map((row) => stopLocation(row.latitude, row.longitude, row.total, row.address))
     .filter((location) => location !== null)
+  const { consistent, inconsistentCount: addressInconsistentCount } =
+    partitionByAddressConsistency(builtLocations)
+  const locationsTruncated = consistent.length > MAX_LOCATIONS
+  const stopLocations = locationsTruncated ? consistent.slice(0, MAX_LOCATIONS) : consistent
 
   const snapshot = {
     bakedAt: new Date().toISOString(),
@@ -237,6 +291,7 @@ async function bake() {
     ),
     defaultRangeStopLocations: stopLocations,
     defaultRangeLocationsTruncated: locationsTruncated,
+    defaultRangeAddressInconsistentCount: addressInconsistentCount,
     // Mirrors buildDistrictCount in src/lib/stops.ts. No `?? ''`/filter needed —
     // `district` has no nulls dataset-wide, confirmed live.
     defaultRangeDistrictCounts: districtRows.map((row) => ({
@@ -261,7 +316,8 @@ async function bake() {
       `  in range      ${snapshot.defaultRangeCount.toLocaleString('en-US')} stops, ` +
       `${snapshot.defaultRangeVehicleGroups.length.toLocaleString('en-US')} make/model pairs\n` +
       `  located       ${stopLocations.length.toLocaleString('en-US')} distinct coordinates` +
-      `${locationsTruncated ? ' (capped)' : ''}\n` +
+      `${locationsTruncated ? ' (capped)' : ''}, ` +
+      `${addressInconsistentCount.toLocaleString('en-US')} stops excluded (address disagreed with itself)\n` +
       `  yearly        ${snapshot.yearlyStopCounts.length.toLocaleString('en-US')} years with at least one stop\n` +
       `  districts     ${snapshot.defaultRangeDistrictCounts.length.toLocaleString('en-US')} in range\n` +
       `  wrote         public/data/snapshot.json\n`
@@ -273,6 +329,50 @@ async function existingSnapshot() {
     return JSON.parse(await readFile(join(OUT_DIR, 'snapshot.json'), 'utf8'))
   } catch {
     return null
+  }
+}
+
+async function fileExists(path) {
+  try {
+    await stat(path)
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Independent of `bake()` on purpose: the boundaries don't change with the
+ * selected range, so a hiccup fetching them shouldn't block refreshing the
+ * snapshot, and vice versa. Failure is non-fatal when a previous file is on
+ * disk, same reasoning as the snapshot's own fallback above.
+ */
+async function bakeDistrictBoundaries() {
+  const outPath = join(OUT_DIR, 'nopd-districts.geojson')
+  try {
+    const response = await fetch(DISTRICTS_URL, { signal: AbortSignal.timeout(TIMEOUT_MS) })
+    if (!response.ok) {
+      throw new Error(`${response.status} ${response.statusText} for ${DISTRICTS_URL}`)
+    }
+    const geojson = await response.json()
+    if (!Array.isArray(geojson?.features) || geojson.features.length === 0) {
+      throw new Error('district boundaries response had no features')
+    }
+    await mkdir(OUT_DIR, { recursive: true })
+    await writeFile(outPath, `${JSON.stringify(geojson)}\n`)
+    process.stdout.write(`  districts     ${geojson.features.length} boundary features written\n`)
+  } catch (error) {
+    if (await fileExists(outPath)) {
+      process.stderr.write(
+        `\nWARNING: could not refresh district boundaries (${error.message}).\n` +
+          `Keeping the committed file. The build continues.\n\n`
+      )
+    } else {
+      process.stderr.write(
+        `\nERROR: could not fetch district boundaries and no previous file exists.\n${error.message}\n\n`
+      )
+      process.exitCode = 1
+    }
   }
 }
 
@@ -293,3 +393,5 @@ try {
     process.exitCode = 1
   }
 }
+
+await bakeDistrictBoundaries()

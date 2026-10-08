@@ -6,6 +6,51 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2026-10-08
+
+### Added
+
+- District choropleth: NOPD's 8 police district boundaries, baked from
+  `data.nola.gov`'s NOPD Districts dataset into
+  `public/data/nopd-districts.geojson`, colored and labeled (on hover) by
+  stop count. Click a district to drill into its own intersection-level
+  locations — membership is decided by testing each stop's coordinate
+  against the real boundary polygon (`featureContainsPoint`/
+  `locationsInDistrict` in `src/lib/districtBoundaries.ts`), not by a tabular
+  field, so a drill-down circle is always inside the outline drawn around it.
+- `isLegibleDensity`/`MAX_LEGIBLE_LOCATIONS` in `src/lib/stopLocations.ts` —
+  a district's own locations only render as circles below ~1,500 distinct
+  points, the threshold past which they stop being visually distinguishable.
+- `consistentLocations`/`inconsistentAddressLocations` in
+  `src/lib/stopLocations.ts`: excludes a location when its own recorded
+  address also appears at another coordinate 200m or further away within the
+  same batch — the dataset's own data disagreeing with itself about where
+  that address is, not just a border-line judgment call. Measured live: 3.8%
+  of the default range's located stops are excluded. Disclosed on the map
+  rather than silently dropped.
+
+### Changed
+
+- Replaced the always-conditional intersection map (`StopMap.vue`) with one
+  interactive map (`DistrictMap.vue`): the choropleth is the default,
+  unconditional view — unlike coordinates, `district` has no era where it's
+  unreliable — and intersection-level circles are now a drill-down, not a
+  separate panel.
+- `boundingBox()` now frames the view on the core of a location set (97% of
+  weighted stop count) rather than its full extent, so a handful of distant
+  but real locations no longer drag the default zoom out and compress the
+  dense core into a sliver.
+- `DistrictBreakdown.vue`'s caption no longer tracks a second map's
+  visibility; it always points at the map below.
+
+### Fixed
+
+- District boundary data loaded into a plain `ref()`, deep-wrapping every
+  nested coordinate in a reactive proxy. The point-in-polygon check in
+  `locationsInDistrict` read those coordinates millions of times per click;
+  switched to `shallowRef()`, cutting click-to-render from 2.9-7.3 seconds
+  down to under 15ms.
+
 ## [3.2.0] - 2026-10-07
 
 ### Added

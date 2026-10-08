@@ -1,5 +1,5 @@
 {
-  "bakedAt": "2026-10-07T23:32:45.694Z",
+  "bakedAt": "2026-10-08T23:00:56.457Z",
   "domain": "data.nola.gov",
   "dataset": "nfft-hjwi",
   "earliestEventDate": {
@@ -2318,12 +2318,6 @@
       "address": "Polk St & Milne Blvd"
     },
     {
-      "latitude": 29.9890374,
-      "longitude": -90.08283758,
-      "count": 469,
-      "address": "003XX De Saix Blvd"
-    },
-    {
       "latitude": 29.95430545,
       "longitude": -90.07096351,
       "count": 398,
@@ -2594,12 +2588,6 @@
       "address": "S Claiborne Av & Jackson Av"
     },
     {
-      "latitude": 30.15030919,
-      "longitude": -89.85918479,
-      "count": 64,
-      "address": "I-10 W & Ridgeway Onramp"
-    },
-    {
       "latitude": 29.94249987,
       "longitude": -90.04090806,
       "count": 64,
@@ -2864,12 +2852,6 @@
       "address": "Conti St & Bourbon St"
     },
     {
-      "latitude": 30.02837553,
-      "longitude": -89.96969102,
-      "count": 42,
-      "address": "005XX Read Blvd"
-    },
-    {
       "latitude": 30.00683041,
       "longitude": -90.10795912,
       "count": 41,
@@ -2886,12 +2868,6 @@
       "longitude": -90.10579442,
       "count": 40,
       "address": "Memphis St & Harrison Av"
-    },
-    {
-      "latitude": 30.02597464,
-      "longitude": -89.96869577,
-      "count": 40,
-      "address": "005XX Read Blvd"
     },
     {
       "latitude": 30.01948118,
@@ -3008,18 +2984,6 @@
       "address": "031XX Chartres St"
     },
     {
-      "latitude": 29.98914106,
-      "longitude": -90.08503876,
-      "count": 36,
-      "address": "003XX De Saix Blvd"
-    },
-    {
-      "latitude": 29.94450135,
-      "longitude": -90.05610144,
-      "count": 36,
-      "address": "041XX S Claiborne Av"
-    },
-    {
       "latitude": 30.00488585,
       "longitude": -90.11138654,
       "count": 36,
@@ -3036,12 +3000,6 @@
       "longitude": -90.10335075,
       "count": 35,
       "address": "S Claiborne Av & Napoleon Av"
-    },
-    {
-      "latitude": 29.9855164,
-      "longitude": -90.07644783,
-      "count": 35,
-      "address": "001XX Gentilly Blvd"
     },
     {
       "latitude": 29.99941606,
@@ -3296,15 +3254,9 @@
       "address": "N Carrollton Av & Canal St"
     },
     {
-      "latitude": 29.95748815,
-      "longitude": -90.11892963,
-      "count": 26,
-      "address": "S Carrollton Av & Apple St"
-    },
-    {
       "latitude": 29.99998782,
       "longitude": -90.11503716,
-      "count": 26,
+      "count": 27,
       "address": "West End Blvd & Veterans Blvd"
     },
     {
@@ -3312,18 +3264,6 @@
       "longitude": -90.10865348,
       "count": 26,
       "address": "062XX Canal Blvd"
-    },
-    {
-      "latitude": 30.01176583,
-      "longitude": -90.10191743,
-      "count": 26,
-      "address": "Filmore Av & Argonne Blvd"
-    },
-    {
-      "latitude": 29.95198241,
-      "longitude": -90.06711284,
-      "count": 26,
-      "address": "Decatur St & Canal St"
     },
     {
       "latitude": 30.00780718,
@@ -3338,34 +3278,22 @@
       "address": "Simon Bolivar Av & Martin Luther King Jr Blvd"
     },
     {
-      "latitude": 30.00455008,
-      "longitude": -90.10757045,
-      "count": 25,
-      "address": "007XX Harrison Av"
+      "latitude": 30.01176583,
+      "longitude": -90.10191743,
+      "count": 26,
+      "address": "Filmore Av & Argonne Blvd"
     },
     {
-      "latitude": 30.01993183,
-      "longitude": -90.04385587,
-      "count": 25,
-      "address": "Press Dr & Pressburg St"
+      "latitude": 29.95748815,
+      "longitude": -90.11892963,
+      "count": 26,
+      "address": "S Carrollton Av & Apple St"
     },
     {
-      "latitude": 30.00552983,
-      "longitude": -90.05991296,
-      "count": 25,
-      "address": "046XX Elysian Fields Av"
-    },
-    {
-      "latitude": 29.97169854,
-      "longitude": -90.11814328,
-      "count": 25,
-      "address": "009XX Airline Hwy"
-    },
-    {
-      "latitude": 29.9413633,
-      "longitude": -90.09625273,
-      "count": 25,
-      "address": "Toledano St & S Claiborne Av"
+      "latitude": 29.95198241,
+      "longitude": -90.06711284,
+      "count": 26,
+      "address": "Decatur St & Canal St"
     },
     {
       "latitude": 29.9550747,
@@ -3374,10 +3302,34 @@
       "address": "S Broad St & Earhart Blvd"
     },
     {
-      "latitude": 30.00350359,
-      "longitude": -90.05974884,
-      "count": 24,
-      "address": "044XX Elysian Fields Av"
+      "latitude": 30.01993183,
+      "longitude": -90.04385587,
+      "count": 25,
+      "address": "Press Dr & Pressburg St"
+    },
+    {
+      "latitude": 30.00455008,
+      "longitude": -90.10757045,
+      "count": 25,
+      "address": "007XX Harrison Av"
+    },
+    {
+      "latitude": 29.97169854,
+      "longitude": -90.11814328,
+      "count": 25,
+      "address": "009XX Airline Hwy"
+    },
+    {
+      "latitude": 30.00552983,
+      "longitude": -90.05991296,
+      "count": 25,
+      "address": "046XX Elysian Fields Av"
+    },
+    {
+      "latitude": 29.9413633,
+      "longitude": -90.09625273,
+      "count": 25,
+      "address": "Toledano St & S Claiborne Av"
     },
     {
       "latitude": 29.97968083,
@@ -3392,10 +3344,10 @@
       "address": "S I-10 Service Rd & Crowder Blvd"
     },
     {
-      "latitude": 30.00566824,
-      "longitude": -90.11719596,
+      "latitude": 30.00350359,
+      "longitude": -90.05974884,
       "count": 24,
-      "address": "XX W Harrison Av"
+      "address": "044XX Elysian Fields Av"
     },
     {
       "latitude": 29.94496522,
@@ -3998,12 +3950,6 @@
       "address": "Ursulines Av & N Broad St"
     },
     {
-      "latitude": 29.96891613,
-      "longitude": -90.0538503,
-      "count": 17,
-      "address": "002XX St Claude Av"
-    },
-    {
       "latitude": 29.97210191,
       "longitude": -90.08155962,
       "count": 17,
@@ -4056,12 +4002,6 @@
       "longitude": -90.09197929,
       "count": 16,
       "address": "S Claiborne Av & 2nd St"
-    },
-    {
-      "latitude": 29.97766583,
-      "longitude": -90.0664263,
-      "count": 16,
-      "address": "056XX N Claiborne Av"
     },
     {
       "latitude": 29.96860214,
@@ -4128,12 +4068,6 @@
       "longitude": -90.08600309,
       "count": 15,
       "address": "Wisner Blvd & Harrison Av"
-    },
-    {
-      "latitude": 29.99207443,
-      "longitude": -90.10922891,
-      "count": 15,
-      "address": "005XX Canal Blvd"
     },
     {
       "latitude": 30.02596003,
@@ -4664,12 +4598,6 @@
       "address": "023XX Camp St"
     },
     {
-      "latitude": 29.97815563,
-      "longitude": -90.0764948,
-      "count": 12,
-      "address": "001XX N Broad St"
-    },
-    {
       "latitude": 30.01100865,
       "longitude": -90.08244571,
       "count": 12,
@@ -4806,12 +4734,6 @@
       "longitude": -90.09663692,
       "count": 12,
       "address": "Marconi Dr & Allen Toussaint Blvd"
-    },
-    {
-      "latitude": 30.15399943,
-      "longitude": -89.85534725,
-      "count": 12,
-      "address": "I-10 W From Slidell"
     },
     {
       "latitude": 29.92302838,
@@ -5066,12 +4988,6 @@
       "address": "Magazine St & Henry Clay Av"
     },
     {
-      "latitude": 29.96578869,
-      "longitude": -90.01372177,
-      "count": 11,
-      "address": "056XX N Claiborne Av"
-    },
-    {
       "latitude": 29.95272176,
       "longitude": -90.07091699,
       "count": 11,
@@ -5094,12 +5010,6 @@
       "longitude": -90.0883866,
       "count": 11,
       "address": "La Salle St & 2nd St"
-    },
-    {
-      "latitude": 29.98555172,
-      "longitude": -90.00365092,
-      "count": 11,
-      "address": "003XX De Saix Blvd"
     },
     {
       "latitude": 30.01032494,
@@ -5424,12 +5334,6 @@
       "longitude": -90.10054426,
       "count": 9,
       "address": "004XX S Claiborne Av"
-    },
-    {
-      "latitude": 29.96877762,
-      "longitude": -90.05612988,
-      "count": 9,
-      "address": "002XX St Claude Av"
     },
     {
       "latitude": 29.97220512,
@@ -5834,12 +5738,6 @@
       "address": "Elysian Fields Av & N Galvez St"
     },
     {
-      "latitude": 30.0051025,
-      "longitude": -90.111092,
-      "count": 8,
-      "address": "XX Harrison Av"
-    },
-    {
       "latitude": 29.96049059,
       "longitude": -90.08790392,
       "count": 8,
@@ -6000,12 +5898,6 @@
       "longitude": -90.08957235,
       "count": 8,
       "address": "S Broad St & Banks St"
-    },
-    {
-      "latitude": 30.1524004,
-      "longitude": -89.85700968,
-      "count": 8,
-      "address": "I-10 W & Ridgeway Onramp"
     },
     {
       "latitude": 30.04036211,
@@ -6716,12 +6608,6 @@
       "address": "Lotus St & Gentilly Blvd"
     },
     {
-      "latitude": 29.97964486,
-      "longitude": -90.07490151,
-      "count": 7,
-      "address": "016XX N Broad St"
-    },
-    {
       "latitude": 30.0107115,
       "longitude": -90.01286764,
       "count": 7,
@@ -6768,12 +6654,6 @@
       "longitude": -90.10884464,
       "count": 7,
       "address": "061XX Canal Blvd"
-    },
-    {
-      "latitude": 29.94938665,
-      "longitude": -90.06497,
-      "count": 6,
-      "address": "X Canal St"
     },
     {
       "latitude": 29.99479402,
@@ -8006,12 +7886,6 @@
       "address": "034XX Tulane Av"
     },
     {
-      "latitude": 29.92444752,
-      "longitude": -90.02073412,
-      "count": 5,
-      "address": "003XX General De Gaulle Dr"
-    },
-    {
       "latitude": 29.97467702,
       "longitude": -90.1006003,
       "count": 5,
@@ -8342,12 +8216,6 @@
       "address": "I-10 W After I-510 S Onramp"
     },
     {
-      "latitude": 29.92746176,
-      "longitude": -90.02653819,
-      "count": 5,
-      "address": "002XX General De Gaulle Dr"
-    },
-    {
       "latitude": 29.97368692,
       "longitude": -90.0995623,
       "count": 5,
@@ -8388,12 +8256,6 @@
       "longitude": -90.0928068,
       "count": 5,
       "address": "N Norman C Francis Pkwy & Bienville Av"
-    },
-    {
-      "latitude": 30.00285784,
-      "longitude": -90.05076928,
-      "count": 5,
-      "address": "003XX Gentilly Blvd"
     },
     {
       "latitude": 29.96043916,
@@ -8472,12 +8334,6 @@
       "longitude": -90.01980044,
       "count": 5,
       "address": "N Claiborne Av & Forstall St"
-    },
-    {
-      "latitude": 30.03463786,
-      "longitude": -89.91669947,
-      "count": 5,
-      "address": "137XX Chef Menteur Hwy"
     },
     {
       "latitude": 29.97691936,
@@ -8766,12 +8622,6 @@
       "longitude": -90.08284173,
       "count": 5,
       "address": "015XX S Liberty St"
-    },
-    {
-      "latitude": 30.02789651,
-      "longitude": -89.99241465,
-      "count": 5,
-      "address": "005XX Crowder Blvd"
     },
     {
       "latitude": 30.00262072,
@@ -9734,12 +9584,6 @@
       "address": "General De Gaulle Dr & Behrman Av"
     },
     {
-      "latitude": 30.14591862,
-      "longitude": -89.86244456,
-      "count": 4,
-      "address": "I-10 E After Michoud Onramp"
-    },
-    {
       "latitude": 30.01692457,
       "longitude": -89.974165,
       "count": 4,
@@ -10034,12 +9878,6 @@
       "address": "005XX Esplanade Av"
     },
     {
-      "latitude": 29.94480233,
-      "longitude": -90.05110645,
-      "count": 4,
-      "address": "004XX S Claiborne Av"
-    },
-    {
       "latitude": 30.01404236,
       "longitude": -90.01343962,
       "count": 4,
@@ -10200,12 +10038,6 @@
       "longitude": -90.09172163,
       "count": 4,
       "address": "N Carrollton Av & City Park Av"
-    },
-    {
-      "latitude": 29.92783905,
-      "longitude": -90.02873475,
-      "count": 4,
-      "address": "002XX General De Gaulle Dr"
     },
     {
       "latitude": 30.00463018,
@@ -11018,12 +10850,6 @@
       "address": "N Norman C Francis Pkwy & Bienville Av"
     },
     {
-      "latitude": 30.12632522,
-      "longitude": -89.8786125,
-      "count": 3,
-      "address": "I-10 W After Ridgeway Onramp"
-    },
-    {
       "latitude": 30.00262213,
       "longitude": -90.10600558,
       "count": 3,
@@ -11052,12 +10878,6 @@
       "longitude": -90.05694215,
       "count": 3,
       "address": "009XX Elysian Fields Av"
-    },
-    {
-      "latitude": 29.99930391,
-      "longitude": -90.11547519,
-      "count": 3,
-      "address": "060XX Chef Menteur Hwy"
     },
     {
       "latitude": 29.97574094,
@@ -11684,12 +11504,6 @@
       "address": "004XX N Carrollton Av"
     },
     {
-      "latitude": 30.00583839,
-      "longitude": -90.12017012,
-      "count": 3,
-      "address": "XX W Harrison Av"
-    },
-    {
       "latitude": 29.96416362,
       "longitude": -90.08846502,
       "count": 3,
@@ -11870,12 +11684,6 @@
       "address": "022XX St Claude Av"
     },
     {
-      "latitude": 30.01171996,
-      "longitude": -90.00357597,
-      "count": 3,
-      "address": "072XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 29.97223123,
       "longitude": -90.04812783,
       "count": 3,
@@ -11982,12 +11790,6 @@
       "longitude": -90.06826935,
       "count": 3,
       "address": "003XX Bourbon St"
-    },
-    {
-      "latitude": 30.03438054,
-      "longitude": -89.97755048,
-      "count": 3,
-      "address": "057XX Read Blvd"
     },
     {
       "latitude": 29.9726125,
@@ -12824,12 +12626,6 @@
       "address": "Pontchartrain Blvd & 16th St"
     },
     {
-      "latitude": 30.01627885,
-      "longitude": -89.97737795,
-      "count": 3,
-      "address": "009XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 29.92275825,
       "longitude": -90.12334984,
       "count": 3,
@@ -12954,12 +12750,6 @@
       "longitude": -90.08153797,
       "count": 3,
       "address": "St Charles Av & Philip St"
-    },
-    {
-      "latitude": 30.00583002,
-      "longitude": -90.03527435,
-      "count": 3,
-      "address": "004XX Chef Menteur Hwy"
     },
     {
       "latitude": 30.03189862,
@@ -13550,12 +13340,6 @@
       "address": "Franklin Av & Prentiss Av"
     },
     {
-      "latitude": 30.05196457,
-      "longitude": -89.9657334,
-      "count": 2,
-      "address": "007XX Bullard Av"
-    },
-    {
       "latitude": 30.00570858,
       "longitude": -90.10665393,
       "count": 2,
@@ -13692,12 +13476,6 @@
       "longitude": -90.09939654,
       "count": 2,
       "address": "003XX S Cortez St"
-    },
-    {
-      "latitude": 29.94435232,
-      "longitude": -90.07742396,
-      "count": 2,
-      "address": "US90B W After Earhart Onramp"
     },
     {
       "latitude": 29.92597333,
@@ -14096,12 +13874,6 @@
       "address": "S Johnson St & Octavia St"
     },
     {
-      "latitude": 29.98554423,
-      "longitude": -90.11011336,
-      "count": 2,
-      "address": "005XX Canal Blvd"
-    },
-    {
       "latitude": 29.99574156,
       "longitude": -90.11564887,
       "count": 2,
@@ -14478,12 +14250,6 @@
       "longitude": -90.02378079,
       "count": 2,
       "address": "Swift St & Wales St"
-    },
-    {
-      "latitude": 29.90730368,
-      "longitude": -90.06139453,
-      "count": 2,
-      "address": "078XX S Claiborne Av"
     },
     {
       "latitude": 29.97449348,
@@ -14906,12 +14672,6 @@
       "address": "Audubon St & Fig St"
     },
     {
-      "latitude": 29.98050543,
-      "longitude": -90.07755119,
-      "count": 2,
-      "address": "001XX Gentilly Blvd"
-    },
-    {
       "latitude": 29.94128042,
       "longitude": -90.04135279,
       "count": 2,
@@ -15332,12 +15092,6 @@
       "address": "Bellaire Dr & W Harrison Av"
     },
     {
-      "latitude": 29.99438809,
-      "longitude": -90.08785813,
-      "count": 2,
-      "address": "001XX Zachary Taylor Dr"
-    },
-    {
       "latitude": 30.03909903,
       "longitude": -90.0077816,
       "count": 2,
@@ -15536,12 +15290,6 @@
       "address": "062XX West End Blvd"
     },
     {
-      "latitude": 29.92177188,
-      "longitude": -90.01488092,
-      "count": 2,
-      "address": "040XX General De Gaulle Dr"
-    },
-    {
       "latitude": 30.03568072,
       "longitude": -89.97467622,
       "count": 2,
@@ -15648,12 +15396,6 @@
       "longitude": -90.06367611,
       "count": 2,
       "address": "St Anthony Av & Lafreniere St"
-    },
-    {
-      "latitude": 29.99120203,
-      "longitude": -90.12678693,
-      "count": 2,
-      "address": "008XX Navarre Av"
     },
     {
       "latitude": 29.97072456,
@@ -16070,12 +15812,6 @@
       "address": "S Claiborne Av & Poydras Exit"
     },
     {
-      "latitude": 29.94163256,
-      "longitude": -90.07255456,
-      "count": 2,
-      "address": "US90B W After Earhart Onramp"
-    },
-    {
       "latitude": 29.94032322,
       "longitude": -90.10473065,
       "count": 2,
@@ -16104,12 +15840,6 @@
       "longitude": -90.01872668,
       "count": 2,
       "address": "037XX Macarthur Blvd"
-    },
-    {
-      "latitude": 30.12384063,
-      "longitude": -89.88037655,
-      "count": 2,
-      "address": "I-10 E After Michoud Onramp"
     },
     {
       "latitude": 30.02219444,
@@ -16394,12 +16124,6 @@
       "address": "Bourbon St & Governor Nicholls St"
     },
     {
-      "latitude": 29.94730615,
-      "longitude": -90.11416831,
-      "count": 2,
-      "address": "006XX S Claiborne Av"
-    },
-    {
       "latitude": 29.99880367,
       "longitude": -90.07851198,
       "count": 2,
@@ -16524,12 +16248,6 @@
       "longitude": -90.0660775,
       "count": 2,
       "address": "006XX Conti St"
-    },
-    {
-      "latitude": 29.95414843,
-      "longitude": -90.11857817,
-      "count": 2,
-      "address": "078XX S Claiborne Av"
     },
     {
       "latitude": 29.96136039,
@@ -17012,12 +16730,6 @@
       "address": "St Charles Av & 1st St"
     },
     {
-      "latitude": 30.01768667,
-      "longitude": -89.97168268,
-      "count": 2,
-      "address": "009XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 29.93380274,
       "longitude": -90.08989173,
       "count": 2,
@@ -17412,12 +17124,6 @@
       "longitude": -90.0719763,
       "count": 2,
       "address": "003XX Basin St"
-    },
-    {
-      "latitude": 30.16079276,
-      "longitude": -89.84818456,
-      "count": 2,
-      "address": "I-10 W From Slidell"
     },
     {
       "latitude": 30.00481026,
@@ -18062,12 +17768,6 @@
       "address": "W Park Pl & S Park Pl"
     },
     {
-      "latitude": 30.02591255,
-      "longitude": -89.9900294,
-      "count": 2,
-      "address": "005XX Crowder Blvd"
-    },
-    {
       "latitude": 29.94145186,
       "longitude": -90.09607891,
       "count": 2,
@@ -18164,12 +17864,6 @@
       "address": "Orleans Av & Olga St"
     },
     {
-      "latitude": 30.008747,
-      "longitude": -90.05982402,
-      "count": 2,
-      "address": "004XX Elysian Fields Av"
-    },
-    {
       "latitude": 29.93620308,
       "longitude": -90.09318935,
       "count": 2,
@@ -18198,12 +17892,6 @@
       "longitude": -90.07550975,
       "count": 2,
       "address": "Calliope St & Baronne St"
-    },
-    {
-      "latitude": 30.00530438,
-      "longitude": -90.11333429,
-      "count": 2,
-      "address": "XX Harrison Av"
     },
     {
       "latitude": 30.02736408,
@@ -18522,12 +18210,6 @@
       "longitude": -90.06622508,
       "count": 2,
       "address": "004XX Royal St"
-    },
-    {
-      "latitude": 29.97532888,
-      "longitude": -90.07899175,
-      "count": 2,
-      "address": "001XX N Broad St"
     },
     {
       "latitude": 29.96777379,
@@ -18944,12 +18626,6 @@
       "address": "I-10 E Onramp & Morrison Rd"
     },
     {
-      "latitude": 30.02329479,
-      "longitude": -90.02349075,
-      "count": 1,
-      "address": "006XX Downman Rd"
-    },
-    {
       "latitude": 29.97294308,
       "longitude": -90.06249903,
       "count": 1,
@@ -19110,12 +18786,6 @@
       "longitude": -90.06689015,
       "count": 1,
       "address": "007XX St Louis St"
-    },
-    {
-      "latitude": 30.04994893,
-      "longitude": -89.96409761,
-      "count": 1,
-      "address": "007XX Bullard Av"
     },
     {
       "latitude": 29.97491565,
@@ -19374,12 +19044,6 @@
       "longitude": -90.08143748,
       "count": 1,
       "address": "Us 90B Exit & S Claiborne Av"
-    },
-    {
-      "latitude": 30.01013866,
-      "longitude": -90.05993849,
-      "count": 1,
-      "address": "005XX Elysian Fields Av"
     },
     {
       "latitude": 29.97224558,
@@ -19652,12 +19316,6 @@
       "address": "Duplessis St & Harrison Av"
     },
     {
-      "latitude": 29.93112877,
-      "longitude": -90.03231135,
-      "count": 1,
-      "address": "001XX Shirley Dr"
-    },
-    {
       "latitude": 29.96235967,
       "longitude": -90.10081925,
       "count": 1,
@@ -19910,12 +19568,6 @@
       "address": "009XX Toulouse St"
     },
     {
-      "latitude": 30.03294566,
-      "longitude": -89.95001697,
-      "count": 1,
-      "address": "005XX Bullard Av"
-    },
-    {
       "latitude": 30.02420803,
       "longitude": -89.98870582,
       "count": 1,
@@ -20154,12 +19806,6 @@
       "longitude": -90.0785658,
       "count": 1,
       "address": "010XX Loyola Av"
-    },
-    {
-      "latitude": 30.10319057,
-      "longitude": -89.89879818,
-      "count": 1,
-      "address": "I-10 E After Michoud Onramp"
     },
     {
       "latitude": 30.00305613,
@@ -20642,12 +20288,6 @@
       "address": "029XX General De Gaulle Dr"
     },
     {
-      "latitude": 29.94224888,
-      "longitude": -90.05511045,
-      "count": 1,
-      "address": "002XX General De Gaulle Dr"
-    },
-    {
       "latitude": 29.97071216,
       "longitude": -90.08306859,
       "count": 1,
@@ -20664,12 +20304,6 @@
       "longitude": -90.02114416,
       "count": 1,
       "address": "040XX Downman Rd"
-    },
-    {
-      "latitude": 29.9354022,
-      "longitude": -90.03204147,
-      "count": 1,
-      "address": "001XX Shirley Dr"
     },
     {
       "latitude": 29.96722463,
@@ -20880,12 +20514,6 @@
       "longitude": -90.04480148,
       "count": 1,
       "address": "Pressburg St & Campus Blvd"
-    },
-    {
-      "latitude": 30.05005883,
-      "longitude": -89.95480012,
-      "count": 1,
-      "address": "I-10 E After Bullard Onramp"
     },
     {
       "latitude": 29.9642926,
@@ -21146,12 +20774,6 @@
       "address": "003XX General De Gaulle Dr"
     },
     {
-      "latitude": 30.01612812,
-      "longitude": -89.98782649,
-      "count": 1,
-      "address": "004XX Crowder Blvd"
-    },
-    {
       "latitude": 29.97087962,
       "longitude": -90.08242681,
       "count": 1,
@@ -21296,12 +20918,6 @@
       "address": "001XX Nashville Av"
     },
     {
-      "latitude": 29.9925468,
-      "longitude": -90.06800473,
-      "count": 1,
-      "address": "004XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 29.9228406,
       "longitude": -90.00003766,
       "count": 1,
@@ -21348,12 +20964,6 @@
       "longitude": -90.09832657,
       "count": 1,
       "address": "S Roman St & Louisiana Avenue Pkwy"
-    },
-    {
-      "latitude": 30.10336221,
-      "longitude": -89.89905205,
-      "count": 1,
-      "address": "I-10 W After Ridgeway Onramp"
     },
     {
       "latitude": 30.01291133,
@@ -21620,12 +21230,6 @@
       "address": "010XX St Peter St"
     },
     {
-      "latitude": 29.98738679,
-      "longitude": -90.06822709,
-      "count": 1,
-      "address": "002XX N Broad St"
-    },
-    {
       "latitude": 29.97355664,
       "longitude": -90.05795733,
       "count": 1,
@@ -21636,12 +21240,6 @@
       "longitude": -89.97657476,
       "count": 1,
       "address": "093XX Chef Menteur Hwy"
-    },
-    {
-      "latitude": 30.05859027,
-      "longitude": -89.94129331,
-      "count": 1,
-      "address": "I-10 E After Bullard Onramp"
     },
     {
       "latitude": 29.947664,
@@ -21888,12 +21486,6 @@
       "longitude": -90.06691051,
       "count": 1,
       "address": "003XX Royal St"
-    },
-    {
-      "latitude": 29.90217122,
-      "longitude": -89.99498487,
-      "count": 1,
-      "address": "005XX Tullis Dr"
     },
     {
       "latitude": 30.00985464,
@@ -22274,12 +21866,6 @@
       "address": "001XX Allen Toussaint Blvd"
     },
     {
-      "latitude": 30.00686046,
-      "longitude": -90.13322869,
-      "count": 1,
-      "address": "009XX Harrison Av"
-    },
-    {
       "latitude": 29.97651547,
       "longitude": -90.0656956,
       "count": 1,
@@ -22460,12 +22046,6 @@
       "address": "I-10 W & Michoud Blvd Onramp"
     },
     {
-      "latitude": 30.01702913,
-      "longitude": -89.97286036,
-      "count": 1,
-      "address": "097XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 29.95278679,
       "longitude": -90.06873025,
       "count": 1,
@@ -22598,18 +22178,6 @@
       "address": "Airline Hwy & Stroelitz St"
     },
     {
-      "latitude": 30.02100322,
-      "longitude": -90.02265719,
-      "count": 1,
-      "address": "006XX Downman Rd"
-    },
-    {
-      "latitude": 29.98867521,
-      "longitude": -90.07553593,
-      "count": 1,
-      "address": "003XX De Saix Blvd"
-    },
-    {
       "latitude": 29.96700635,
       "longitude": -90.04239689,
       "count": 1,
@@ -22692,12 +22260,6 @@
       "longitude": -90.08798709,
       "count": 1,
       "address": "N White St & Iberville St"
-    },
-    {
-      "latitude": 29.94534233,
-      "longitude": -90.11336743,
-      "count": 1,
-      "address": "006XX S Claiborne Av"
     },
     {
       "latitude": 29.9490557,
@@ -22788,12 +22350,6 @@
       "longitude": -90.09670687,
       "count": 1,
       "address": "037XX Canal St"
-    },
-    {
-      "latitude": 30.03569988,
-      "longitude": -89.97982624,
-      "count": 1,
-      "address": "I-10 W After Read Onramp"
     },
     {
       "latitude": 29.94812879,
@@ -23102,12 +22658,6 @@
       "address": "022XX Magic St"
     },
     {
-      "latitude": 30.11484031,
-      "longitude": -89.88882709,
-      "count": 1,
-      "address": "I-10 W After Ridgeway Onramp"
-    },
-    {
       "latitude": 29.97185558,
       "longitude": -90.03405226,
       "count": 1,
@@ -23328,12 +22878,6 @@
       "longitude": -90.08046893,
       "count": 1,
       "address": "Cleveland Av & S Roman St"
-    },
-    {
-      "latitude": 29.93385798,
-      "longitude": -90.08115917,
-      "count": 1,
-      "address": "002XX St Charles Av"
     },
     {
       "latitude": 29.95602136,
@@ -24278,12 +23822,6 @@
       "address": "Royal St & Homer Plessy Way"
     },
     {
-      "latitude": 29.94159421,
-      "longitude": -90.11008853,
-      "count": 1,
-      "address": "005XX S Claiborne Av"
-    },
-    {
       "latitude": 29.93952727,
       "longitude": -90.09637124,
       "count": 1,
@@ -24482,12 +24020,6 @@
       "address": "Milne Blvd & Kenilworth St"
     },
     {
-      "latitude": 29.94321446,
-      "longitude": -90.11228523,
-      "count": 1,
-      "address": "005XX S Claiborne Av"
-    },
-    {
       "latitude": 29.98043498,
       "longitude": -90.0734045,
       "count": 1,
@@ -24666,12 +24198,6 @@
       "longitude": -90.10523434,
       "count": 1,
       "address": "Fontainebleau Dr & S Gayoso St"
-    },
-    {
-      "latitude": 29.97489937,
-      "longitude": -90.10093157,
-      "count": 1,
-      "address": "004XX Canal St"
     },
     {
       "latitude": 29.95050016,
@@ -24860,12 +24386,6 @@
       "address": "011XX N Broad St"
     },
     {
-      "latitude": 29.95202546,
-      "longitude": -90.06969784,
-      "count": 1,
-      "address": "002XX St Charles Av"
-    },
-    {
       "latitude": 30.07982475,
       "longitude": -89.91958332,
       "count": 1,
@@ -24902,12 +24422,6 @@
       "address": "Elysian Fields Av & N Peters St"
     },
     {
-      "latitude": 30.02907793,
-      "longitude": -89.9749173,
-      "count": 1,
-      "address": "056XX Read Blvd"
-    },
-    {
       "latitude": 30.02734308,
       "longitude": -89.9606371,
       "count": 1,
@@ -24918,12 +24432,6 @@
       "longitude": -90.11326108,
       "count": 1,
       "address": "001XX Allen Toussaint Blvd"
-    },
-    {
-      "latitude": 30.08022165,
-      "longitude": -89.91922721,
-      "count": 1,
-      "address": "I-10 E After Michoud Onramp"
     },
     {
       "latitude": 29.95831556,
@@ -24948,12 +24456,6 @@
       "longitude": -90.00856469,
       "count": 1,
       "address": "N Derbigny St & Tupelo St"
-    },
-    {
-      "latitude": 30.00369171,
-      "longitude": -90.1079338,
-      "count": 1,
-      "address": "006XX Canal Blvd"
     },
     {
       "latitude": 29.92901048,
@@ -25080,12 +24582,6 @@
       "longitude": -90.10149652,
       "count": 1,
       "address": "039XX Banks St"
-    },
-    {
-      "latitude": 29.95090946,
-      "longitude": -90.0632219,
-      "count": 1,
-      "address": "X Canal St"
     },
     {
       "latitude": 29.99732645,
@@ -25218,12 +24714,6 @@
       "longitude": -90.10464538,
       "count": 1,
       "address": "General Pershing St & S Gayoso St"
-    },
-    {
-      "latitude": 29.84416683,
-      "longitude": -90.12579576,
-      "count": 1,
-      "address": "063XX Pontchartrain Blvd"
     },
     {
       "latitude": 30.00245857,
@@ -25382,12 +24872,6 @@
       "address": "Louisiana Avenue Pkwy & S Dorgenois St"
     },
     {
-      "latitude": 30.03300524,
-      "longitude": -89.98767916,
-      "count": 1,
-      "address": "089XX Bunker Hill Rd"
-    },
-    {
       "latitude": 29.94662517,
       "longitude": -90.04934684,
       "count": 1,
@@ -25440,12 +24924,6 @@
       "longitude": -90.10861012,
       "count": 1,
       "address": "Louis Xiv St & Porteous St"
-    },
-    {
-      "latitude": 30.0281417,
-      "longitude": -90.0252711,
-      "count": 1,
-      "address": "007XX Downman Rd"
     },
     {
       "latitude": 30.02313361,
@@ -25512,12 +24990,6 @@
       "longitude": -89.97900746,
       "count": 1,
       "address": "075XX Avalon Way"
-    },
-    {
-      "latitude": 30.12616233,
-      "longitude": -89.8783332,
-      "count": 1,
-      "address": "I-10 E After Michoud Onramp"
     },
     {
       "latitude": 29.96810721,
@@ -25602,12 +25074,6 @@
       "longitude": -90.08469244,
       "count": 1,
       "address": "028XX Orleans Av"
-    },
-    {
-      "latitude": 29.9471705,
-      "longitude": -90.06038882,
-      "count": 1,
-      "address": "025XX Canal St"
     },
     {
       "latitude": 30.00123629,
@@ -25716,12 +25182,6 @@
       "longitude": -90.0164158,
       "count": 1,
       "address": "005XX N Claiborne Av"
-    },
-    {
-      "latitude": 29.93226446,
-      "longitude": -90.06385886,
-      "count": 1,
-      "address": "033XX Martin Luther King Jr Blvd"
     },
     {
       "latitude": 30.05863987,
@@ -26030,12 +25490,6 @@
       "address": "Newton St & Teche St"
     },
     {
-      "latitude": 29.77526328,
-      "longitude": -90.13266046,
-      "count": 1,
-      "address": "061XX West End Blvd"
-    },
-    {
       "latitude": 29.95360136,
       "longitude": -90.06565471,
       "count": 1,
@@ -26282,12 +25736,6 @@
       "address": "Lincoln Beach Blvd & Vanderkloot Av"
     },
     {
-      "latitude": 30.00511033,
-      "longitude": -90.11095117,
-      "count": 1,
-      "address": "Approx Loc: Alley"
-    },
-    {
       "latitude": 29.95656786,
       "longitude": -90.06842343,
       "count": 1,
@@ -26424,12 +25872,6 @@
       "longitude": -89.98839263,
       "count": 1,
       "address": "071XX Salem Dr"
-    },
-    {
-      "latitude": 29.9037479,
-      "longitude": -89.9931539,
-      "count": 1,
-      "address": "005XX Tullis Dr"
     },
     {
       "latitude": 29.94785427,
@@ -26810,12 +26252,6 @@
       "address": "Canal St & N Salcedo St"
     },
     {
-      "latitude": 30.00682707,
-      "longitude": -90.12935902,
-      "count": 1,
-      "address": "007XX Harrison Av"
-    },
-    {
       "latitude": 29.93958766,
       "longitude": -90.07221082,
       "count": 1,
@@ -27000,12 +26436,6 @@
       "longitude": -90.02150736,
       "count": 1,
       "address": "033XX Wall Blvd"
-    },
-    {
-      "latitude": 30.00491834,
-      "longitude": -90.10900025,
-      "count": 1,
-      "address": "XX Harrison Av"
     },
     {
       "latitude": 30.06665728,
@@ -27606,12 +27036,6 @@
       "longitude": -90.09015161,
       "count": 1,
       "address": "029XX Canal St"
-    },
-    {
-      "latitude": 30.06893229,
-      "longitude": -89.92973065,
-      "count": 1,
-      "address": "I-10 W After Michoud Onramp"
     },
     {
       "latitude": 29.95605376,
@@ -28598,12 +28022,6 @@
       "address": "011XX N Villere St"
     },
     {
-      "latitude": 30.01901195,
-      "longitude": -90.08960911,
-      "count": 1,
-      "address": "001XX Allen Toussaint Blvd"
-    },
-    {
       "latitude": 29.9347759,
       "longitude": -90.06960412,
       "count": 1,
@@ -28764,12 +28182,6 @@
       "longitude": -90.09263725,
       "count": 1,
       "address": "022XX Harmony St"
-    },
-    {
-      "latitude": 29.95085599,
-      "longitude": -90.10083491,
-      "count": 1,
-      "address": "016XX N Broad St"
     },
     {
       "latitude": 29.9358437,
@@ -28940,12 +28352,6 @@
       "address": "070XX Read Blvd"
     },
     {
-      "latitude": 30.01334721,
-      "longitude": -90.11147116,
-      "count": 1,
-      "address": "006XX Milne Blvd"
-    },
-    {
       "latitude": 29.98910914,
       "longitude": -90.10155749,
       "count": 1,
@@ -29066,12 +28472,6 @@
       "address": "043XX Michoud Blvd"
     },
     {
-      "latitude": 30.02459617,
-      "longitude": -90.02396698,
-      "count": 1,
-      "address": "007XX Downman Rd"
-    },
-    {
       "latitude": 30.04765353,
       "longitude": -89.9847326,
       "count": 1,
@@ -29082,12 +28482,6 @@
       "longitude": -90.08934467,
       "count": 1,
       "address": "032XX Prytania St"
-    },
-    {
-      "latitude": 30.00791537,
-      "longitude": -90.01452394,
-      "count": 1,
-      "address": "I-10 E After Johnny Jackson Onramp"
     },
     {
       "latitude": 29.92806192,
@@ -29220,12 +28614,6 @@
       "longitude": -90.05573311,
       "count": 1,
       "address": "St Roch Av & Filmore Av"
-    },
-    {
-      "latitude": 29.99623697,
-      "longitude": -90.06227565,
-      "count": 1,
-      "address": "002XX Gentilly Blvd"
     },
     {
       "latitude": 30.04019053,
@@ -29588,12 +28976,6 @@
       "address": "004XX N Carrollton Av"
     },
     {
-      "latitude": 29.99774867,
-      "longitude": -90.10864817,
-      "count": 1,
-      "address": "Approx Loc: Canal Blvd"
-    },
-    {
       "latitude": 29.95907447,
       "longitude": -90.06022659,
       "count": 1,
@@ -29816,12 +29198,6 @@
       "address": "S Galvez St & Earhart Blvd"
     },
     {
-      "latitude": 29.89583605,
-      "longitude": -90.12070109,
-      "count": 1,
-      "address": "061XX Canal Blvd"
-    },
-    {
       "latitude": 29.92439101,
       "longitude": -90.08965653,
       "count": 1,
@@ -29832,12 +29208,6 @@
       "longitude": -90.10308957,
       "count": 1,
       "address": "Marshal Foch St & Porteous St"
-    },
-    {
-      "latitude": 29.92051447,
-      "longitude": -90.01402895,
-      "count": 1,
-      "address": "003XX General De Gaulle Dr"
     },
     {
       "latitude": 30.02512215,
@@ -29880,12 +29250,6 @@
       "longitude": -90.04345883,
       "count": 1,
       "address": "Thayer St & Ptolemy St"
-    },
-    {
-      "latitude": 30.00957281,
-      "longitude": -90.11194366,
-      "count": 1,
-      "address": "006XX Milne Blvd"
     },
     {
       "latitude": 29.97301641,
@@ -29978,12 +29342,6 @@
       "address": "014XX Frankfort St"
     },
     {
-      "latitude": 30.00490436,
-      "longitude": -90.02546352,
-      "count": 1,
-      "address": "I-10 E After Johnny Jackson Onramp"
-    },
-    {
       "latitude": 29.96285492,
       "longitude": -90.1011272,
       "count": 1,
@@ -30048,12 +29406,6 @@
       "longitude": -90.01067665,
       "count": 1,
       "address": "044XX General De Gaulle Dr"
-    },
-    {
-      "latitude": 30.01216045,
-      "longitude": -89.99962486,
-      "count": 1,
-      "address": "007XX Chef Menteur Hwy"
     },
     {
       "latitude": 29.94301221,
@@ -30168,12 +29520,6 @@
       "longitude": -90.0659885,
       "count": 1,
       "address": "I-610 E Onramp N Broad St & N Broad St"
-    },
-    {
-      "latitude": 30.03320473,
-      "longitude": -89.9858539,
-      "count": 1,
-      "address": "I-10 W After Read Onramp"
     },
     {
       "latitude": 29.92463716,
@@ -30338,12 +29684,6 @@
       "address": "Approx Loc: Alley"
     },
     {
-      "latitude": 30.11464918,
-      "longitude": -89.88854296,
-      "count": 1,
-      "address": "I-10 E After Michoud Onramp"
-    },
-    {
       "latitude": 29.96302306,
       "longitude": -90.05953108,
       "count": 1,
@@ -30464,12 +29804,6 @@
       "address": "026XX Columbus St"
     },
     {
-      "latitude": 29.39040158,
-      "longitude": -90.18598483,
-      "count": 1,
-      "address": "053XX Canal Blvd"
-    },
-    {
       "latitude": 29.99446325,
       "longitude": -90.03409372,
       "count": 1,
@@ -30588,12 +29922,6 @@
       "longitude": -90.09754647,
       "count": 1,
       "address": "Canal St & N Cortez St"
-    },
-    {
-      "latitude": 29.98665041,
-      "longitude": -90.09321955,
-      "count": 1,
-      "address": "048XX Chef Menteur Hwy"
     },
     {
       "latitude": 29.93532956,
@@ -30854,12 +30182,6 @@
       "address": "002XX Westbend Pkwy"
     },
     {
-      "latitude": 30.00076486,
-      "longitude": -90.09921189,
-      "count": 1,
-      "address": "072XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 30.01692815,
       "longitude": -89.98846133,
       "count": 1,
@@ -30960,12 +30282,6 @@
       "longitude": -90.00937979,
       "count": 1,
       "address": "060XX N Claiborne Av"
-    },
-    {
-      "latitude": 29.96622337,
-      "longitude": -90.06171359,
-      "count": 1,
-      "address": "001XX Burgundy St"
     },
     {
       "latitude": 29.93618884,
@@ -31196,12 +30512,6 @@
       "address": "083XX Nelson St"
     },
     {
-      "latitude": 29.99423962,
-      "longitude": -90.09392918,
-      "count": 1,
-      "address": "001XX Zachary Taylor Dr"
-    },
-    {
       "latitude": 30.0196346,
       "longitude": -90.11252484,
       "count": 1,
@@ -31218,12 +30528,6 @@
       "longitude": -90.10425026,
       "count": 1,
       "address": "008XX Harrison Av"
-    },
-    {
-      "latitude": 30.01130971,
-      "longitude": -90.10703752,
-      "count": 1,
-      "address": "006XX Canal Blvd"
     },
     {
       "latitude": 30.0022411,
@@ -31640,12 +30944,6 @@
       "address": "Bienville Av & N Johnson St"
     },
     {
-      "latitude": 29.99321777,
-      "longitude": -90.06674479,
-      "count": 1,
-      "address": "002XX Gentilly Blvd"
-    },
-    {
       "latitude": 29.95911669,
       "longitude": -90.10793689,
       "count": 1,
@@ -31950,12 +31248,6 @@
       "longitude": -90.09797934,
       "count": 1,
       "address": "Clara St & Amelia St"
-    },
-    {
-      "latitude": 30.00438442,
-      "longitude": -90.11259536,
-      "count": 1,
-      "address": "006XX Milne Blvd"
     },
     {
       "latitude": 29.98877942,
@@ -32312,12 +31604,6 @@
       "address": "S Saratoga St & Washington Av"
     },
     {
-      "latitude": 29.98585356,
-      "longitude": -90.09603399,
-      "count": 1,
-      "address": "048XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 29.9225398,
       "longitude": -90.02250936,
       "count": 1,
@@ -32358,12 +31644,6 @@
       "longitude": -90.07714117,
       "count": 1,
       "address": "020XX Coliseum St"
-    },
-    {
-      "latitude": 30.04048039,
-      "longitude": -89.95656473,
-      "count": 1,
-      "address": "005XX Bullard Av"
     },
     {
       "latitude": 30.02212346,
@@ -32786,12 +32066,6 @@
       "address": "Newton St & Hendee St"
     },
     {
-      "latitude": 30.00071489,
-      "longitude": -90.05796984,
-      "count": 1,
-      "address": "003XX Gentilly Blvd"
-    },
-    {
       "latitude": 30.01768729,
       "longitude": -90.1192336,
       "count": 1,
@@ -32904,12 +32178,6 @@
       "longitude": -90.07057232,
       "count": 1,
       "address": "Poydras St & St Charles Av"
-    },
-    {
-      "latitude": 30.02646152,
-      "longitude": -90.00949898,
-      "count": 1,
-      "address": "I-10 W After Crowder Onramp"
     },
     {
       "latitude": 29.96960163,
@@ -34364,12 +33632,6 @@
       "address": "004XX N Rampart St"
     },
     {
-      "latitude": 30.00414095,
-      "longitude": -90.10304752,
-      "count": 1,
-      "address": "XX Harrison Av"
-    },
-    {
       "latitude": 29.96085333,
       "longitude": -90.06234363,
       "count": 1,
@@ -34482,12 +33744,6 @@
       "longitude": -90.06763067,
       "count": 1,
       "address": "005XX Canal St"
-    },
-    {
-      "latitude": 30.13821425,
-      "longitude": -89.86902294,
-      "count": 1,
-      "address": "I-10 W After Ridgeway Onramp"
     },
     {
       "latitude": 29.97990915,
@@ -34976,12 +34232,6 @@
       "address": "002XX W Harrison Av"
     },
     {
-      "latitude": 29.94813914,
-      "longitude": -90.09182994,
-      "count": 1,
-      "address": "033XX Martin Luther King Jr Blvd"
-    },
-    {
       "latitude": 29.95947405,
       "longitude": -90.12467626,
       "count": 1,
@@ -34992,12 +34242,6 @@
       "longitude": -90.09700574,
       "count": 1,
       "address": "020XX Peniston St"
-    },
-    {
-      "latitude": 29.96641879,
-      "longitude": -90.08714807,
-      "count": 1,
-      "address": "001XX N Broad St"
     },
     {
       "latitude": 29.98552503,
@@ -35144,12 +34388,6 @@
       "address": "030XX Nashville Av"
     },
     {
-      "latitude": 29.98225443,
-      "longitude": -90.0710414,
-      "count": 1,
-      "address": "002XX St Bernard Av"
-    },
-    {
       "latitude": 29.95934309,
       "longitude": -90.10350732,
       "count": 1,
@@ -35244,12 +34482,6 @@
       "longitude": -90.05874635,
       "count": 1,
       "address": "004XX Governor Nicholls St"
-    },
-    {
-      "latitude": 30.02265301,
-      "longitude": -89.98879172,
-      "count": 1,
-      "address": "004XX Crowder Blvd"
     },
     {
       "latitude": 29.96578811,
@@ -35552,12 +34784,6 @@
       "address": "Convention Center Blvd & Henderson St"
     },
     {
-      "latitude": 30.03530643,
-      "longitude": -89.97498384,
-      "count": 1,
-      "address": "005XX Read Blvd"
-    },
-    {
       "latitude": 30.02867065,
       "longitude": -90.0611141,
       "count": 1,
@@ -35696,12 +34922,6 @@
       "address": "Us 90B E & Camp St"
     },
     {
-      "latitude": 30.037475,
-      "longitude": -89.98944532,
-      "count": 1,
-      "address": "089XX Bunker Hill Rd"
-    },
-    {
       "latitude": 30.00302546,
       "longitude": -90.1105462,
       "count": 1,
@@ -35736,12 +34956,6 @@
       "longitude": -90.06162603,
       "count": 1,
       "address": "Gentilly Blvd & Touro St"
-    },
-    {
-      "latitude": 30.02857216,
-      "longitude": -89.99807846,
-      "count": 1,
-      "address": "I-10 W After Crowder Onramp"
     },
     {
       "latitude": 29.97369582,
@@ -36024,12 +35238,6 @@
       "longitude": -90.02440918,
       "count": 1,
       "address": "Murl St & General Meyer Av"
-    },
-    {
-      "latitude": 30.00723976,
-      "longitude": -90.04735234,
-      "count": 1,
-      "address": "006XX Chef Menteur Hwy"
     },
     {
       "latitude": 30.02809607,
@@ -36614,12 +35822,6 @@
       "address": "Read Blvd & Seawood St"
     },
     {
-      "latitude": 29.98515687,
-      "longitude": -90.07268964,
-      "count": 1,
-      "address": "002XX St Bernard Av"
-    },
-    {
       "latitude": 29.97326169,
       "longitude": -90.09993357,
       "count": 1,
@@ -36890,12 +36092,6 @@
       "address": "165XX Chef Menteur Hwy"
     },
     {
-      "latitude": 30.00433584,
-      "longitude": -90.03910787,
-      "count": 1,
-      "address": "004XX Chef Menteur Hwy"
-    },
-    {
       "latitude": 29.97827204,
       "longitude": -90.0710552,
       "count": 1,
@@ -36962,18 +36158,6 @@
       "address": "Valentine Ct & Fiesta St"
     },
     {
-      "latitude": 30.06373324,
-      "longitude": -89.9343601,
-      "count": 1,
-      "address": "I-10 W After Michoud Onramp"
-    },
-    {
-      "latitude": 29.87785252,
-      "longitude": -89.91147526,
-      "count": 1,
-      "address": "071XX Crowder Blvd"
-    },
-    {
       "latitude": 29.92605719,
       "longitude": -90.02320956,
       "count": 1,
@@ -37022,12 +36206,6 @@
       "address": "006XX Convention Center Blvd"
     },
     {
-      "latitude": 29.92686446,
-      "longitude": -90.02729498,
-      "count": 1,
-      "address": "032XX General De Gaulle Dr"
-    },
-    {
       "latitude": 29.94846691,
       "longitude": -90.09019611,
       "count": 1,
@@ -37070,12 +36248,6 @@
       "address": "Esplanade Av & N Claiborne Av"
     },
     {
-      "latitude": 30.0196665,
-      "longitude": -89.98821228,
-      "count": 1,
-      "address": "004XX Crowder Blvd"
-    },
-    {
       "latitude": 29.93381078,
       "longitude": -90.08519637,
       "count": 1,
@@ -37089,6 +36261,7 @@
     }
   ],
   "defaultRangeLocationsTruncated": false,
+  "defaultRangeAddressInconsistentCount": 1057,
   "defaultRangeDistrictCounts": [
     {
       "district": "3",
@@ -37257,7 +36430,7 @@
     {
       "year": 2025,
       "count": 26629,
-      "locatedCount": 25288
+      "locatedCount": 25289
     }
   ]
 }

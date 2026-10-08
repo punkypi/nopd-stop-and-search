@@ -7,6 +7,7 @@ import {
   fetchDistrictCounts,
   fetchLatestEventDate,
   fetchStopCount,
+  fetchStopLocations,
   fetchVehicleGroups,
   isValidRange,
   vehicleCoverage
@@ -193,6 +194,55 @@ describe('fetchDistrictCounts', () => {
       { district: '3', count: 10372 },
       { district: '4', count: 1290 }
     ])
+  })
+})
+
+describe('fetchStopLocations', () => {
+  const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 9) }
+
+  it('selects the coordinate and address, not district', async () => {
+    // district deliberately isn't selected here — see the comment in
+    // fetchStopLocations for why. DistrictMap determines a location's
+    // district by testing its coordinate against the real boundary
+    // polygons instead; see locationsInDistrict in districtBoundaries.ts.
+    const { requestedUrl } = stubFetch([])
+    await fetchStopLocations(range)
+    expect(requestedUrl().searchParams.get('$select')).toBe(
+      'latitude, longitude, count(*) as total, max(blockaddress) as address'
+    )
+  })
+
+  it('excludes a location isolated from every other coordinate sharing its address', async () => {
+    stubFetch([
+      // Real shape: a tight cluster plus one coordinate far from the rest,
+      // all under the identical recorded address.
+      {
+        latitude: '29.98648932',
+        longitude: '-90.11049034',
+        total: '5',
+        address: '053XX Canal Blvd'
+      },
+      {
+        latitude: '29.98648391',
+        longitude: '-90.11048482',
+        total: '4',
+        address: '053XX Canal Blvd'
+      },
+      { latitude: '29.3904016', longitude: '-90.18598483', total: '2', address: '053XX Canal Blvd' }
+    ])
+    const { locations, addressInconsistentCount } = await fetchStopLocations(range)
+    expect(locations).toHaveLength(2)
+    expect(locations.every((location) => location.address === '053XX Canal Blvd')).toBe(true)
+    expect(addressInconsistentCount).toBe(2)
+  })
+
+  it('reports no exclusions when every location is self-consistent', async () => {
+    stubFetch([
+      { latitude: '29.95', longitude: '-90.07', total: '4', address: 'Canal St & N Rampart St' }
+    ])
+    const { locations, addressInconsistentCount } = await fetchStopLocations(range)
+    expect(locations).toHaveLength(1)
+    expect(addressInconsistentCount).toBe(0)
   })
 })
 

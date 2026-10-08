@@ -7,13 +7,13 @@
  * discovered with a live query the way the original app did it.
  */
 import { NAlert, NConfigProvider, NSpin, darkTheme, type GlobalThemeOverrides } from 'naive-ui'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import AboutPanel from '@/components/AboutPanel.vue'
 import DateRangeFilter from '@/components/DateRangeFilter.vue'
 import DateRangePresets from '@/components/DateRangePresets.vue'
 import DistrictBreakdown from '@/components/DistrictBreakdown.vue'
-import StopMap from '@/components/StopMap.vue'
+import DistrictMap from '@/components/DistrictMap.vue'
 import StopsOverTimeSparkline from '@/components/StopsOverTimeSparkline.vue'
 import StopTotal from '@/components/StopTotal.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
@@ -21,7 +21,6 @@ import { useStopData } from '@/composables/useStopData'
 import { withBase } from '@/lib/basePath'
 import { endOfMonth, startOfMonth, today } from '@/lib/dates'
 import { loadSnapshot, type DataSnapshot } from '@/lib/snapshot'
-import { isLocationCoverageReliable } from '@/lib/stopLocations'
 import type { DateRange } from '@/lib/stops'
 
 /** Maps the project's palette onto naive-ui's dark theme. */
@@ -47,16 +46,16 @@ const snapshot = ref<DataSnapshot | null>(null)
  */
 const range = ref<DateRange | null>(null)
 
-const { count, vehicleGroups, stopLocations, locationsTruncated, districtCounts, loading, error } =
-  useStopData(range, snapshot)
-
-/**
- * Whether the intersection map is worth showing for the current range.
- * `district` carries the "where" question dataset-wide, so the map only adds
- * something once this range's own coordinates clear
- * `LOCATION_COVERAGE_THRESHOLD` — see `src/lib/stopLocations.ts`.
- */
-const showMap = computed(() => isLocationCoverageReliable(count.value, stopLocations.value))
+const {
+  count,
+  vehicleGroups,
+  stopLocations,
+  locationsTruncated,
+  addressInconsistentCount,
+  districtCounts,
+  loading,
+  error
+} = useStopData(range, snapshot)
 
 onMounted(async () => {
   try {
@@ -121,15 +120,15 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
         <DistrictBreakdown
           :district-counts="districtCounts"
           :range-total="count"
-          :map-shown="showMap"
           :loading="loading"
         />
 
-        <StopMap
-          v-if="showMap"
-          :locations="stopLocations"
+        <DistrictMap
+          :district-counts="districtCounts"
           :range-total="count"
-          :truncated="locationsTruncated"
+          :locations="stopLocations"
+          :locations-truncated="locationsTruncated"
+          :address-inconsistent-count="addressInconsistentCount"
           :loading="loading"
         />
 

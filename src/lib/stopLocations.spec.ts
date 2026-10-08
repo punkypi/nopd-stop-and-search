@@ -3,12 +3,17 @@ import { describe, expect, it } from 'vitest'
 import {
   boundingBox,
   buildStopLocation,
+  consistentLocations,
   escapeHtml,
   hasUsableCoordinates,
+  inconsistentAddressLocations,
+  isLegibleDensity,
   isLocationCoverageReliable,
   locatedShare,
   markerRadius,
   maxStopCount,
+  MAX_ADDRESS_COORDINATE_SPREAD_METERS,
+  MAX_LEGIBLE_LOCATIONS,
   MAX_MARKER_RADIUS,
   MIN_BOUNDS_SPAN,
   MIN_MARKER_RADIUS,
@@ -18,8 +23,8 @@ import {
   type StopLocation
 } from './stopLocations'
 
-function location(latitude: number, longitude: number, count = 1): StopLocation {
-  return { latitude, longitude, count, address: '' }
+function location(latitude: number, longitude: number, count = 1, address = ''): StopLocation {
+  return { latitude, longitude, count, address }
 }
 
 describe('hasUsableCoordinates', () => {
@@ -146,6 +151,73 @@ describe('locatedShare and isLocationCoverageReliable', () => {
   })
 })
 
+describe('isLegibleDensity', () => {
+  it('passes at and below the cap, fails above it', () => {
+    const atCap = Array.from({ length: MAX_LEGIBLE_LOCATIONS }, (_, i) => location(29.9 + i, -90.1))
+    const overCap = [...atCap, location(30.5, -89.6)]
+    expect(isLegibleDensity(atCap)).toBe(true)
+    expect(isLegibleDensity(overCap)).toBe(false)
+  })
+
+  it('passes an empty set', () => {
+    expect(isLegibleDensity([])).toBe(true)
+  })
+})
+
+describe('consistentLocations and inconsistentAddressLocations', () => {
+  it('uses a 200m spread as the isolation threshold', () => {
+    expect(MAX_ADDRESS_COORDINATE_SPREAD_METERS).toBe(200)
+  })
+
+  // Real measured example: "053XX Canal Blvd" has 9 coordinates clustered
+  // within ~165m of each other (snapping variance within the real block) and
+  // one at (29.390, -90.186) — in Lafourche Parish, nowhere near Canal
+  // Blvd — about 65km from the rest. Only the outlier is isolated from every
+  // one of its own address-siblings; the cluster stays, because each of
+  // those locations has at least one sibling within the threshold.
+  const canalBlvdNear1 = location(29.98648932, -90.11049034, 5, '053XX Canal Blvd')
+  const canalBlvdNear2 = location(29.98648391, -90.11048482, 4, '053XX Canal Blvd')
+  const canalBlvdNear3 = location(29.98774731, -90.1095948, 1, '053XX Canal Blvd')
+  const canalBlvdOutlier = location(29.39040158, -90.18598483, 2, '053XX Canal Blvd')
+
+  it('keeps every location in a tight real cluster', () => {
+    const cluster = [canalBlvdNear1, canalBlvdNear2, canalBlvdNear3]
+    expect(consistentLocations(cluster)).toEqual(cluster)
+    expect(inconsistentAddressLocations(cluster)).toEqual([])
+  })
+
+  it('excludes only the one real location isolated from all its own siblings', () => {
+    const all = [canalBlvdNear1, canalBlvdNear2, canalBlvdNear3, canalBlvdOutlier]
+    expect(consistentLocations(all)).toEqual([canalBlvdNear1, canalBlvdNear2, canalBlvdNear3])
+    expect(inconsistentAddressLocations(all)).toEqual([canalBlvdOutlier])
+  })
+
+  it('keeps a same-block pair under the threshold', () => {
+    // ~80m apart, well inside a single New Orleans block.
+    const a = location(29.95, -90.07, 3, 'Canal St & N Rampart St')
+    const b = location(29.9507, -90.07, 2, 'Canal St & N Rampart St')
+    expect(consistentLocations([a, b])).toEqual([a, b])
+  })
+
+  it('flags a pair comfortably past the threshold', () => {
+    const a = location(29.95, -90.07, 1, 'Test St & Example Ave')
+    // ~250m north of `a`, safely past MAX_ADDRESS_COORDINATE_SPREAD_METERS.
+    const b = location(29.95 + 250 / 111_320, -90.07, 1, 'Test St & Example Ave')
+    expect(inconsistentAddressLocations([a, b])).toEqual([a, b])
+  })
+
+  it('never flags a location whose address appears only once', () => {
+    const lone = location(29.95, -90.07, 1, 'Only Here St & Nowhere Else Ave')
+    expect(consistentLocations([lone])).toEqual([lone])
+  })
+
+  it('never flags a location with no recorded address, and never cross-checks it against anything', () => {
+    const noAddress1 = location(29.95, -90.07, 1, '')
+    const noAddress2 = location(40.0, -100.0, 1, '') // wildly far, but address is blank
+    expect(consistentLocations([noAddress1, noAddress2])).toEqual([noAddress1, noAddress2])
+  })
+})
+
 describe('boundingBox', () => {
   it('returns null when there is nothing to frame', () => {
     expect(boundingBox([])).toBeNull()
@@ -179,6 +251,27 @@ describe('boundingBox', () => {
     expect(south).toBe(29.9)
     expect(north).toBe(30.0)
     expect(east - west).toBeCloseTo(MIN_BOUNDS_SPAN, 10)
+  })
+
+  it('excludes a real but distant outlier from the default framing', () => {
+    // Measured live: downtown core stops vastly outweigh a real I-10 ramp
+    // near the Twin Span, which still gets a circle but shouldn't set the zoom.
+    const core = [
+      location(29.95, -90.07, 9000),
+      location(29.97, -90.06, 5000),
+      location(29.93, -90.08, 4000)
+    ]
+    const outlier = location(30.3, -89.6, 357) // near the Twin Span, miles from downtown
+    const trimmed = boundingBox(core)!
+    const withOutlier = boundingBox([...core, outlier])!
+    expect(withOutlier).toEqual(trimmed)
+  })
+
+  it('includes an outlier once it is large enough to break the coverage share', () => {
+    const core = [location(29.95, -90.07, 100)]
+    const bigOutlier = location(30.3, -89.6, 900) // alone is over 1 - CORE_COVERAGE_SHARE of the total
+    const [, [, east]] = boundingBox([...core, bigOutlier])!
+    expect(east).toBeCloseTo(-89.6, 5)
   })
 })
 

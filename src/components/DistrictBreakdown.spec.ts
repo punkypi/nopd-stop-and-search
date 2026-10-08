@@ -18,7 +18,7 @@ function normalisedText(wrapper: ReturnType<typeof mount>): string {
 
 function mountBreakdown(props: Partial<InstanceType<typeof DistrictBreakdown>['$props']> = {}) {
   return mount(DistrictBreakdown, {
-    props: { districtCounts: DISTRICTS, rangeTotal: 30392, mapShown: true, ...props }
+    props: { districtCounts: DISTRICTS, rangeTotal: 30392, ...props }
   })
 }
 
@@ -49,17 +49,9 @@ describe('DistrictBreakdown', () => {
     wrapper.unmount()
   })
 
-  it('explains districts as a companion to the map when the map is also shown', () => {
-    const wrapper = mountBreakdown({ mapShown: true })
-    expect(normalisedText(wrapper)).toContain('companion to the map below')
-    wrapper.unmount()
-  })
-
-  it('explains districts as the reason the map is absent when it is not shown', () => {
-    const wrapper = mountBreakdown({ mapShown: false })
-    const text = normalisedText(wrapper)
-    expect(text).toContain("map isn't shown for it")
-    expect(text).not.toContain('companion to the map below')
+  it('points to the map below for shape and intersection-level detail', () => {
+    const wrapper = mountBreakdown()
+    expect(normalisedText(wrapper)).toContain('map below')
     wrapper.unmount()
   })
 

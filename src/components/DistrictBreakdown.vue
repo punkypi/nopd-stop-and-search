@@ -21,8 +21,6 @@ import type { DistrictCount } from '@/lib/stops'
 const props = defineProps<{
   districtCounts: readonly DistrictCount[]
   rangeTotal: number | null
-  /** Whether `StopMap` is also rendering for this range — changes which caption shows. */
-  mapShown: boolean
   loading?: boolean
 }>()
 
@@ -73,14 +71,9 @@ function shareOfRange(count: number): string {
       </div>
 
       <p class="text-nola-muted pt-3 text-xs">
-        <template v-if="mapShown">
-          Every stop is assigned a district regardless of whether its exact location was recorded,
-          which is a coarser but always-available companion to the map below.
-        </template>
-        <template v-else>
-          Most of this range's stops don't have a precise recorded location, so the map isn't shown
-          for it — district is recorded for every stop regardless, and is shown here instead.
-        </template>
+        Every stop is assigned a district regardless of whether its exact location was recorded. The
+        map below shows these same numbers by shape, and lets you click into a district for its own
+        intersection-level locations when this range has enough of them recorded.
       </p>
     </div>
   </section>

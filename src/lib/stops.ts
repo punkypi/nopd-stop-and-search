@@ -16,7 +16,14 @@
 
 import { compare, fromSocrataTimestamp, isValid, toSoQLTimestamp, type CalendarDay } from './dates'
 import { runQuery, type SocrataOptions } from './socrata'
-import { buildStopLocation, NOLA_BOUNDS, type StopLocation } from './stopLocations'
+import {
+  buildStopLocation,
+  consistentLocations,
+  inconsistentAddressLocations,
+  NOLA_BOUNDS,
+  totalPlottedStops,
+  type StopLocation
+} from './stopLocations'
 
 /**
  * Upper bound on distinct make/model pairs returned in one page. The original
@@ -204,6 +211,9 @@ export interface StopLocationsResult {
   locations: StopLocation[]
   /** True when `MAX_LOCATIONS` was reached and the quietest coordinates were dropped. */
   truncated: boolean
+  /** Stops excluded because their own recorded address disagreed with itself
+   *  about where it is — see `consistentLocations` in `stopLocations.ts`. */
+  addressInconsistentCount: number
 }
 
 /**
@@ -228,6 +238,16 @@ function coordinateWhere(): string {
  * rows instead of ~350. `max(blockaddress)` supplies the popup label: a coordinate
  * occasionally carries two spellings of the same corner, and `max` picks one of
  * them deterministically instead of splitting the point into two circles.
+ *
+ * Deliberately does not select `district`. An earlier version of this query
+ * added `max(district) as district` so the map could filter a range's
+ * locations down to one district without a second query — but `max()` picks
+ * whichever district value sorts highest among the stops at a coordinate, not
+ * the one most of them agree on, and one stray stop could flip an entire
+ * busy intersection to the wrong district. `DistrictMap.vue` now determines
+ * district membership by checking each location's coordinate against the
+ * real boundary polygon instead — see `locationsInDistrict` in
+ * `src/lib/districtBoundaries.ts`.
  */
 export async function fetchStopLocations(
   range: DateRange,
@@ -250,14 +270,18 @@ export async function fetchStopLocations(
     options
   )
 
-  const truncated = rows.length > MAX_LOCATIONS
-  const kept = truncated ? rows.slice(0, MAX_LOCATIONS) : rows
-
-  const locations = kept
+  const built = rows
     .map((row) =>
       buildStopLocation(row.latitude ?? '', row.longitude ?? '', row.total ?? '', row.address)
     )
     .filter((location): location is StopLocation => location !== null)
 
-  return { locations, truncated }
+  const addressInconsistentCount = totalPlottedStops(inconsistentAddressLocations(built))
+  // SoQL already returned rows ordered busiest-first; filtering preserves
+  // that order, so truncating afterward still keeps the busiest survivors.
+  const consistent = consistentLocations(built)
+  const truncated = consistent.length > MAX_LOCATIONS
+  const locations = truncated ? consistent.slice(0, MAX_LOCATIONS) : consistent
+
+  return { locations, truncated, addressInconsistentCount }
 }
