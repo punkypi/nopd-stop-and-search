@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.3.1] - 2026-10-08
+
+### Fixed
+
+- The drill-down caption read "X of Y stops in District N have a recorded
+  location," implying X is a subset of Y. It isn't quite: measured on the
+  default range, 4.4% of located stops are recorded under one district but
+  geocode into a different district's shape (mostly a neighboring one, range
+  3.4%-7.2% per district). Nothing is lost to this — those stops still count
+  in the district's tabular total and still render as a circle under
+  whichever shape they actually fall in — but the caption now states both
+  figures as independent facts instead of implying one contains the other.
+
 ## [3.3.0] - 2026-10-08
 
 ### Added

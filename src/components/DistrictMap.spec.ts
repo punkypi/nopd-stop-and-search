@@ -157,8 +157,33 @@ describe('DistrictMap', () => {
     await flushPromises()
 
     expect(wrapper.findAll('path.stop-circle')).toHaveLength(2)
-    expect(normalisedText(wrapper)).toContain('District 3')
+    const text = normalisedText(wrapper)
+    expect(text).toContain('District 3')
     expect(wrapper.text()).toContain('Show all districts')
+    // Two independent statements, not an "X of Y" subset claim — a located
+    // stop here is one whose coordinate falls inside District 3's shape,
+    // which isn't exactly "District 3's own recorded stops" (see CLAUDE.md).
+    expect(text).toContain(
+      "101 stops have a recorded location within District 3's mapped shape, at 2 places."
+    )
+    expect(text).toContain('District 3 recorded 10,372 stops here in total.')
+    expect(text).not.toContain('101 of 10,372')
+    wrapper.unmount()
+  })
+
+  it('omits the district-total sentence when no tabular total is known', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountMap({ districtCounts: [] })
+    await flushPromises()
+
+    await wrapper.find('path.district-3').trigger('click')
+    await flushPromises()
+
+    const text = normalisedText(wrapper)
+    expect(text).toContain(
+      "101 stops have a recorded location within District 3's mapped shape, at 2 places."
+    )
+    expect(text).not.toContain('recorded here in total')
     wrapper.unmount()
   })
 

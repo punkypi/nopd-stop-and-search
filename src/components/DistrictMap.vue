@@ -149,13 +149,19 @@ const caption = computed(() => {
   const placeNoun = places === 1 ? 'place' : 'places'
   const plotted = totalPlottedStops(detailLocations.value)
   const districtTotal = districtCountByDistrict.value.get(selectedDistrict.value) ?? 0
-  const base =
+  // Not phrased as "X of Y" — a located stop here is one whose coordinate
+  // falls inside this district's mapped shape, which isn't exactly the same
+  // set as "this district's own recorded stops": a few percent of stops
+  // recorded under one district geocode into a neighboring one instead (see
+  // CLAUDE.md). Both figures are real; neither is a subset of the other.
+  const base = `${numberFormat.format(plotted)} stops have a recorded location within District ${selectedDistrict.value}'s mapped shape, at ${numberFormat.format(places)} ${placeNoun}.`
+  const districtContext =
     districtTotal > 0
-      ? `${numberFormat.format(plotted)} of ${numberFormat.format(districtTotal)} stops in District ${selectedDistrict.value} have a recorded location, at ${numberFormat.format(places)} ${placeNoun}.`
-      : `${numberFormat.format(plotted)} stops at ${numberFormat.format(places)} ${placeNoun} in District ${selectedDistrict.value}.`
+      ? ` District ${selectedDistrict.value} recorded ${numberFormat.format(districtTotal)} stops here in total.`
+      : ''
   return props.locationsTruncated
-    ? `${base} Showing the busiest locations only; the quietest were left off.`
-    : base
+    ? `${base}${districtContext} Showing the busiest locations only; the quietest were left off.`
+    : `${base}${districtContext}`
 })
 
 /**
