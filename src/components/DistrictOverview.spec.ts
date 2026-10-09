@@ -1,13 +1,14 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
+import { calendarDay } from '@/lib/dates'
 import { MAX_LEGIBLE_LOCATIONS, type StopLocation } from '@/lib/stopLocations'
 import type { DistrictCount } from '@/lib/stops'
 
-import DistrictMap from './DistrictMap.vue'
+import DistrictOverview from './DistrictOverview.vue'
 
-/** Same lesson as StopMap.spec.ts: jsdom has no 2D canvas and does no layout,
- *  so the viewport is stubbed to make radii and hit-testing observable. */
+/** jsdom has no 2D canvas and does no layout, so the viewport is stubbed to
+ *  make radii and hit-testing observable — same lesson as the old StopMap. */
 const VIEWPORT = { width: 800, height: 600 }
 
 beforeAll(() => {
@@ -60,6 +61,8 @@ const DISTRICT_COUNTS: DistrictCount[] = [
   { district: '4', count: 1290 }
 ]
 
+const RANGE = { start: calendarDay(2024, 11, 11), end: calendarDay(2025, 11, 10) }
+
 // Both fall inside district 3's fixture square (centered at 30.0, -90.0,
 // half-size 0.01), so geometric filtering picks them up without needing a
 // tabular district field on the fixture.
@@ -84,7 +87,7 @@ function stubBoundaryFetch() {
       if (url.includes('nopd-districts.geojson')) {
         return new Response(JSON.stringify(BOUNDARIES), { status: 200 })
       }
-      throw new Error(`Unexpected fetch in DistrictMap test: ${url}`)
+      throw new Error(`Unexpected fetch in DistrictOverview test: ${url}`)
     })
   )
 }
@@ -93,14 +96,15 @@ function normalisedText(wrapper: ReturnType<typeof mount>): string {
   return wrapper.text().replace(/\s+/g, ' ')
 }
 
-function mountMap(props: Partial<InstanceType<typeof DistrictMap>['$props']> = {}) {
-  return mount(DistrictMap, {
+function mountOverview(props: Partial<InstanceType<typeof DistrictOverview>['$props']> = {}) {
+  return mount(DistrictOverview, {
     attachTo: document.body,
     props: {
       districtCounts: DISTRICT_COUNTS,
       // Matches the two fixture locations' combined count (100 + 1), so this
       // range clears LOCATION_COVERAGE_THRESHOLD and drilling in is offered.
       rangeTotal: 101,
+      range: RANGE,
       locations: [DISTRICT_3_LOCATION, DISTRICT_3_LOCATION_2],
       ...props
     }
@@ -112,10 +116,44 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-describe('DistrictMap', () => {
+describe('DistrictOverview', () => {
+  it('shows the headline count and date range', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+
+    const text = normalisedText(wrapper)
+    expect(text).toContain('101')
+    expect(text).toContain('November 11, 2024')
+    expect(text).toContain('November 10, 2025')
+    wrapper.unmount()
+  })
+
+  it('shows a dash for the count while it is unknown', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview({ rangeTotal: null })
+    await flushPromises()
+    expect(wrapper.text()).toContain('—')
+    wrapper.unmount()
+  })
+
+  it('lists every district in the floating panel, busiest first, with its share of the range', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview({ rangeTotal: 30392 })
+    await flushPromises()
+
+    const text = normalisedText(wrapper)
+    expect(text).toContain('District 3')
+    expect(text).toContain('10,372 (34.1%)')
+    expect(text).toContain('District 4')
+    expect(text).toContain('1,290 (4.2%)')
+    expect(text.indexOf('District 3')).toBeLessThan(text.indexOf('District 4'))
+    wrapper.unmount()
+  })
+
   it('draws one polygon per district, colored', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap()
+    const wrapper = mountOverview()
     await flushPromises()
 
     for (const district of DISTRICTS) {
@@ -130,19 +168,20 @@ describe('DistrictMap', () => {
     // that stretch toward the lake and the marsh. Color distinguishes them
     // at a glance; hovering gets the exact count.
     stubBoundaryFetch()
-    const wrapper = mountMap()
+    const wrapper = mountOverview()
     await flushPromises()
 
-    expect(normalisedText(wrapper)).not.toContain('10,372')
     await wrapper.find('path.district-3').trigger('mouseover')
     await flushPromises()
+    // Both the hover tooltip and the floating panel's bar list now show this
+    // number, so just confirm it renders at least once rather than counting.
     expect(normalisedText(wrapper)).toContain('10,372')
     wrapper.unmount()
   })
 
   it('invites a click when this range has reliable coordinates', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap()
+    const wrapper = mountOverview()
     await flushPromises()
     expect(normalisedText(wrapper)).toContain('Click a district')
     wrapper.unmount()
@@ -150,7 +189,7 @@ describe('DistrictMap', () => {
 
   it('drills into a district on click, showing its own circles', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap()
+    const wrapper = mountOverview()
     await flushPromises()
 
     await wrapper.find('path.district-3').trigger('click')
@@ -171,9 +210,23 @@ describe('DistrictMap', () => {
     wrapper.unmount()
   })
 
+  it('drills into a district when its bar in the floating panel is clicked, not just its shape on the map', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+
+    const districtButtons = wrapper.findAll('button').filter((b) => b.text().includes('District 3'))
+    expect(districtButtons).toHaveLength(1)
+    await districtButtons[0]!.trigger('click')
+    await flushPromises()
+
+    expect(wrapper.findAll('path.stop-circle')).toHaveLength(2)
+    wrapper.unmount()
+  })
+
   it('omits the district-total sentence when no tabular total is known', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap({ districtCounts: [] })
+    const wrapper = mountOverview({ districtCounts: [] })
     await flushPromises()
 
     await wrapper.find('path.district-3').trigger('click')
@@ -193,7 +246,7 @@ describe('DistrictMap', () => {
     // selected.
     stubBoundaryFetch()
     const farAway: StopLocation = { latitude: 0, longitude: 0, count: 1, address: 'Nowhere' }
-    const wrapper = mountMap({
+    const wrapper = mountOverview({
       locations: [DISTRICT_3_LOCATION, farAway],
       rangeTotal: DISTRICT_3_LOCATION.count + 1
     })
@@ -208,7 +261,7 @@ describe('DistrictMap', () => {
 
   it('returns to the overview when the selected district is clicked again', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap()
+    const wrapper = mountOverview()
     await flushPromises()
 
     await wrapper.find('path.district-3').trigger('click')
@@ -223,7 +276,7 @@ describe('DistrictMap', () => {
 
   it('stays in the overview and explains why when this range has no reliable coordinates', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap({ locations: [], rangeTotal: 62006 })
+    const wrapper = mountOverview({ locations: [], rangeTotal: 62006 })
     await flushPromises()
 
     await wrapper.find('path.district-3').trigger('click')
@@ -245,7 +298,7 @@ describe('DistrictMap', () => {
       count: 1,
       address: ''
     }))
-    const wrapper = mountMap({ locations: denseDistrict3, rangeTotal: denseDistrict3.length })
+    const wrapper = mountOverview({ locations: denseDistrict3, rangeTotal: denseDistrict3.length })
     await flushPromises()
 
     await wrapper.find('path.district-3').trigger('click')
@@ -258,7 +311,7 @@ describe('DistrictMap', () => {
 
   it('discloses when the busiest locations were shown in place of all of them', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap({ locationsTruncated: true })
+    const wrapper = mountOverview({ locationsTruncated: true })
     await flushPromises()
 
     await wrapper.find('path.district-3').trigger('click')
@@ -270,7 +323,7 @@ describe('DistrictMap', () => {
 
   it('discloses address-inconsistent exclusions regardless of whether a district is selected', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap({ addressInconsistentCount: 1094 })
+    const wrapper = mountOverview({ addressInconsistentCount: 1094 })
     await flushPromises()
 
     expect(normalisedText(wrapper)).toContain('1,094 located stops are left off')
@@ -279,7 +332,7 @@ describe('DistrictMap', () => {
 
   it('says nothing about address exclusions when there are none', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap({ addressInconsistentCount: 0 })
+    const wrapper = mountOverview({ addressInconsistentCount: 0 })
     await flushPromises()
 
     expect(normalisedText(wrapper)).not.toContain('left off')
@@ -288,7 +341,7 @@ describe('DistrictMap', () => {
 
   it('credits the basemap, as Esri requires', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap()
+    const wrapper = mountOverview()
     await flushPromises()
     const attribution = wrapper.element.querySelector('.leaflet-control-attribution')?.innerHTML
     expect(attribution).toContain('Esri')
@@ -297,7 +350,7 @@ describe('DistrictMap', () => {
 
   it('keeps implementation wording off the page', async () => {
     stubBoundaryFetch()
-    const wrapper = mountMap()
+    const wrapper = mountOverview()
     await flushPromises()
     const text = normalisedText(wrapper)
     expect(text).not.toMatch(/snapshot/i)

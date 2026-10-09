@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2026-10-09
+
+### Changed
+
+- Merged `StopTotal`, `DistrictBreakdown`, and `DistrictMap` — three separate
+  cards squeezed into the page's narrow column — into one
+  `DistrictOverview.vue`. It's the one panel that breaks out of `max-w-5xl`
+  to fill the full viewport width; the headline count and district bar list
+  float as an overlay on top of the map on wide screens (stacking in normal
+  flow below it on narrow ones) instead of sharing a column with it. A bar
+  in that panel is now clickable too, drilling into a district exactly like
+  clicking its shape on the map.
+- Moved the "About this data" panel up near the top of the page, right after
+  the header — it previously sat below everything else, after the vehicle
+  table, requiring a full scroll to reach what the data actually is.
+
 ## [3.3.1] - 2026-10-08
 
 ### Fixed

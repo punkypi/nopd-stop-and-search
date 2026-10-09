@@ -12,10 +12,8 @@ import { onMounted, ref } from 'vue'
 import AboutPanel from '@/components/AboutPanel.vue'
 import DateRangeFilter from '@/components/DateRangeFilter.vue'
 import DateRangePresets from '@/components/DateRangePresets.vue'
-import DistrictBreakdown from '@/components/DistrictBreakdown.vue'
-import DistrictMap from '@/components/DistrictMap.vue'
+import DistrictOverview from '@/components/DistrictOverview.vue'
 import StopsOverTimeSparkline from '@/components/StopsOverTimeSparkline.vue'
-import StopTotal from '@/components/StopTotal.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
 import { useStopData } from '@/composables/useStopData'
 import { withBase } from '@/lib/basePath'
@@ -77,80 +75,84 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
 
 <template>
   <NConfigProvider :theme="darkTheme" :theme-overrides="themeOverrides">
-    <div class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-5">
-      <header
-        class="border-nola-border bg-nola-surface flex flex-wrap items-center gap-x-4 gap-y-3 rounded-lg border px-4 py-3"
-      >
-        <h1 class="mr-auto flex items-center gap-2 text-lg font-semibold">
-          <img :src="headerIcon" alt="" class="h-6 w-6" width="24" height="24" />
-          NOLA Stop and Search Data
-        </h1>
+    <div class="flex flex-col gap-4 py-5">
+      <div class="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4">
+        <header
+          class="border-nola-border bg-nola-surface flex flex-wrap items-center gap-x-4 gap-y-3 rounded-lg border px-4 py-3"
+        >
+          <h1 class="mr-auto flex items-center gap-2 text-lg font-semibold">
+            <img :src="headerIcon" alt="" class="h-6 w-6" width="24" height="24" />
+            NOLA Stop and Search Data
+          </h1>
 
-        <DateRangeFilter
-          v-if="range"
-          :range="range"
-          :earliest="snapshot?.earliestEventDate ?? null"
-          :latest="snapshot?.latestEventDate ?? null"
-          @update:range="range = $event"
-        />
-      </header>
+          <DateRangeFilter
+            v-if="range"
+            :range="range"
+            :earliest="snapshot?.earliestEventDate ?? null"
+            :latest="snapshot?.latestEventDate ?? null"
+            @update:range="range = $event"
+          />
+        </header>
 
-      <NAlert v-if="error" type="warning" :bordered="false" title="Could not load this range">
-        {{ error }}
-      </NAlert>
+        <!-- What the data actually is, read before any number or chart —
+             moved here from the foot of the page so a first-time reader
+             doesn't have to scroll past everything else to find it. -->
+        <AboutPanel :snapshot="snapshot" />
 
-      <template v-if="range">
-        <StopsOverTimeSparkline
-          :yearly-counts="snapshot?.yearlyStopCounts ?? []"
-          :range="range"
-          :earliest="snapshot?.earliestEventDate ?? null"
-          :latest="snapshot?.latestEventDate ?? null"
-          @update:range="range = $event"
-        />
+        <NAlert v-if="error" type="warning" :bordered="false" title="Could not load this range">
+          {{ error }}
+        </NAlert>
 
-        <DateRangePresets
-          :range="range"
-          :earliest="snapshot?.earliestEventDate ?? null"
-          :latest="snapshot?.latestEventDate ?? null"
-          @update:range="range = $event"
-        />
+        <template v-if="range">
+          <StopsOverTimeSparkline
+            :yearly-counts="snapshot?.yearlyStopCounts ?? []"
+            :range="range"
+            :earliest="snapshot?.earliestEventDate ?? null"
+            :latest="snapshot?.latestEventDate ?? null"
+            @update:range="range = $event"
+          />
 
-        <StopTotal :count="count" :range="range" :loading="loading" />
+          <DateRangePresets
+            :range="range"
+            :earliest="snapshot?.earliestEventDate ?? null"
+            :latest="snapshot?.latestEventDate ?? null"
+            @update:range="range = $event"
+          />
+        </template>
 
-        <DistrictBreakdown
-          :district-counts="districtCounts"
-          :range-total="count"
-          :loading="loading"
-        />
-
-        <DistrictMap
-          :district-counts="districtCounts"
-          :range-total="count"
-          :locations="stopLocations"
-          :locations-truncated="locationsTruncated"
-          :address-inconsistent-count="addressInconsistentCount"
-          :loading="loading"
-        />
-
-        <VehicleGroupTable :vehicle-groups="vehicleGroups" :loading="loading" />
-      </template>
-
-      <div v-else class="flex justify-center py-16">
-        <NSpin size="large" />
+        <div v-else class="flex justify-center py-16">
+          <NSpin size="large" />
+        </div>
       </div>
 
-      <AboutPanel :snapshot="snapshot" />
+      <!-- Unrestricted width on purpose: this is the one panel that benefits
+           from real size. Everything else stays in the narrow column above
+           and below it. -->
+      <DistrictOverview
+        v-if="range"
+        :district-counts="districtCounts"
+        :range-total="count"
+        :range="range"
+        :locations="stopLocations"
+        :locations-truncated="locationsTruncated"
+        :address-inconsistent-count="addressInconsistentCount"
+        :loading="loading"
+      />
 
-      <footer class="text-nola-muted pb-2 text-center text-xs">
-        Public data, presented without warranty. Counts reflect what was reported to
-        <a
-          href="https://data.nola.gov"
-          class="underline decoration-dotted"
-          rel="noreferrer"
-          target="_blank"
-          >Data.NOLA.gov</a
-        >.
-      </footer>
+      <div class="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4">
+        <VehicleGroupTable v-if="range" :vehicle-groups="vehicleGroups" :loading="loading" />
+
+        <footer class="text-nola-muted pb-2 text-center text-xs">
+          Public data, presented without warranty. Counts reflect what was reported to
+          <a
+            href="https://data.nola.gov"
+            class="underline decoration-dotted"
+            rel="noreferrer"
+            target="_blank"
+            >Data.NOLA.gov</a
+          >.
+        </footer>
+      </div>
     </div>
   </NConfigProvider>
 </template>

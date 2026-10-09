@@ -190,12 +190,10 @@ describe('App', () => {
     await flushPromises()
 
     const text = wrapper.text()
-    // DistrictBreakdown, always shown.
-    expect(text).toContain('By District')
+    // DistrictOverview's bar list, always shown.
     expect(text).toContain('District 3')
-    // DistrictMap, always shown too — the fixture's default range is
-    // well-located (28,828 of 30,392), so it invites drilling in.
-    expect(text).toContain('Where Stops Happened')
+    // The fixture's default range is well-located (28,828 of 30,392), so
+    // the merged panel invites drilling in.
     expect(text).toContain('Click a district')
 
     wrapper.unmount()
@@ -203,11 +201,14 @@ describe('App', () => {
 
   it('shows the district breakdown and explains why drilling in is unavailable when a live range has little location data', async () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
-      const url = new URL(String(input))
-      if (url.pathname.includes('snapshot.json')) {
+      const url = String(input)
+      if (url.includes('snapshot.json')) {
         return new Response('missing', { status: 404 })
       }
-      const select = url.searchParams.get('$select') ?? ''
+      if (url.includes('nopd-districts.geojson')) {
+        return new Response(JSON.stringify(DISTRICT_BOUNDARIES_FIXTURE), { status: 200 })
+      }
+      const select = new URL(url).searchParams.get('$select') ?? ''
       // Mirrors 2010 live: 62,006 stops, 1 located, a real district spread.
       if (select.startsWith('count(*)')) return new Response(JSON.stringify([{ total: '62006' }]))
       if (select.startsWith('latitude')) {
@@ -228,10 +229,8 @@ describe('App', () => {
     await flushPromises()
 
     const text = wrapper.text()
-    expect(text).toContain('By District')
     expect(text).toContain('District 8')
-    // The map still renders, choropleth-only, with the reason drilling in isn't offered.
-    expect(text).toContain('Where Stops Happened')
+    // The choropleth still renders, with the reason drilling in isn't offered.
     expect(text).toContain("aren't recorded reliably enough")
 
     wrapper.unmount()
