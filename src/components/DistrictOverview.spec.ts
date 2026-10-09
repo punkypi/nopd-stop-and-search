@@ -1,9 +1,10 @@
 import { flushPromises, mount } from '@vue/test-utils'
+import { NSelect } from 'naive-ui'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { calendarDay } from '@/lib/dates'
 import { MAX_LEGIBLE_LOCATIONS, type StopLocation } from '@/lib/stopLocations'
-import type { DistrictCount } from '@/lib/stops'
+import type { DistrictCount, DistrictStopTypeCount } from '@/lib/stops'
 
 import DistrictOverview from './DistrictOverview.vue'
 
@@ -61,6 +62,31 @@ const DISTRICT_COUNTS: DistrictCount[] = [
   { district: '4', count: 1290 }
 ]
 
+// Measured live, default range: District 8's Criminal Violation share
+// (6.38%) is 4.5x-45x every other district's. District 8 isn't in
+// DISTRICT_COUNTS above, but the stop-type composition computations key off
+// districtCounts for their denominators, so this fixture alone wouldn't move
+// District 8 — the composition-mode tests build their own prop override.
+const DISTRICT_STOP_TYPE_COUNTS: DistrictStopTypeCount[] = [
+  { district: '3', description: 'TRAFFIC VIOLATION', count: 9970 },
+  { district: '7', description: 'TRAFFIC VIOLATION', count: 3683 },
+  { district: '4', description: 'TRAFFIC VIOLATION', count: 1075 },
+  { district: '3', description: 'CRIMINAL VIOLATION', count: 15 },
+  { district: '7', description: 'CRIMINAL VIOLATION', count: 22 },
+  { district: '4', description: 'CRIMINAL VIOLATION', count: 3 }
+]
+
+// District 8 isn't in DISTRICT_COUNTS/DISTRICT_STOP_TYPE_COUNTS above — those
+// predate this feature and other tests already key off them. Added here only
+// for the tests that need the real outlier finding (6.38% vs <=1.42%
+// everywhere else), matching the live numbers in App.spec.ts's SNAPSHOT.
+const DISTRICT_COUNTS_WITH_8: DistrictCount[] = [...DISTRICT_COUNTS, { district: '8', count: 3135 }]
+const DISTRICT_STOP_TYPE_COUNTS_WITH_8: DistrictStopTypeCount[] = [
+  ...DISTRICT_STOP_TYPE_COUNTS,
+  { district: '8', description: 'TRAFFIC VIOLATION', count: 2504 },
+  { district: '8', description: 'CRIMINAL VIOLATION', count: 200 }
+]
+
 const RANGE = { start: calendarDay(2024, 11, 11), end: calendarDay(2025, 11, 10) }
 
 // Both fall inside district 3's fixture square (centered at 30.0, -90.0,
@@ -101,6 +127,7 @@ function mountOverview(props: Partial<InstanceType<typeof DistrictOverview>['$pr
     attachTo: document.body,
     props: {
       districtCounts: DISTRICT_COUNTS,
+      districtStopTypeCounts: DISTRICT_STOP_TYPE_COUNTS,
       // Matches the two fixture locations' combined count (100 + 1), so this
       // range clears LOCATION_COVERAGE_THRESHOLD and drilling in is offered.
       rangeTotal: 101,
@@ -109,6 +136,12 @@ function mountOverview(props: Partial<InstanceType<typeof DistrictOverview>['$pr
       ...props
     }
   })
+}
+
+async function switchToComposition(wrapper: ReturnType<typeof mount>) {
+  const button = wrapper.findAll('button').find((b) => b.text() === 'By Stop Type')
+  await button!.trigger('click')
+  await flushPromises()
 }
 
 afterEach(() => {
@@ -345,6 +378,72 @@ describe('DistrictOverview', () => {
     await flushPromises()
     const attribution = wrapper.element.querySelector('.leaflet-control-attribution')?.innerHTML
     expect(attribution).toContain('Esri')
+    wrapper.unmount()
+  })
+
+  it('defaults the stop-type dropdown to the busiest category once switched to composition mode', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+    await switchToComposition(wrapper)
+
+    // Traffic violation outnumbers criminal violation across these fixtures
+    // (14,728 vs 40 total), so it's the sensible thing to show first.
+    expect(normalisedText(wrapper)).toContain('Traffic violation')
+    wrapper.unmount()
+  })
+
+  it('re-ranks the bar list by share and labels it with a percentage in composition mode', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview({
+      districtCounts: DISTRICT_COUNTS_WITH_8,
+      districtStopTypeCounts: DISTRICT_STOP_TYPE_COUNTS_WITH_8
+    })
+    await flushPromises()
+    await switchToComposition(wrapper)
+
+    const text = normalisedText(wrapper)
+    // Traffic violation's share of each district's own stops: District 3 is
+    // highest (96.1%), District 8 lowest (79.9%) — the opposite order from
+    // the raw count ranking, where District 3 also leads but District 7
+    // outranks District 4 by volume rather than by share.
+    expect(text).toContain('96.1% (9,970 stops)')
+    expect(text.indexOf('District 3')).toBeLessThan(text.indexOf('District 8'))
+    wrapper.unmount()
+  })
+
+  it('surfaces the criminal-violation outlier when the stop type is switched', async () => {
+    // The real finding that motivated this feature: District 8's criminal
+    // violation share (6.38%) dwarfs every other district's (<=1.42%). This
+    // is invisible in count mode and invisible with traffic violation
+    // selected — it only shows up once a viewer picks this specific category.
+    stubBoundaryFetch()
+    const wrapper = mountOverview({
+      districtCounts: DISTRICT_COUNTS_WITH_8,
+      districtStopTypeCounts: DISTRICT_STOP_TYPE_COUNTS_WITH_8
+    })
+    await flushPromises()
+    await switchToComposition(wrapper)
+
+    await wrapper.findComponent(NSelect).vm.$emit('update:value', 'CRIMINAL VIOLATION')
+    await flushPromises()
+
+    const text = normalisedText(wrapper)
+    expect(text).toContain('6.4% (200 stops)')
+    expect(text.indexOf('District 8')).toBeLessThan(text.indexOf('District 3'))
+    expect(text.indexOf('District 8')).toBeLessThan(text.indexOf('District 4'))
+    wrapper.unmount()
+  })
+
+  it('shows a share on hover, not a count, once in composition mode', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+    await switchToComposition(wrapper)
+
+    await wrapper.find('path.district-3').trigger('mouseover')
+    await flushPromises()
+    expect(normalisedText(wrapper)).toContain('96.1%')
     wrapper.unmount()
   })
 

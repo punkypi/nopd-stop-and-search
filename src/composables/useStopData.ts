@@ -18,12 +18,14 @@ import { isSameRange, type DataSnapshot } from '@/lib/snapshot'
 import type { StopLocation } from '@/lib/stopLocations'
 import {
   fetchDistrictCounts,
+  fetchDistrictStopTypeCounts,
   fetchStopCount,
   fetchStopLocations,
   fetchVehicleGroups,
   isValidRange,
   type DateRange,
   type DistrictCount,
+  type DistrictStopTypeCount,
   type VehicleGroup
 } from '@/lib/stops'
 
@@ -34,6 +36,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
   const locationsTruncated = ref(false)
   const addressInconsistentCount = ref(0)
   const districtCounts = shallowRef<DistrictCount[]>([])
+  const districtStopTypeCounts = shallowRef<DistrictStopTypeCount[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -53,6 +56,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       locationsTruncated.value = baked.defaultRangeLocationsTruncated ?? false
       addressInconsistentCount.value = baked.defaultRangeAddressInconsistentCount ?? 0
       districtCounts.value = baked.defaultRangeDistrictCounts ?? []
+      districtStopTypeCounts.value = baked.defaultRangeDistrictStopTypeCounts ?? []
       loading.value = false
       error.value = null
       return
@@ -64,12 +68,14 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     error.value = null
 
     try {
-      const [nextCount, nextGroups, nextLocations, nextDistricts] = await Promise.all([
-        fetchStopCount(current, { signal: controller.signal }),
-        fetchVehicleGroups(current, { signal: controller.signal }),
-        fetchStopLocations(current, { signal: controller.signal }),
-        fetchDistrictCounts(current, { signal: controller.signal })
-      ])
+      const [nextCount, nextGroups, nextLocations, nextDistricts, nextDistrictStopTypes] =
+        await Promise.all([
+          fetchStopCount(current, { signal: controller.signal }),
+          fetchVehicleGroups(current, { signal: controller.signal }),
+          fetchStopLocations(current, { signal: controller.signal }),
+          fetchDistrictCounts(current, { signal: controller.signal }),
+          fetchDistrictStopTypeCounts(current, { signal: controller.signal })
+        ])
       // A newer range superseded this one mid-flight; discard the result.
       if (controller.signal.aborted) return
       count.value = nextCount
@@ -78,6 +84,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       locationsTruncated.value = nextLocations.truncated
       addressInconsistentCount.value = nextLocations.addressInconsistentCount
       districtCounts.value = nextDistricts
+      districtStopTypeCounts.value = nextDistrictStopTypes
     } catch (cause) {
       if (controller.signal.aborted) return
       error.value = cause instanceof Error ? cause.message : 'Could not load data'
@@ -87,6 +94,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       locationsTruncated.value = false
       addressInconsistentCount.value = 0
       districtCounts.value = []
+      districtStopTypeCounts.value = []
     } finally {
       if (inFlight === controller) {
         inFlight = null
@@ -115,6 +123,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     locationsTruncated: readonly(locationsTruncated),
     addressInconsistentCount: readonly(addressInconsistentCount),
     districtCounts,
+    districtStopTypeCounts,
     loading: readonly(loading),
     error: readonly(error)
   }

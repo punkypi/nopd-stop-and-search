@@ -45,6 +45,14 @@ const SNAPSHOT: DataSnapshot = {
     { district: '5', count: 2113 },
     { district: '4', count: 1290 }
   ],
+  // Measured live, default range: District 8's Criminal Violation share
+  // (6.38%) is 4.5x-45x every other district's — the finding that motivated
+  // the map's composition coloring mode.
+  defaultRangeDistrictStopTypeCounts: [
+    { district: '3', description: 'TRAFFIC VIOLATION', count: 9970 },
+    { district: '8', description: 'TRAFFIC VIOLATION', count: 2504 },
+    { district: '8', description: 'CRIMINAL VIOLATION', count: 200 }
+  ],
   // Sparse, as the real baked data is — 1992-1998 absent rather than zero.
   // locatedCount mirrors the real pattern too: coordinates aren't reliable
   // until 2018, so 2010's count is real but its located share is a sliver.

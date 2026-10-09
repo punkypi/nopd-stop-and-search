@@ -18,7 +18,7 @@
  */
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { NButton, NSpin } from 'naive-ui'
+import { NButton, NSelect, NSpin } from 'naive-ui'
 import { computed, onBeforeUnmount, onMounted, ref, shallowRef, useTemplateRef, watch } from 'vue'
 
 import { MAX_NATIVE_ZOOM, TILE_ATTRIBUTION, TILE_URL } from '@/lib/basemap'
@@ -40,10 +40,18 @@ import {
   totalPlottedStops,
   type StopLocation
 } from '@/lib/stopLocations'
-import type { DateRange, DistrictCount } from '@/lib/stops'
+import {
+  groupByDistrict,
+  type DateRange,
+  type DistrictCount,
+  type DistrictStopTypeCount
+} from '@/lib/stops'
 
 const props = defineProps<{
   districtCounts: readonly DistrictCount[]
+  /** Each district's own enforcement mix, not just its volume — backs the
+   *  map's composition coloring mode. */
+  districtStopTypeCounts: readonly DistrictStopTypeCount[]
   /** Stops in the range overall, including those with no recorded location. */
   rangeTotal: number | null
   range: DateRange
@@ -58,6 +66,10 @@ const props = defineProps<{
 
 const container = useTemplateRef<HTMLDivElement>('container')
 const selectedDistrict = ref<string | null>(null)
+/** `null` until a viewer picks one — `effectiveStopType` falls back to the
+ *  largest category so there's always something sensible to show. */
+const chosenStopType = ref<string | null>(null)
+const mode = ref<'count' | 'composition'>('count')
 // shallowRef, not ref: the fetched GeoJSON is immutable and never mutated in
 // place, but a deep ref() would recursively proxy every nested coordinate —
 // thousands of them across the 8 district polygons — and the point-in-polygon
@@ -97,10 +109,6 @@ const rangeLabel = computed(
   () => `${toDisplayString(props.range.start)} – ${toDisplayString(props.range.end)}`
 )
 
-const sortedDistrictCounts = computed(() =>
-  [...props.districtCounts].sort((a, b) => b.count - a.count)
-)
-
 const reliable = computed(() => isLocationCoverageReliable(props.rangeTotal, props.locations))
 
 const districtCountByDistrict = computed(() => {
@@ -113,16 +121,88 @@ const maxDistrictCount = computed(() =>
   props.districtCounts.reduce((highest, row) => Math.max(highest, row.count), 0)
 )
 
-function widthPercent(count: number): number {
-  if (maxDistrictCount.value <= 0) return 0
-  return (count / maxDistrictCount.value) * 100
-}
-
 function shareOfRange(count: number): string {
   const total = props.rangeTotal
   if (!total || total <= 0) return ''
   return `${((count / total) * 100).toFixed(1)}%`
 }
+
+const districtStopTypeMap = computed(() => groupByDistrict(props.districtStopTypeCounts))
+
+/** Distinct stop types present, ordered by total volume across all districts
+ *  descending, so the dropdown lists the biggest categories first. */
+const availableStopTypes = computed(() => {
+  const totals = new Map<string, number>()
+  for (const row of props.districtStopTypeCounts) {
+    totals.set(row.description, (totals.get(row.description) ?? 0) + row.count)
+  }
+  return [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([description]) => description)
+})
+
+const effectiveStopType = computed(
+  () => chosenStopType.value ?? availableStopTypes.value[0] ?? null
+)
+
+/** Sentence case, so the dropdown reads as prose rather than stored values —
+ *  matches `AboutPanel`'s treatment of the same field. */
+function stopTypeLabel(description: string): string {
+  if (!description) return 'Not recorded'
+  return description.charAt(0) + description.slice(1).toLowerCase()
+}
+const stopTypeOptions = computed(() =>
+  availableStopTypes.value.map((description) => ({
+    label: stopTypeLabel(description),
+    value: description
+  }))
+)
+
+/** Share of `district`'s own stops that are `effectiveStopType`, or 0 when
+ *  either is unknown — there's nothing to divide. */
+function shareFor(district: string): number {
+  const type = effectiveStopType.value
+  if (!type) return 0
+  const districtTotal = districtCountByDistrict.value.get(district) ?? 0
+  if (districtTotal <= 0) return 0
+  const typeCount = districtStopTypeMap.value.get(district)?.get(type) ?? 0
+  return typeCount / districtTotal
+}
+
+const maxShare = computed(() =>
+  props.districtCounts.reduce((highest, row) => Math.max(highest, shareFor(row.district)), 0)
+)
+
+/** The value and ceiling `districtStyle`/the tooltip/the bar list all key
+ *  off, so switching modes is a matter of swapping these two, not rewriting
+ *  the rendering logic underneath them. */
+function valueFor(district: string): number {
+  return mode.value === 'count'
+    ? (districtCountByDistrict.value.get(district) ?? 0)
+    : shareFor(district)
+}
+const maxValue = computed(() => (mode.value === 'count' ? maxDistrictCount.value : maxShare.value))
+
+function tooltipLabelFor(district: string): string {
+  return mode.value === 'count'
+    ? numberFormat.format(districtCountByDistrict.value.get(district) ?? 0)
+    : `${(shareFor(district) * 100).toFixed(1)}%`
+}
+
+/** One row per district, ranked and labeled for whichever mode is active. */
+const rankedDistrictRows = computed(() => {
+  const rows = props.districtCounts.map((row) => ({
+    district: row.district,
+    value: valueFor(row.district)
+  }))
+  rows.sort((a, b) => b.value - a.value)
+  return rows.map((row) => {
+    const barFraction = maxValue.value > 0 ? (row.value / maxValue.value) * 100 : 0
+    const trailingLabel =
+      mode.value === 'count'
+        ? `${numberFormat.format(row.value)} (${shareOfRange(row.value)})`
+        : `${(row.value * 100).toFixed(1)}% (${numberFormat.format(districtStopTypeMap.value.get(row.district)?.get(effectiveStopType.value ?? '') ?? 0)} stops)`
+    return { district: row.district, barFraction, trailingLabel }
+  })
+})
 
 const districtFeatureByDistrict = computed(() => {
   const map = new Map<string, DistrictBoundaryFeature>()
@@ -198,12 +278,11 @@ const addressInconsistencyNote = computed(() => {
 
 function districtStyle(feature?: GeoJSON.Feature): L.PathOptions {
   const district = String(feature?.properties?.district ?? '')
-  const count = districtCountByDistrict.value.get(district) ?? 0
   const isSelected = selectedDistrict.value === district
   const dimmed = selectedDistrict.value !== null && !isSelected
   return {
     className: `district-polygon district-${district}`,
-    fillColor: districtFillColor(count, maxDistrictCount.value),
+    fillColor: districtFillColor(valueFor(district), maxValue.value),
     // Faint on purpose once a district is selected, so the outlined district
     // and its circles stay the clear focus instead of competing with seven
     // other tinted shapes for attention.
@@ -218,8 +297,7 @@ function restyleDistricts() {
   districtLayer?.setStyle(districtStyle)
   districtLayer?.eachLayer((layer) => {
     const district = districtOf(layer)
-    const count = district ? (districtCountByDistrict.value.get(district) ?? 0) : 0
-    layer.setTooltipContent(numberFormat.format(count))
+    if (district) layer.setTooltipContent(tooltipLabelFor(district))
   })
 }
 
@@ -288,7 +366,7 @@ function buildDistrictLayer() {
       // labels for all 8 stack on top of each other and become unreadable.
       // Color alone still distinguishes them at a glance; hovering gets the
       // exact count.
-      layer.bindTooltip(numberFormat.format(districtCountByDistrict.value.get(district) ?? 0), {
+      layer.bindTooltip(tooltipLabelFor(district), {
         direction: 'center',
         className: 'district-count-label'
       })
@@ -334,6 +412,7 @@ onBeforeUnmount(() => {
 })
 
 watch(() => props.districtCounts, restyleDistricts)
+watch([mode, effectiveStopType], restyleDistricts)
 watch(selectedDistrict, () => {
   restyleDistricts()
   rebuildCircles()
@@ -365,16 +444,43 @@ watch(() => props.locations, rebuildCircles)
         </NButton>
       </div>
 
-      <div class="border-nola-border border-t pt-3">
+      <div class="border-nola-border flex items-center gap-2 border-t pt-3 pb-1">
+        <NButton
+          size="tiny"
+          :type="mode === 'count' ? 'primary' : 'default'"
+          quaternary
+          @click="mode = 'count'"
+        >
+          By Count
+        </NButton>
+        <NButton
+          size="tiny"
+          :type="mode === 'composition' ? 'primary' : 'default'"
+          quaternary
+          @click="mode = 'composition'"
+        >
+          By Stop Type
+        </NButton>
+      </div>
+      <NSelect
+        v-if="mode === 'composition'"
+        :value="effectiveStopType"
+        :options="stopTypeOptions"
+        size="small"
+        class="pb-2"
+        @update:value="chosenStopType = $event"
+      />
+
+      <div>
         <div
-          v-if="sortedDistrictCounts.length === 0 && !loading"
+          v-if="rankedDistrictRows.length === 0 && !loading"
           class="text-nola-muted py-4 text-center text-sm"
         >
           No stops recorded for this range.
         </div>
         <div v-else class="space-y-1.5">
           <button
-            v-for="row in sortedDistrictCounts"
+            v-for="row in rankedDistrictRows"
             :key="row.district"
             type="button"
             class="flex w-full items-center gap-2 text-left text-sm"
@@ -384,11 +490,11 @@ watch(() => props.locations, rebuildCircles)
             <div class="bg-nola-ink/40 h-3 flex-1 overflow-hidden rounded">
               <div
                 class="bg-nola-blue-bright h-full rounded"
-                :style="{ width: `${widthPercent(row.count)}%` }"
+                :style="{ width: `${row.barFraction}%` }"
               />
             </div>
-            <span class="tabular text-nola-muted w-24 shrink-0 text-right text-xs">
-              {{ numberFormat.format(row.count) }} ({{ shareOfRange(row.count) }})
+            <span class="tabular text-nola-muted w-28 shrink-0 text-right text-xs">
+              {{ row.trailingLabel }}
             </span>
           </button>
         </div>
@@ -403,12 +509,12 @@ watch(() => props.locations, rebuildCircles)
       </p>
 
       <div class="flex items-center gap-2 pt-3 text-xs">
-        <span class="text-nola-muted">Fewer stops</span>
+        <span class="text-nola-muted">{{ mode === 'count' ? 'Fewer stops' : 'Lower share' }}</span>
         <span
           class="h-2 w-16 rounded"
           style="background: linear-gradient(to right, #2185d0, #54c8ff)"
         />
-        <span class="text-nola-muted">More stops</span>
+        <span class="text-nola-muted">{{ mode === 'count' ? 'More stops' : 'Higher share' }}</span>
       </div>
 
       <p class="text-nola-muted pt-3 text-xs">

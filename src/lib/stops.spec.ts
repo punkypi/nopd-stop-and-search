@@ -5,10 +5,12 @@ import {
   buildDistrictCount,
   buildVehicleGroup,
   fetchDistrictCounts,
+  fetchDistrictStopTypeCounts,
   fetchLatestEventDate,
   fetchStopCount,
   fetchStopLocations,
   fetchVehicleGroups,
+  groupByDistrict,
   isValidRange,
   vehicleCoverage
 } from './stops'
@@ -194,6 +196,51 @@ describe('fetchDistrictCounts', () => {
       { district: '3', count: 10372 },
       { district: '4', count: 1290 }
     ])
+  })
+})
+
+describe('fetchDistrictStopTypeCounts', () => {
+  const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 9) }
+
+  it('groups server-side by district and stop type, busiest first within each district', async () => {
+    const { requestedUrl } = stubFetch([])
+    await fetchDistrictStopTypeCounts(range)
+    const params = requestedUrl().searchParams
+    expect(params.get('$select')).toBe('district, stopdescription, count(*) as total')
+    expect(params.get('$group')).toBe('district, stopdescription')
+    expect(params.get('$order')).toBe('district, total desc')
+  })
+
+  it('maps rows into district/stop-type counts', async () => {
+    // Measured live, current default range: District 8's Criminal Violation
+    // share (6.38%) is 4.5x-45x every other district's.
+    stubFetch([
+      { district: '8', stopdescription: 'TRAFFIC VIOLATION', total: '2504' },
+      { district: '8', stopdescription: 'CRIMINAL VIOLATION', total: '200' }
+    ])
+    const counts = await fetchDistrictStopTypeCounts(range)
+    expect(counts).toEqual([
+      { district: '8', description: 'TRAFFIC VIOLATION', count: 2504 },
+      { district: '8', description: 'CRIMINAL VIOLATION', count: 200 }
+    ])
+  })
+})
+
+describe('groupByDistrict', () => {
+  it('nests counts by district then stop-type description', () => {
+    const grouped = groupByDistrict([
+      { district: '8', description: 'TRAFFIC VIOLATION', count: 2504 },
+      { district: '8', description: 'CRIMINAL VIOLATION', count: 200 },
+      { district: '3', description: 'TRAFFIC VIOLATION', count: 9970 }
+    ])
+    expect(grouped.get('8')?.get('TRAFFIC VIOLATION')).toBe(2504)
+    expect(grouped.get('8')?.get('CRIMINAL VIOLATION')).toBe(200)
+    expect(grouped.get('3')?.get('TRAFFIC VIOLATION')).toBe(9970)
+    expect(grouped.get('3')?.get('CRIMINAL VIOLATION')).toBeUndefined()
+  })
+
+  it('handles an empty set', () => {
+    expect(groupByDistrict([]).size).toBe(0)
   })
 })
 

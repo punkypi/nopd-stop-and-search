@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2026-10-09
+
+### Added
+
+- The district map can now color by stop-type composition instead of raw
+  count — a toggle ("By Count" / "By Stop Type") below the headline count,
+  with a dropdown of stop types once "By Stop Type" is active. Traffic
+  violation's share of a district's own stops ranges from 79.9% (District 8)
+  to 96.1% (District 3); criminal violation tells a sharper story, with
+  District 8 at 6.38% against every other district's 0.14%-1.42%. Reuses the
+  same choropleth coloring and bar list the count mode already draws, just
+  fed a share instead of a count.
+
 ## [3.4.0] - 2026-10-09
 
 ### Changed

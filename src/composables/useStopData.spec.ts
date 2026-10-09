@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import { calendarDay } from '@/lib/dates'
 import type { DataSnapshot } from '@/lib/snapshot'
 import type { StopLocation } from '@/lib/stopLocations'
-import type { DateRange, DistrictCount, VehicleGroup } from '@/lib/stops'
+import type { DateRange, DistrictCount, DistrictStopTypeCount, VehicleGroup } from '@/lib/stops'
 
 import { useStopData } from './useStopData'
 
@@ -25,6 +25,11 @@ const BAKED_LOCATIONS: StopLocation[] = [
 const BAKED_DISTRICTS: DistrictCount[] = [
   { district: '3', count: 10372 },
   { district: '4', count: 1290 }
+]
+
+const BAKED_DISTRICT_STOP_TYPES: DistrictStopTypeCount[] = [
+  { district: '3', description: 'TRAFFIC VIOLATION', count: 9970 },
+  { district: '4', description: 'TRAFFIC VIOLATION', count: 1075 }
 ]
 
 function snapshotFixture(): DataSnapshot {
@@ -47,11 +52,13 @@ function snapshotFixture(): DataSnapshot {
     defaultRangeLocationsTruncated: false,
     defaultRangeAddressInconsistentCount: 0,
     defaultRangeDistrictCounts: BAKED_DISTRICTS,
+    defaultRangeDistrictStopTypeCounts: BAKED_DISTRICT_STOP_TYPES,
     yearlyStopCounts: [{ year: 2025, count: 26629, locatedCount: 25288 }]
   }
 }
 
-/** Responds to each of the four range queries — count, vehicles, locations, districts — with fixed values. */
+/** Responds to each of the five range queries — count, vehicles, locations,
+ *  districts, district/stop-type pairs — with fixed values. */
 function stubFetch() {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = new URL(String(input))
@@ -64,6 +71,10 @@ function stubFetch() {
         // Outside NOLA_BOUNDS: the ungeocoded placeholder, which must be dropped.
         { latitude: '0.0', longitude: '0.0', total: '3', address: '' }
       ]
+    }
+    // Checked before the plain "district" select — both start with that word.
+    else if (select.includes('stopdescription')) {
+      body = [{ district: '3', stopdescription: 'TRAFFIC VIOLATION', total: '10' }]
     } else if (select.startsWith('district')) body = [{ district: '3', total: '10' }]
     else body = [{ vehiclemake: 'FORD', vehiclemodel: 'F150', total: '7' }]
     return new Response(JSON.stringify(body), {
@@ -86,10 +97,8 @@ describe('useStopData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations, districtCounts, loading } = useStopData(
-      range,
-      snapshot
-    )
+    const { count, vehicleGroups, stopLocations, districtCounts, districtStopTypeCounts, loading } =
+      useStopData(range, snapshot)
     await flushPromises()
 
     expect(fetchMock).not.toHaveBeenCalled()
@@ -97,6 +106,7 @@ describe('useStopData', () => {
     expect(vehicleGroups.value).toEqual(BAKED_GROUPS)
     expect(stopLocations.value).toEqual(BAKED_LOCATIONS)
     expect(districtCounts.value).toEqual(BAKED_DISTRICTS)
+    expect(districtStopTypeCounts.value).toEqual(BAKED_DISTRICT_STOP_TYPES)
     expect(loading.value).toBe(false)
   })
 
@@ -105,7 +115,8 @@ describe('useStopData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations, districtCounts } = useStopData(range, snapshot)
+    const { count, vehicleGroups, stopLocations, districtCounts, districtStopTypeCounts } =
+      useStopData(range, snapshot)
     await flushPromises()
 
     range.value = { start: calendarDay(2025, 10, 1), end: calendarDay(2025, 10, 31) }
@@ -119,6 +130,9 @@ describe('useStopData', () => {
       { latitude: 29.95, longitude: -90.07, count: 4, address: 'Poydras St & S Peters St' }
     ])
     expect(districtCounts.value).toEqual([{ district: '3', count: 10 }])
+    expect(districtStopTypeCounts.value).toEqual([
+      { district: '3', description: 'TRAFFIC VIOLATION', count: 10 }
+    ])
   })
 
   it('queries live when no snapshot is available at all', async () => {
@@ -160,10 +174,8 @@ describe('useStopData', () => {
     })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, error, vehicleGroups, stopLocations, districtCounts } = useStopData(
-      range,
-      snapshot
-    )
+    const { count, error, vehicleGroups, stopLocations, districtCounts, districtStopTypeCounts } =
+      useStopData(range, snapshot)
     await flushPromises()
 
     expect(error.value).toBeTruthy()
@@ -171,6 +183,7 @@ describe('useStopData', () => {
     expect(vehicleGroups.value).toEqual([])
     expect(stopLocations.value).toEqual([])
     expect(districtCounts.value).toEqual([])
+    expect(districtStopTypeCounts.value).toEqual([])
   })
 
   it('discards a superseded response so the newest range wins', async () => {
@@ -182,8 +195,9 @@ describe('useStopData', () => {
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
         const url = new URL(String(input))
         const isCount = (url.searchParams.get('$select') ?? '').startsWith('count(*)')
-        // Four queries per range now: count, vehicles, locations, districts.
-        const mine = callIndex++ < 4
+        // Five queries per range now: count, vehicles, locations, districts,
+        // district/stop-type pairs.
+        const mine = callIndex++ < 5
         if (mine) {
           await new Promise((resolve) => setTimeout(resolve, 40))
           if (init?.signal?.aborted) throw new DOMException('aborted', 'AbortError')
@@ -194,9 +208,11 @@ describe('useStopData', () => {
           ? [{ total }]
           : select.startsWith('latitude')
             ? []
-            : select.startsWith('district')
-              ? [{ district: '1', total }]
-              : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
+            : select.includes('stopdescription')
+              ? [{ district: '1', stopdescription: 'TRAFFIC VIOLATION', total }]
+              : select.startsWith('district')
+                ? [{ district: '1', total }]
+                : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
         return new Response(JSON.stringify(body), { status: 200 })
       })
     )

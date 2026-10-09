@@ -9,7 +9,13 @@
 import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
 import type { StopLocation } from './stopLocations'
-import type { DateRange, DistrictCount, StopTypeCount, VehicleGroup } from './stops'
+import type {
+  DateRange,
+  DistrictCount,
+  DistrictStopTypeCount,
+  StopTypeCount,
+  VehicleGroup
+} from './stops'
 import type { YearlyStopCount } from './stopsOverTime'
 
 export interface DataSnapshot {
@@ -51,6 +57,12 @@ export interface DataSnapshot {
    * disclosure: `district` is populated for every stop in the dataset.
    */
   defaultRangeDistrictCounts: DistrictCount[]
+  /**
+   * Stops in the default range by district *and* kind of stop — each
+   * district's own enforcement mix, not just its volume. Backs the map's
+   * composition coloring mode; see `groupByDistrict` in `src/lib/stops.ts`.
+   */
+  defaultRangeDistrictStopTypeCounts: DistrictStopTypeCount[]
   /**
    * Stops per year, whole record, sparse — a year with zero stops is simply
    * absent rather than present with a zero. Backs the reporting-volume

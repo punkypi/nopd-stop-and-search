@@ -186,6 +186,54 @@ export async function fetchDistrictCounts(
   return rows.map((row) => buildDistrictCount(row.district ?? '', Number(row.total ?? 0)))
 }
 
+export interface DistrictStopTypeCount {
+  district: string
+  /** The kind of stop, e.g. `TRAFFIC VIOLATION` — see `StopTypeCount` below. */
+  description: string
+  count: number
+}
+
+/**
+ * Stops in the range grouped by district and kind of stop — what each
+ * district's own enforcement mix looks like, not just its volume.
+ * `stopdescription` is a clean, mutually exclusive categorical (unlike
+ * `actionstaken`), so these counts need no overlap disclosure the way a
+ * cross-tab of outcomes would.
+ */
+export async function fetchDistrictStopTypeCounts(
+  range: DateRange,
+  options: SocrataOptions = {}
+): Promise<DistrictStopTypeCount[]> {
+  const rows = await runQuery<{ district?: string; stopdescription?: string; total?: string }>(
+    {
+      select: 'district, stopdescription, count(*) as total',
+      where: rangeWhere(range),
+      group: 'district, stopdescription',
+      order: 'district, total desc'
+    },
+    options
+  )
+
+  return rows.map((row) => ({
+    district: (row.district ?? '').trim(),
+    description: (row.stopdescription ?? '').trim(),
+    count: Number(row.total ?? 0)
+  }))
+}
+
+/** Rows grouped into district -> description -> count, for cheap lookups. */
+export function groupByDistrict(
+  rows: readonly DistrictStopTypeCount[]
+): Map<string, Map<string, number>> {
+  const byDistrict = new Map<string, Map<string, number>>()
+  for (const row of rows) {
+    const byDescription = byDistrict.get(row.district) ?? new Map<string, number>()
+    byDescription.set(row.description, row.count)
+    byDistrict.set(row.district, byDescription)
+  }
+  return byDistrict
+}
+
 export interface StopTypeCount {
   /** The kind of stop as the record names it, e.g. `TRAFFIC VIOLATION`. */
   description: string
