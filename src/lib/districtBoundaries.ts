@@ -35,9 +35,15 @@ export async function loadDistrictBoundaries(signal?: AbortSignal): Promise<Dist
   return (await response.json()) as DistrictBoundaries
 }
 
-/** The palette's two blues, as the choropleth's low and high swatches. */
-const LOW_COLOR: readonly [number, number, number] = [33, 133, 208] // --color-nola-blue
-const HIGH_COLOR: readonly [number, number, number] = [84, 200, 255] // --color-nola-blue-bright
+// The choropleth's low and high swatches. Widened from the original two
+// blues (#2185d0/#54c8ff, ~23 points of simple lightness apart) because a
+// tightly clustered real range -- composition mode's traffic-violation
+// share runs 79.9%-96.1% -- normalizes against the busiest district, not
+// against 0, so it used to land entirely in the top ~17% of an already
+// narrow scale. Keep these in sync with --color-nola-choropleth-low/-high
+// in src/assets/main.css, which the legend swatch reads directly.
+const LOW_COLOR: readonly [number, number, number] = [18, 58, 92] // #123a5c
+const HIGH_COLOR: readonly [number, number, number] = [159, 224, 255] // #9fe0ff
 
 function toHex(channel: number): string {
   return Math.round(channel).toString(16).padStart(2, '0')

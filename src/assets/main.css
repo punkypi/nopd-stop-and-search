@@ -18,6 +18,13 @@
   --color-nola-indigo: #3e46b3;
   --color-nola-text: rgb(255 255 255 / 0.9);
   --color-nola-muted: rgb(255 255 255 / 0.55);
+
+  /* The district choropleth's own low/high swatches — wider apart than the
+     general accent blues above, so a tightly clustered real range (e.g. a
+     stop-type composition share) still shows a visible gradient instead of
+     landing entirely near one end. */
+  --color-nola-choropleth-low: #123a5c;
+  --color-nola-choropleth-high: #9fe0ff;
 }
 
 /* The design is dark-only, matching the original, so the ground is declared

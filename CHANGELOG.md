@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2026-10-10
+
+### Changed
+
+- Widened the district choropleth's color scale from `#2185d0`/`#54c8ff`
+  (~23 points of simple lightness apart) to `#123a5c`/`#9fe0ff` (~62
+  points). The old range was nearly flat under the stop-type composition
+  mode, where values normalize against the busiest district rather than
+  against 0 — traffic violation's 79.9%-96.1% real spread used to land
+  entirely in the top ~17% of an already narrow scale. The legend swatch
+  now reads its gradient from the same `--color-nola-choropleth-low`/`-high`
+  tokens the map itself uses, instead of a second, separately hardcoded
+  pair of hex values.
+- The stops-by-year sparkline's main bar — each year's total stop count,
+  the primary thing a reader compares across years — was filled with
+  `nola-border`, nearly invisible against the panel background behind it.
+  It now uses the new `nola-choropleth-low` token, so the bar is visible at
+  rest instead of only on hover or selection.
+
 ## [3.5.0] - 2026-10-09
 
 ### Added

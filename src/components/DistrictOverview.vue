@@ -512,7 +512,13 @@ watch(() => props.locations, rebuildCircles)
         <span class="text-nola-muted">{{ mode === 'count' ? 'Fewer stops' : 'Lower share' }}</span>
         <span
           class="h-2 w-16 rounded"
-          style="background: linear-gradient(to right, #2185d0, #54c8ff)"
+          style="
+            background: linear-gradient(
+              to right,
+              var(--color-nola-choropleth-low),
+              var(--color-nola-choropleth-high)
+            );
+          "
         />
         <span class="text-nola-muted">{{ mode === 'count' ? 'More stops' : 'Higher share' }}</span>
       </div>

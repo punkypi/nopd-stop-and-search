@@ -124,7 +124,7 @@ function isSelectedYear(year: number): boolean {
         @click="selectYear(year.year)"
       >
         <span
-          class="bg-nola-border group-hover:bg-nola-blue absolute bottom-0 w-full rounded-t transition-colors"
+          class="bg-nola-choropleth-low group-hover:bg-nola-blue absolute bottom-0 w-full rounded-t transition-colors"
           :style="{
             height: `${totalHeightPx(year.count)}px`,
             minHeight: year.count > 0 ? '2px' : '0'

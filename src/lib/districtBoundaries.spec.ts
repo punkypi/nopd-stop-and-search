@@ -124,8 +124,8 @@ describe('locationsInDistrict', () => {
 
 describe('districtFillColor', () => {
   it('draws the quietest district at the low swatch and the busiest at the high one', () => {
-    expect(districtFillColor(0, 100)).toBe('#2185d0')
-    expect(districtFillColor(100, 100)).toBe('#54c8ff')
+    expect(districtFillColor(0, 100)).toBe('#123a5c')
+    expect(districtFillColor(100, 100)).toBe('#9fe0ff')
   })
 
   it('grows monotonically with count', () => {
@@ -134,10 +134,10 @@ describe('districtFillColor', () => {
   })
 
   it('falls back to the low swatch when every district is empty', () => {
-    expect(districtFillColor(0, 0)).toBe('#2185d0')
+    expect(districtFillColor(0, 0)).toBe('#123a5c')
   })
 
   it('draws every district at the high swatch when all are tied', () => {
-    expect(districtFillColor(50, 50)).toBe('#54c8ff')
+    expect(districtFillColor(50, 50)).toBe('#9fe0ff')
   })
 })
