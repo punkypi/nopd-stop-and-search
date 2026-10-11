@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.8.0] - 2026-10-11
+
+### Added
+
+- Clicking a location's circle now shows every stop recorded there: date,
+  stop type, whether a search occurred, whether it turned up evidence, the
+  outcome (including a stop with more than one recorded outcome, which
+  real data turned up), the subject's race, gender, age, and photo-ID
+  status, and the officer's assigned unit. Capped at the 100 most recent
+  events at a location, with a disclosure when a busier corner has more.
+  Circles switched from a click-opens-popup interaction to hover-for-a-
+  quick-count, click-for-full-detail, matching the pattern the district
+  shapes already use.
+
 ## [3.7.3] - 2026-10-11
 
 ### Changed

@@ -8,6 +8,7 @@ import {
   fetchDistrictStopTypeCounts,
   fetchLatestEventDate,
   fetchStopCount,
+  fetchStopEvents,
   fetchStopLocationTypeCounts,
   fetchStopLocations,
   fetchVehicleGroups,
@@ -337,6 +338,73 @@ describe('fetchStopLocationTypeCounts', () => {
     const counts = await fetchStopLocationTypeCounts(range)
     expect(counts).toHaveLength(1)
     expect(counts[0]?.latitude).toBe(29.95)
+  })
+})
+
+describe('fetchStopEvents', () => {
+  const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 9) }
+
+  it('selects an exact coordinate alongside the range, not every location', async () => {
+    const { requestedUrl } = stubFetch([])
+    await fetchStopEvents(29.95, -90.07, range)
+    const params = requestedUrl().searchParams
+    expect(params.get('$select')).toBe(
+      'eventdate, stopdescription, subjectrace, subjectgender, subjectage, ' +
+        'subjecthasphotoid, officerassignment, actionstaken'
+    )
+    expect(params.get('$where')).toContain('latitude = 29.95 AND longitude = -90.07')
+    expect(params.get('$order')).toBe('eventdate desc')
+  })
+
+  it('shapes real rows into stop events, most recent first as SoQL already ordered them', async () => {
+    stubFetch([
+      {
+        eventdate: '2025-11-05T14:00:00.000',
+        stopdescription: 'TRAFFIC VIOLATION',
+        subjectrace: 'BLACK',
+        subjectgender: 'MALE',
+        subjectage: '34',
+        subjecthasphotoid: 'Yes',
+        officerassignment: '3rd District',
+        actionstaken: 'Stop Results: Citation Issued;Search Occurred: Yes;Evidence Seized: No'
+      },
+      {
+        eventdate: '2025-11-02T09:00:00.000',
+        stopdescription: 'CALL FOR SERVICE',
+        subjectrace: 'WHITE',
+        subjectgender: 'FEMALE',
+        subjectage: '0',
+        subjecthasphotoid: 'No',
+        officerassignment: 'Traffic',
+        actionstaken: 'Stop Results: Verbal Warning;Search Occurred: No;Evidence Seized: No'
+      }
+    ])
+    const { events, truncated } = await fetchStopEvents(29.95, -90.07, range)
+    expect(truncated).toBe(false)
+    expect(events).toHaveLength(2)
+    expect(events[0]).toMatchObject({
+      stopType: 'TRAFFIC VIOLATION',
+      stopResults: ['Citation Issued']
+    })
+    // Kept exactly as recorded, including the implausible age -- not filtered.
+    expect(events[1]).toMatchObject({ subjectAge: 0, stopResults: ['Verbal Warning'] })
+  })
+
+  it('reports truncation past the cap, same pattern as fetchStopLocations', async () => {
+    const row = {
+      eventdate: '2025-11-05T14:00:00.000',
+      stopdescription: 'TRAFFIC VIOLATION',
+      subjectrace: 'BLACK',
+      subjectgender: 'MALE',
+      subjectage: '34',
+      subjecthasphotoid: 'Yes',
+      officerassignment: '3rd District',
+      actionstaken: 'Stop Results: Citation Issued;Search Occurred: Yes;Evidence Seized: No'
+    }
+    stubFetch(Array.from({ length: 101 }, () => row))
+    const { events, truncated } = await fetchStopEvents(29.95, -90.07, range)
+    expect(truncated).toBe(true)
+    expect(events).toHaveLength(100)
   })
 })
 

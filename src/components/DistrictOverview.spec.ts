@@ -133,13 +133,16 @@ const LOCATION_TYPE_COUNTS: StopLocationTypeCount[] = [
   }
 ]
 
-function stubBoundaryFetch() {
+function stubBoundaryFetch(eventRows: unknown[] = []) {
   vi.stubGlobal(
     'fetch',
     vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input)
       if (url.includes('nopd-districts.geojson')) {
         return new Response(JSON.stringify(BOUNDARIES), { status: 200 })
+      }
+      if (url.includes('eventdate')) {
+        return new Response(JSON.stringify(eventRows), { status: 200 })
       }
       throw new Error(`Unexpected fetch in DistrictOverview test: ${url}`)
     })
@@ -600,6 +603,121 @@ describe('DistrictOverview', () => {
 
     expect(normalisedText(wrapper)).toContain('District 3 recorded no Criminal violation stops.')
     wrapper.unmount()
+  })
+
+  describe('per-event location detail', () => {
+    const EVENT_ROWS = [
+      {
+        eventdate: '2025-06-14T10:00:00.000',
+        stopdescription: 'TRAFFIC VIOLATION',
+        subjectrace: 'BLACK',
+        subjectgender: 'MALE',
+        subjectage: '34',
+        subjecthasphotoid: 'Yes',
+        officerassignment: '3rd District',
+        actionstaken: 'Stop Results: Citation Issued;Search Occurred: Yes;Evidence Seized: No'
+      },
+      {
+        eventdate: '2025-05-02T09:00:00.000',
+        stopdescription: 'CALL FOR SERVICE',
+        subjectrace: 'WHITE',
+        subjectgender: 'FEMALE',
+        subjectage: '0',
+        subjecthasphotoid: 'No',
+        officerassignment: 'Traffic',
+        actionstaken: 'Stop Results: Verbal Warning;Search Occurred: No;Evidence Seized: No'
+      }
+    ]
+
+    it("shows a location's own per-event detail when its circle is clicked", async () => {
+      stubBoundaryFetch(EVENT_ROWS)
+      const wrapper = mountOverview()
+      await flushPromises()
+
+      await wrapper.find('path.district-3').trigger('click')
+      await flushPromises()
+      // DISTRICT_3_LOCATION (count 100) is the first of the two fixture circles.
+      await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
+      await flushPromises()
+
+      const text = normalisedText(wrapper)
+      expect(text).toContain('Back to District 3')
+      expect(text).toContain('June 14, 2025')
+      expect(text).toContain('Traffic violation')
+      expect(text).toContain('Search: Yes')
+      expect(text).toContain('Evidence seized: No')
+      expect(text).toContain('Outcome: Citation issued')
+      expect(text).toContain('Black, Male, age 34')
+      expect(text).toContain('Photo ID: Yes')
+      expect(text).toContain("Officer's unit: 3rd District")
+      // The second event, from a different kind of stop entirely.
+      expect(text).toContain('Call for service')
+      expect(text).toContain('White, Female, age 0')
+      // The usual district caption is replaced, not just covered, while a
+      // location is open.
+      expect(text).not.toContain('mapped shape')
+      wrapper.unmount()
+    })
+
+    it('discloses truncation once a location has more events than the cap', async () => {
+      const row = EVENT_ROWS[0]!
+      stubBoundaryFetch(Array.from({ length: 101 }, () => row))
+      const wrapper = mountOverview()
+      await flushPromises()
+
+      await wrapper.find('path.district-3').trigger('click')
+      await flushPromises()
+      await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
+      await flushPromises()
+
+      expect(normalisedText(wrapper)).toContain(
+        'Showing the 100 most recent of 100 stops recorded here'
+      )
+      wrapper.unmount()
+    })
+
+    it('closes the location detail and returns to the bar list on a second click', async () => {
+      stubBoundaryFetch(EVENT_ROWS)
+      const wrapper = mountOverview()
+      await flushPromises()
+
+      await wrapper.find('path.district-3').trigger('click')
+      await flushPromises()
+      const circle = wrapper.findAll('path.stop-circle')[0]!
+      await circle.trigger('click')
+      await flushPromises()
+      expect(normalisedText(wrapper)).toContain('Back to District 3')
+
+      await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
+      await flushPromises()
+      const text = normalisedText(wrapper)
+      // Back to the district view (still drilled into District 3), not all
+      // the way out to the overview.
+      expect(text).toContain('Show all districts')
+      expect(text).not.toContain('Back to District 3')
+      expect(text).not.toContain('Outcome: Citation issued')
+      wrapper.unmount()
+    })
+
+    it("clicking 'Back to District N' returns to the district view without a second click on the map", async () => {
+      stubBoundaryFetch(EVENT_ROWS)
+      const wrapper = mountOverview()
+      await flushPromises()
+
+      await wrapper.find('path.district-3').trigger('click')
+      await flushPromises()
+      await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
+      await flushPromises()
+
+      const backButton = wrapper.findAll('button').find((b) => b.text() === 'Back to District 3')
+      await backButton!.trigger('click')
+      await flushPromises()
+
+      const text = normalisedText(wrapper)
+      expect(text).toContain('District 3')
+      expect(text).not.toContain('Outcome: Citation issued')
+      wrapper.unmount()
+    })
   })
 
   it('keeps implementation wording off the page', async () => {

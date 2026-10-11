@@ -16,6 +16,7 @@
 
 import { compare, fromSocrataTimestamp, isValid, toSoQLTimestamp, type CalendarDay } from './dates'
 import { runQuery, type SocrataOptions } from './socrata'
+import { buildStopEvent, type RawStopEventRow, type StopEvent } from './stopEvents'
 import {
   buildStopLocation,
   consistentLocations,
@@ -388,4 +389,54 @@ export async function fetchStopLocationTypeCounts(
       return { latitude, longitude, description: (row.stopdescription ?? '').trim(), count }
     })
     .filter((row): row is StopLocationTypeCount => row !== null)
+}
+
+/**
+ * Upper bound on events returned for one location. Measured live: the
+ * busiest intersection in the default range (Polk St & Milne Blvd) holds
+ * 998 stops, and the busiest all-time (St Charles Av & Calliope St) holds
+ * 2,020 -- both well past anything worth listing as individual cards. One
+ * past the cap, so hitting it is detectable without a second query, same
+ * pattern as `fetchStopLocations`.
+ */
+const MAX_LOCATION_EVENTS = 100
+
+export interface StopEventsResult {
+  /** Most recent first. */
+  events: StopEvent[]
+  /** True when `MAX_LOCATION_EVENTS` was reached and older events were left off. */
+  truncated: boolean
+}
+
+/**
+ * Every stop recorded at one exact coordinate within a range -- the only
+ * place in this codebase that fetches individual rows rather than a
+ * server-side aggregate. That's deliberate here, not an oversight:
+ * `fetchStopLocations`'s own comment explains why rows are never fetched
+ * just to *count* them, which is a different thing from fetching the rows
+ * at one coordinate a viewer just clicked, to show what's actually in
+ * them. The scope stays narrow -- one coordinate, the current range --
+ * never the whole dataset.
+ */
+export async function fetchStopEvents(
+  latitude: number,
+  longitude: number,
+  range: DateRange,
+  options: SocrataOptions = {}
+): Promise<StopEventsResult> {
+  const rows = await runQuery<RawStopEventRow>(
+    {
+      select:
+        'eventdate, stopdescription, subjectrace, subjectgender, subjectage, ' +
+        'subjecthasphotoid, officerassignment, actionstaken',
+      where: `${rangeWhere(range)} AND latitude = ${latitude} AND longitude = ${longitude}`,
+      order: 'eventdate desc',
+      limit: MAX_LOCATION_EVENTS + 1
+    },
+    options
+  )
+
+  const truncated = rows.length > MAX_LOCATION_EVENTS
+  const kept = truncated ? rows.slice(0, MAX_LOCATION_EVENTS) : rows
+  return { events: kept.map(buildStopEvent), truncated }
 }
