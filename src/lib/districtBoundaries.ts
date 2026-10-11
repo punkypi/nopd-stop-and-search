@@ -36,12 +36,10 @@ export async function loadDistrictBoundaries(signal?: AbortSignal): Promise<Dist
 }
 
 // The choropleth's low and high swatches. Widened from the original two
-// blues (#2185d0/#54c8ff, ~23 points of simple lightness apart) because a
-// tightly clustered real range -- composition mode's traffic-violation
-// share runs 79.9%-96.1% -- normalizes against the busiest district, not
-// against 0, so it used to land entirely in the top ~17% of an already
-// narrow scale. Keep these in sync with --color-nola-choropleth-low/-high
-// in src/assets/main.css, which the legend swatch reads directly.
+// blues (#2185d0/#54c8ff, ~23 points of simple lightness apart) so a real
+// gradient reads as one rather than a near-flat tint. Keep these in sync
+// with --color-nola-choropleth-low/-high in src/assets/main.css, which the
+// legend swatch reads directly.
 const LOW_COLOR: readonly [number, number, number] = [18, 58, 92] // #123a5c
 const HIGH_COLOR: readonly [number, number, number] = [159, 224, 255] // #9fe0ff
 
@@ -49,19 +47,30 @@ function toHex(channel: number): string {
   return Math.round(channel).toString(16).padStart(2, '0')
 }
 
-/**
- * Fill color for a district holding `count` stops, where `maxCount` is the
- * busiest district currently shown. Linear interpolation, not square-root —
- * district counts span roughly a 2x range even at the extremes (see
- * `DistrictBreakdown.vue`), nothing like the sparkline's 1000x spread that
- * square-root compression exists to tame.
- */
 function lerp(low: number, high: number, position: number): number {
   return low + (high - low) * position
 }
 
-export function districtFillColor(count: number, maxCount: number): string {
-  const position = !Number.isFinite(maxCount) || maxCount <= 0 ? 0 : Math.min(count / maxCount, 1)
+/**
+ * Fill color for a district holding `count`, scaled against `maxCount` and
+ * `minCount`. Linear interpolation, not square-root — district counts span
+ * roughly a 2x range even at the extremes (see `DistrictOverview.vue`),
+ * nothing like the sparkline's 1000x spread that square-root compression
+ * exists to tame.
+ *
+ * `minCount` defaults to 0, which is what count mode wants — "0 stops" is a
+ * real, meaningful floor. Composition mode passes the *observed* minimum
+ * share instead: scaling a tightly clustered range like traffic violation's
+ * 79.9%-96.1% against 0 wastes most of the gradient on values no district
+ * actually has. Measured live, widening the swatch colors alone wasn't
+ * enough to fix that case — the map still read as a near-flat tint.
+ * Anchoring to the range actually in view stretches it across the full
+ * gradient instead.
+ */
+export function districtFillColor(count: number, maxCount: number, minCount = 0): string {
+  const span = maxCount - minCount
+  const position =
+    !Number.isFinite(span) || span <= 0 ? 0 : Math.min(Math.max((count - minCount) / span, 0), 1)
   const r = lerp(LOW_COLOR[0], HIGH_COLOR[0], position)
   const g = lerp(LOW_COLOR[1], HIGH_COLOR[1], position)
   const b = lerp(LOW_COLOR[2], HIGH_COLOR[2], position)

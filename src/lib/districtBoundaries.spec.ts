@@ -140,4 +140,18 @@ describe('districtFillColor', () => {
   it('draws every district at the high swatch when all are tied', () => {
     expect(districtFillColor(50, 50)).toBe('#9fe0ff')
   })
+
+  it('anchors to minCount instead of 0 when given one, for a clustered range', () => {
+    // Traffic violation's real shape: every district between 79.9% and 96.1%.
+    // Anchored to 0 (the default), 79.9 would land at position 0.799 -- near
+    // the high swatch already. Anchored to the observed minimum, it's
+    // position 0, the low swatch, same as districtFillColor(0, 100) above.
+    expect(districtFillColor(79.9, 96.1, 79.9)).toBe('#123a5c')
+    expect(districtFillColor(96.1, 96.1, 79.9)).toBe('#9fe0ff')
+  })
+
+  it('clamps rather than going out of range when count falls outside [minCount, maxCount]', () => {
+    expect(districtFillColor(5, 100, 10)).toBe('#123a5c')
+    expect(districtFillColor(150, 100, 10)).toBe('#9fe0ff')
+  })
 })

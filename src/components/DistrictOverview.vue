@@ -171,6 +171,20 @@ const maxShare = computed(() =>
   props.districtCounts.reduce((highest, row) => Math.max(highest, shareFor(row.district)), 0)
 )
 
+/**
+ * Only feeds the choropleth's color scale, not the bar list or tooltip
+ * numbers. Count mode stays anchored to 0 -- "0 stops" is a real, meaningful
+ * floor -- but a share like "80%" isn't, so composition mode anchors to the
+ * range actually in view instead. Measured live: traffic violation's real
+ * range is 79.9%-96.1%, and scaled against 0 that read as a near-flat tint
+ * even with the widened swatch colors (`districtFillColor`'s own comment
+ * has the full reasoning).
+ */
+const minShareForColor = computed(() =>
+  props.districtCounts.reduce((lowest, row) => Math.min(lowest, shareFor(row.district)), Infinity)
+)
+const minValueForColor = computed(() => (mode.value === 'count' ? 0 : minShareForColor.value))
+
 /** The value and ceiling `districtStyle`/the tooltip/the bar list all key
  *  off, so switching modes is a matter of swapping these two, not rewriting
  *  the rendering logic underneath them. */
@@ -282,7 +296,7 @@ function districtStyle(feature?: GeoJSON.Feature): L.PathOptions {
   const dimmed = selectedDistrict.value !== null && !isSelected
   return {
     className: `district-polygon district-${district}`,
-    fillColor: districtFillColor(valueFor(district), maxValue.value),
+    fillColor: districtFillColor(valueFor(district), maxValue.value, minValueForColor.value),
     // Faint on purpose once a district is selected, so the outlined district
     // and its circles stay the clear focus instead of competing with seven
     // other tinted shapes for attention.

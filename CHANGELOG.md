@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.6.1] - 2026-10-10
+
+### Fixed
+
+- Widening the choropleth's swatch colors (3.6.0, above) wasn't enough on
+  its own for composition mode: a clustered real range like traffic
+  violation's 79.9%-96.1% still scaled against 0, so it stayed almost
+  entirely in the top slice of the gradient — confirmed by screenshotting
+  the live site after deploying 3.6.0. `districtFillColor` now takes an
+  optional `minCount`, and composition mode anchors to the range actually
+  observed across the districts shown instead of to 0. Count mode is
+  unaffected — "0 stops" stays a real, meaningful floor there.
+
 ## [3.6.0] - 2026-10-10
 
 ### Changed

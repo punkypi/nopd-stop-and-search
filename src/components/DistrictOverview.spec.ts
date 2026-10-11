@@ -412,6 +412,25 @@ describe('DistrictOverview', () => {
     wrapper.unmount()
   })
 
+  it('anchors the map color to the range actually in view, not to 0, in composition mode', async () => {
+    // Traffic violation's real range is clustered (79.9%-96.1%), nowhere
+    // near 0. Scaled against 0 the whole map would read as a near-flat
+    // tint — scaled against the observed minimum, the busiest and quietest
+    // districts land squarely on the two swatch endpoints, same as they
+    // would for a count-mode range spanning the full scale.
+    stubBoundaryFetch()
+    const wrapper = mountOverview({
+      districtCounts: DISTRICT_COUNTS_WITH_8,
+      districtStopTypeCounts: DISTRICT_STOP_TYPE_COUNTS_WITH_8
+    })
+    await flushPromises()
+    await switchToComposition(wrapper)
+
+    expect(wrapper.find('path.district-3').attributes('fill')).toBe('#9fe0ff')
+    expect(wrapper.find('path.district-8').attributes('fill')).toBe('#123a5c')
+    wrapper.unmount()
+  })
+
   it('surfaces the criminal-violation outlier when the stop type is switched', async () => {
     // The real finding that motivated this feature: District 8's criminal
     // violation share (6.38%) dwarfs every other district's (<=1.42%). This
