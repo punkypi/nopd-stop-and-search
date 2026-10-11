@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.7.3] - 2026-10-11
+
+### Changed
+
+- Removed every em dash from the page's prose — the single most-cited
+  AI-writing tell, per research into what readers and detectors flag first
+  (training data over-represents polished long-form prose that leans on it;
+  LLMs use it as a default "build to a point, then append a clause"
+  connector). Replaced with periods, commas, colons, and parentheses, chosen
+  per sentence rather than mechanically substituted, so the result reads
+  like plain documentary prose instead of a formula. Every figure and
+  disclosure is unchanged; only the punctuation connecting them is.
+
 ## [3.7.2] - 2026-10-11
 
 ### Changed

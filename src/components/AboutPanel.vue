@@ -113,7 +113,7 @@ const bakedAtLabel = computed(() => {
 
         <p class="text-nola-muted">
           These kinds aren't interchangeable: a call officers were dispatched to isn't a
-          discretionary stop, and what follows one — a search, a citation, an arrest — varies widely
+          discretionary stop, and what follows one (a search, a citation, an arrest) varies widely
           by kind. Read any total here alongside the mix above, not alone.
         </p>
 
@@ -126,14 +126,14 @@ const bakedAtLabel = computed(() => {
 
         <p class="text-nola-muted">
           A date range shows what the record holds for that window, not what actually happened. The
-          "Stops by year" chart above shows how unevenly the record was kept across 34 years — why
-          the page defaults to a recent, well-reported window instead of the full span.
+          "Stops by year" chart above shows how unevenly the record was kept across 34 years. That's
+          why the page defaults to a recent, well-reported window instead of the full span.
         </p>
 
         <p class="text-nola-muted">
           Locations are recorded at the nearest intersection or block, not an exact address, and
-          only from 2018 onward — earlier stops have no coordinates. The map covers a subset of any
-          range reaching back further, and says how large that subset is.
+          only from 2018 onward. Earlier stops have no coordinates, so the map covers a subset of
+          any range reaching back further and says how large that subset is.
         </p>
 
         <p>

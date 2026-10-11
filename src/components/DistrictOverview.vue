@@ -299,7 +299,7 @@ const caption = computed(() => {
             districtStopTypeMap.value.get(selectedDistrict.value!)?.get(effectiveStopType.value!) ??
             0
           return typeTotal > 0
-            ? ` District ${selectedDistrict.value} recorded ${numberFormat.format(typeTotal)} ${typeLabel} stops in total — located ones are highlighted above.`
+            ? ` District ${selectedDistrict.value} recorded ${numberFormat.format(typeTotal)} ${typeLabel} stops in total. Located ones are highlighted above.`
             : ` District ${selectedDistrict.value} recorded no ${typeLabel} stops.`
         })()
       : ''
@@ -627,9 +627,9 @@ watch(() => props.locationTypeCounts, rebuildCircles)
       </div>
 
       <p class="text-nola-muted pt-3 text-xs">
-        Every stop is assigned a district regardless of whether its exact location was recorded —
-        all 720,425 stops, 1991 onward. Circles, when shown, sit at the nearest intersection or
-        block, not an exact address.
+        Every stop is assigned a district regardless of whether its exact location was recorded: all
+        720,425 stops, 1991 onward. Circles, when shown, sit at the nearest intersection or block,
+        not an exact address.
       </p>
     </div>
   </section>
