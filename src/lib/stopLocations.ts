@@ -23,6 +23,40 @@ export interface StopLocation {
 }
 
 /**
+ * A coordinate's own breakdown by kind of stop — not a replacement for
+ * `StopLocation`, a finer-grained sibling of it. Backs composition mode's
+ * circle highlighting: which of a district's locations actually carry the
+ * selected type, and how many.
+ */
+export interface StopLocationTypeCount {
+  latitude: number
+  longitude: number
+  /** The kind of stop, e.g. `TRAFFIC VIOLATION`. */
+  description: string
+  count: number
+}
+
+/** Shared key for matching a `StopLocation` against a `StopLocationTypeCount`
+ *  recorded at the same coordinate. */
+export function coordinateKey(latitude: number, longitude: number): string {
+  return `${latitude},${longitude}`
+}
+
+/** `typeCounts` narrowed to `description` and keyed by coordinate, for a
+ *  cheap per-location lookup while drawing circles. */
+export function typeCountByCoordinate(
+  typeCounts: readonly StopLocationTypeCount[],
+  description: string
+): Map<string, number> {
+  const byCoordinate = new Map<string, number>()
+  for (const row of typeCounts) {
+    if (row.description !== description) continue
+    byCoordinate.set(coordinateKey(row.latitude, row.longitude), row.count)
+  }
+  return byCoordinate
+}
+
+/**
  * Coordinates outside this box are discarded.
  *
  * Roughly 63% of traffic-violation rows carry `latitude` and `longitude` of
@@ -73,6 +107,16 @@ export function buildStopLocation(
 /** Pixel radii the smallest and largest circles are drawn at. */
 export const MIN_MARKER_RADIUS = 4
 export const MAX_MARKER_RADIUS = 22
+
+/**
+ * Smaller than `MIN_MARKER_RADIUS` on purpose. When a stop type is selected,
+ * a location with none of it still gets a circle — composition mode dims
+ * rather than hides, the same way the choropleth dims a low-share district
+ * instead of removing it — but that circle needs to read as "present, not
+ * what you're looking at" even next to the smallest circle that *is*
+ * highlighted.
+ */
+export const MUTED_MARKER_RADIUS = 2
 
 /**
  * Radius in pixels for a circle holding `count` stops, where `maxCount` is the
@@ -345,8 +389,27 @@ export function escapeHtml(value: string): string {
     .replace(/"/g, '&quot;')
 }
 
-/** Popup markup for a point: the block or intersection, then the count. */
-export function popupHtml(location: StopLocation): string {
+/** Names what a circle is highlighted for, e.g. `{ label: 'Traffic
+ *  violation', count: 14 }` — `count` may be 0, for a muted circle with
+ *  none of the selected type. */
+export interface StopTypeCallout {
+  /** Sentence case, e.g. `Traffic violation` — matches how the dropdown
+   *  labels the same field. */
+  label: string
+  count: number
+}
+
+/**
+ * Popup markup for a point: the block or intersection, then the count.
+ *
+ * With `typeCallout`, the count line names the selected type and its own
+ * share instead of the location's total, e.g. "14 of 50 stops are Traffic
+ * violation" — the denominator stays visible rather than being implied.
+ */
+export function popupHtml(location: StopLocation, typeCallout?: StopTypeCallout): string {
   const heading = location.address || 'Location not named'
-  return `<strong>${escapeHtml(heading)}</strong><br />${escapeHtml(stopCountLabel(location.count))}`
+  const countLine = typeCallout
+    ? `${new Intl.NumberFormat('en-US').format(typeCallout.count)} of ${stopCountLabel(location.count)} are ${typeCallout.label}`
+    : stopCountLabel(location.count)
+  return `<strong>${escapeHtml(heading)}</strong><br />${escapeHtml(countLine)}`
 }

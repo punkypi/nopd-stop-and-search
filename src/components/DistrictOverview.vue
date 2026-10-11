@@ -32,13 +32,17 @@ import {
 } from '@/lib/districtBoundaries'
 import {
   boundingBox,
+  coordinateKey,
   isLegibleDensity,
   isLocationCoverageReliable,
   markerRadius,
   maxStopCount,
+  MUTED_MARKER_RADIUS,
   popupHtml,
   totalPlottedStops,
-  type StopLocation
+  typeCountByCoordinate,
+  type StopLocation,
+  type StopLocationTypeCount
 } from '@/lib/stopLocations'
 import {
   groupByDistrict,
@@ -52,6 +56,9 @@ const props = defineProps<{
   /** Each district's own enforcement mix, not just its volume — backs the
    *  map's composition coloring mode. */
   districtStopTypeCounts: readonly DistrictStopTypeCount[]
+  /** Each located coordinate's own breakdown by kind of stop — backs
+   *  composition mode's circle highlighting (see `selectedTypeLabel`). */
+  locationTypeCounts: readonly StopLocationTypeCount[]
   /** Stops in the range overall, including those with no recorded location. */
   rangeTotal: number | null
   range: DateRange
@@ -154,6 +161,15 @@ const stopTypeOptions = computed(() =>
     label: stopTypeLabel(description),
     value: description
   }))
+)
+
+/** `null` outside composition mode, or when no type is selected yet — the
+ *  single flag `rebuildCircles`/the caption key off to decide whether any
+ *  circle gets muted at all. */
+const selectedTypeLabel = computed(() =>
+  mode.value === 'composition' && effectiveStopType.value
+    ? stopTypeLabel(effectiveStopType.value)
+    : null
 )
 
 /** Share of `district`'s own stops that are `effectiveStopType`, or 0 when
@@ -271,9 +287,25 @@ const caption = computed(() => {
     districtTotal > 0
       ? ` District ${selectedDistrict.value} recorded ${numberFormat.format(districtTotal)} stops here in total.`
       : ''
+  // An independent fact alongside the two above, not implied to be a subset
+  // of `plotted` for the same reason districtContext isn't phrased as "X of
+  // Y": district totals (tabular) and located counts (geocoded) are
+  // different figures that happen to both describe this district.
+  const typeLabel = selectedTypeLabel.value
+  const typeNote =
+    typeLabel && effectiveStopType.value
+      ? (() => {
+          const typeTotal =
+            districtStopTypeMap.value.get(selectedDistrict.value!)?.get(effectiveStopType.value!) ??
+            0
+          return typeTotal > 0
+            ? ` District ${selectedDistrict.value} recorded ${numberFormat.format(typeTotal)} ${typeLabel} stops in total — the ones with a usable location are highlighted above.`
+            : ` District ${selectedDistrict.value} recorded no ${typeLabel} stops.`
+        })()
+      : ''
   return props.locationsTruncated
-    ? `${base}${districtContext} Showing the busiest locations only; the quietest were left off.`
-    : `${base}${districtContext}`
+    ? `${base}${districtContext}${typeNote} Showing the busiest locations only; the quietest were left off.`
+    : `${base}${districtContext}${typeNote}`
 })
 
 /**
@@ -327,25 +359,59 @@ function handleDistrictClick(district: string) {
   selectedDistrict.value = selectedDistrict.value === district ? null : district
 }
 
+/**
+ * Draws every location in the selected district, same set regardless of
+ * mode. In composition mode, a location with none of the selected type is
+ * dimmed down to a near-invisible "ghost" instead of being left off
+ * entirely — filtering it away would hide the denominator a reader needs to
+ * judge how rare the highlighted type actually is, and would make this
+ * layer behave differently from the choropleth, which dims a low-share
+ * district rather than hiding it. See CLAUDE.md for the fuller reasoning.
+ */
 function rebuildCircles() {
   if (!map || !circleLayer) return
   circleLayer.clearLayers()
   if (!showCircles.value) return
 
-  const highest = maxStopCount(detailLocations.value)
+  const typeLabel = selectedTypeLabel.value
+  const typeCounts =
+    typeLabel && effectiveStopType.value
+      ? typeCountByCoordinate(props.locationTypeCounts, effectiveStopType.value)
+      : null
+
+  // Highlighted circles scale off the selected type's own count, not the
+  // location's total -- the quietest highlighted corner still reads as the
+  // smallest circle and the busiest as the largest, same principle
+  // markerRadius already documents, just applied to the narrower set.
+  const highest = typeCounts
+    ? Math.max(
+        0,
+        ...detailLocations.value.map(
+          (location) => typeCounts.get(coordinateKey(location.latitude, location.longitude)) ?? 0
+        )
+      )
+    : maxStopCount(detailLocations.value)
+
   for (const location of detailLocations.value) {
+    const typeCount = typeCounts?.get(coordinateKey(location.latitude, location.longitude)) ?? null
+    const isMuted = typeCounts !== null && !typeCount
     L.circleMarker([location.latitude, location.longitude], {
-      className: 'stop-circle',
-      radius: markerRadius(location.count, highest),
+      className: isMuted ? 'stop-circle stop-circle-muted' : 'stop-circle',
+      radius: isMuted ? MUTED_MARKER_RADIUS : markerRadius(typeCount ?? location.count, highest),
       // Same reasoning as the old StopMap: thin and translucent, because busy
-      // corridors stack circles several deep and an opaque one hides them.
+      // corridors stack circles several deep and an opaque one hides them. A
+      // muted circle dims further still, reusing the exact 0.06/0.25 figures
+      // districtStyle() already uses for a dimmed district -- present for
+      // context, not competing for attention.
       color: '#54c8ff',
       weight: 1,
-      opacity: 0.85,
+      opacity: isMuted ? 0.25 : 0.85,
       fillColor: '#54c8ff',
-      fillOpacity: 0.28
+      fillOpacity: isMuted ? 0.06 : 0.28
     })
-      .bindPopup(popupHtml(location))
+      .bindPopup(
+        popupHtml(location, typeCounts ? { label: typeLabel!, count: typeCount ?? 0 } : undefined)
+      )
       .addTo(circleLayer)
   }
 }
@@ -426,13 +492,20 @@ onBeforeUnmount(() => {
 })
 
 watch(() => props.districtCounts, restyleDistricts)
-watch([mode, effectiveStopType], restyleDistricts)
+// No fitToCurrentView() here: switching the selected type never changes
+// which coordinates are drawn, only their style, so the view stays fit to
+// whatever it was already fit to.
+watch([mode, effectiveStopType], () => {
+  restyleDistricts()
+  rebuildCircles()
+})
 watch(selectedDistrict, () => {
   restyleDistricts()
   rebuildCircles()
   fitToCurrentView()
 })
 watch(() => props.locations, rebuildCircles)
+watch(() => props.locationTypeCounts, rebuildCircles)
 </script>
 
 <template>

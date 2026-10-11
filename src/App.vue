@@ -52,6 +52,7 @@ const {
   addressInconsistentCount,
   districtCounts,
   districtStopTypeCounts,
+  locationTypeCounts,
   loading,
   error
 } = useStopData(range, snapshot)
@@ -133,6 +134,7 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
         v-if="range"
         :district-counts="districtCounts"
         :district-stop-type-counts="districtStopTypeCounts"
+        :location-type-counts="locationTypeCounts"
         :range-total="count"
         :range="range"
         :locations="stopLocations"

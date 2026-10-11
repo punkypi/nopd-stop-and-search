@@ -8,7 +8,7 @@
 
 import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
-import type { StopLocation } from './stopLocations'
+import type { StopLocation, StopLocationTypeCount } from './stopLocations'
 import type {
   DateRange,
   DistrictCount,
@@ -63,6 +63,12 @@ export interface DataSnapshot {
    * composition coloring mode; see `groupByDistrict` in `src/lib/stops.ts`.
    */
   defaultRangeDistrictStopTypeCounts: DistrictStopTypeCount[]
+  /**
+   * Each located coordinate's own breakdown by kind of stop, in the default
+   * range. Backs the map's drill-down circle highlighting in composition
+   * mode — see `typeCountByCoordinate` in `src/lib/stopLocations.ts`.
+   */
+  defaultRangeLocationTypeCounts: StopLocationTypeCount[]
   /**
    * Stops per year, whole record, sparse — a year with zero stops is simply
    * absent rather than present with a zero. Backs the reporting-volume

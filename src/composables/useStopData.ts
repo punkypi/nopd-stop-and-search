@@ -15,11 +15,12 @@
 import { readonly, ref, shallowRef, watch, type Ref } from 'vue'
 
 import { isSameRange, type DataSnapshot } from '@/lib/snapshot'
-import type { StopLocation } from '@/lib/stopLocations'
+import type { StopLocation, StopLocationTypeCount } from '@/lib/stopLocations'
 import {
   fetchDistrictCounts,
   fetchDistrictStopTypeCounts,
   fetchStopCount,
+  fetchStopLocationTypeCounts,
   fetchStopLocations,
   fetchVehicleGroups,
   isValidRange,
@@ -37,6 +38,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
   const addressInconsistentCount = ref(0)
   const districtCounts = shallowRef<DistrictCount[]>([])
   const districtStopTypeCounts = shallowRef<DistrictStopTypeCount[]>([])
+  const locationTypeCounts = shallowRef<StopLocationTypeCount[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -57,6 +59,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       addressInconsistentCount.value = baked.defaultRangeAddressInconsistentCount ?? 0
       districtCounts.value = baked.defaultRangeDistrictCounts ?? []
       districtStopTypeCounts.value = baked.defaultRangeDistrictStopTypeCounts ?? []
+      locationTypeCounts.value = baked.defaultRangeLocationTypeCounts ?? []
       loading.value = false
       error.value = null
       return
@@ -68,14 +71,21 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     error.value = null
 
     try {
-      const [nextCount, nextGroups, nextLocations, nextDistricts, nextDistrictStopTypes] =
-        await Promise.all([
-          fetchStopCount(current, { signal: controller.signal }),
-          fetchVehicleGroups(current, { signal: controller.signal }),
-          fetchStopLocations(current, { signal: controller.signal }),
-          fetchDistrictCounts(current, { signal: controller.signal }),
-          fetchDistrictStopTypeCounts(current, { signal: controller.signal })
-        ])
+      const [
+        nextCount,
+        nextGroups,
+        nextLocations,
+        nextDistricts,
+        nextDistrictStopTypes,
+        nextLocationTypes
+      ] = await Promise.all([
+        fetchStopCount(current, { signal: controller.signal }),
+        fetchVehicleGroups(current, { signal: controller.signal }),
+        fetchStopLocations(current, { signal: controller.signal }),
+        fetchDistrictCounts(current, { signal: controller.signal }),
+        fetchDistrictStopTypeCounts(current, { signal: controller.signal }),
+        fetchStopLocationTypeCounts(current, { signal: controller.signal })
+      ])
       // A newer range superseded this one mid-flight; discard the result.
       if (controller.signal.aborted) return
       count.value = nextCount
@@ -85,6 +95,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       addressInconsistentCount.value = nextLocations.addressInconsistentCount
       districtCounts.value = nextDistricts
       districtStopTypeCounts.value = nextDistrictStopTypes
+      locationTypeCounts.value = nextLocationTypes
     } catch (cause) {
       if (controller.signal.aborted) return
       error.value = cause instanceof Error ? cause.message : 'Could not load data'
@@ -95,6 +106,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       addressInconsistentCount.value = 0
       districtCounts.value = []
       districtStopTypeCounts.value = []
+      locationTypeCounts.value = []
     } finally {
       if (inFlight === controller) {
         inFlight = null
@@ -124,6 +136,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     addressInconsistentCount: readonly(addressInconsistentCount),
     districtCounts,
     districtStopTypeCounts,
+    locationTypeCounts,
     loading: readonly(loading),
     error: readonly(error)
   }

@@ -19,10 +19,12 @@ import { runQuery, type SocrataOptions } from './socrata'
 import {
   buildStopLocation,
   consistentLocations,
+  hasUsableCoordinates,
   inconsistentAddressLocations,
   NOLA_BOUNDS,
   totalPlottedStops,
-  type StopLocation
+  type StopLocation,
+  type StopLocationTypeCount
 } from './stopLocations'
 
 /**
@@ -332,4 +334,58 @@ export async function fetchStopLocations(
   const locations = truncated ? consistent.slice(0, MAX_LOCATIONS) : consistent
 
   return { locations, truncated, addressInconsistentCount }
+}
+
+/**
+ * Upper bound on (coordinate, stop type) rows. Measured live: all of time
+ * holds 53,068 of them, against 37,774 plain coordinates (a 40% increase,
+ * not the combinatorial blow-up it could be — most locations carry one or
+ * two stop types, not all twelve). This sits comfortably above that with
+ * room to grow, the same reasoning as `MAX_LOCATIONS`.
+ */
+const MAX_LOCATION_TYPE_ROWS = 70_000
+
+/**
+ * Each located coordinate's own breakdown by kind of stop. Backs the map's
+ * composition mode: which of a district's locations actually carry the
+ * selected type, so its circles can be highlighted instead of filtered
+ * away — see `DistrictOverview.vue` and CLAUDE.md's note on why hiding the
+ * rest would be inconsistent with how the choropleth itself behaves.
+ *
+ * Grouping by `(latitude, longitude, stopdescription)` is not the
+ * `max(district)` mistake `fetchStopLocations` warns about above: that bug
+ * picked one representative value out of several disagreeing ones per
+ * coordinate. This produces one accurate row per real combination instead —
+ * no representative-picking, no information lost.
+ */
+export async function fetchStopLocationTypeCounts(
+  range: DateRange,
+  options: SocrataOptions = {}
+): Promise<StopLocationTypeCount[]> {
+  const rows = await runQuery<{
+    latitude?: string
+    longitude?: string
+    stopdescription?: string
+    total?: string
+  }>(
+    {
+      select: 'latitude, longitude, stopdescription, count(*) as total',
+      where: `${rangeWhere(range)} AND ${coordinateWhere()}`,
+      group: 'latitude, longitude, stopdescription',
+      order: 'total desc',
+      limit: MAX_LOCATION_TYPE_ROWS
+    },
+    options
+  )
+
+  return rows
+    .map((row) => {
+      const latitude = Number(row.latitude)
+      const longitude = Number(row.longitude)
+      if (!hasUsableCoordinates(latitude, longitude)) return null
+      const count = Number(row.total ?? 0)
+      if (!Number.isFinite(count) || count <= 0) return null
+      return { latitude, longitude, description: (row.stopdescription ?? '').trim(), count }
+    })
+    .filter((row): row is StopLocationTypeCount => row !== null)
 }

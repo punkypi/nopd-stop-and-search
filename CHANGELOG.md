@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2026-10-11
+
+### Added
+
+- The district drill-down's circles now highlight by stop type instead of
+  filtering by it, once a type is selected in composition mode. Every
+  location in the clicked district still gets a circle; one with none of
+  the selected type is dimmed to a near-transparent "ghost" rather than
+  disappearing, so the denominator (how many locations have none of the
+  type) stays visible alongside the ones that do. Each circle's popup now
+  names the selected type and its own share, e.g. "14 of 50 stops are
+  Traffic violation."
+
 ## [3.6.1] - 2026-10-10
 
 ### Fixed

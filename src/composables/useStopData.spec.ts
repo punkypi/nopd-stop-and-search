@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 import { calendarDay } from '@/lib/dates'
 import type { DataSnapshot } from '@/lib/snapshot'
-import type { StopLocation } from '@/lib/stopLocations'
+import type { StopLocation, StopLocationTypeCount } from '@/lib/stopLocations'
 import type { DateRange, DistrictCount, DistrictStopTypeCount, VehicleGroup } from '@/lib/stops'
 
 import { useStopData } from './useStopData'
@@ -32,6 +32,10 @@ const BAKED_DISTRICT_STOP_TYPES: DistrictStopTypeCount[] = [
   { district: '4', description: 'TRAFFIC VIOLATION', count: 1075 }
 ]
 
+const BAKED_LOCATION_TYPES: StopLocationTypeCount[] = [
+  { latitude: 29.9511, longitude: -90.0715, description: 'TRAFFIC VIOLATION', count: 9 }
+]
+
 function snapshotFixture(): DataSnapshot {
   return {
     bakedAt: '2026-09-26T23:50:14.661Z',
@@ -53,19 +57,26 @@ function snapshotFixture(): DataSnapshot {
     defaultRangeAddressInconsistentCount: 0,
     defaultRangeDistrictCounts: BAKED_DISTRICTS,
     defaultRangeDistrictStopTypeCounts: BAKED_DISTRICT_STOP_TYPES,
+    defaultRangeLocationTypeCounts: BAKED_LOCATION_TYPES,
     yearlyStopCounts: [{ year: 2025, count: 26629, locatedCount: 25288 }]
   }
 }
 
-/** Responds to each of the five range queries — count, vehicles, locations,
- *  districts, district/stop-type pairs — with fixed values. */
+/** Responds to each of the six range queries — count, vehicles, locations,
+ *  districts, district/stop-type pairs, location/stop-type pairs — with
+ *  fixed values. */
 function stubFetch() {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = new URL(String(input))
     const select = url.searchParams.get('$select') ?? ''
     let body: unknown
     if (select.startsWith('count(*)')) body = [{ total: '99' }]
-    else if (select.startsWith('latitude')) {
+    // Checked before the plain "latitude" select — both start with that word.
+    else if (select.startsWith('latitude') && select.includes('stopdescription')) {
+      body = [
+        { latitude: '29.95', longitude: '-90.07', stopdescription: 'TRAFFIC VIOLATION', total: '4' }
+      ]
+    } else if (select.startsWith('latitude')) {
       body = [
         { latitude: '29.95', longitude: '-90.07', total: '4', address: 'Poydras St & S Peters St' },
         // Outside NOLA_BOUNDS: the ungeocoded placeholder, which must be dropped.
@@ -97,8 +108,15 @@ describe('useStopData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations, districtCounts, districtStopTypeCounts, loading } =
-      useStopData(range, snapshot)
+    const {
+      count,
+      vehicleGroups,
+      stopLocations,
+      districtCounts,
+      districtStopTypeCounts,
+      locationTypeCounts,
+      loading
+    } = useStopData(range, snapshot)
     await flushPromises()
 
     expect(fetchMock).not.toHaveBeenCalled()
@@ -107,6 +125,7 @@ describe('useStopData', () => {
     expect(stopLocations.value).toEqual(BAKED_LOCATIONS)
     expect(districtCounts.value).toEqual(BAKED_DISTRICTS)
     expect(districtStopTypeCounts.value).toEqual(BAKED_DISTRICT_STOP_TYPES)
+    expect(locationTypeCounts.value).toEqual(BAKED_LOCATION_TYPES)
     expect(loading.value).toBe(false)
   })
 
@@ -115,8 +134,14 @@ describe('useStopData', () => {
     const range = ref<DateRange>({ ...DEFAULT_RANGE })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, vehicleGroups, stopLocations, districtCounts, districtStopTypeCounts } =
-      useStopData(range, snapshot)
+    const {
+      count,
+      vehicleGroups,
+      stopLocations,
+      districtCounts,
+      districtStopTypeCounts,
+      locationTypeCounts
+    } = useStopData(range, snapshot)
     await flushPromises()
 
     range.value = { start: calendarDay(2025, 10, 1), end: calendarDay(2025, 10, 31) }
@@ -132,6 +157,9 @@ describe('useStopData', () => {
     expect(districtCounts.value).toEqual([{ district: '3', count: 10 }])
     expect(districtStopTypeCounts.value).toEqual([
       { district: '3', description: 'TRAFFIC VIOLATION', count: 10 }
+    ])
+    expect(locationTypeCounts.value).toEqual([
+      { latitude: 29.95, longitude: -90.07, description: 'TRAFFIC VIOLATION', count: 4 }
     ])
   })
 
@@ -174,8 +202,15 @@ describe('useStopData', () => {
     })
     const snapshot = ref<DataSnapshot | null>(snapshotFixture())
 
-    const { count, error, vehicleGroups, stopLocations, districtCounts, districtStopTypeCounts } =
-      useStopData(range, snapshot)
+    const {
+      count,
+      error,
+      vehicleGroups,
+      stopLocations,
+      districtCounts,
+      districtStopTypeCounts,
+      locationTypeCounts
+    } = useStopData(range, snapshot)
     await flushPromises()
 
     expect(error.value).toBeTruthy()
@@ -184,6 +219,7 @@ describe('useStopData', () => {
     expect(stopLocations.value).toEqual([])
     expect(districtCounts.value).toEqual([])
     expect(districtStopTypeCounts.value).toEqual([])
+    expect(locationTypeCounts.value).toEqual([])
   })
 
   it('discards a superseded response so the newest range wins', async () => {
@@ -195,9 +231,9 @@ describe('useStopData', () => {
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
         const url = new URL(String(input))
         const isCount = (url.searchParams.get('$select') ?? '').startsWith('count(*)')
-        // Five queries per range now: count, vehicles, locations, districts,
-        // district/stop-type pairs.
-        const mine = callIndex++ < 5
+        // Six queries per range now: count, vehicles, locations, districts,
+        // district/stop-type pairs, location/stop-type pairs.
+        const mine = callIndex++ < 6
         if (mine) {
           await new Promise((resolve) => setTimeout(resolve, 40))
           if (init?.signal?.aborted) throw new DOMException('aborted', 'AbortError')
@@ -206,13 +242,22 @@ describe('useStopData', () => {
         const select = url.searchParams.get('$select') ?? ''
         const body = isCount
           ? [{ total }]
-          : select.startsWith('latitude')
-            ? []
-            : select.includes('stopdescription')
-              ? [{ district: '1', stopdescription: 'TRAFFIC VIOLATION', total }]
-              : select.startsWith('district')
-                ? [{ district: '1', total }]
-                : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
+          : select.startsWith('latitude') && select.includes('stopdescription')
+            ? [
+                {
+                  latitude: '29.95',
+                  longitude: '-90.07',
+                  stopdescription: 'TRAFFIC VIOLATION',
+                  total
+                }
+              ]
+            : select.startsWith('latitude')
+              ? []
+              : select.includes('stopdescription')
+                ? [{ district: '1', stopdescription: 'TRAFFIC VIOLATION', total }]
+                : select.startsWith('district')
+                  ? [{ district: '1', total }]
+                  : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
         return new Response(JSON.stringify(body), { status: 200 })
       })
     )

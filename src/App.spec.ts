@@ -53,6 +53,13 @@ const SNAPSHOT: DataSnapshot = {
     { district: '8', description: 'TRAFFIC VIOLATION', count: 2504 },
     { district: '8', description: 'CRIMINAL VIOLATION', count: 200 }
   ],
+  // Matches defaultRangeStopLocations above: both of its coordinates carry
+  // some Traffic Violation stops, so composition mode's circle highlighting
+  // has something real to show without a district click's own fixture.
+  defaultRangeLocationTypeCounts: [
+    { latitude: 29.9511, longitude: -90.0715, description: 'TRAFFIC VIOLATION', count: 18000 },
+    { latitude: 30.0046, longitude: -90.1082, description: 'TRAFFIC VIOLATION', count: 10828 }
+  ],
   // Sparse, as the real baked data is — 1992-1998 absent rather than zero.
   // locatedCount mirrors the real pattern too: coordinates aren't reliable
   // until 2018, so 2010's count is real but its located share is a sliver.

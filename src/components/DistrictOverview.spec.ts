@@ -3,7 +3,11 @@ import { NSelect } from 'naive-ui'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { calendarDay } from '@/lib/dates'
-import { MAX_LEGIBLE_LOCATIONS, type StopLocation } from '@/lib/stopLocations'
+import {
+  MAX_LEGIBLE_LOCATIONS,
+  type StopLocation,
+  type StopLocationTypeCount
+} from '@/lib/stopLocations'
 import type { DistrictCount, DistrictStopTypeCount } from '@/lib/stops'
 
 import DistrictOverview from './DistrictOverview.vue'
@@ -105,6 +109,30 @@ const DISTRICT_3_LOCATION_2: StopLocation = {
   address: 'Poydras St & S Peters St'
 }
 
+// DISTRICT_3_LOCATION carries both types (90 + 10 = its total of 100);
+// DISTRICT_3_LOCATION_2 carries only traffic violation (matching its total
+// of 1) — so selecting criminal violation mutes exactly one of the two.
+const LOCATION_TYPE_COUNTS: StopLocationTypeCount[] = [
+  {
+    latitude: DISTRICT_3_LOCATION.latitude,
+    longitude: DISTRICT_3_LOCATION.longitude,
+    description: 'TRAFFIC VIOLATION',
+    count: 90
+  },
+  {
+    latitude: DISTRICT_3_LOCATION.latitude,
+    longitude: DISTRICT_3_LOCATION.longitude,
+    description: 'CRIMINAL VIOLATION',
+    count: 10
+  },
+  {
+    latitude: DISTRICT_3_LOCATION_2.latitude,
+    longitude: DISTRICT_3_LOCATION_2.longitude,
+    description: 'TRAFFIC VIOLATION',
+    count: 1
+  }
+]
+
 function stubBoundaryFetch() {
   vi.stubGlobal(
     'fetch',
@@ -128,6 +156,7 @@ function mountOverview(props: Partial<InstanceType<typeof DistrictOverview>['$pr
     props: {
       districtCounts: DISTRICT_COUNTS,
       districtStopTypeCounts: DISTRICT_STOP_TYPE_COUNTS,
+      locationTypeCounts: LOCATION_TYPE_COUNTS,
       // Matches the two fixture locations' combined count (100 + 1), so this
       // range clears LOCATION_COVERAGE_THRESHOLD and drilling in is offered.
       rangeTotal: 101,
@@ -463,6 +492,89 @@ describe('DistrictOverview', () => {
     await wrapper.find('path.district-3').trigger('mouseover')
     await flushPromises()
     expect(normalisedText(wrapper)).toContain('96.1%')
+    wrapper.unmount()
+  })
+
+  it('mutes a circle with none of the selected type, instead of hiding it', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+    await switchToComposition(wrapper)
+
+    await wrapper.find('path.district-3').trigger('click')
+    await flushPromises()
+
+    // Traffic violation (the default selection): both fixture locations
+    // carry some, so both circles are present and neither is muted.
+    expect(wrapper.findAll('path.stop-circle')).toHaveLength(2)
+    expect(wrapper.findAll('path.stop-circle-muted')).toHaveLength(0)
+
+    await wrapper.findComponent(NSelect).vm.$emit('update:value', 'CRIMINAL VIOLATION')
+    await flushPromises()
+
+    // DISTRICT_3_LOCATION_2 has no criminal violation stops in the fixture —
+    // it stays on screen, dimmed, rather than disappearing.
+    expect(wrapper.findAll('path.stop-circle')).toHaveLength(2)
+    expect(wrapper.findAll('path.stop-circle-muted')).toHaveLength(1)
+    wrapper.unmount()
+  })
+
+  it('drops the muting when switching back to count mode', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+    await switchToComposition(wrapper)
+    await wrapper.find('path.district-3').trigger('click')
+    await flushPromises()
+    await wrapper.findComponent(NSelect).vm.$emit('update:value', 'CRIMINAL VIOLATION')
+    await flushPromises()
+    expect(wrapper.findAll('path.stop-circle-muted')).toHaveLength(1)
+
+    const countButton = wrapper.findAll('button').find((b) => b.text() === 'By Count')
+    await countButton!.trigger('click')
+    await flushPromises()
+
+    expect(wrapper.findAll('path.stop-circle-muted')).toHaveLength(0)
+    expect(wrapper.findAll('path.stop-circle')).toHaveLength(2)
+    wrapper.unmount()
+  })
+
+  it('names the selected type in the caption, as an independent fact alongside the existing ones', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+    await switchToComposition(wrapper)
+    await wrapper.find('path.district-3').trigger('click')
+    await flushPromises()
+
+    const text = normalisedText(wrapper)
+    // The original "N stops have a recorded location..." sentence is
+    // untouched; this is an addition, not a rewrite.
+    expect(text).toContain(
+      "101 stops have a recorded location within District 3's mapped shape, at 2 places."
+    )
+    expect(text).toContain('District 3 recorded 9,970 Traffic violation stops in total')
+    wrapper.unmount()
+  })
+
+  it('says a district recorded none of the selected type when its own tabular total is zero', async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview({
+      districtStopTypeCounts: [
+        { district: '3', description: 'TRAFFIC VIOLATION', count: 9970 },
+        // Only present for a different district, so it's an available
+        // dropdown option but district 3's own total for it is 0.
+        { district: '7', description: 'CRIMINAL VIOLATION', count: 22 }
+      ]
+    })
+    await flushPromises()
+    await switchToComposition(wrapper)
+    await wrapper.find('path.district-3').trigger('click')
+    await flushPromises()
+    await wrapper.findComponent(NSelect).vm.$emit('update:value', 'CRIMINAL VIOLATION')
+    await flushPromises()
+
+    expect(normalisedText(wrapper)).toContain('District 3 recorded no Criminal violation stops.')
     wrapper.unmount()
   })
 

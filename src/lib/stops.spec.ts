@@ -8,6 +8,7 @@ import {
   fetchDistrictStopTypeCounts,
   fetchLatestEventDate,
   fetchStopCount,
+  fetchStopLocationTypeCounts,
   fetchStopLocations,
   fetchVehicleGroups,
   groupByDistrict,
@@ -290,6 +291,52 @@ describe('fetchStopLocations', () => {
     const { locations, addressInconsistentCount } = await fetchStopLocations(range)
     expect(locations).toHaveLength(1)
     expect(addressInconsistentCount).toBe(0)
+  })
+})
+
+describe('fetchStopLocationTypeCounts', () => {
+  const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 9) }
+
+  it('groups server-side by coordinate and stop type, same bounds as fetchStopLocations', async () => {
+    const { requestedUrl } = stubFetch([])
+    await fetchStopLocationTypeCounts(range)
+    const params = requestedUrl().searchParams
+    expect(params.get('$select')).toBe('latitude, longitude, stopdescription, count(*) as total')
+    expect(params.get('$group')).toBe('latitude, longitude, stopdescription')
+    expect(params.get('$order')).toBe('total desc')
+    expect(params.get('$where')).toContain('latitude between')
+  })
+
+  it('maps rows into location/stop-type counts', async () => {
+    stubFetch([
+      {
+        latitude: '29.95',
+        longitude: '-90.07',
+        stopdescription: 'TRAFFIC VIOLATION',
+        total: '14'
+      },
+      {
+        latitude: '29.95',
+        longitude: '-90.07',
+        stopdescription: 'CRIMINAL VIOLATION',
+        total: '3'
+      }
+    ])
+    const counts = await fetchStopLocationTypeCounts(range)
+    expect(counts).toEqual([
+      { latitude: 29.95, longitude: -90.07, description: 'TRAFFIC VIOLATION', count: 14 },
+      { latitude: 29.95, longitude: -90.07, description: 'CRIMINAL VIOLATION', count: 3 }
+    ])
+  })
+
+  it('drops a row at the 0,0 ungeocoded placeholder', async () => {
+    stubFetch([
+      { latitude: '0', longitude: '0', stopdescription: 'TRAFFIC VIOLATION', total: '9' },
+      { latitude: '29.95', longitude: '-90.07', stopdescription: 'TRAFFIC VIOLATION', total: '14' }
+    ])
+    const counts = await fetchStopLocationTypeCounts(range)
+    expect(counts).toHaveLength(1)
+    expect(counts[0]?.latitude).toBe(29.95)
   })
 })
 

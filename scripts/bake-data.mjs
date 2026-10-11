@@ -45,6 +45,8 @@ const MAX_GROUPS = 50_000
 const MAX_LOCATIONS = 45_000
 /** The dataset holds 12 kinds of stop; the rest is slack. */
 const MAX_STOP_TYPES = 500
+/** Keep in step with MAX_LOCATION_TYPE_ROWS in src/lib/stops.ts, which explains the value. */
+const MAX_LOCATION_TYPE_ROWS = 70_000
 
 /**
  * Mirrors NOLA_BOUNDS in src/lib/stopLocations.ts. Keep the two in step.
@@ -130,6 +132,18 @@ function stopLocation(latitude, longitude, count, address) {
   if (lon < BOUNDS.minLongitude || lon > BOUNDS.maxLongitude) return null
   if (!Number.isFinite(stops) || stops <= 0) return null
   return { latitude: lat, longitude: lon, count: stops, address: (address ?? '').trim() }
+}
+
+/** Mirrors fetchStopLocationTypeCounts's row-mapping in src/lib/stops.ts. */
+function locationTypeCount(latitude, longitude, description, count) {
+  const lat = Number(latitude)
+  const lon = Number(longitude)
+  const total = Number(count)
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null
+  if (lat < BOUNDS.minLatitude || lat > BOUNDS.maxLatitude) return null
+  if (lon < BOUNDS.minLongitude || lon > BOUNDS.maxLongitude) return null
+  if (!Number.isFinite(total) || total <= 0) return null
+  return { latitude: lat, longitude: lon, description: (description ?? '').trim(), count: total }
 }
 
 /** Keep in step with MAX_ADDRESS_COORDINATE_SPREAD_METERS in src/lib/stopLocations.ts. */
@@ -218,7 +232,8 @@ async function bake() {
     stopTypeRows,
     yearlyRows,
     districtRows,
-    districtStopTypeRows
+    districtStopTypeRows,
+    locationTypeRows
   ] = await Promise.all([
     query({ select: 'count(*) as total', where }),
     query({
@@ -279,6 +294,20 @@ async function bake() {
       where,
       group: 'district, stopdescription',
       order: 'district, total desc'
+    }),
+    // Backs the map's drill-down circle highlighting in composition mode —
+    // each located coordinate's own breakdown by kind of stop, so a circle
+    // with none of the selected type can be shown dimmed instead of hidden,
+    // rather than filtered away. Grouping by (latitude, longitude,
+    // stopdescription) isn't the max(district) mistake above: that picked
+    // one representative value per coordinate out of several disagreeing
+    // ones. This produces one accurate row per real combination instead.
+    query({
+      select: 'latitude, longitude, stopdescription, count(*) as total',
+      where: `${where} AND ${COORDINATE_WHERE}`,
+      group: 'latitude, longitude, stopdescription',
+      order: 'total desc',
+      limit: MAX_LOCATION_TYPE_ROWS
     })
   ])
 
@@ -321,6 +350,10 @@ async function bake() {
       description: (row.stopdescription ?? '').trim(),
       count: Number(row.total ?? 0)
     })),
+    // Mirrors the mapping in src/lib/stops.ts's fetchStopLocationTypeCounts.
+    defaultRangeLocationTypeCounts: locationTypeRows
+      .map((row) => locationTypeCount(row.latitude, row.longitude, row.stopdescription, row.total))
+      .filter((row) => row !== null),
     yearlyStopCounts: yearlyRows.map((row) => ({
       year: Number(row.yr),
       count: Number(row.total ?? 0),
@@ -343,6 +376,7 @@ async function bake() {
       `${addressInconsistentCount.toLocaleString('en-US')} stops excluded (address disagreed with itself)\n` +
       `  yearly        ${snapshot.yearlyStopCounts.length.toLocaleString('en-US')} years with at least one stop\n` +
       `  districts     ${snapshot.defaultRangeDistrictCounts.length.toLocaleString('en-US')} in range\n` +
+      `  location+type ${snapshot.defaultRangeLocationTypeCounts.length.toLocaleString('en-US')} coordinate/stop-type rows\n` +
       `  wrote         public/data/snapshot.json\n`
   )
 }

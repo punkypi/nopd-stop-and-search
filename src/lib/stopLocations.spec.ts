@@ -4,6 +4,7 @@ import {
   boundingBox,
   buildStopLocation,
   consistentLocations,
+  coordinateKey,
   escapeHtml,
   hasUsableCoordinates,
   inconsistentAddressLocations,
@@ -20,7 +21,9 @@ import {
   popupHtml,
   stopCountLabel,
   totalPlottedStops,
-  type StopLocation
+  typeCountByCoordinate,
+  type StopLocation,
+  type StopLocationTypeCount
 } from './stopLocations'
 
 function location(latitude: number, longitude: number, count = 1, address = ''): StopLocation {
@@ -311,6 +314,47 @@ describe('popupHtml', () => {
     expect(html).not.toContain('<img')
     expect(html).toContain('&lt;img')
     expect(html).toContain('&amp; Main St')
+  })
+
+  it('names the selected type and its own count, with the total as the denominator, when given a callout', () => {
+    const html = popupHtml(
+      { latitude: 29.95, longitude: -90.07, count: 50, address: 'Canal St' },
+      { label: 'Traffic violation', count: 14 }
+    )
+    expect(html).toBe('<strong>Canal St</strong><br />14 of 50 stops are Traffic violation')
+  })
+
+  it('still reports the count plainly when the callout is 0', () => {
+    // A muted circle: present, but none of the selected type.
+    const html = popupHtml(
+      { latitude: 29.95, longitude: -90.07, count: 50, address: 'Canal St' },
+      { label: 'Criminal violation', count: 0 }
+    )
+    expect(html).toContain('0 of 50 stops are Criminal violation')
+  })
+})
+
+describe('coordinateKey and typeCountByCoordinate', () => {
+  const TYPE_COUNTS: StopLocationTypeCount[] = [
+    { latitude: 29.95, longitude: -90.07, description: 'TRAFFIC VIOLATION', count: 14 },
+    { latitude: 29.95, longitude: -90.07, description: 'CRIMINAL VIOLATION', count: 3 },
+    { latitude: 30.0, longitude: -90.0, description: 'TRAFFIC VIOLATION', count: 7 }
+  ]
+
+  it('keys by coordinate', () => {
+    expect(coordinateKey(29.95, -90.07)).toBe('29.95,-90.07')
+  })
+
+  it('narrows to the given description and keys the result by coordinate', () => {
+    const map = typeCountByCoordinate(TYPE_COUNTS, 'TRAFFIC VIOLATION')
+    expect(map.get(coordinateKey(29.95, -90.07))).toBe(14)
+    expect(map.get(coordinateKey(30.0, -90.0))).toBe(7)
+    expect(map.size).toBe(2)
+  })
+
+  it('omits a coordinate entirely when it has none of the given description', () => {
+    const map = typeCountByCoordinate(TYPE_COUNTS, 'CRIMINAL VIOLATION')
+    expect(map.has(coordinateKey(30.0, -90.0))).toBe(false)
   })
 })
 
