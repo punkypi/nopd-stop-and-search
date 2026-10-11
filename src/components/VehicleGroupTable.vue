@@ -116,9 +116,8 @@ const columns = computed<DataTableColumns<VehicleGroup>>(() => [
            totals from reading as a count of all stops. -->
       <p v-if="coverage.withoutVehicle > 0" class="text-nola-muted px-2 pb-2 text-xs">
         {{ numberFormat.format(coverage.withVehicle) }} of
-        {{ numberFormat.format(rangeStops) }} stops in this range recorded a vehicle. The rest,
-        including every stop of someone on foot, are counted in the total above but cannot appear
-        here.
+        {{ numberFormat.format(rangeStops) }} stops in this range recorded a vehicle. The rest —
+        including every stop on foot — are counted above but can't appear here.
       </p>
 
       <NDataTable

@@ -145,10 +145,10 @@ function isSelectedYear(year: number): boolean {
 
     <p class="text-nola-muted w-full text-xs">
       Fewer than 700 stops are on record across all of 1991–2009 combined, against tens of thousands
-      most years since 2010 — that's when NOPD's electronic field-interview system started being
-      populated, not a two-decade quiet spell. Locations lag even further behind: the bright cap on
-      each bar is the share with a usable coordinate, and that share stays under 1% until 2018 —
-      2010 alone logged 62,006 stops but just one with a location. Click a year to view it.
+      most years since 2010, when NOPD's electronic field-interview system started being populated —
+      not two quiet decades. Locations lag further behind: the bright cap on each bar is the share
+      with a usable coordinate, staying under 1% until 2018 — 2010 alone logged 62,006 stops but
+      just one with a location. Click a year to view it.
     </p>
   </section>
 </template>

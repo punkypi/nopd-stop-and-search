@@ -79,8 +79,8 @@ const bakedAtLabel = computed(() => {
             rel="noreferrer"
             target="_blank"
             >Data.NOLA.gov</a
-          >, covering every kind of stop the record holds — traffic stops, stops of people on foot,
-          and calls officers were dispatched to alike.
+          >, covering every kind of stop on record: traffic stops, stops of people on foot, and
+          calls officers were dispatched to.
         </p>
 
         <dl v-if="snapshot" class="grid gap-x-6 gap-y-1 sm:grid-cols-[auto_1fr]">
@@ -112,32 +112,28 @@ const bakedAtLabel = computed(() => {
         </div>
 
         <p class="text-nola-muted">
-          These kinds are not interchangeable. A stop officers were dispatched to is not the same
-          act as one an officer chose to make, and what follows a stop — a search, a citation, an
-          arrest — varies widely between them. A figure pooled across all of them blends different
-          things, so read any total here alongside the mix above.
+          These kinds aren't interchangeable: a call officers were dispatched to isn't a
+          discretionary stop, and what follows one — a search, a citation, an arrest — varies widely
+          by kind. Read any total here alongside the mix above, not alone.
         </p>
 
         <p class="text-nola-muted">
-          Event density is uneven — some months and years hold far fewer records than others, and no
-          new events have been published since
+          Event density is uneven across months and years, and no new events have posted since
           <span v-if="snapshot">{{ toDisplayString(snapshot.latestEventDate) }}</span
-          ><span v-else>late 2025</span>, though the dataset itself still receives updates. A range
-          with a low count usually means sparse reporting rather than a quiet month.
+          ><span v-else>late 2025</span>, though the dataset still receives updates. A low count
+          usually means sparse reporting, not a quiet month.
         </p>
 
         <p class="text-nola-muted">
-          Picking a date range narrows the page to what the record holds for that window, not a
-          claim about what actually happened then — the "Stops by year" chart above the date picker
-          shows how unevenly that record was kept over the dataset's 34 years, and why the page
-          opens on a recent, well-reported window by default rather than the whole span.
+          A date range shows what the record holds for that window, not what actually happened. The
+          "Stops by year" chart above shows how unevenly the record was kept across 34 years — why
+          the page defaults to a recent, well-reported window instead of the full span.
         </p>
 
         <p class="text-nola-muted">
-          Locations are recorded at the nearest intersection or block rather than an exact address,
-          and only from 2018 onward — earlier stops carry no coordinates at all. The map therefore
-          covers a subset of any range that reaches back before then, and says how large a subset it
-          is.
+          Locations are recorded at the nearest intersection or block, not an exact address, and
+          only from 2018 onward — earlier stops have no coordinates. The map covers a subset of any
+          range reaching back further, and says how large that subset is.
         </p>
 
         <p>
