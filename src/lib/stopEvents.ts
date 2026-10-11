@@ -11,7 +11,8 @@
  * range, never more.
  */
 
-import { fromSocrataTimestamp, type CalendarDay } from './dates'
+import { fromSocrataTimestamp, toDisplayString, type CalendarDay } from './dates'
+import { escapeHtml } from './stopLocations'
 
 export interface StopEvent {
   eventDate: CalendarDay | null
@@ -99,4 +100,61 @@ export function buildStopEvent(row: RawStopEventRow): StopEvent {
     searchOccurred: yesNoToBoolean(firstValue(actions, 'Search Occurred')),
     evidenceSeized: yesNoToBoolean(firstValue(actions, 'Evidence Seized'))
   }
+}
+
+// --- Rendering, for the circle's own map popup -----------------------
+
+/** Sentence case, so a stored all-caps value reads as prose instead. */
+export function sentenceCase(value: string): string {
+  if (!value) return 'Not recorded'
+  return value.charAt(0) + value.slice(1).toLowerCase()
+}
+
+/** For a `Yes`/`No`-recorded field, or `null` when the stop's own record
+ *  carried no value for it at all (not the same as "No"). */
+export function yesNoLabel(value: boolean | null): string {
+  if (value === true) return 'Yes'
+  if (value === false) return 'No'
+  return 'Not recorded'
+}
+
+/** Joins every recorded outcome. A stop can carry more than one Stop
+ *  Results value (see `buildStopEvent`'s comment); showing only the first
+ *  would quietly drop the rest. */
+export function outcomeLabel(results: readonly string[]): string {
+  if (results.length === 0) return 'Not recorded'
+  return results.map(sentenceCase).join(', ')
+}
+
+function eventHtml(event: StopEvent): string {
+  const date = event.eventDate ? toDisplayString(event.eventDate) : 'Date not recorded'
+  const age = event.subjectAge === null ? 'not recorded' : String(event.subjectAge)
+  return (
+    `<p><strong>${escapeHtml(date)}, ${escapeHtml(sentenceCase(event.stopType))}</strong></p>` +
+    `<p>Search: ${escapeHtml(yesNoLabel(event.searchOccurred))} &middot; ` +
+    `Evidence seized: ${escapeHtml(yesNoLabel(event.evidenceSeized))}</p>` +
+    `<p>Outcome: ${escapeHtml(outcomeLabel(event.stopResults))}</p>` +
+    `<p>${escapeHtml(sentenceCase(event.subjectRace))}, ${escapeHtml(sentenceCase(event.subjectGender))}, ` +
+    `age ${escapeHtml(age)}</p>` +
+    `<p>Photo ID: ${escapeHtml(event.hasPhotoId || 'Not recorded')} &middot; ` +
+    `Officer's unit: ${escapeHtml(event.officerAssignment || 'Not recorded')}</p>`
+  )
+}
+
+/**
+ * Every event at one location, rendered for the circle's own Leaflet
+ * popup — the detail lives where the location and count already do,
+ * rather than in a separate panel.
+ */
+export function stopEventsHtml(
+  events: readonly StopEvent[],
+  truncated: boolean,
+  totalCount: number
+): string {
+  if (events.length === 0) return '<p>No stops on record for this location.</p>'
+  const cards = events.map(eventHtml).join('<hr />')
+  const truncationNote = truncated
+    ? `<p>Showing the ${events.length} most recent of ${totalCount} stops recorded here.</p>`
+    : ''
+  return `${cards}${truncationNote}`
 }

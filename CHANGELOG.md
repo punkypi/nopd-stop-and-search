@@ -10,15 +10,15 @@ and this project adheres to
 
 ### Added
 
-- Clicking a location's circle now shows every stop recorded there: date,
-  stop type, whether a search occurred, whether it turned up evidence, the
-  outcome (including a stop with more than one recorded outcome, which
-  real data turned up), the subject's race, gender, age, and photo-ID
-  status, and the officer's assigned unit. Capped at the 100 most recent
-  events at a location, with a disclosure when a busier corner has more.
-  Circles switched from a click-opens-popup interaction to hover-for-a-
-  quick-count, click-for-full-detail, matching the pattern the district
-  shapes already use.
+- Clicking a location's circle now shows every stop recorded there, in the
+  circle's own map popup: date, stop type, whether a search occurred,
+  whether it turned up evidence, the outcome (including a stop with more
+  than one recorded outcome, which real data turned up), the subject's
+  race, gender, age, and photo-ID status, and the officer's assigned unit.
+  Capped at the 100 most recent events at a location, with a disclosure
+  when a busier corner has more. Hovering still shows the existing quick
+  count/share tooltip; the detail lives where the location and its count
+  already do, rather than in a separate panel.
 
 ## [3.7.3] - 2026-10-11
 

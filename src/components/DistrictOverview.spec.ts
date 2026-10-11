@@ -605,7 +605,7 @@ describe('DistrictOverview', () => {
     wrapper.unmount()
   })
 
-  describe('per-event location detail', () => {
+  describe("per-event location detail, in the circle's own popup", () => {
     const EVENT_ROWS = [
       {
         eventdate: '2025-06-14T10:00:00.000',
@@ -629,7 +629,15 @@ describe('DistrictOverview', () => {
       }
     ]
 
-    it("shows a location's own per-event detail when its circle is clicked", async () => {
+    function popupText(wrapper: ReturnType<typeof mountOverview>): string {
+      return (
+        wrapper.element
+          .querySelector('.leaflet-popup-content')
+          ?.textContent?.replace(/\s+/g, ' ') ?? ''
+      )
+    }
+
+    it("shows a location's own per-event detail in its popup when the circle is clicked", async () => {
       stubBoundaryFetch(EVENT_ROWS)
       const wrapper = mountOverview()
       await flushPromises()
@@ -640,10 +648,8 @@ describe('DistrictOverview', () => {
       await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
       await flushPromises()
 
-      const text = normalisedText(wrapper)
-      expect(text).toContain('Back to District 3')
-      expect(text).toContain('June 14, 2025')
-      expect(text).toContain('Traffic violation')
+      const text = popupText(wrapper)
+      expect(text).toContain('June 14, 2025, Traffic violation')
       expect(text).toContain('Search: Yes')
       expect(text).toContain('Evidence seized: No')
       expect(text).toContain('Outcome: Citation issued')
@@ -651,11 +657,11 @@ describe('DistrictOverview', () => {
       expect(text).toContain('Photo ID: Yes')
       expect(text).toContain("Officer's unit: 3rd District")
       // The second event, from a different kind of stop entirely.
-      expect(text).toContain('Call for service')
+      expect(text).toContain('May 2, 2025, Call for service')
       expect(text).toContain('White, Female, age 0')
-      // The usual district caption is replaced, not just covered, while a
-      // location is open.
-      expect(text).not.toContain('mapped shape')
+      // The tooltip (hover) and the usual bar list/caption are unaffected --
+      // the detail lives in the popup only, not a separate view.
+      expect(normalisedText(wrapper)).toContain('mapped shape')
       wrapper.unmount()
     })
 
@@ -670,36 +676,11 @@ describe('DistrictOverview', () => {
       await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
       await flushPromises()
 
-      expect(normalisedText(wrapper)).toContain(
-        'Showing the 100 most recent of 100 stops recorded here'
-      )
+      expect(popupText(wrapper)).toContain('Showing the 100 most recent of 100 stops recorded here')
       wrapper.unmount()
     })
 
-    it('closes the location detail and returns to the bar list on a second click', async () => {
-      stubBoundaryFetch(EVENT_ROWS)
-      const wrapper = mountOverview()
-      await flushPromises()
-
-      await wrapper.find('path.district-3').trigger('click')
-      await flushPromises()
-      const circle = wrapper.findAll('path.stop-circle')[0]!
-      await circle.trigger('click')
-      await flushPromises()
-      expect(normalisedText(wrapper)).toContain('Back to District 3')
-
-      await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
-      await flushPromises()
-      const text = normalisedText(wrapper)
-      // Back to the district view (still drilled into District 3), not all
-      // the way out to the overview.
-      expect(text).toContain('Show all districts')
-      expect(text).not.toContain('Back to District 3')
-      expect(text).not.toContain('Outcome: Citation issued')
-      wrapper.unmount()
-    })
-
-    it("clicking 'Back to District N' returns to the district view without a second click on the map", async () => {
+    it('shows a loading placeholder before the fetch resolves', async () => {
       stubBoundaryFetch(EVENT_ROWS)
       const wrapper = mountOverview()
       await flushPromises()
@@ -707,15 +688,10 @@ describe('DistrictOverview', () => {
       await wrapper.find('path.district-3').trigger('click')
       await flushPromises()
       await wrapper.findAll('path.stop-circle')[0]!.trigger('click')
+      // Before awaiting the fetch: the popup already shows something, not
+      // empty or stale content from a previous click.
+      expect(popupText(wrapper)).toContain("Loading this location's stops")
       await flushPromises()
-
-      const backButton = wrapper.findAll('button').find((b) => b.text() === 'Back to District 3')
-      await backButton!.trigger('click')
-      await flushPromises()
-
-      const text = normalisedText(wrapper)
-      expect(text).toContain('District 3')
-      expect(text).not.toContain('Outcome: Citation issued')
       wrapper.unmount()
     })
   })

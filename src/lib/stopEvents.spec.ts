@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest'
 
 import { calendarDay } from './dates'
-import { buildStopEvent, parseActionStaken, type RawStopEventRow } from './stopEvents'
+import {
+  buildStopEvent,
+  outcomeLabel,
+  parseActionStaken,
+  sentenceCase,
+  stopEventsHtml,
+  yesNoLabel,
+  type RawStopEventRow,
+  type StopEvent
+} from './stopEvents'
 
 describe('parseActionStaken', () => {
   it('splits a real verbal-warning bag into single-valued keys', () => {
@@ -73,7 +82,8 @@ describe('buildStopEvent', () => {
     // Warning" and "Summons Issued" under the same Stop Results key.
     const event = buildStopEvent(
       row({
-        actionstaken: 'Stop Results: Verbal Warning;Search Occurred: No;Stop Results: Summons Issued'
+        actionstaken:
+          'Stop Results: Verbal Warning;Search Occurred: No;Stop Results: Summons Issued'
       })
     )
     expect(event.stopResults).toEqual(['Verbal Warning', 'Summons Issued'])
@@ -109,5 +119,85 @@ describe('buildStopEvent', () => {
 
   it('reports a missing event date as null rather than an invalid day', () => {
     expect(buildStopEvent(row({ eventdate: undefined })).eventDate).toBeNull()
+  })
+})
+
+describe('sentenceCase', () => {
+  it('capitalizes only the first letter of a stored all-caps value', () => {
+    expect(sentenceCase('TRAFFIC VIOLATION')).toBe('Traffic violation')
+  })
+
+  it('reports a blank value as Not recorded', () => {
+    expect(sentenceCase('')).toBe('Not recorded')
+  })
+})
+
+describe('yesNoLabel', () => {
+  it('labels true and false', () => {
+    expect(yesNoLabel(true)).toBe('Yes')
+    expect(yesNoLabel(false)).toBe('No')
+  })
+
+  it('labels null as Not recorded, distinct from No', () => {
+    expect(yesNoLabel(null)).toBe('Not recorded')
+  })
+})
+
+describe('outcomeLabel', () => {
+  it('joins every recorded outcome, sentence-cased', () => {
+    expect(outcomeLabel(['Verbal Warning', 'Summons Issued'])).toBe(
+      'Verbal warning, Summons issued'
+    )
+  })
+
+  it('reports no recorded outcomes as Not recorded', () => {
+    expect(outcomeLabel([])).toBe('Not recorded')
+  })
+})
+
+describe('stopEventsHtml', () => {
+  const EVENT: StopEvent = {
+    eventDate: calendarDay(2025, 6, 14),
+    stopType: 'TRAFFIC VIOLATION',
+    subjectRace: 'BLACK',
+    subjectGender: 'MALE',
+    subjectAge: 34,
+    hasPhotoId: 'Yes',
+    officerAssignment: '3rd District',
+    stopResults: ['Citation Issued'],
+    searchOccurred: true,
+    evidenceSeized: false
+  }
+
+  it('renders every field for a real event', () => {
+    const html = stopEventsHtml([EVENT], false, 1)
+    expect(html).toContain('June 14, 2025, Traffic violation')
+    expect(html).toContain('Search: Yes')
+    expect(html).toContain('Evidence seized: No')
+    expect(html).toContain('Outcome: Citation issued')
+    expect(html).toContain('Black, Male, age 34')
+    expect(html).toContain('Photo ID: Yes')
+    expect(html).toContain("Officer's unit: 3rd District")
+  })
+
+  it('discloses truncation against the real total, not just the shown count', () => {
+    const html = stopEventsHtml([EVENT], true, 998)
+    expect(html).toContain('Showing the 1 most recent of 998 stops recorded here')
+  })
+
+  it('says so when a location has no events to show', () => {
+    expect(stopEventsHtml([], false, 0)).toContain('No stops on record for this location')
+  })
+
+  it('escapes a value rather than trusting it as markup', () => {
+    // Defense in depth: every field here comes from the dataset, not from
+    // this codebase, the same reasoning popupHtml already applies to address.
+    const html = stopEventsHtml(
+      [{ ...EVENT, officerAssignment: '<img src=x onerror=alert(1)>' }],
+      false,
+      1
+    )
+    expect(html).not.toContain('<img')
+    expect(html).toContain('&lt;img')
   })
 })

@@ -30,7 +30,7 @@ import {
   type DistrictBoundaries,
   type DistrictBoundaryFeature
 } from '@/lib/districtBoundaries'
-import type { StopEvent } from '@/lib/stopEvents'
+import { sentenceCase, stopEventsHtml } from '@/lib/stopEvents'
 import {
   boundingBox,
   coordinateKey,
@@ -75,13 +75,6 @@ const props = defineProps<{
 
 const container = useTemplateRef<HTMLDivElement>('container')
 const selectedDistrict = ref<string | null>(null)
-/** The clicked circle's own location, within the selected district -- only
- *  meaningful while a district is selected, since that's the only time
- *  circles are drawn at all. Cleared whenever the district changes. */
-const selectedLocation = ref<StopLocation | null>(null)
-const locationEvents = shallowRef<StopEvent[]>([])
-const locationEventsTruncated = ref(false)
-const locationEventsLoading = ref(false)
 /** `null` until a viewer picks one — `effectiveStopType` falls back to the
  *  largest category so there's always something sensible to show. */
 const chosenStopType = ref<string | null>(null)
@@ -159,32 +152,6 @@ const effectiveStopType = computed(
   () => chosenStopType.value ?? availableStopTypes.value[0] ?? null
 )
 
-/** Sentence case, so a stored all-caps value (stop type, race, gender, an
- *  outcome) reads as prose instead — matches `AboutPanel`'s treatment of
- *  the same fields. Used across the dropdown, the per-event cards, and the
- *  choropleth labels below. */
-function sentenceCase(value: string): string {
-  if (!value) return 'Not recorded'
-  return value.charAt(0) + value.slice(1).toLowerCase()
-}
-
-/** For a `Yes`/`No`-recorded field parsed out of `actionstaken` into a
- *  boolean, or `null` when the stop's own record carried no value for it
- *  at all (not the same as "No" -- see `stopEvents.ts`). */
-function yesNoLabel(value: boolean | null): string {
-  if (value === true) return 'Yes'
-  if (value === false) return 'No'
-  return 'Not recorded'
-}
-
-/** Joins every recorded outcome -- checked live against the real API, a
- *  stop can carry more than one Stop Results value (a verbal warning and a
- *  summons issued on the same stop), and showing only the first would
- *  quietly drop the second. */
-function outcomeLabel(results: readonly string[]): string {
-  if (results.length === 0) return 'Not recorded'
-  return results.map(sentenceCase).join(', ')
-}
 const stopTypeOptions = computed(() =>
   availableStopTypes.value.map((description) => ({
     label: sentenceCase(description),
@@ -393,22 +360,21 @@ function handleDistrictClick(district: string) {
  * live -- this is the one place in the app that shows individual rows
  * rather than an aggregate. See `fetchStopEvents` in `@/lib/stops.ts` for
  * why that's the right call here and not elsewhere.
+ *
+ * The result lands in the circle's own popup, not a side panel -- the
+ * popup already names the location and its total count, and the detail
+ * belongs with them rather than in a second place a reader has to
+ * reconcile against the first. `marker` is passed in directly (not looked
+ * up by coordinate) since `rebuildCircles` already has it in hand when it
+ * registers this handler.
  */
-async function handleLocationClick(location: StopLocation) {
-  if (selectedLocation.value === location) {
-    selectedLocation.value = null
-    return
-  }
-  selectedLocation.value = location
-  locationEventsLoading.value = true
+async function handleLocationClick(location: StopLocation, marker: L.CircleMarker) {
+  marker.setPopupContent("Loading this location's stops.")
   try {
     const result = await fetchStopEvents(location.latitude, location.longitude, props.range)
-    // A newer click superseded this one while it was in flight.
-    if (selectedLocation.value !== location) return
-    locationEvents.value = result.events
-    locationEventsTruncated.value = result.truncated
-  } finally {
-    if (selectedLocation.value === location) locationEventsLoading.value = false
+    marker.setPopupContent(stopEventsHtml(result.events, result.truncated, location.count))
+  } catch {
+    marker.setPopupContent("Could not load this location's stops.")
   }
 }
 
@@ -448,7 +414,7 @@ function rebuildCircles() {
   for (const location of detailLocations.value) {
     const typeCount = typeCounts?.get(coordinateKey(location.latitude, location.longitude)) ?? null
     const isMuted = typeCounts !== null && !typeCount
-    L.circleMarker([location.latitude, location.longitude], {
+    const marker = L.circleMarker([location.latitude, location.longitude], {
       className: isMuted ? 'stop-circle stop-circle-muted' : 'stop-circle',
       radius: isMuted ? MUTED_MARKER_RADIUS : markerRadius(typeCount ?? location.count, highest),
       // Same reasoning as the old StopMap: thin and translucent, because busy
@@ -462,16 +428,16 @@ function rebuildCircles() {
       fillColor: '#54c8ff',
       fillOpacity: isMuted ? 0.06 : 0.28
     })
-      // A tooltip for the quick glance on hover, same content as before;
-      // a click now opens the full per-event detail in the panel instead
-      // of a popup bubble, which has no room for it. Same two-tier pattern
-      // the district shapes already use (hover for a number, click to
-      // drill in).
+      // Hover for the quick glance (unchanged); click opens the full
+      // per-event detail in this same point's own popup, fetched live --
+      // see `handleLocationClick`. A popup, not another tooltip: it needs
+      // to stay open while read, not vanish the moment the cursor moves.
       .bindTooltip(
         popupHtml(location, typeCounts ? { label: typeLabel!, count: typeCount ?? 0 } : undefined)
       )
-      .on('click', () => handleLocationClick(location))
+      .bindPopup('', { maxHeight: 320 })
       .addTo(circleLayer)
+    marker.on('click', () => handleLocationClick(location, marker))
   }
 }
 
@@ -559,21 +525,11 @@ watch([mode, effectiveStopType], () => {
   rebuildCircles()
 })
 watch(selectedDistrict, () => {
-  selectedLocation.value = null
   restyleDistricts()
   rebuildCircles()
   fitToCurrentView()
 })
-watch(
-  () => props.locations,
-  () => {
-    // The previously-clicked location's own object no longer exists in the
-    // new array -- its detail would be stale, so close it rather than leave
-    // it showing a location that's no longer part of the current range.
-    selectedLocation.value = null
-    rebuildCircles()
-  }
-)
+watch(() => props.locations, rebuildCircles)
 watch(() => props.locationTypeCounts, rebuildCircles)
 </script>
 
@@ -595,86 +551,39 @@ watch(() => props.locationTypeCounts, rebuildCircles)
           <span>{{ formattedCount }}</span>
         </p>
         <p class="text-nola-muted text-xs">{{ rangeLabel }}</p>
-        <NButton v-if="selectedLocation" size="small" quaternary @click="selectedLocation = null">
-          Back to District {{ selectedDistrict }}
-        </NButton>
-        <NButton
-          v-else-if="selectedDistrict"
-          size="small"
-          quaternary
-          @click="selectedDistrict = null"
-        >
+        <NButton v-if="selectedDistrict" size="small" quaternary @click="selectedDistrict = null">
           Show all districts
         </NButton>
       </div>
 
-      <template v-if="!selectedLocation">
-        <div class="border-nola-border flex items-center gap-2 border-t pt-3 pb-1">
-          <NButton
-            size="tiny"
-            :type="mode === 'count' ? 'primary' : 'default'"
-            quaternary
-            @click="mode = 'count'"
-          >
-            By Count
-          </NButton>
-          <NButton
-            size="tiny"
-            :type="mode === 'composition' ? 'primary' : 'default'"
-            quaternary
-            @click="mode = 'composition'"
-          >
-            By Stop Type
-          </NButton>
-        </div>
-        <NSelect
-          v-if="mode === 'composition'"
-          :value="effectiveStopType"
-          :options="stopTypeOptions"
-          size="small"
-          class="pb-2"
-          @update:value="chosenStopType = $event"
-        />
-      </template>
-
-      <div v-if="selectedLocation">
-        <div v-if="locationEventsLoading" class="text-nola-muted py-4 text-center text-sm">
-          Loading this location's stops.
-        </div>
-        <div v-else class="space-y-2">
-          <div
-            v-for="(event, index) in locationEvents"
-            :key="index"
-            class="border-nola-border border-b pb-2 text-xs last:border-b-0"
-          >
-            <p class="text-nola-text pb-1 font-semibold">
-              {{ event.eventDate ? toDisplayString(event.eventDate) : 'Date not recorded' }},
-              {{ sentenceCase(event.stopType) }}
-            </p>
-            <p class="text-nola-muted">
-              Search: {{ yesNoLabel(event.searchOccurred) }} · Evidence seized:
-              {{ yesNoLabel(event.evidenceSeized) }}
-            </p>
-            <p class="text-nola-muted">
-              Outcome: {{ outcomeLabel(event.stopResults) }}
-            </p>
-            <p class="text-nola-muted">
-              {{ sentenceCase(event.subjectRace) }}, {{ sentenceCase(event.subjectGender) }}, age
-              {{ event.subjectAge ?? 'not recorded' }}
-            </p>
-            <p class="text-nola-muted">
-              Photo ID: {{ event.hasPhotoId || 'Not recorded' }} · Officer's unit:
-              {{ event.officerAssignment || 'Not recorded' }}
-            </p>
-          </div>
-        </div>
-        <p v-if="locationEventsTruncated" class="text-nola-muted pt-2 text-xs">
-          Showing the {{ numberFormat.format(locationEvents.length) }} most recent of
-          {{ numberFormat.format(selectedLocation.count) }} stops recorded here.
-        </p>
+      <div class="border-nola-border flex items-center gap-2 border-t pt-3 pb-1">
+        <NButton
+          size="tiny"
+          :type="mode === 'count' ? 'primary' : 'default'"
+          quaternary
+          @click="mode = 'count'"
+        >
+          By Count
+        </NButton>
+        <NButton
+          size="tiny"
+          :type="mode === 'composition' ? 'primary' : 'default'"
+          quaternary
+          @click="mode = 'composition'"
+        >
+          By Stop Type
+        </NButton>
       </div>
+      <NSelect
+        v-if="mode === 'composition'"
+        :value="effectiveStopType"
+        :options="stopTypeOptions"
+        size="small"
+        class="pb-2"
+        @update:value="chosenStopType = $event"
+      />
 
-      <div v-else>
+      <div>
         <div
           v-if="rankedDistrictRows.length === 0 && !loading"
           class="text-nola-muted py-4 text-center text-sm"
@@ -719,7 +628,7 @@ watch(() => props.locationTypeCounts, rebuildCircles)
         </div>
       </div>
 
-      <p v-if="!selectedLocation" class="text-nola-muted pt-3 text-xs">{{ caption }}</p>
+      <p class="text-nola-muted pt-3 text-xs">{{ caption }}</p>
       <p v-if="addressInconsistencyNote" class="text-nola-muted pt-2 text-xs">
         {{ addressInconsistencyNote }}
       </p>
