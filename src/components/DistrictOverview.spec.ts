@@ -286,6 +286,30 @@ describe('DistrictOverview', () => {
     wrapper.unmount()
   })
 
+  it("highlights the active district's own row and dims the rest in the bar list", async () => {
+    stubBoundaryFetch()
+    const wrapper = mountOverview()
+    await flushPromises()
+
+    function buttonFor(label: string) {
+      return wrapper.findAll('button').find((b) => b.text().includes(label))!
+    }
+
+    // No district selected yet: neither highlighted nor dimmed.
+    expect(buttonFor('District 3').classes()).toContain('border-transparent')
+    expect(buttonFor('District 3').classes()).not.toContain('opacity-60')
+
+    await buttonFor('District 3').trigger('click')
+    await flushPromises()
+
+    expect(buttonFor('District 3').classes()).toContain('border-nola-blue-bright')
+    expect(buttonFor('District 3').classes()).not.toContain('opacity-60')
+    // A district not clicked fades back, so the active one is unmistakable.
+    expect(buttonFor('District 7').classes()).toContain('opacity-60')
+    expect(buttonFor('District 7').classes()).not.toContain('border-nola-blue-bright')
+    wrapper.unmount()
+  })
+
   it('omits the district-total sentence when no tabular total is known', async () => {
     stubBoundaryFetch()
     const wrapper = mountOverview({ districtCounts: [] })

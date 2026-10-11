@@ -570,10 +570,26 @@ watch(() => props.locationTypeCounts, rebuildCircles)
             v-for="row in rankedDistrictRows"
             :key="row.district"
             type="button"
-            class="flex w-full items-center gap-2 text-left text-sm"
+            class="flex w-full items-center gap-2 border-l-2 py-0.5 pl-1.5 text-left text-sm transition-colors"
+            :class="
+              selectedDistrict === row.district
+                ? 'border-nola-blue-bright'
+                : selectedDistrict
+                  ? 'border-transparent opacity-60'
+                  : 'border-transparent'
+            "
             @click="handleDistrictClick(row.district)"
           >
-            <span class="text-nola-muted w-16 shrink-0">District {{ row.district }}</span>
+            <span
+              class="w-16 shrink-0"
+              :class="
+                selectedDistrict === row.district
+                  ? 'text-nola-text font-semibold'
+                  : 'text-nola-muted'
+              "
+            >
+              District {{ row.district }}
+            </span>
             <div class="bg-nola-ink/40 h-3 flex-1 overflow-hidden rounded">
               <div
                 class="bg-nola-blue-bright h-full rounded"

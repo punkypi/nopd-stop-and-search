@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.7.1] - 2026-10-11
+
+### Changed
+
+- The floating panel's bar list now highlights whichever district is
+  currently drilled into — a bright left border and bold text on that row,
+  with the rest dimmed — so it's no longer easy to lose track of which
+  district the map is showing after scrolling or switching stop types.
+
 ## [3.7.0] - 2026-10-11
 
 ### Added
