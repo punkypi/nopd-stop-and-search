@@ -12,7 +12,7 @@
  * cache, so the old worker can survive for a day or more.
  *
  * So this file has to keep existing at the original path and scope
- * (`/stop_and_search/service-worker.js`) in order to replace the old worker,
+ * (`/nopd-stop-and-search/service-worker.js`) in order to replace the old worker,
  * drop every cache it created, unregister itself, and reload any open tab onto
  * the real site. Nothing in the current app registers a service worker, so a
  * visitor who never saw the React build will never fetch this.

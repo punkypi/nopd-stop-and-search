@@ -5,7 +5,7 @@ A small static site over New Orleans' public
 showing how many traffic stops were recorded in a date range, where in the city
 they happened, and which vehicle makes and models turn up in them.
 
-Live at <https://punkypi.github.io/stop_and_search>.
+Live at <https://punkypi.github.io/nopd-stop-and-search>.
 
 ## Stack
 
@@ -93,7 +93,7 @@ artifact directly. **One-time setup:** in the repository's
 _Settings → Pages → Build and deployment_, set **Source** to **GitHub Actions**.
 
 The site is served from a repository subpath, so the build needs
-`BASE_PATH=/stop_and_search/`. The workflow derives this automatically via
+`BASE_PATH=/nopd-stop-and-search/`. The workflow derives this automatically via
 `actions/configure-pages`; `npm run dev` and `npm run preview` serve from `/`.
 
 ## Notes on the toolchain

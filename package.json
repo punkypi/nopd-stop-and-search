@@ -1,9 +1,9 @@
 {
-  "name": "stop_and_search",
-  "version": "3.10.0",
+  "name": "nopd-stop-and-search",
+  "version": "3.10.1",
   "private": true,
   "type": "module",
-  "homepage": "https://punkypi.github.io/stop_and_search",
+  "homepage": "https://punkypi.github.io/nopd-stop-and-search",
   "engines": {
     "node": ">=26"
   },

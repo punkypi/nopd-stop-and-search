@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
 
 /**
- * GitHub Pages serves this project from https://<user>.github.io/stop_and_search/,
+ * GitHub Pages serves this project from https://<user>.github.io/nopd-stop-and-search/,
  * so every asset URL needs that repository-name prefix. Deploys driven by the
  * Pages workflow set BASE_PATH; `npm run dev` and `vite preview` leave it unset
  * and serve from the root.
@@ -14,7 +14,7 @@ import { defineConfig } from 'vitest/config'
  * The trailing slash is forced on because `actions/configure-pages` reports its
  * `base_path` output without one, and Vite surfaces `base` verbatim through
  * `import.meta.env.BASE_URL`. Without this, anything resolved against that value
- * came out as `/stop_and_searchdata/snapshot.json` and 404d in production while
+ * came out as `/nopd-stop-and-searchdata/snapshot.json` and 404d in production while
  * working locally.
  */
 const rawBase = process.env.BASE_PATH ?? '/'

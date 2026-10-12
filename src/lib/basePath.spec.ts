@@ -4,16 +4,16 @@ import { joinBase } from './basePath'
 
 describe('joinBase', () => {
   it('joins when the base already ends in a slash', () => {
-    expect(joinBase('/stop_and_search/', 'data/snapshot.json')).toBe(
-      '/stop_and_search/data/snapshot.json'
+    expect(joinBase('/nopd-stop-and-search/', 'data/snapshot.json')).toBe(
+      '/nopd-stop-and-search/data/snapshot.json'
     )
   })
 
   it('joins when the base omits the trailing slash', () => {
     // This is what actions/configure-pages reports, and interpolating it
-    // directly produced '/stop_and_searchdata/snapshot.json' in production.
-    expect(joinBase('/stop_and_search', 'data/snapshot.json')).toBe(
-      '/stop_and_search/data/snapshot.json'
+    // directly produced '/nopd-stop-and-searchdata/snapshot.json' in production.
+    expect(joinBase('/nopd-stop-and-search', 'data/snapshot.json')).toBe(
+      '/nopd-stop-and-search/data/snapshot.json'
     )
   })
 
@@ -22,17 +22,17 @@ describe('joinBase', () => {
   })
 
   it('does not double the slash when the path is absolute', () => {
-    expect(joinBase('/stop_and_search/', '/data/snapshot.json')).toBe(
-      '/stop_and_search/data/snapshot.json'
+    expect(joinBase('/nopd-stop-and-search/', '/data/snapshot.json')).toBe(
+      '/nopd-stop-and-search/data/snapshot.json'
     )
-    expect(joinBase('/stop_and_search', '/data/snapshot.json')).toBe(
-      '/stop_and_search/data/snapshot.json'
+    expect(joinBase('/nopd-stop-and-search', '/data/snapshot.json')).toBe(
+      '/nopd-stop-and-search/data/snapshot.json'
     )
   })
 
   it('works for a bare filename such as the favicon', () => {
-    expect(joinBase('/stop_and_search', 'fleur_de_lis_blue.ico')).toBe(
-      '/stop_and_search/fleur_de_lis_blue.ico'
+    expect(joinBase('/nopd-stop-and-search', 'fleur_de_lis_blue.ico')).toBe(
+      '/nopd-stop-and-search/fleur_de_lis_blue.ico'
     )
   })
 

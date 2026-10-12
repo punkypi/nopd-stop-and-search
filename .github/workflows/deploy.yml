@@ -55,7 +55,7 @@ jobs:
       - name: Build
         run: npm run build:nobake
         env:
-          # e.g. /stop_and_search/ — configure-pages derives it from the repo.
+          # e.g. /nopd-stop-and-search/ — configure-pages derives it from the repo.
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       - uses: actions/upload-pages-artifact@v5
