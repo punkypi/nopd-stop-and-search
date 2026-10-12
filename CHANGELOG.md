@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.10.0] - 2026-10-12
+
+### Added
+
+- A range-scoped stops-over-time chart, next to the date picker and above
+  the map: daily bars for a range under 90 days, monthly beyond it, derived
+  from the range's own length rather than fixed. Distinct from the
+  whole-record "Stops by year" sparkline, which never moves; this one is
+  the picker's own output and moves every time the range does, live-queried
+  for a custom range and baked for the default one. A bucket cut short by
+  the range's own edges (not a full calendar month) renders dimmed and says
+  so in its tooltip rather than reading as a quiet month. Confirmed live
+  that this can happen at _either_ edge, not just the last one: the default
+  range starts the 11th, not the 1st, so its first monthly bucket covers
+  only 20 of November 2024's 30 days.
+
 ## [3.9.0] - 2026-10-12
 
 ### Added

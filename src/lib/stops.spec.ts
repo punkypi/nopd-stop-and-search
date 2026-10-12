@@ -11,6 +11,7 @@ import {
   fetchStopEvents,
   fetchStopLocationTypeCounts,
   fetchStopLocations,
+  fetchStopsOverRange,
   fetchVehicleGroups,
   groupByDistrict,
   isValidRange,
@@ -135,6 +136,50 @@ describe('fetchStopCount', () => {
   it('defaults a missing total to zero', async () => {
     stubFetch([])
     await expect(fetchStopCount(range)).resolves.toBe(0)
+  })
+})
+
+describe('fetchStopsOverRange', () => {
+  it('buckets monthly for a range at or beyond the daily threshold, matching the real default range', async () => {
+    const range = { start: calendarDay(2024, 11, 11), end: calendarDay(2025, 11, 10) }
+    const { requestedUrl } = stubFetch([{ bucket: '2024-11-01T00:00:00.000', total: '1589' }])
+    await fetchStopsOverRange(range)
+    expect(requestedUrl().searchParams.get('$select')).toBe(
+      'date_trunc_ym(eventdate) as bucket, count(*) as total'
+    )
+  })
+
+  it('buckets daily for a short range', async () => {
+    const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 10) }
+    const { requestedUrl } = stubFetch([{ bucket: '2025-11-01T00:00:00.000', total: '48' }])
+    await fetchStopsOverRange(range)
+    expect(requestedUrl().searchParams.get('$select')).toBe(
+      'date_trunc_ymd(eventdate) as bucket, count(*) as total'
+    )
+  })
+
+  it('flags a monthly bucket cut short by the range, matching the real default range', async () => {
+    const range = { start: calendarDay(2024, 11, 11), end: calendarDay(2025, 11, 10) }
+    stubFetch([
+      { bucket: '2024-11-01T00:00:00.000', total: '1589' },
+      { bucket: '2024-12-01T00:00:00.000', total: '2174' }
+    ])
+    const points = await fetchStopsOverRange(range)
+    expect(points[0]).toEqual({ bucketStart: '2024-11-01', count: 1589, partial: true })
+    expect(points[1]).toEqual({ bucketStart: '2024-12-01', count: 2174, partial: false })
+  })
+
+  it('never flags a daily bucket as partial', async () => {
+    const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 10) }
+    stubFetch([{ bucket: '2025-11-01T00:00:00.000', total: '48' }])
+    const points = await fetchStopsOverRange(range)
+    expect(points[0]?.partial).toBe(false)
+  })
+
+  it('drops a row with no parseable bucket instead of throwing', async () => {
+    const range = { start: calendarDay(2025, 11, 1), end: calendarDay(2025, 11, 10) }
+    stubFetch([{ total: '1' }])
+    await expect(fetchStopsOverRange(range)).resolves.toEqual([])
   })
 })
 

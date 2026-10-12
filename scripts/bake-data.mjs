@@ -199,6 +199,25 @@ function normalizeRace(raw) {
   return trimmed === '' ? 'Not recorded' : trimmed
 }
 
+/** Mirrors daysInMonth in src/lib/dates.ts. */
+function daysInMonth(date) {
+  return new Date(date.year, date.month, 0).getDate()
+}
+
+/**
+ * Mirrors isPartialMonthBucket in src/lib/stopsOverRange.ts. The default
+ * range's own edges (`latest` and `latest` minus 364 days) almost never land
+ * on the 1st or last day of a month, so both the first and last bucket here
+ * are typically partial — confirmed live for the current default range.
+ */
+function isPartialMonthBucket(bucketStart, range) {
+  const isFirst = bucketStart.year === range.start.year && bucketStart.month === range.start.month
+  if (isFirst && range.start.day > 1) return true
+  const isLast = bucketStart.year === range.end.year && bucketStart.month === range.end.month
+  if (isLast && range.end.day < daysInMonth(range.end)) return true
+  return false
+}
+
 function vehicleGroup(make, model, count) {
   const trimmedMake = (make ?? '').trim()
   const trimmedModel = (model ?? '').trim()
@@ -245,7 +264,8 @@ async function bake() {
     districtStopTypeRows,
     locationTypeRows,
     raceOutcomeRows,
-    raceStopTypeRows
+    raceStopTypeRows,
+    timeSeriesRows
   ] = await Promise.all([
     query({ select: 'count(*) as total', where }),
     query({
@@ -345,6 +365,16 @@ async function bake() {
       select: 'subjectrace, stopdescription, count(*) as total',
       group: 'subjectrace, stopdescription',
       order: 'subjectrace, total desc'
+    }),
+    // Backs the range-scoped stops-over-time chart on the default view too.
+    // Always monthly: the default range is always the latest 12 months,
+    // always past DAILY_BUCKET_MAX_DAYS in src/lib/stopsOverRange.ts, so
+    // there's no day/month branch to hand-duplicate here.
+    query({
+      select: 'date_trunc_ym(eventdate) as bucket, count(*) as total',
+      where,
+      group: 'bucket',
+      order: 'bucket'
     })
   ])
 
@@ -409,7 +439,18 @@ async function bake() {
       race: normalizeRace(row.subjectrace),
       description: (row.stopdescription ?? '').trim(),
       count: Number(row.total ?? 0)
-    }))
+    })),
+    defaultRangeTimeSeries: timeSeriesRows
+      .map((row) => {
+        const bucketDay = toCalendarDay(row.bucket)
+        if (!bucketDay) return null
+        return {
+          bucketStart: isoDate(bucketDay),
+          count: Number(row.total ?? 0),
+          partial: isPartialMonthBucket(bucketDay, defaultRange)
+        }
+      })
+      .filter((row) => row !== null)
   }
 
   await mkdir(OUT_DIR, { recursive: true })
@@ -429,6 +470,7 @@ async function bake() {
       `  districts     ${snapshot.defaultRangeDistrictCounts.length.toLocaleString('en-US')} in range\n` +
       `  location+type ${snapshot.defaultRangeLocationTypeCounts.length.toLocaleString('en-US')} coordinate/stop-type rows\n` +
       `  outcomes      ${snapshot.outcomesByRace.length.toLocaleString('en-US')} races, all-time\n` +
+      `  time series   ${snapshot.defaultRangeTimeSeries.length.toLocaleString('en-US')} buckets in range\n` +
       `  wrote         public/data/snapshot.json\n`
   )
 }

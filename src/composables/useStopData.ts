@@ -22,6 +22,7 @@ import {
   fetchStopCount,
   fetchStopLocationTypeCounts,
   fetchStopLocations,
+  fetchStopsOverRange,
   fetchVehicleGroups,
   isValidRange,
   type DateRange,
@@ -29,6 +30,7 @@ import {
   type DistrictStopTypeCount,
   type VehicleGroup
 } from '@/lib/stops'
+import type { TimeSeriesPoint } from '@/lib/stopsOverRange'
 
 export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnapshot | null>) {
   const count = ref<number | null>(null)
@@ -39,6 +41,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
   const districtCounts = shallowRef<DistrictCount[]>([])
   const districtStopTypeCounts = shallowRef<DistrictStopTypeCount[]>([])
   const locationTypeCounts = shallowRef<StopLocationTypeCount[]>([])
+  const timeSeries = shallowRef<TimeSeriesPoint[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -60,6 +63,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       districtCounts.value = baked.defaultRangeDistrictCounts ?? []
       districtStopTypeCounts.value = baked.defaultRangeDistrictStopTypeCounts ?? []
       locationTypeCounts.value = baked.defaultRangeLocationTypeCounts ?? []
+      timeSeries.value = baked.defaultRangeTimeSeries ?? []
       loading.value = false
       error.value = null
       return
@@ -77,14 +81,16 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
         nextLocations,
         nextDistricts,
         nextDistrictStopTypes,
-        nextLocationTypes
+        nextLocationTypes,
+        nextTimeSeries
       ] = await Promise.all([
         fetchStopCount(current, { signal: controller.signal }),
         fetchVehicleGroups(current, { signal: controller.signal }),
         fetchStopLocations(current, { signal: controller.signal }),
         fetchDistrictCounts(current, { signal: controller.signal }),
         fetchDistrictStopTypeCounts(current, { signal: controller.signal }),
-        fetchStopLocationTypeCounts(current, { signal: controller.signal })
+        fetchStopLocationTypeCounts(current, { signal: controller.signal }),
+        fetchStopsOverRange(current, { signal: controller.signal })
       ])
       // A newer range superseded this one mid-flight; discard the result.
       if (controller.signal.aborted) return
@@ -96,6 +102,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       districtCounts.value = nextDistricts
       districtStopTypeCounts.value = nextDistrictStopTypes
       locationTypeCounts.value = nextLocationTypes
+      timeSeries.value = nextTimeSeries
     } catch (cause) {
       if (controller.signal.aborted) return
       error.value = cause instanceof Error ? cause.message : 'Could not load data'
@@ -107,6 +114,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
       districtCounts.value = []
       districtStopTypeCounts.value = []
       locationTypeCounts.value = []
+      timeSeries.value = []
     } finally {
       if (inFlight === controller) {
         inFlight = null
@@ -137,6 +145,7 @@ export function useStopData(range: Ref<DateRange | null>, snapshot: Ref<DataSnap
     districtCounts,
     districtStopTypeCounts,
     locationTypeCounts,
+    timeSeries,
     loading: readonly(loading),
     error: readonly(error)
   }

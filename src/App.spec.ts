@@ -103,6 +103,13 @@ const SNAPSHOT: DataSnapshot = {
     { race: 'BLACK', description: 'CALL FOR SERVICE', count: 90000 },
     { race: 'WHITE', description: 'TRAFFIC VIOLATION', count: 125697 },
     { race: 'WHITE', description: 'CALL FOR SERVICE', count: 25000 }
+  ],
+  // Mirrors the real default range: the first bucket is partial since the
+  // range starts on the 10th, not the 1st.
+  defaultRangeTimeSeries: [
+    { bucketStart: '2024-11-01', count: 1589, partial: true },
+    { bucketStart: '2024-12-01', count: 2174, partial: false },
+    { bucketStart: '2025-11-01', count: 404, partial: true }
   ]
 }
 

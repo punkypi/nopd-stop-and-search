@@ -91,6 +91,13 @@ export function startOfYear(date: CalendarDay): CalendarDay {
   return calendarDay(date.year, 1, 1)
 }
 
+/** The first day of the month after `date`'s. */
+export function nextMonth(date: CalendarDay): CalendarDay {
+  return date.month === 12
+    ? calendarDay(date.year + 1, 1, 1)
+    : calendarDay(date.year, date.month + 1, 1)
+}
+
 export function monthName(date: CalendarDay): string {
   return MONTH_FORMATTER.format(toNativeDate(date))
 }
@@ -104,6 +111,16 @@ export function toMonthYearString(date: CalendarDay): string {
 /** Negative when `a` is earlier than `b`, positive when later, 0 when the same day. */
 export function compare(a: CalendarDay, b: CalendarDay): number {
   return toTimestamp(a) - toTimestamp(b)
+}
+
+/**
+ * Whole days between two calendar days, positive when `b` is later than `a`.
+ * Rounded rather than divided exactly: a DST transition makes one local day
+ * 23 or 25 real hours long, which would otherwise throw the day count off by
+ * a fraction on a range that crosses one.
+ */
+export function daysBetween(a: CalendarDay, b: CalendarDay): number {
+  return Math.round((toTimestamp(b) - toTimestamp(a)) / 86_400_000)
 }
 
 /** `n` days before `date`. Negative `n` moves forward instead. */

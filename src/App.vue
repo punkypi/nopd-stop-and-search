@@ -14,6 +14,7 @@ import DateRangeFilter from '@/components/DateRangeFilter.vue'
 import DateRangePresets from '@/components/DateRangePresets.vue'
 import DistrictOverview from '@/components/DistrictOverview.vue'
 import OutcomesByRace from '@/components/OutcomesByRace.vue'
+import StopsOverRangeChart from '@/components/StopsOverRangeChart.vue'
 import StopsOverTimeSparkline from '@/components/StopsOverTimeSparkline.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
 import { useStopData } from '@/composables/useStopData'
@@ -54,6 +55,7 @@ const {
   districtCounts,
   districtStopTypeCounts,
   locationTypeCounts,
+  timeSeries,
   loading,
   error
 } = useStopData(range, snapshot)
@@ -129,6 +131,10 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
             :latest="snapshot?.latestEventDate ?? null"
             @update:range="range = $event"
           />
+
+          <!-- Range-scoped, like the map below it: the picker's own trend line,
+               not the whole-record sparkline above. -->
+          <StopsOverRangeChart :points="timeSeries" :range="range" :loading="loading" />
         </template>
 
         <div v-else class="flex justify-center py-16">

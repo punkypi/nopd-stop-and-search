@@ -17,6 +17,7 @@ import type {
   StopTypeCount,
   VehicleGroup
 } from './stops'
+import type { TimeSeriesPoint } from './stopsOverRange'
 import type { YearlyStopCount } from './stopsOverTime'
 
 export interface DataSnapshot {
@@ -86,6 +87,13 @@ export interface DataSnapshot {
   outcomesByRace: RaceOutcomeCounts[]
   /** Each race's own stops by kind, whole record — the composition disclosure `outcomesByRace` needs. */
   outcomesByRaceStopTypes: RaceStopTypeCount[]
+  /**
+   * The default range's own stops over time, bucketed monthly (the default
+   * range always spans 12 months, always past the daily/monthly threshold
+   * in `src/lib/stopsOverRange.ts`). Unlike `yearlyStopCounts` above, this
+   * moves with the date picker — a custom range queries it live instead.
+   */
+  defaultRangeTimeSeries: TimeSeriesPoint[]
 }
 
 /**

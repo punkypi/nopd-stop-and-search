@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   calendarDay,
   compare,
+  daysBetween,
   daysInMonth,
   earlierOf,
   endOfMonth,
@@ -11,6 +12,7 @@ import {
   isValid,
   laterOf,
   monthName,
+  nextMonth,
   startOfMonth,
   startOfYear,
   subtractDays,
@@ -192,5 +194,36 @@ describe('compare', () => {
     expect(compare(early, late)).toBeLessThan(0)
     expect(compare(late, early)).toBeGreaterThan(0)
     expect(compare(early, { ...early })).toBe(0)
+  })
+})
+
+describe('nextMonth', () => {
+  it('steps to the first of the following month', () => {
+    expect(nextMonth(calendarDay(2025, 11, 9))).toEqual(calendarDay(2025, 12, 1))
+  })
+
+  it('crosses a year boundary', () => {
+    expect(nextMonth(calendarDay(2025, 12, 15))).toEqual(calendarDay(2026, 1, 1))
+  })
+})
+
+describe('daysBetween', () => {
+  it('counts whole days within a month', () => {
+    expect(daysBetween(calendarDay(2025, 11, 1), calendarDay(2025, 11, 10))).toBe(9)
+  })
+
+  it('is zero for the same day', () => {
+    const day = calendarDay(2025, 11, 9)
+    expect(daysBetween(day, { ...day })).toBe(0)
+  })
+
+  it('is negative when b is earlier than a', () => {
+    expect(daysBetween(calendarDay(2025, 11, 10), calendarDay(2025, 11, 1))).toBe(-9)
+  })
+
+  it('crosses a DST transition without drifting off by a fraction', () => {
+    // US DST ends the first Sunday in November -- 2025-11-02. The local day
+    // that contains the transition is 25 real hours long.
+    expect(daysBetween(calendarDay(2025, 10, 30), calendarDay(2025, 11, 5))).toBe(6)
   })
 })

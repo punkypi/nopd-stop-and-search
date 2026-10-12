@@ -6,6 +6,7 @@ import { calendarDay } from '@/lib/dates'
 import type { DataSnapshot } from '@/lib/snapshot'
 import type { StopLocation, StopLocationTypeCount } from '@/lib/stopLocations'
 import type { DateRange, DistrictCount, DistrictStopTypeCount, VehicleGroup } from '@/lib/stops'
+import type { TimeSeriesPoint } from '@/lib/stopsOverRange'
 
 import { useStopData } from './useStopData'
 
@@ -36,6 +37,10 @@ const BAKED_LOCATION_TYPES: StopLocationTypeCount[] = [
   { latitude: 29.9511, longitude: -90.0715, description: 'TRAFFIC VIOLATION', count: 9 }
 ]
 
+const BAKED_TIME_SERIES: TimeSeriesPoint[] = [
+  { bucketStart: '2025-11-01', count: 366, partial: false }
+]
+
 function snapshotFixture(): DataSnapshot {
   return {
     bakedAt: '2026-09-26T23:50:14.661Z',
@@ -58,6 +63,7 @@ function snapshotFixture(): DataSnapshot {
     defaultRangeDistrictCounts: BAKED_DISTRICTS,
     defaultRangeDistrictStopTypeCounts: BAKED_DISTRICT_STOP_TYPES,
     defaultRangeLocationTypeCounts: BAKED_LOCATION_TYPES,
+    defaultRangeTimeSeries: BAKED_TIME_SERIES,
     yearlyStopCounts: [{ year: 2025, count: 26629, locatedCount: 25288 }],
     outcomesByRace: [
       { race: 'BLACK', stops: 100, searched: 20, cited: 30, arrested: 10, seized: 5 }
@@ -66,15 +72,18 @@ function snapshotFixture(): DataSnapshot {
   }
 }
 
-/** Responds to each of the six range queries — count, vehicles, locations,
- *  districts, district/stop-type pairs, location/stop-type pairs — with
- *  fixed values. */
+/** Responds to each of the seven range queries — count, vehicles, locations,
+ *  districts, district/stop-type pairs, location/stop-type pairs, time-series
+ *  buckets — with fixed values. */
 function stubFetch() {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = new URL(String(input))
     const select = url.searchParams.get('$select') ?? ''
     let body: unknown
     if (select.startsWith('count(*)')) body = [{ total: '99' }]
+    else if (select.startsWith('date_trunc')) {
+      body = [{ bucket: '2025-10-01T00:00:00.000', total: '99' }]
+    }
     // Checked before the plain "latitude" select — both start with that word.
     else if (select.startsWith('latitude') && select.includes('stopdescription')) {
       body = [
@@ -119,6 +128,7 @@ describe('useStopData', () => {
       districtCounts,
       districtStopTypeCounts,
       locationTypeCounts,
+      timeSeries,
       loading
     } = useStopData(range, snapshot)
     await flushPromises()
@@ -130,6 +140,7 @@ describe('useStopData', () => {
     expect(districtCounts.value).toEqual(BAKED_DISTRICTS)
     expect(districtStopTypeCounts.value).toEqual(BAKED_DISTRICT_STOP_TYPES)
     expect(locationTypeCounts.value).toEqual(BAKED_LOCATION_TYPES)
+    expect(timeSeries.value).toEqual(BAKED_TIME_SERIES)
     expect(loading.value).toBe(false)
   })
 
@@ -144,7 +155,8 @@ describe('useStopData', () => {
       stopLocations,
       districtCounts,
       districtStopTypeCounts,
-      locationTypeCounts
+      locationTypeCounts,
+      timeSeries
     } = useStopData(range, snapshot)
     await flushPromises()
 
@@ -165,6 +177,7 @@ describe('useStopData', () => {
     expect(locationTypeCounts.value).toEqual([
       { latitude: 29.95, longitude: -90.07, description: 'TRAFFIC VIOLATION', count: 4 }
     ])
+    expect(timeSeries.value).toEqual([{ bucketStart: '2025-10-01', count: 99, partial: false }])
   })
 
   it('queries live when no snapshot is available at all', async () => {
@@ -213,7 +226,8 @@ describe('useStopData', () => {
       stopLocations,
       districtCounts,
       districtStopTypeCounts,
-      locationTypeCounts
+      locationTypeCounts,
+      timeSeries
     } = useStopData(range, snapshot)
     await flushPromises()
 
@@ -224,6 +238,7 @@ describe('useStopData', () => {
     expect(districtCounts.value).toEqual([])
     expect(districtStopTypeCounts.value).toEqual([])
     expect(locationTypeCounts.value).toEqual([])
+    expect(timeSeries.value).toEqual([])
   })
 
   it('discards a superseded response so the newest range wins', async () => {
@@ -235,9 +250,9 @@ describe('useStopData', () => {
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
         const url = new URL(String(input))
         const isCount = (url.searchParams.get('$select') ?? '').startsWith('count(*)')
-        // Six queries per range now: count, vehicles, locations, districts,
-        // district/stop-type pairs, location/stop-type pairs.
-        const mine = callIndex++ < 6
+        // Seven queries per range now: count, vehicles, locations, districts,
+        // district/stop-type pairs, location/stop-type pairs, time-series buckets.
+        const mine = callIndex++ < 7
         if (mine) {
           await new Promise((resolve) => setTimeout(resolve, 40))
           if (init?.signal?.aborted) throw new DOMException('aborted', 'AbortError')
@@ -246,22 +261,24 @@ describe('useStopData', () => {
         const select = url.searchParams.get('$select') ?? ''
         const body = isCount
           ? [{ total }]
-          : select.startsWith('latitude') && select.includes('stopdescription')
-            ? [
-                {
-                  latitude: '29.95',
-                  longitude: '-90.07',
-                  stopdescription: 'TRAFFIC VIOLATION',
-                  total
-                }
-              ]
-            : select.startsWith('latitude')
-              ? []
-              : select.includes('stopdescription')
-                ? [{ district: '1', stopdescription: 'TRAFFIC VIOLATION', total }]
-                : select.startsWith('district')
-                  ? [{ district: '1', total }]
-                  : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
+          : select.startsWith('date_trunc')
+            ? [{ bucket: '2025-08-01T00:00:00.000', total }]
+            : select.startsWith('latitude') && select.includes('stopdescription')
+              ? [
+                  {
+                    latitude: '29.95',
+                    longitude: '-90.07',
+                    stopdescription: 'TRAFFIC VIOLATION',
+                    total
+                  }
+                ]
+              : select.startsWith('latitude')
+                ? []
+                : select.includes('stopdescription')
+                  ? [{ district: '1', stopdescription: 'TRAFFIC VIOLATION', total }]
+                  : select.startsWith('district')
+                    ? [{ district: '1', total }]
+                    : [{ vehiclemake: 'X', vehiclemodel: 'Y', total }]
         return new Response(JSON.stringify(body), { status: 200 })
       })
     )

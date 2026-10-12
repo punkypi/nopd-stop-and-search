@@ -14,7 +14,14 @@
  * something it silently applies.
  */
 
-import { compare, fromSocrataTimestamp, isValid, toSoQLTimestamp, type CalendarDay } from './dates'
+import {
+  compare,
+  fromSocrataTimestamp,
+  isValid,
+  toISODate,
+  toSoQLTimestamp,
+  type CalendarDay
+} from './dates'
 import { runQuery, type SocrataOptions } from './socrata'
 import { buildStopEvent, type RawStopEventRow, type StopEvent } from './stopEvents'
 import {
@@ -27,6 +34,7 @@ import {
   type StopLocation,
   type StopLocationTypeCount
 } from './stopLocations'
+import { bucketGranularity, isPartialMonthBucket, type TimeSeriesPoint } from './stopsOverRange'
 
 /**
  * Upper bound on distinct make/model pairs returned in one page. The original
@@ -123,6 +131,42 @@ export async function fetchStopCount(
     options
   )
   return Number(rows[0]?.total ?? 0)
+}
+
+/**
+ * The range's own stops over time, bucketed daily or monthly depending on
+ * how wide the range is — see `bucketGranularity` in `stopsOverRange.ts`.
+ * Gap-filling happens client-side in the component, same division of labor
+ * `fillYearGaps` already established for the whole-record sparkline.
+ */
+export async function fetchStopsOverRange(
+  range: DateRange,
+  options: SocrataOptions = {}
+): Promise<TimeSeriesPoint[]> {
+  const granularity = bucketGranularity(range)
+  const bucketExpr =
+    granularity === 'day' ? 'date_trunc_ymd(eventdate)' : 'date_trunc_ym(eventdate)'
+  const rows = await runQuery<{ bucket?: string; total?: string }>(
+    {
+      select: `${bucketExpr} as bucket, count(*) as total`,
+      where: rangeWhere(range),
+      group: 'bucket',
+      order: 'bucket'
+    },
+    options
+  )
+
+  return rows
+    .map((row) => {
+      const bucketDay = row.bucket ? fromSocrataTimestamp(row.bucket) : null
+      if (!bucketDay) return null
+      return {
+        bucketStart: toISODate(bucketDay),
+        count: Number(row.total ?? 0),
+        partial: granularity === 'month' && isPartialMonthBucket(bucketDay, range)
+      }
+    })
+    .filter((point): point is TimeSeriesPoint => point !== null)
 }
 
 /**
