@@ -8,6 +8,7 @@
 
 import { withBase } from './basePath'
 import type { CalendarDay } from './dates'
+import type { RaceOutcomeCounts, RaceStopTypeCount } from './outcomesByRace'
 import type { StopLocation, StopLocationTypeCount } from './stopLocations'
 import type {
   DateRange,
@@ -76,6 +77,15 @@ export interface DataSnapshot {
    * gaps are filled there and not here.
    */
   yearlyStopCounts: YearlyStopCount[]
+  /**
+   * Search/citation/arrest/evidence-seized outcomes by subjectrace, whole
+   * record — not scoped to the date range. See the header comment in
+   * `src/lib/outcomesByRace.ts` for why this one stays baked rather than
+   * live-queried.
+   */
+  outcomesByRace: RaceOutcomeCounts[]
+  /** Each race's own stops by kind, whole record — the composition disclosure `outcomesByRace` needs. */
+  outcomesByRaceStopTypes: RaceStopTypeCount[]
 }
 
 /**

@@ -13,6 +13,7 @@ import AboutPanel from '@/components/AboutPanel.vue'
 import DateRangeFilter from '@/components/DateRangeFilter.vue'
 import DateRangePresets from '@/components/DateRangePresets.vue'
 import DistrictOverview from '@/components/DistrictOverview.vue'
+import OutcomesByRace from '@/components/OutcomesByRace.vue'
 import StopsOverTimeSparkline from '@/components/StopsOverTimeSparkline.vue'
 import VehicleGroupTable from '@/components/VehicleGroupTable.vue'
 import { useStopData } from '@/composables/useStopData'
@@ -106,6 +107,14 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
         </NAlert>
 
         <template v-if="range">
+          <!-- Names what picking a range below actually changes, since nothing in
+               StopsOverTimeSparkline or DateRangePresets themselves says so, and the
+               map and vehicle table they drive sit well below the fold. -->
+          <p class="text-nola-muted px-1 text-xs">
+            A range chosen below sets the map, district breakdown, and vehicle table further down
+            the page. Outcomes by Race, also below, covers the whole record regardless.
+          </p>
+
           <StopsOverTimeSparkline
             :yearly-counts="snapshot?.yearlyStopCounts ?? []"
             :range="range"
@@ -144,7 +153,24 @@ const headerIcon = withBase('fleur_de_lis_blue.ico')
       />
 
       <div class="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4">
-        <VehicleGroupTable v-if="range" :vehicle-groups="vehicleGroups" :loading="loading" />
+        <!-- Range-scoped, directly under the map that drives it, same as the
+             map itself -->
+        <VehicleGroupTable
+          v-if="range"
+          :vehicle-groups="vehicleGroups"
+          :range="range"
+          :loading="loading"
+        />
+
+        <!-- Whole-record and baked, last rather than sandwiched between the two
+             range-scoped panels above: it renders as soon as the snapshot loads
+             rather than waiting on `range`, and this is the one panel on the
+             page that doesn't move with the date picker. -->
+        <OutcomesByRace
+          v-if="snapshot"
+          :counts="snapshot.outcomesByRace"
+          :stop-type-counts="snapshot.outcomesByRaceStopTypes"
+        />
 
         <footer class="text-nola-muted pb-2 text-center text-xs">
           Public data, presented without warranty. Counts reflect what was reported to

@@ -189,6 +189,16 @@ function partitionByAddressConsistency(locations) {
   }
 }
 
+/**
+ * Mirrors normalizeRace in src/lib/outcomesByRace.ts. Socrata omits
+ * `subjectrace` from a row entirely when it's blank rather than returning an
+ * empty string, confirmed live.
+ */
+function normalizeRace(raw) {
+  const trimmed = (raw ?? '').trim()
+  return trimmed === '' ? 'Not recorded' : trimmed
+}
+
 function vehicleGroup(make, model, count) {
   const trimmedMake = (make ?? '').trim()
   const trimmedModel = (model ?? '').trim()
@@ -233,7 +243,9 @@ async function bake() {
     yearlyRows,
     districtRows,
     districtStopTypeRows,
-    locationTypeRows
+    locationTypeRows,
+    raceOutcomeRows,
+    raceStopTypeRows
   ] = await Promise.all([
     query({ select: 'count(*) as total', where }),
     query({
@@ -308,6 +320,31 @@ async function bake() {
       group: 'latitude, longitude, stopdescription',
       order: 'total desc',
       limit: MAX_LOCATION_TYPE_ROWS
+    }),
+    // Backs "Outcomes by race" — all-time, like stopTypeRows and yearlyRows
+    // above, not range-scoped. A narrow date range could shrink a race's own
+    // cell below MIN_CELL_STOPS (src/lib/outcomesByRace.ts) and suppress the
+    // one comparison this panel exists to show. `actionstaken` isn't
+    // categorical (see parseActionStaken in src/lib/stopEvents.ts), so each
+    // outcome is its own `like '%Key: Value%'` filter, summed in one request
+    // rather than four separate ones.
+    query({
+      select:
+        'subjectrace, count(*) as stops, ' +
+        "sum(case(actionstaken like '%Search Occurred: Yes%', 1, true, 0)) as searched, " +
+        "sum(case(actionstaken like '%Stop Results: Citation Issued%', 1, true, 0)) as cited, " +
+        "sum(case(actionstaken like '%Stop Results: Physical Arrest%', 1, true, 0)) as arrested, " +
+        "sum(case(actionstaken like '%Evidence Seized: Yes%', 1, true, 0)) as seized",
+      group: 'subjectrace',
+      order: 'stops desc'
+    }),
+    // Each race's own stops by kind, all-time — the composition disclosure a
+    // pooled cross-tab needs. See the header comment on
+    // src/lib/outcomesByRace.ts's stopTypeSharesForRace.
+    query({
+      select: 'subjectrace, stopdescription, count(*) as total',
+      group: 'subjectrace, stopdescription',
+      order: 'subjectrace, total desc'
     })
   ])
 
@@ -358,6 +395,20 @@ async function bake() {
       year: Number(row.yr),
       count: Number(row.total ?? 0),
       locatedCount: Number(row.located ?? 0)
+    })),
+    // Mirrors the mapping in src/lib/outcomesByRace.ts's types.
+    outcomesByRace: raceOutcomeRows.map((row) => ({
+      race: normalizeRace(row.subjectrace),
+      stops: Number(row.stops ?? 0),
+      searched: Number(row.searched ?? 0),
+      cited: Number(row.cited ?? 0),
+      arrested: Number(row.arrested ?? 0),
+      seized: Number(row.seized ?? 0)
+    })),
+    outcomesByRaceStopTypes: raceStopTypeRows.map((row) => ({
+      race: normalizeRace(row.subjectrace),
+      description: (row.stopdescription ?? '').trim(),
+      count: Number(row.total ?? 0)
     }))
   }
 
@@ -377,6 +428,7 @@ async function bake() {
       `  yearly        ${snapshot.yearlyStopCounts.length.toLocaleString('en-US')} years with at least one stop\n` +
       `  districts     ${snapshot.defaultRangeDistrictCounts.length.toLocaleString('en-US')} in range\n` +
       `  location+type ${snapshot.defaultRangeLocationTypeCounts.length.toLocaleString('en-US')} coordinate/stop-type rows\n` +
+      `  outcomes      ${snapshot.outcomesByRace.length.toLocaleString('en-US')} races, all-time\n` +
       `  wrote         public/data/snapshot.json\n`
   )
 }

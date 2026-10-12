@@ -69,6 +69,40 @@ const SNAPSHOT: DataSnapshot = {
     { year: 2010, count: 62006, locatedCount: 1 },
     { year: 2024, count: 27168, locatedCount: 26229 },
     { year: 2025, count: 26629, locatedCount: 25288 }
+  ],
+  // Measured live, whole record: 16.7% of Black subjects' stops involved a
+  // search against 11.3% of white subjects', but 27.9% of Black subjects'
+  // searches turned up evidence against 20.7% of white subjects' — the
+  // reversal "Outcomes by race" exists to surface.
+  outcomesByRace: [
+    {
+      race: 'BLACK',
+      stops: 490717,
+      searched: 81758,
+      cited: 135192,
+      arrested: 86296,
+      seized: 22847
+    },
+    { race: 'WHITE', stops: 182400, searched: 20684, cited: 54402, arrested: 24790, seized: 4275 },
+    { race: 'HISPANIC', stops: 16802, searched: 2154, cited: 6269, arrested: 2424, seized: 308 },
+    { race: 'Not recorded', stops: 15468, searched: 475, cited: 2314, arrested: 512, seized: 62 },
+    { race: 'UNKNOWN', stops: 8661, searched: 411, cited: 3985, arrested: 435, seized: 97 },
+    { race: 'ASIAN', stops: 5308, searched: 300, cited: 2047, arrested: 347, seized: 78 },
+    { race: 'AMER. IND.', stops: 539, searched: 41, cited: 221, arrested: 48, seized: 8 },
+    {
+      race: 'NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER',
+      stops: 530,
+      searched: 9,
+      cited: 325,
+      arrested: 7,
+      seized: 0
+    }
+  ],
+  outcomesByRaceStopTypes: [
+    { race: 'BLACK', description: 'TRAFFIC VIOLATION', count: 294430 },
+    { race: 'BLACK', description: 'CALL FOR SERVICE', count: 90000 },
+    { race: 'WHITE', description: 'TRAFFIC VIOLATION', count: 125697 },
+    { race: 'WHITE', description: 'CALL FOR SERVICE', count: 25000 }
   ]
 }
 

@@ -6,6 +6,38 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.9.0] - 2026-10-12
+
+### Added
+
+- "Outcomes by Race," a panel breaking search, citation, arrest, and
+  evidence-seized rates down by subject race, whole record. A cell built on
+  fewer than 30 stops or searches reads "too few to rate" instead of a
+  number, but still shows its raw count. Measured live: 16.7% of Black
+  subjects' stops involved a search against 11.3% of white subjects', but
+  27.9% of Black subjects' searches turned up evidence against 20.7% of
+  white subjects' — the gap runs the opposite direction once a search has
+  actually happened. Since the four outcomes can overlap on one stop, and
+  the table necessarily pools every kind of stop (no stop-type selector
+  exists yet), it also discloses each of the two largest race groups' own
+  stops by kind. Whole-record and baked, like the stops-by-year sparkline,
+  not wired to the date picker: a narrow range could shrink a race's own
+  cell below the suppression floor and lose the comparison this panel
+  exists to show.
+
+### Changed
+
+- Separated the page's range-scoped panels from its whole-record one.
+  "Outcomes by Race" had landed directly under the map, between it and "By
+  Vehicle" (also range-scoped), so a reader had no way to tell by position
+  which panel moved with the date picker. "By Vehicle" now states the
+  active date range in its own header, "Outcomes by Race" states "Whole
+  record," and the two swapped places: the range-scoped panel now sits
+  directly under the map it matches, and the whole-record panel stands
+  alone at the end of the page instead of between two panels it doesn't
+  share a scope with. A new sentence above the date range controls states
+  plainly what picking a range changes.
+
 ## [3.8.0] - 2026-10-11
 
 ### Added

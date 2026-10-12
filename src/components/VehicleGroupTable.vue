@@ -11,12 +11,24 @@
 import { NButton, NDataTable, NEmpty, NInput, type DataTableColumns } from 'naive-ui'
 import { computed, h, ref } from 'vue'
 
-import { vehicleCoverage, type VehicleGroup } from '@/lib/stops'
+import { toDisplayString } from '@/lib/dates'
+import { vehicleCoverage, type DateRange, type VehicleGroup } from '@/lib/stops'
 
 const props = defineProps<{
   vehicleGroups: readonly VehicleGroup[]
+  range: DateRange
   loading?: boolean
 }>()
+
+/**
+ * Stated here rather than left implicit, because this card sits directly
+ * under "Outcomes by Race" on the page, which states the opposite: it
+ * covers every stop on record, not this range. Two cards with the same
+ * shape should not require a reader to guess which is which.
+ */
+const rangeLabel = computed(
+  () => `${toDisplayString(props.range.start)} – ${toDisplayString(props.range.end)}`
+)
 
 const searchTerm = ref('')
 const collapsed = ref(false)
@@ -90,6 +102,7 @@ const columns = computed<DataTableColumns<VehicleGroup>>(() => [
   <section class="border-nola-border bg-nola-surface rounded-lg border">
     <header class="border-nola-border flex flex-wrap items-center gap-3 border-b px-4 py-3">
       <h2 class="text-nola-blue-bright mr-auto text-base font-semibold">By Vehicle</h2>
+      <span class="text-nola-muted text-xs">{{ rangeLabel }}</span>
 
       <NInput
         v-model:value="searchTerm"

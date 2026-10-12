@@ -58,7 +58,11 @@ function snapshotFixture(): DataSnapshot {
     defaultRangeDistrictCounts: BAKED_DISTRICTS,
     defaultRangeDistrictStopTypeCounts: BAKED_DISTRICT_STOP_TYPES,
     defaultRangeLocationTypeCounts: BAKED_LOCATION_TYPES,
-    yearlyStopCounts: [{ year: 2025, count: 26629, locatedCount: 25288 }]
+    yearlyStopCounts: [{ year: 2025, count: 26629, locatedCount: 25288 }],
+    outcomesByRace: [
+      { race: 'BLACK', stops: 100, searched: 20, cited: 30, arrested: 10, seized: 5 }
+    ],
+    outcomesByRaceStopTypes: [{ race: 'BLACK', description: 'TRAFFIC VIOLATION', count: 90 }]
   }
 }
 

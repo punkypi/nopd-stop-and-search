@@ -1,16 +1,22 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
-import { buildVehicleGroup, type VehicleGroup } from '@/lib/stops'
+import { calendarDay } from '@/lib/dates'
+import { buildVehicleGroup, type DateRange, type VehicleGroup } from '@/lib/stops'
 
 import VehicleGroupTable from './VehicleGroupTable.vue'
+
+const RANGE: DateRange = { start: calendarDay(2024, 11, 10), end: calendarDay(2025, 11, 9) }
 
 function normalisedText(wrapper: ReturnType<typeof mount>): string {
   return wrapper.text().replace(/\s+/g, ' ')
 }
 
 function mountTable(vehicleGroups: VehicleGroup[]) {
-  return mount(VehicleGroupTable, { attachTo: document.body, props: { vehicleGroups } })
+  return mount(VehicleGroupTable, {
+    attachTo: document.body,
+    props: { vehicleGroups, range: RANGE }
+  })
 }
 
 /** A range where four of every five stops named a vehicle. */
@@ -40,6 +46,13 @@ describe('VehicleGroupTable', () => {
   it('omits the disclosure when every stop in the range named a vehicle', () => {
     const wrapper = mountTable([buildVehicleGroup('FORD', 'F150', 60)])
     expect(normalisedText(wrapper)).not.toContain('recorded a vehicle')
+    wrapper.unmount()
+  })
+
+  it('states the date range it covers, since the panel directly under it does not', () => {
+    const wrapper = mountTable(MIXED)
+    expect(normalisedText(wrapper)).toContain('November 10, 2024')
+    expect(normalisedText(wrapper)).toContain('November 9, 2025')
     wrapper.unmount()
   })
 
